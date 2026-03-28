@@ -1650,14 +1650,14 @@
             const transform = showInverseTransform ? matrixInverse2x2(A) : A;
             if (transform) {
                 const p0 = [0, 0];
-                const p1 = transform[0][0] * 1 + transform[0][1] * 0, transform[1][0] * 1 + transform[1][1] * 0;
-                const p2 = transform[0][0] * 1 + transform[0][1] * 1, transform[1][0] * 1 + transform[1][1] * 1;
-                const p3 = transform[0][0] * 0 + transform[0][1] * 1, transform[1][0] * 0 + transform[1][1] * 1;
+                const p1 = [transform[0][0], transform[1][0]];
+                const p2 = [transform[0][0] + transform[0][1], transform[1][0] + transform[1][1]];
+                const p3 = [transform[0][1], transform[1][1]];
 
                 const [tsx0, tsy0] = toScreen(p0[0], p0[1]);
-                const [tsx1, tsy1] = toScreen(p1, transform[1][0] * 1);
-                const [tsx2, tsy2] = toScreen(p2, transform[1][0] * 1 + transform[1][1] * 1);
-                const [tsx3, tsy3] = toScreen(p3, transform[1][1] * 1);
+                const [tsx1, tsy1] = toScreen(p1[0], p1[1]);
+                const [tsx2, tsy2] = toScreen(p2[0], p2[1]);
+                const [tsx3, tsy3] = toScreen(p3[0], p3[1]);
 
                 ctx.beginPath();
                 ctx.moveTo(tsx0, tsy0);
