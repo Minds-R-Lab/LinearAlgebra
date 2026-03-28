@@ -1,0 +1,1780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.2 Matrix Algebra | LA Course</title>
+
+    <!-- KaTeX for math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: white;
+            border-bottom: 2px solid #0d9488;
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            gap: 40px;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .nav-brand {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0d9488;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+            margin-left: auto;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #0d9488;
+        }
+
+        .nav-links a.active {
+            color: #0d9488;
+            border-bottom: 2px solid #0d9488;
+            padding-bottom: 2px;
+        }
+
+        main {
+            margin-top: 60px;
+            padding: 0;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #0d9488 0%, #059669 100%);
+            color: white;
+            padding: 60px 30px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Content Container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+
+        /* Section Headings */
+        h2 {
+            color: #0d9488;
+            font-size: 32px;
+            margin: 50px 0 30px 0;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #0d9488;
+        }
+
+        h3 {
+            color: #1f2937;
+            font-size: 24px;
+            margin: 35px 0 20px 0;
+        }
+
+        h4 {
+            color: #374151;
+            font-size: 18px;
+            margin: 20px 0 12px 0;
+        }
+
+        p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        /* Definition, Theorem, etc. Boxes */
+        .definition-box, .theorem-box, .example-box, .warning-box, .tip-box {
+            margin: 25px 0;
+            padding: 20px 25px;
+            border-left: 5px solid;
+            border-radius: 8px;
+            background: #f3f4f6;
+        }
+
+        .definition-box {
+            border-left-color: #0d9488;
+            background: #ecfdf5;
+        }
+
+        .definition-box strong {
+            color: #0d9488;
+        }
+
+        .theorem-box {
+            border-left-color: #7c3aed;
+            background: #f3e8ff;
+        }
+
+        .theorem-box strong {
+            color: #7c3aed;
+        }
+
+        .example-box {
+            border-left-color: #0d9488;
+            background: #ecfdf5;
+        }
+
+        .warning-box {
+            border-left-color: #dc2626;
+            background: #fee2e2;
+        }
+
+        .warning-box strong {
+            color: #dc2626;
+        }
+
+        .tip-box {
+            border-left-color: #d97706;
+            background: #fef3c7;
+        }
+
+        .tip-box strong {
+            color: #d97706;
+        }
+
+        /* Objectives */
+        .objectives {
+            background: #ecfdf5;
+            border: 2px solid #0d9488;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .objectives h3 {
+            color: #0d9488;
+            margin-top: 0;
+        }
+
+        .objectives ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .objectives li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .objectives li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #0d9488;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        /* Step Lists */
+        .step-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .step-list li {
+            display: flex;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+
+        .step-list li:before {
+            content: attr(data-step);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            background: #0d9488;
+            color: white;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .step-list li span {
+            flex: 1;
+            padding-top: 8px;
+        }
+
+        /* Example Items (Collapsible) */
+        .example-item {
+            margin: 20px 0;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .example-header {
+            background: linear-gradient(135deg, #059669, #10b981);
+            color: white;
+            padding: 18px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .example-header:hover {
+            background: linear-gradient(135deg, #047857, #059669);
+        }
+
+        .example-header .toggle-arrow {
+            display: inline-block;
+            transition: transform 0.3s;
+            font-size: 20px;
+        }
+
+        .example-item.active .example-header .toggle-arrow {
+            transform: rotate(180deg);
+        }
+
+        .example-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out;
+            padding: 0 25px;
+        }
+
+        .example-item.active .example-content {
+            max-height: 5000px;
+            padding: 25px;
+        }
+
+        .example-content p {
+            margin-bottom: 12px;
+        }
+
+        .solution-step {
+            background: #f0f9ff;
+            border-left: 4px solid #0d9488;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+
+        /* Quiz Questions */
+        .quiz-question {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+            page-break-inside: avoid;
+        }
+
+        .quiz-question .question-text {
+            font-weight: 600;
+            margin-bottom: 18px;
+            color: #1f2937;
+        }
+
+        .choices {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .choice-btn {
+            background: white;
+            border: 2px solid #d1d5db;
+            border-radius: 6px;
+            padding: 12px 18px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s;
+            font-size: 15px;
+        }
+
+        .choice-btn:hover {
+            border-color: #0d9488;
+            background: #f0fdf4;
+        }
+
+        .choice-btn.correct {
+            background: #dcfce7;
+            border-color: #16a34a;
+            color: #15803d;
+        }
+
+        .choice-btn.incorrect {
+            background: #fee2e2;
+            border-color: #dc2626;
+            color: #991b1b;
+        }
+
+        .choice-btn.disabled {
+            cursor: not-allowed;
+        }
+
+        .quiz-feedback {
+            margin-top: 15px;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .quiz-feedback.show {
+            display: block;
+        }
+
+        .quiz-feedback.correct {
+            background: #dcfce7;
+            color: #15803d;
+            border-left: 4px solid #16a34a;
+        }
+
+        .quiz-feedback.incorrect {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 4px solid #dc2626;
+        }
+
+        /* Interactive Visualizations */
+        .visualization-container {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .visualization-controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            background: #0d9488;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+        }
+
+        .btn.secondary {
+            background: #7c3aed;
+        }
+
+        .btn.secondary:hover {
+            background: #6d28d9;
+        }
+
+        .btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        canvas {
+            max-width: 100%;
+            background: #0f172a;
+            border-radius: 6px;
+        }
+
+        .visualization-info {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .matrix-display {
+            font-family: 'Courier New', monospace;
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .operation-description {
+            background: #fef3c7;
+            border-left: 4px solid #d97706;
+            padding: 12px 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        /* Properties Explorer */
+        .explorer-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .input-group input {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 14px;
+            width: 60px;
+        }
+
+        .result-display {
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            text-align: center;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .result-label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .comparison-result {
+            padding: 12px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-weight: 600;
+        }
+
+        .comparison-result.match {
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #16a34a;
+        }
+
+        .comparison-result.mismatch {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #dc2626;
+        }
+
+        /* Key Takeaways */
+        .key-takeaways {
+            background: linear-gradient(135deg, #ecfdf5, #f0fdf4);
+            border: 2px solid #0d9488;
+            border-radius: 8px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+
+        .key-takeaways h3 {
+            color: #0d9488;
+            margin-top: 0;
+        }
+
+        .key-takeaways ol {
+            padding-left: 25px;
+        }
+
+        .key-takeaways li {
+            margin-bottom: 12px;
+            color: #1f2937;
+        }
+
+        /* Navigation Footer */
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 60px 0 40px 0;
+            padding: 25px 0;
+            border-top: 2px solid #e5e7eb;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .nav-footer a {
+            color: #0d9488;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .nav-footer a:hover {
+            color: #059669;
+        }
+
+        /* Footer */
+        footer {
+            background: #1f2937;
+            color: #d1d5db;
+            text-align: center;
+            padding: 30px;
+            font-size: 14px;
+        }
+
+        /* Code/Matrix formatting */
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 0 15px;
+                gap: 15px;
+            }
+
+            .nav-links {
+                gap: 15px;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            .container {
+                padding: 30px 20px;
+            }
+
+            .nav-footer {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-footer a {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="index.html" class="nav-brand">LA Course</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="why-linear-algebra.html">Why LA?</a></li>
+            <li><a href="ch1-linear-systems.html">1.1 Systems</a></li>
+            <li><a href="ch1-matrix-algebra.html" class="active">1.2 Matrix Alg.</a></li>
+            <li><a href="#1.3">1.3 Inverses</a></li>
+            <li><a href="#1.4">1.4 Determinants</a></li>
+            <li><a href="exam-generator.html">Exam Generator</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <main>
+        <div class="hero">
+            <h1>Matrix Algebra</h1>
+            <p>Master the arithmetic of matrices — addition, scalar multiplication, matrix multiplication, transpose, and their properties</p>
+        </div>
+
+        <!-- Main Content -->
+        <div class="container">
+            <!-- Learning Objectives -->
+            <div class="objectives">
+                <h3>Learning Objectives</h3>
+                <ul>
+                    <li>Define matrices, their dimensions, and special types (square, symmetric, diagonal, identity, zero)</li>
+                    <li>Perform matrix addition, scalar multiplication, and matrix multiplication</li>
+                    <li>Understand and verify properties: associativity, distributivity, non-commutativity of matrix multiplication</li>
+                    <li>Compute the transpose and understand its properties</li>
+                    <li>Apply matrix algebra to real-world problems (computer graphics, Markov chains, network analysis)</li>
+                </ul>
+            </div>
+
+            <!-- Section 1: What is a Matrix? -->
+            <h2>What is a Matrix?</h2>
+
+            <div class="definition-box">
+                <strong>Definition:</strong> An <strong>m × n matrix</strong> is a rectangular array of numbers (real or complex) arranged in m rows and n columns:
+                <br><br>
+                \[A = \begin{bmatrix} a_{11} & a_{12} & \cdots & a_{1n} \\ a_{21} & a_{22} & \cdots & a_{2n} \\ \vdots & \vdots & \ddots & \vdots \\ a_{m1} & a_{m2} & \cdots & a_{mn} \end{bmatrix}\]
+                <br><br>
+                The entry in row $i$ and column $j$ is denoted $a_{ij}$. We also write $A = [a_{ij}]_{m \times n}$.
+            </div>
+
+            <h3>Dimensions and Notation</h3>
+            <p>The <strong>dimensions</strong> (or <strong>size</strong>) of a matrix are the number of rows and columns. An m × n matrix has m rows and n columns. We read this as "m by n."</p>
+
+            <p><strong>Example:</strong> The matrix $A = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}$ has dimensions 2 × 3 (2 rows, 3 columns).</p>
+
+            <h3>Special Matrices</h3>
+            <p>Several types of matrices appear frequently:</p>
+
+            <div class="definition-box">
+                <strong>Zero Matrix:</strong> All entries are zero, denoted $0$ or $0_{m \times n}$.
+                <br><br>
+                <strong>Column Vector:</strong> An m × 1 matrix (single column).
+                <br><br>
+                <strong>Row Vector:</strong> A 1 × n matrix (single row).
+                <br><br>
+                <strong>Square Matrix:</strong> An n × n matrix (same number of rows and columns).
+                <br><br>
+                <strong>Identity Matrix:</strong> The n × n matrix $I_n$ with 1's on the diagonal and 0's elsewhere:
+                <br>\[I_n = \begin{bmatrix} 1 & 0 & \cdots & 0 \\ 0 & 1 & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & 1 \end{bmatrix}\]
+                <br><br>
+                <strong>Diagonal Matrix:</strong> A square matrix with nonzero entries only on the diagonal. Example: $\begin{bmatrix} 2 & 0 & 0 \\ 0 & 3 & 0 \\ 0 & 0 & 5 \end{bmatrix}$
+                <br><br>
+                <strong>Symmetric Matrix:</strong> A square matrix where $A^T = A$ (entries satisfy $a_{ij} = a_{ji}$).
+                <br><br>
+                <strong>Upper Triangular:</strong> All entries below the diagonal are zero.
+                <br><br>
+                <strong>Lower Triangular:</strong> All entries above the diagonal are zero.
+            </div>
+
+            <!-- Section 2: Matrix Operations -->
+            <h2>Matrix Operations</h2>
+
+            <h3>Matrix Addition</h3>
+            <div class="definition-box">
+                <strong>Matrix Addition:</strong> Two matrices of the same dimensions can be added entry-wise:
+                <br><br>
+                If $A = [a_{ij}]_{m \times n}$ and $B = [b_{ij}]_{m \times n}$, then
+                <br>\[A + B = [a_{ij} + b_{ij}]_{m \times n}\]
+                <br><br>
+                <strong>Important:</strong> Matrices must have the same dimensions to be added.
+            </div>
+
+            <h3>Scalar Multiplication</h3>
+            <div class="definition-box">
+                <strong>Scalar Multiplication:</strong> A matrix can be multiplied by a scalar (number) $c$:
+                <br><br>
+                If $A = [a_{ij}]_{m \times n}$, then
+                <br>\[cA = [c \cdot a_{ij}]_{m \times n}\]
+                <br><br>
+                Every entry of $A$ is multiplied by $c$.
+            </div>
+
+            <h3>Matrix Multiplication</h3>
+            <div class="definition-box">
+                <strong>Matrix Multiplication:</strong> If $A$ is m × n and $B$ is n × p, then their product $AB$ is an m × p matrix defined by:
+                <br><br>
+                \[(AB)_{ij} = \sum_{k=1}^{n} a_{ik} b_{kj} = a_{i1}b_{1j} + a_{i2}b_{2j} + \cdots + a_{in}b_{nj}\]
+                <br><br>
+                The $(i,j)$ entry of $AB$ is the dot product of row $i$ of $A$ with column $j$ of $B$.
+                <br><br>
+                <strong>Important:</strong> The number of columns in $A$ must equal the number of rows in $B$. An m × n matrix times an n × p matrix gives an m × p matrix.
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠ WARNING:</strong> Matrix multiplication is <strong>NOT commutative</strong>. In general, $AB \neq BA$. Even if both products are defined, they typically give different results. This is fundamentally different from multiplication of real numbers!
+            </div>
+
+            <!-- Section 3: Properties of Matrix Operations -->
+            <h2>Properties of Matrix Operations</h2>
+
+            <p>For matrices of compatible dimensions and scalars $r, s$, the following properties hold:</p>
+
+            <div class="theorem-box">
+                <strong>Associativity of Multiplication:</strong> $A(BC) = (AB)C$
+                <br><br>
+                <strong>Distributivity (Left):</strong> $A(B + C) = AB + AC$
+                <br><br>
+                <strong>Distributivity (Right):</strong> $(A + B)C = AC + BC$
+                <br><br>
+                <strong>Scalar Multiplication:</strong> $r(AB) = (rA)B = A(rB)$
+                <br><br>
+                <strong>Identity Property:</strong> $I_m A = A = A I_n$ (for an m × n matrix $A$)
+                <br><br>
+                <strong>Zero Property:</strong> $0 \cdot A = 0$ and $A \cdot 0 = 0$
+            </div>
+
+            <div class="tip-box">
+                <strong>Tip:</strong> The identity matrix $I_n$ acts like the number 1 in matrix multiplication. Just as $1 \cdot x = x$ for any number $x$, we have $I_n A = A$ and $A I_n = A$ for any compatible matrix $A$.
+            </div>
+
+            <!-- Section 4: The Transpose -->
+            <h2>The Transpose</h2>
+
+            <div class="definition-box">
+                <strong>Transpose:</strong> The <strong>transpose</strong> of an m × n matrix $A$, denoted $A^T$, is the n × m matrix obtained by interchanging rows and columns:
+                <br><br>
+                \[(A^T)_{ij} = a_{ji}\]
+                <br><br>
+                If $A = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}$ (2 × 3), then $A^T = \begin{bmatrix} 1 & 4 \\ 2 & 5 \\ 3 & 6 \end{bmatrix}$ (3 × 2).
+            </div>
+
+            <h3>Properties of the Transpose</h3>
+            <div class="theorem-box">
+                <strong>1. Double Transpose:</strong> $(A^T)^T = A$
+                <br><br>
+                <strong>2. Transpose of Sum:</strong> $(A + B)^T = A^T + B^T$
+                <br><br>
+                <strong>3. Transpose of Scalar Multiple:</strong> $(rA)^T = r(A^T)$
+                <br><br>
+                <strong>4. Transpose of Product:</strong> $(AB)^T = B^T A^T$ (note the reversal of order!)
+                <br><br>
+                <strong>5. Symmetric Matrices:</strong> $A$ is symmetric if and only if $A^T = A$.
+            </div>
+
+            <!-- Interactive Visualization 1: Matrix Multiplication Visualizer -->
+            <h2>Interactive Visualization: Matrix Multiplication Visualizer</h2>
+            <p>Explore how matrix multiplication works step by step. The visualizer highlights the current row and column being multiplied and shows the dot product calculation.</p>
+
+            <div class="visualization-container">
+                <div class="visualization-controls">
+                    <button class="btn" onclick="loadMultipliedPreset('2x2')">2×2 × 2×2</button>
+                    <button class="btn" onclick="loadMultipliedPreset('2x3')">2×3 × 3×2</button>
+                    <button class="btn" onclick="loadMultipliedPreset('3x3')">3×3 × 3×1</button>
+                    <button class="btn secondary" onclick="matmulNextEntry()">Next Entry</button>
+                    <button class="btn secondary" onclick="toggleAutoplay()">Auto Play</button>
+                    <button class="btn secondary" onclick="resetMatmul()">Reset</button>
+                </div>
+                <canvas id="matmulCanvas" width="600" height="400"></canvas>
+                <div class="visualization-info">
+                    <div id="matmulInfo" style="margin-top: 15px; font-weight: 600;"></div>
+                </div>
+            </div>
+
+            <!-- Interactive Visualization 2: Matrix Properties Explorer -->
+            <h2>Interactive Visualization: Matrix Properties Explorer</h2>
+            <p>Test matrix properties interactively. Enter 2×2 matrices A and B to compute operations and verify identities.</p>
+
+            <div class="visualization-container">
+                <div class="explorer-inputs">
+                    <div style="font-weight: 600; color: #0d9488; margin-bottom: 10px;">Matrix A (2×2)</div>
+                    <div class="input-group">
+                        <label>a<sub>11</sub>:</label> <input type="number" id="a11" value="1" step="0.1">
+                        <label>a<sub>12</sub>:</label> <input type="number" id="a12" value="2" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <label>a<sub>21</sub>:</label> <input type="number" id="a21" value="3" step="0.1">
+                        <label>a<sub>22</sub>:</label> <input type="number" id="a22" value="4" step="0.1">
+                    </div>
+
+                    <div style="font-weight: 600; color: #0d9488; margin-top: 15px; margin-bottom: 10px;">Matrix B (2×2)</div>
+                    <div class="input-group">
+                        <label>b<sub>11</sub>:</label> <input type="number" id="b11" value="2" step="0.1">
+                        <label>b<sub>12</sub>:</label> <input type="number" id="b12" value="0" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <label>b<sub>21</sub>:</label> <input type="number" id="b21" value="1" step="0.1">
+                        <label>b<sub>22</sub>:</label> <input type="number" id="b22" value="3" step="0.1">
+                    </div>
+                </div>
+
+                <div class="visualization-controls">
+                    <button class="btn" onclick="computeAB()">Compute AB</button>
+                    <button class="btn" onclick="computeBA()">Compute BA</button>
+                    <button class="btn secondary" onclick="checkCommutativity()">Check AB = BA?</button>
+                    <button class="btn secondary" onclick="computeTransposeProduct()">Compute (AB)<sup>T</sup> and B<sup>T</sup>A<sup>T</sup></button>
+                </div>
+
+                <div id="resultsContainer" style="width: 100%;"></div>
+            </div>
+
+            <!-- Worked Examples -->
+            <h2>Worked Examples</h2>
+            <p>Study these detailed examples to master matrix algebra concepts.</p>
+
+            <!-- Example 1 -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 1: Matrix Addition and Scalar Multiplication (Easy)</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Given $A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}$ and $B = \begin{bmatrix} 2 & -1 \\ 0 & 5 \end{bmatrix}$, compute $2A + 3B$.</p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Compute 2A</strong></p>
+                    <p>Multiply each entry of $A$ by 2:</p>
+                    <div class="solution-step">
+\[2A = 2 \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix} = \begin{bmatrix} 2 \cdot 1 & 2 \cdot 2 \\ 2 \cdot 3 & 2 \cdot 4 \end{bmatrix} = \begin{bmatrix} 2 & 4 \\ 6 & 8 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Step 2: Compute 3B</strong></p>
+                    <p>Multiply each entry of $B$ by 3:</p>
+                    <div class="solution-step">
+\[3B = 3 \begin{bmatrix} 2 & -1 \\ 0 & 5 \end{bmatrix} = \begin{bmatrix} 3 \cdot 2 & 3 \cdot (-1) \\ 3 \cdot 0 & 3 \cdot 5 \end{bmatrix} = \begin{bmatrix} 6 & -3 \\ 0 & 15 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Step 3: Add the results</strong></p>
+                    <p>Add corresponding entries of $2A$ and $3B$:</p>
+                    <div class="solution-step">
+\[2A + 3B = \begin{bmatrix} 2 & 4 \\ 6 & 8 \end{bmatrix} + \begin{bmatrix} 6 & -3 \\ 0 & 15 \end{bmatrix} = \begin{bmatrix} 2+6 & 4+(-3) \\ 6+0 & 8+15 \end{bmatrix} = \begin{bmatrix} 8 & 1 \\ 6 & 23 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Answer:</strong> $2A + 3B = \begin{bmatrix} 8 & 1 \\ 6 & 23 \end{bmatrix}$</p>
+                </div>
+            </div>
+
+            <!-- Example 2 -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 2: Matrix-Vector Multiplication (Easy)</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Compute $A\mathbf{x}$ where $A = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9 \end{bmatrix}$ and $\mathbf{x} = \begin{bmatrix} 1 \\ 2 \\ 3 \end{bmatrix}$.</p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Understand the operation</strong></p>
+                    <p>We are multiplying a 3×3 matrix by a 3×1 column vector (matrix), which produces a 3×1 column vector. Each entry is a dot product of a row of $A$ with the column vector $\mathbf{x}$.</p>
+
+                    <p><strong>Step 2: Compute the first entry</strong></p>
+                    <p>First row of $A$ · $\mathbf{x}$:</p>
+                    <div class="solution-step">
+\[(A\mathbf{x})_1 = 1(1) + 2(2) + 3(3) = 1 + 4 + 9 = 14\]
+                    </div>
+
+                    <p><strong>Step 3: Compute the second entry</strong></p>
+                    <p>Second row of $A$ · $\mathbf{x}$:</p>
+                    <div class="solution-step">
+\[(A\mathbf{x})_2 = 4(1) + 5(2) + 6(3) = 4 + 10 + 18 = 32\]
+                    </div>
+
+                    <p><strong>Step 4: Compute the third entry</strong></p>
+                    <p>Third row of $A$ · $\mathbf{x}$:</p>
+                    <div class="solution-step">
+\[(A\mathbf{x})_3 = 7(1) + 8(2) + 9(3) = 7 + 16 + 27 = 50\]
+                    </div>
+
+                    <p><strong>Answer:</strong> $A\mathbf{x} = \begin{bmatrix} 14 \\ 32 \\ 50 \end{bmatrix}$</p>
+                </div>
+            </div>
+
+            <!-- Example 3 -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 3: Transpose of a Matrix (Easy)</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Find the transpose of $A = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}$ and verify that $(A^T)^T = A$.</p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Identify dimensions</strong></p>
+                    <p>$A$ is 2×3, so $A^T$ will be 3×2.</p>
+
+                    <p><strong>Step 2: Compute $A^T$</strong></p>
+                    <p>Swap rows and columns: the first column of $A^T$ is the first row of $A$, etc.</p>
+                    <div class="solution-step">
+\[A^T = \begin{bmatrix} 1 & 4 \\ 2 & 5 \\ 3 & 6 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Step 3: Compute $(A^T)^T$</strong></p>
+                    <p>Transpose $A^T$ (which is 3×2) to get a 2×3 matrix:</p>
+                    <div class="solution-step">
+\[(A^T)^T = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Verification:</strong> $(A^T)^T = A$ ✓</p>
+                </div>
+            </div>
+
+            <!-- Example 4 -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 4: Matrix Multiplication (2×3 times 3×2) (Medium)</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Compute $AB$ where $A = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}$ and $B = \begin{bmatrix} 7 & 8 \\ 9 & 10 \\ 11 & 12 \end{bmatrix}$.</p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Check dimensions</strong></p>
+                    <p>$A$ is 2×3 and $B$ is 3×2, so the product $AB$ is 2×2. ✓</p>
+
+                    <p><strong>Step 2: Compute $(AB)_{11}$</strong></p>
+                    <p>Dot product of row 1 of $A$ with column 1 of $B$:</p>
+                    <div class="solution-step">
+\[(AB)_{11} = (1)(7) + (2)(9) + (3)(11) = 7 + 18 + 33 = 58\]
+                    </div>
+
+                    <p><strong>Step 3: Compute $(AB)_{12}$</strong></p>
+                    <p>Dot product of row 1 of $A$ with column 2 of $B$:</p>
+                    <div class="solution-step">
+\[(AB)_{12} = (1)(8) + (2)(10) + (3)(12) = 8 + 20 + 36 = 64\]
+                    </div>
+
+                    <p><strong>Step 4: Compute $(AB)_{21}$</strong></p>
+                    <p>Dot product of row 2 of $A$ with column 1 of $B$:</p>
+                    <div class="solution-step">
+\[(AB)_{21} = (4)(7) + (5)(9) + (6)(11) = 28 + 45 + 66 = 139\]
+                    </div>
+
+                    <p><strong>Step 5: Compute $(AB)_{22}$</strong></p>
+                    <p>Dot product of row 2 of $A$ with column 2 of $B$:</p>
+                    <div class="solution-step">
+\[(AB)_{22} = (4)(8) + (5)(10) + (6)(12) = 32 + 50 + 72 = 154\]
+                    </div>
+
+                    <p><strong>Final Result:</strong></p>
+                    <div class="solution-step">
+\[AB = \begin{bmatrix} 58 & 64 \\ 139 & 154 \end{bmatrix}\]
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 5 -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 5: Verifying Associativity (Medium)</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Given $A = \begin{bmatrix} 1 & 2 \\ 0 & 3 \end{bmatrix}$, $B = \begin{bmatrix} 2 & 1 \\ 1 & 0 \end{bmatrix}$, and $C = \begin{bmatrix} 1 & 1 \\ 2 & 0 \end{bmatrix}$, verify that $(AB)C = A(BC)$.</p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Compute AB</strong></p>
+                    <div class="solution-step">
+\[AB = \begin{bmatrix} 1 & 2 \\ 0 & 3 \end{bmatrix}\begin{bmatrix} 2 & 1 \\ 1 & 0 \end{bmatrix} = \begin{bmatrix} 1(2)+2(1) & 1(1)+2(0) \\ 0(2)+3(1) & 0(1)+3(0) \end{bmatrix} = \begin{bmatrix} 4 & 1 \\ 3 & 0 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Step 2: Compute (AB)C</strong></p>
+                    <div class="solution-step">
+\[(AB)C = \begin{bmatrix} 4 & 1 \\ 3 & 0 \end{bmatrix}\begin{bmatrix} 1 & 1 \\ 2 & 0 \end{bmatrix} = \begin{bmatrix} 4(1)+1(2) & 4(1)+1(0) \\ 3(1)+0(2) & 3(1)+0(0) \end{bmatrix} = \begin{bmatrix} 6 & 4 \\ 3 & 3 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Step 3: Compute BC</strong></p>
+                    <div class="solution-step">
+\[BC = \begin{bmatrix} 2 & 1 \\ 1 & 0 \end{bmatrix}\begin{bmatrix} 1 & 1 \\ 2 & 0 \end{bmatrix} = \begin{bmatrix} 2(1)+1(2) & 2(1)+1(0) \\ 1(1)+0(2) & 1(1)+0(0) \end{bmatrix} = \begin{bmatrix} 4 & 2 \\ 1 & 1 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Step 4: Compute A(BC)</strong></p>
+                    <div class="solution-step">
+\[A(BC) = \begin{bmatrix} 1 & 2 \\ 0 & 3 \end{bmatrix}\begin{bmatrix} 4 & 2 \\ 1 & 1 \end{bmatrix} = \begin{bmatrix} 1(4)+2(1) & 1(2)+2(1) \\ 0(4)+3(1) & 0(2)+3(1) \end{bmatrix} = \begin{bmatrix} 6 & 4 \\ 3 & 3 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Verification:</strong> $(AB)C = \begin{bmatrix} 6 & 4 \\ 3 & 3 \end{bmatrix} = A(BC)$ ✓</p>
+
+                    <p>This confirms the associativity property: $(AB)C = A(BC)$.</p>
+                </div>
+            </div>
+
+            <!-- Example 6 -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 6: Non-Commutativity of Matrix Multiplication (Medium)</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Given $A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}$ and $B = \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix}$, compute $AB$ and $BA$ and show that $AB \neq BA$.</p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Compute AB</strong></p>
+                    <div class="solution-step">
+\[AB = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}\begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix}\]
+                    </div>
+
+                    <p>$(AB)_{11} = 1(0) + 2(1) = 2$</p>
+                    <p>$(AB)_{12} = 1(1) + 2(0) = 1$</p>
+                    <p>$(AB)_{21} = 3(0) + 4(1) = 4$</p>
+                    <p>$(AB)_{22} = 3(1) + 4(0) = 3$</p>
+
+                    <div class="solution-step">
+\[AB = \begin{bmatrix} 2 & 1 \\ 4 & 3 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Step 2: Compute BA</strong></p>
+                    <div class="solution-step">
+\[BA = \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix}\begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}\]
+                    </div>
+
+                    <p>$(BA)_{11} = 0(1) + 1(3) = 3$</p>
+                    <p>$(BA)_{12} = 0(2) + 1(4) = 4$</p>
+                    <p>$(BA)_{21} = 1(1) + 0(3) = 1$</p>
+                    <p>$(BA)_{22} = 1(2) + 0(4) = 2$</p>
+
+                    <div class="solution-step">
+\[BA = \begin{bmatrix} 3 & 4 \\ 1 & 2 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Comparison:</strong></p>
+                    <p>$AB = \begin{bmatrix} 2 & 1 \\ 4 & 3 \end{bmatrix}$ but $BA = \begin{bmatrix} 3 & 4 \\ 1 & 2 \end{bmatrix}$</p>
+
+                    <p>Clearly, $AB \neq BA$. This demonstrates that matrix multiplication is <strong>not commutative</strong>.</p>
+                </div>
+            </div>
+
+            <!-- Example 7 -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 7: Transpose Properties (Medium)</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Given $A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}$ and $B = \begin{bmatrix} 2 & 0 \\ 1 & 3 \end{bmatrix}$, verify that $(AB)^T = B^T A^T$.</p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Compute AB</strong></p>
+                    <div class="solution-step">
+\[AB = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}\begin{bmatrix} 2 & 0 \\ 1 & 3 \end{bmatrix} = \begin{bmatrix} 1(2)+2(1) & 1(0)+2(3) \\ 3(2)+4(1) & 3(0)+4(3) \end{bmatrix} = \begin{bmatrix} 4 & 6 \\ 10 & 12 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Step 2: Compute $(AB)^T$</strong></p>
+                    <div class="solution-step">
+\[(AB)^T = \begin{bmatrix} 4 & 6 \\ 10 & 12 \end{bmatrix}^T = \begin{bmatrix} 4 & 10 \\ 6 & 12 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Step 3: Compute $A^T$ and $B^T$</strong></p>
+                    <div class="solution-step">
+\[A^T = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}^T = \begin{bmatrix} 1 & 3 \\ 2 & 4 \end{bmatrix}\]
+                    </div>
+
+                    <div class="solution-step">
+\[B^T = \begin{bmatrix} 2 & 0 \\ 1 & 3 \end{bmatrix}^T = \begin{bmatrix} 2 & 1 \\ 0 & 3 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Step 4: Compute $B^T A^T$</strong></p>
+                    <p>Note the order reversal!</p>
+                    <div class="solution-step">
+\[B^T A^T = \begin{bmatrix} 2 & 1 \\ 0 & 3 \end{bmatrix}\begin{bmatrix} 1 & 3 \\ 2 & 4 \end{bmatrix}\]
+                    </div>
+
+                    <p>$(B^T A^T)_{11} = 2(1) + 1(2) = 4$</p>
+                    <p>$(B^T A^T)_{12} = 2(3) + 1(4) = 10$</p>
+                    <p>$(B^T A^T)_{21} = 0(1) + 3(2) = 6$</p>
+                    <p>$(B^T A^T)_{22} = 0(3) + 3(4) = 12$</p>
+
+                    <div class="solution-step">
+\[B^T A^T = \begin{bmatrix} 4 & 10 \\ 6 & 12 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Verification:</strong> $(AB)^T = \begin{bmatrix} 4 & 10 \\ 6 & 12 \end{bmatrix} = B^T A^T$ ✓</p>
+
+                    <p>This confirms the transpose of product rule: $(AB)^T = B^T A^T$. Note the reversal of order!</p>
+                </div>
+            </div>
+
+            <!-- Example 8 -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 8: Computer Graphics Transformation (Hard)</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> In 2D computer graphics, a point $(x, y)$ can be rotated counterclockwise by angle $\theta$ and scaled by factor $s$. The rotation matrix is $R = \begin{bmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta \end{bmatrix}$ and the scaling matrix is $S = \begin{bmatrix} s & 0 \\ 0 & s \end{bmatrix}$. Find the combined transformation matrix $M = SR$ for rotating by 90° and scaling by 2. Then apply it to the point $(1, 0)$.</p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Set up the matrices</strong></p>
+                    <p>For 90° rotation: $\theta = 90° = \pi/2$ rad, so $\cos(90°) = 0$ and $\sin(90°) = 1$.</p>
+                    <div class="solution-step">
+\[R = \begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}, \quad S = \begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Step 2: Compute M = SR (compose transformations)</strong></p>
+                    <p>Apply rotation first, then scaling (reading right to left):</p>
+                    <div class="solution-step">
+\[M = SR = \begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix}\begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}\]
+                    </div>
+
+                    <p>$(M)_{11} = 2(0) + 0(1) = 0$</p>
+                    <p>$(M)_{12} = 2(-1) + 0(0) = -2$</p>
+                    <p>$(M)_{21} = 0(0) + 2(1) = 2$</p>
+                    <p>$(M)_{22} = 0(-1) + 2(0) = 0$</p>
+
+                    <div class="solution-step">
+\[M = \begin{bmatrix} 0 & -2 \\ 2 & 0 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Step 3: Apply transformation to point (1, 0)</strong></p>
+                    <p>Represent the point as a column vector and multiply:</p>
+                    <div class="solution-step">
+\[M \begin{bmatrix} 1 \\ 0 \end{bmatrix} = \begin{bmatrix} 0 & -2 \\ 2 & 0 \end{bmatrix}\begin{bmatrix} 1 \\ 0 \end{bmatrix} = \begin{bmatrix} 0(1) + (-2)(0) \\ 2(1) + 0(0) \end{bmatrix} = \begin{bmatrix} 0 \\ 2 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Interpretation:</strong> The point $(1, 0)$ is rotated 90° counterclockwise (which maps it to $(0, 1)$) and then scaled by 2 (which maps it to $(0, 2)$). The final point is $(0, 2)$.</p>
+                </div>
+            </div>
+
+            <!-- Example 9 -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 9: Markov Chain Matrix Powers (Hard)</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> A Markov chain describes transitions between states. Suppose there are 3 weather states: Sunny (S), Cloudy (C), Rainy (R). The transition matrix $P$ is:
+                    <br>$P = \begin{bmatrix} 0.8 & 0.2 & 0 \\ 0.3 & 0.4 & 0.3 \\ 0 & 0.3 & 0.7 \end{bmatrix}$
+                    <br>where $P_{ij}$ is the probability of transitioning from state $i$ to state $j$. If we start in state 1 (Sunny) with probability distribution $\mathbf{p}_0 = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}$, find the state distribution after 2 days.</p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Understand the problem</strong></p>
+                    <p>After $n$ steps, the state distribution is $\mathbf{p}_n = P^T \mathbf{p}_{n-1}$ (or $\mathbf{p}_n = \mathbf{p}_{n-1}^T P$ depending on convention). We compute $P^2$.</p>
+
+                    <p><strong>Step 2: Compute P² = P × P</strong></p>
+                    <div class="solution-step">
+\[P^2 = \begin{bmatrix} 0.8 & 0.2 & 0 \\ 0.3 & 0.4 & 0.3 \\ 0 & 0.3 & 0.7 \end{bmatrix}\begin{bmatrix} 0.8 & 0.2 & 0 \\ 0.3 & 0.4 & 0.3 \\ 0 & 0.3 & 0.7 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Computing entries of P²:</strong></p>
+
+                    <p>$(P^2)_{11} = 0.8(0.8) + 0.2(0.3) + 0(0) = 0.64 + 0.06 = 0.70$</p>
+                    <p>$(P^2)_{12} = 0.8(0.2) + 0.2(0.4) + 0(0.3) = 0.16 + 0.08 = 0.24$</p>
+                    <p>$(P^2)_{13} = 0.8(0) + 0.2(0.3) + 0(0.7) = 0.06$</p>
+
+                    <p>$(P^2)_{21} = 0.3(0.8) + 0.4(0.3) + 0.3(0) = 0.24 + 0.12 = 0.36$</p>
+                    <p>$(P^2)_{22} = 0.3(0.2) + 0.4(0.4) + 0.3(0.3) = 0.06 + 0.16 + 0.09 = 0.31$</p>
+                    <p>$(P^2)_{23} = 0.3(0) + 0.4(0.3) + 0.3(0.7) = 0.12 + 0.21 = 0.33$</p>
+
+                    <p>$(P^2)_{31} = 0(0.8) + 0.3(0.3) + 0.7(0) = 0.09$</p>
+                    <p>$(P^2)_{32} = 0(0.2) + 0.3(0.4) + 0.7(0.3) = 0.12 + 0.21 = 0.33$</p>
+                    <p>$(P^2)_{33} = 0(0) + 0.3(0.3) + 0.7(0.7) = 0.09 + 0.49 = 0.58$</p>
+
+                    <div class="solution-step">
+\[P^2 = \begin{bmatrix} 0.70 & 0.24 & 0.06 \\ 0.36 & 0.31 & 0.33 \\ 0.09 & 0.33 & 0.58 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Step 3: Compute state after 2 days</strong></p>
+                    <p>Starting from $\mathbf{p}_0 = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}$ (Sunny):</p>
+                    <div class="solution-step">
+\[\mathbf{p}_2 = (P^2)^T \mathbf{p}_0 = \begin{bmatrix} 0.70 & 0.36 & 0.09 \\ 0.24 & 0.31 & 0.33 \\ 0.06 & 0.33 & 0.58 \end{bmatrix}\begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix} = \begin{bmatrix} 0.70 \\ 0.24 \\ 0.06 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Interpretation:</strong> After 2 days starting from Sunny weather, the probabilities are: 70% Sunny, 24% Cloudy, 6% Rainy. The matrix powers show how probability distributions evolve over time.</p>
+                </div>
+            </div>
+
+            <!-- Example 10 -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 10: Block Matrix Multiplication (Hard)</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> A 4×4 matrix can be partitioned into 2×2 blocks. Verify that block multiplication gives the same result as regular multiplication:
+                    <br>$A = \begin{bmatrix} 1 & 2 & | & 3 & 4 \\ 5 & 6 & | & 7 & 8 \\ \hline 9 & 10 & | & 11 & 12 \\ 13 & 14 & | & 15 & 16 \end{bmatrix} = \begin{bmatrix} A_{11} & A_{12} \\ A_{21} & A_{22} \end{bmatrix}$
+                    <br>$B = \begin{bmatrix} 2 & 0 & | & 1 & 0 \\ 0 & 2 & | & 0 & 1 \\ \hline 1 & 0 & | & 2 & 0 \\ 0 & 1 & | & 0 & 2 \end{bmatrix} = \begin{bmatrix} B_{11} & B_{12} \\ B_{21} & B_{22} \end{bmatrix}$</p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Identify the blocks</strong></p>
+                    <div class="solution-step">
+\[A_{11} = \begin{bmatrix} 1 & 2 \\ 5 & 6 \end{bmatrix}, \quad A_{12} = \begin{bmatrix} 3 & 4 \\ 7 & 8 \end{bmatrix}\]
+\[A_{21} = \begin{bmatrix} 9 & 10 \\ 13 & 14 \end{bmatrix}, \quad A_{22} = \begin{bmatrix} 11 & 12 \\ 15 & 16 \end{bmatrix}\]
+                    </div>
+
+                    <div class="solution-step">
+\[B_{11} = \begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix}, \quad B_{12} = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}\]
+\[B_{21} = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}, \quad B_{22} = \begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Step 2: Compute block product (AB)₁₁ = A₁₁B₁₁ + A₁₂B₂₁</strong></p>
+                    <div class="solution-step">
+\[A_{11}B_{11} = \begin{bmatrix} 1 & 2 \\ 5 & 6 \end{bmatrix}\begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix} = \begin{bmatrix} 2 & 4 \\ 10 & 12 \end{bmatrix}\]
+                    </div>
+
+                    <div class="solution-step">
+\[A_{12}B_{21} = \begin{bmatrix} 3 & 4 \\ 7 & 8 \end{bmatrix}\begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} = \begin{bmatrix} 3 & 4 \\ 7 & 8 \end{bmatrix}\]
+                    </div>
+
+                    <div class="solution-step">
+\[(AB)_{11} = \begin{bmatrix} 2 & 4 \\ 10 & 12 \end{bmatrix} + \begin{bmatrix} 3 & 4 \\ 7 & 8 \end{bmatrix} = \begin{bmatrix} 5 & 8 \\ 17 & 20 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Step 3: Compute (AB)₁₂ = A₁₁B₁₂ + A₁₂B₂₂</strong></p>
+                    <div class="solution-step">
+\[A_{11}B_{12} = \begin{bmatrix} 1 & 2 \\ 5 & 6 \end{bmatrix}\begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} = \begin{bmatrix} 1 & 2 \\ 5 & 6 \end{bmatrix}\]
+                    </div>
+
+                    <div class="solution-step">
+\[A_{12}B_{22} = \begin{bmatrix} 3 & 4 \\ 7 & 8 \end{bmatrix}\begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix} = \begin{bmatrix} 6 & 8 \\ 14 & 16 \end{bmatrix}\]
+                    </div>
+
+                    <div class="solution-step">
+\[(AB)_{12} = \begin{bmatrix} 1 & 2 \\ 5 & 6 \end{bmatrix} + \begin{bmatrix} 6 & 8 \\ 14 & 16 \end{bmatrix} = \begin{bmatrix} 7 & 10 \\ 19 & 22 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Step 4: Compute (AB)₂₁ = A₂₁B₁₁ + A₂₂B₂₁</strong></p>
+                    <div class="solution-step">
+\[A_{21}B_{11} = \begin{bmatrix} 9 & 10 \\ 13 & 14 \end{bmatrix}\begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix} = \begin{bmatrix} 18 & 20 \\ 26 & 28 \end{bmatrix}\]
+                    </div>
+
+                    <div class="solution-step">
+\[A_{22}B_{21} = \begin{bmatrix} 11 & 12 \\ 15 & 16 \end{bmatrix}\begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} = \begin{bmatrix} 11 & 12 \\ 15 & 16 \end{bmatrix}\]
+                    </div>
+
+                    <div class="solution-step">
+\[(AB)_{21} = \begin{bmatrix} 18 & 20 \\ 26 & 28 \end{bmatrix} + \begin{bmatrix} 11 & 12 \\ 15 & 16 \end{bmatrix} = \begin{bmatrix} 29 & 32 \\ 41 & 44 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Step 5: Compute (AB)₂₂ = A₂₁B₁₂ + A₂₂B₂₂</strong></p>
+                    <div class="solution-step">
+\[A_{21}B_{12} = \begin{bmatrix} 9 & 10 \\ 13 & 14 \end{bmatrix}\begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} = \begin{bmatrix} 9 & 10 \\ 13 & 14 \end{bmatrix}\]
+                    </div>
+
+                    <div class="solution-step">
+\[A_{22}B_{22} = \begin{bmatrix} 11 & 12 \\ 15 & 16 \end{bmatrix}\begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix} = \begin{bmatrix} 22 & 24 \\ 30 & 32 \end{bmatrix}\]
+                    </div>
+
+                    <div class="solution-step">
+\[(AB)_{22} = \begin{bmatrix} 9 & 10 \\ 13 & 14 \end{bmatrix} + \begin{bmatrix} 22 & 24 \\ 30 & 32 \end{bmatrix} = \begin{bmatrix} 31 & 34 \\ 43 & 46 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Conclusion:</strong> Block multiplication works like regular matrix multiplication. You can partition matrices into blocks and multiply them as if the blocks were scalars, as long as the dimensions are compatible.</p>
+                </div>
+            </div>
+
+            <!-- Practice Quiz -->
+            <h2>Practice Quiz</h2>
+            <p>Test your understanding with these multiple-choice questions. Click a choice to check your answer.</p>
+
+            <!-- Question 1 -->
+            <div class="quiz-question">
+                <div class="question-text">1. What is the dimension of the product of a 3×2 matrix and a 2×4 matrix?</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, 'q1', false)">
+                        2×3
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q1', true)">
+                        3×4
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q1', false)">
+                        4×3
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q1', false)">
+                        Cannot be computed
+                    </button>
+                </div>
+                <div class="quiz-feedback" id="feedback-q1"></div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="quiz-question">
+                <div class="question-text">2. If A is 2×3 and B is 2×3, can you compute AB?</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, 'q2', false)">
+                        Yes, the result is 2×3
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q2', true)">
+                        No, the dimensions are incompatible
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q2', false)">
+                        Yes, the result is 3×2
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q2', false)">
+                        Yes, the result is 2×2
+                    </button>
+                </div>
+                <div class="quiz-feedback" id="feedback-q2"></div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="quiz-question">
+                <div class="question-text">3. Which property does matrix multiplication NOT satisfy?</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, 'q3', false)">
+                        Associativity
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q3', true)">
+                        Commutativity
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q3', false)">
+                        Distributivity
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q3', false)">
+                        Identity property
+                    </button>
+                </div>
+                <div class="quiz-feedback" id="feedback-q3"></div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="quiz-question">
+                <div class="question-text">4. What is the transpose of $\begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}$?</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, 'q4', false)">
+                        $\begin{bmatrix} 2 & 1 \\ 4 & 3 \end{bmatrix}$
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q4', true)">
+                        $\begin{bmatrix} 1 & 3 \\ 2 & 4 \end{bmatrix}$
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q4', false)">
+                        $\begin{bmatrix} 4 & 3 \\ 2 & 1 \end{bmatrix}$
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q4', false)">
+                        $\begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}$ (unchanged)
+                    </button>
+                </div>
+                <div class="quiz-feedback" id="feedback-q4"></div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="quiz-question">
+                <div class="question-text">5. If A is an n×n matrix, what is $AI_n$?</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, 'q5', true)">
+                        A
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q5', false)">
+                        $I_n$
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q5', false)">
+                        0
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q5', false)">
+                        An identity matrix of different size
+                    </button>
+                </div>
+                <div class="quiz-feedback" id="feedback-q5"></div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="quiz-question">
+                <div class="question-text">6. If $(AB)^T = ?$, which is correct?</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, 'q6', false)">
+                        $A^T B^T$
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q6', true)">
+                        $B^T A^T$
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q6', false)">
+                        $(A^T)(B^T)$
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q6', false)">
+                        $AB$ (unchanged)
+                    </button>
+                </div>
+                <div class="quiz-feedback" id="feedback-q6"></div>
+            </div>
+
+            <!-- Key Takeaways -->
+            <div class="key-takeaways">
+                <h3>Key Takeaways</h3>
+                <ol>
+                    <li><strong>Matrix dimensions determine compatibility:</strong> Addition requires identical dimensions; multiplication requires the number of columns in the first matrix to equal the number of rows in the second.</li>
+                    <li><strong>Matrix multiplication is associative but not commutative:</strong> $(AB)C = A(BC)$ always holds, but $AB \neq BA$ in general. This is a fundamental difference from scalar arithmetic.</li>
+                    <li><strong>The identity matrix acts like 1:</strong> For any compatible matrix $A$, we have $I_m A = A = A I_n$. The identity matrix is the multiplicative identity for matrices.</li>
+                    <li><strong>The transpose reverses the order of multiplication:</strong> $(AB)^T = B^T A^T$, not $A^T B^T$. This property is crucial in many applications.</li>
+                    <li><strong>Scalar multiplication is simple:</strong> Multiply every entry of the matrix by the scalar. This distributes over matrix addition and multiplication.</li>
+                    <li><strong>Special matrices simplify problems:</strong> Diagonal matrices, triangular matrices, and symmetric matrices have special properties that make computations easier and have important applications.</li>
+                    <li><strong>Block matrices enable structured computation:</strong> Large matrices can be partitioned into blocks that are multiplied like scalars (if dimensions are compatible), reducing computational complexity in some applications.</li>
+                    <li><strong>Matrix algebra models real-world problems:</strong> From computer graphics transformations to Markov chains to network analysis, matrix operations provide a powerful framework for solving practical problems.</li>
+                </ol>
+            </div>
+
+            <!-- Navigation Footer -->
+            <div class="nav-footer">
+                <a href="ch1-linear-systems.html">← 1.1 Systems of Linear Equations</a>
+                <span>Chapter 1: Linear Algebra</span>
+                <a href="#1.3">1.3 Matrix Inverses →</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 Dr. Mohamed Mabrok — Qatar University</p>
+    </footer>
+
+    <script>
+        // Initialize KaTeX rendering
+        document.addEventListener('DOMContentLoaded', function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    { left: '$$', right: '$$', display: true },
+                    { left: '$', right: '$', display: false },
+                    { left: '\\(', right: '\\)', display: false },
+                    { left: '\\[', right: '\\]', display: true }
+                ]
+            });
+        });
+
+        // Toggle collapsible examples
+        function toggle(element) {
+            const item = element.closest('.example-item');
+            item.classList.toggle('active');
+        }
+
+        // Quiz functionality
+        function checkChoice(btn, qId, isCorrect) {
+            const choices = btn.parentElement.querySelectorAll('.choice-btn');
+            choices.forEach(c => c.disabled = true);
+
+            const feedback = document.getElementById(`feedback-${qId}`);
+            feedback.classList.add('show');
+
+            if (isCorrect) {
+                btn.classList.add('correct');
+                feedback.classList.add('correct');
+                feedback.innerHTML = '<strong>✓ Correct!</strong> Well done.';
+            } else {
+                btn.classList.add('incorrect');
+                feedback.classList.add('incorrect');
+                feedback.innerHTML = '<strong>✗ Not quite.</strong> Review the material and try again.';
+            }
+        }
+
+        // Matrix Multiplication Visualizer
+        let matmulState = {
+            A: [[1, 2, 3], [4, 5, 6]],
+            B: [[7, 8], [9, 10], [11, 12]],
+            C: null,
+            currentI: 0,
+            currentJ: 0,
+            autoplay: false,
+            completed: false
+        };
+
+        function loadMultipliedPreset(type) {
+            const presets = {
+                '2x2': {
+                    A: [[1, 2], [3, 4]],
+                    B: [[2, 0], [1, 3]]
+                },
+                '2x3': {
+                    A: [[1, 2, 3], [4, 5, 6]],
+                    B: [[7, 8], [9, 10], [11, 12]]
+                },
+                '3x3': {
+                    A: [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+                    B: [[2], [3], [1]]
+                }
+            };
+            const p = presets[type];
+            matmulState = {
+                A: p.A,
+                B: p.B,
+                C: null,
+                currentI: 0,
+                currentJ: 0,
+                autoplay: false,
+                completed: false
+            };
+            drawMatmulCanvas();
+            updateMatmulInfo();
+        }
+
+        function matmulNextEntry() {
+            if (!matmulState.C) {
+                const m = matmulState.A.length;
+                const n = matmulState.A[0].length;
+                const p = matmulState.B[0].length;
+                matmulState.C = Array(m).fill(0).map(() => Array(p).fill(0));
+            }
+
+            if (matmulState.currentI < matmulState.A.length) {
+                const i = matmulState.currentI;
+                const j = matmulState.currentJ;
+                const n = matmulState.A[0].length;
+
+                let sum = 0;
+                for (let k = 0; k < n; k++) {
+                    sum += matmulState.A[i][k] * matmulState.B[k][j];
+                }
+                matmulState.C[i][j] = sum;
+
+                matmulState.currentJ++;
+                if (matmulState.currentJ >= matmulState.B[0].length) {
+                    matmulState.currentJ = 0;
+                    matmulState.currentI++;
+                }
+
+                if (matmulState.currentI >= matmulState.A.length) {
+                    matmulState.completed = true;
+                }
+            }
+
+            drawMatmulCanvas();
+            updateMatmulInfo();
+        }
+
+        function toggleAutoplay() {
+            matmulState.autoplay = !matmulState.autoplay;
+            if (matmulState.autoplay && !matmulState.completed) {
+                const interval = setInterval(() => {
+                    if (matmulState.completed || !matmulState.autoplay) {
+                        clearInterval(interval);
+                        return;
+                    }
+                    matmulNextEntry();
+                }, 800);
+            }
+        }
+
+        function resetMatmul() {
+            matmulState.C = null;
+            matmulState.currentI = 0;
+            matmulState.currentJ = 0;
+            matmulState.autoplay = false;
+            matmulState.completed = false;
+            drawMatmulCanvas();
+            updateMatmulInfo();
+        }
+
+        function drawMatmulCanvas() {
+            const canvas = document.getElementById('matmulCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const boxW = 80, boxH = 30, spacing = 20;
+            let x = 50;
+
+            // Draw matrix A
+            ctx.fillStyle = '#0d9488';
+            ctx.font = 'bold 14px sans-serif';
+            ctx.fillText('A', x, 30);
+            for (let i = 0; i < matmulState.A.length; i++) {
+                for (let j = 0; j < matmulState.A[i].length; j++) {
+                    const isActive = i === matmulState.currentI && matmulState.C && j < matmulState.A[i].length;
+                    ctx.fillStyle = isActive ? '#7c3aed' : '#d1d5db';
+                    ctx.fillRect(x + j * boxW, 50 + i * boxH, boxW - 5, boxH - 5);
+                    ctx.fillStyle = '#0f172a';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(matmulState.A[i][j], x + j * boxW + 37, 75 + i * boxH);
+                }
+            }
+
+            x += matmulState.A[0].length * boxW + spacing;
+
+            // Draw matrix B
+            ctx.fillStyle = '#0d9488';
+            ctx.fillText('B', x, 30);
+            for (let i = 0; i < matmulState.B.length; i++) {
+                for (let j = 0; j < matmulState.B[i].length; j++) {
+                    const isActive = j === matmulState.currentJ && matmulState.C;
+                    ctx.fillStyle = isActive ? '#7c3aed' : '#d1d5db';
+                    ctx.fillRect(x + j * boxW, 50 + i * boxH, boxW - 5, boxH - 5);
+                    ctx.fillStyle = '#0f172a';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(matmulState.B[i][j], x + j * boxW + 37, 75 + i * boxH);
+                }
+            }
+
+            x += matmulState.B[0].length * boxW + spacing;
+
+            // Draw matrix C
+            if (matmulState.C) {
+                ctx.fillStyle = '#0d9488';
+                ctx.fillText('C', x, 30);
+                for (let i = 0; i < matmulState.C.length; i++) {
+                    for (let j = 0; j < matmulState.C[i].length; j++) {
+                        const isFilled = i < matmulState.currentI || (i === matmulState.currentI && j < matmulState.currentJ) || matmulState.completed;
+                        ctx.fillStyle = isFilled ? '#16a34a' : '#1f2937';
+                        ctx.fillRect(x + j * boxW, 50 + i * boxH, boxW - 5, boxH - 5);
+                        ctx.fillStyle = '#d1d5db';
+                        ctx.textAlign = 'center';
+                        ctx.fillText(matmulState.C[i][j], x + j * boxW + 37, 75 + i * boxH);
+                    }
+                }
+            }
+        }
+
+        function updateMatmulInfo() {
+            const info = document.getElementById('matmulInfo');
+            if (matmulState.completed) {
+                info.textContent = 'Multiplication complete!';
+            } else {
+                info.textContent = `Computing entry (${matmulState.currentI + 1}, ${matmulState.currentJ + 1})`;
+            }
+        }
+
+        // Matrix Properties Explorer
+        function getMatrixValues() {
+            return {
+                A: [[parseFloat(document.getElementById('a11').value), parseFloat(document.getElementById('a12').value)],
+                    [parseFloat(document.getElementById('a21').value), parseFloat(document.getElementById('a22').value)]],
+                B: [[parseFloat(document.getElementById('b11').value), parseFloat(document.getElementById('b12').value)],
+                    [parseFloat(document.getElementById('b21').value), parseFloat(document.getElementById('b22').value)]]
+            };
+        }
+
+        function matmulSimple(A, B) {
+            const m = A.length, n = A[0].length, p = B[0].length;
+            const C = Array(m).fill(0).map(() => Array(p).fill(0));
+            for (let i = 0; i < m; i++) {
+                for (let j = 0; j < p; j++) {
+                    for (let k = 0; k < n; k++) {
+                        C[i][j] += A[i][k] * B[k][j];
+                    }
+                }
+            }
+            return C;
+        }
+
+        function transpose(A) {
+            const m = A.length, n = A[0].length;
+            const T = Array(n).fill(0).map(() => Array(m).fill(0));
+            for (let i = 0; i < m; i++) {
+                for (let j = 0; j < n; j++) {
+                    T[j][i] = A[i][j];
+                }
+            }
+            return T;
+        }
+
+        function matrixToLatex(M) {
+            const rows = M.map(row => row.map(x => (Math.round(x * 100) / 100)).join(' & ')).join(' \\\\ ');
+            return `$$\\begin{bmatrix} ${rows} \\end{bmatrix}$$`;
+        }
+
+        function computeAB() {
+            const { A, B } = getMatrixValues();
+            const AB = matmulSimple(A, B);
+            const container = document.getElementById('resultsContainer');
+            container.innerHTML = '<div style="margin-top: 20px;"><strong>AB =</strong></div>' + matrixToLatex(AB);
+            renderMathInElement(container);
+        }
+
+        function computeBA() {
+            const { A, B } = getMatrixValues();
+            const BA = matmulSimple(B, A);
+            const container = document.getElementById('resultsContainer');
+            container.innerHTML = '<div style="margin-top: 20px;"><strong>BA =</strong></div>' + matrixToLatex(BA);
+            renderMathInElement(container);
+        }
+
+        function checkCommutativity() {
+            const { A, B } = getMatrixValues();
+            const AB = matmulSimple(A, B);
+            const BA = matmulSimple(B, A);
+            let html = '<div style="margin-top: 20px;"><strong>AB =</strong></div>' + matrixToLatex(AB);
+            html += '<div style="margin-top: 15px;"><strong>BA =</strong></div>' + matrixToLatex(BA);
+
+            const equal = AB.every((row, i) => row.every((val, j) => Math.abs(val - BA[i][j]) < 0.0001));
+            if (equal) {
+                html += '<div class="comparison-result match">AB = BA ✓ (This pair commutes)</div>';
+            } else {
+                html += '<div class="comparison-result mismatch">AB ≠ BA ✗ (This pair does not commute)</div>';
+            }
+
+            const container = document.getElementById('resultsContainer');
+            container.innerHTML = html;
+            renderMathInElement(container);
+        }
+
+        function computeTransposeProduct() {
+            const { A, B } = getMatrixValues();
+            const AB = matmulSimple(A, B);
+            const ABT = transpose(AB);
+            const AT = transpose(A);
+            const BT = transpose(B);
+            const BTAT = matmulSimple(BT, AT);
+
+            let html = '<div style="margin-top: 20px;"><strong>(AB)<sup>T</sup> =</strong></div>' + matrixToLatex(ABT);
+            html += '<div style="margin-top: 15px;"><strong>B<sup>T</sup>A<sup>T</sup> =</strong></div>' + matrixToLatex(BTAT);
+
+            const equal = ABT.every((row, i) => row.every((val, j) => Math.abs(val - BTAT[i][j]) < 0.0001));
+            if (equal) {
+                html += '<div class="comparison-result match">(AB)<sup>T</sup> = B<sup>T</sup>A<sup>T</sup> ✓</div>';
+            } else {
+                html += '<div class="comparison-result mismatch">(AB)<sup>T</sup> ≠ B<sup>T</sup>A<sup>T</sup> ✗</div>';
+            }
+
+            const container = document.getElementById('resultsContainer');
+            container.innerHTML = html;
+            renderMathInElement(container);
+        }
+
+        // Initialize
+        window.addEventListener('load', function() {
+            loadMultipliedPreset('2x3');
+        });
+    </script>
+</body>
+</html>

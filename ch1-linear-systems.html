@@ -1,0 +1,2049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.1 Systems of Linear Equations | LA Course</title>
+
+    <!-- KaTeX for math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: white;
+            border-bottom: 2px solid #0d9488;
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            gap: 40px;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .nav-brand {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0d9488;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+            margin-left: auto;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #0d9488;
+        }
+
+        .nav-links a.active {
+            color: #0d9488;
+            border-bottom: 2px solid #0d9488;
+            padding-bottom: 2px;
+        }
+
+        main {
+            margin-top: 60px;
+            padding: 0;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #0d9488 0%, #059669 100%);
+            color: white;
+            padding: 60px 30px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Content Container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+
+        /* Section Headings */
+        h2 {
+            color: #0d9488;
+            font-size: 32px;
+            margin: 50px 0 30px 0;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #0d9488;
+        }
+
+        h3 {
+            color: #1f2937;
+            font-size: 24px;
+            margin: 35px 0 20px 0;
+        }
+
+        h4 {
+            color: #374151;
+            font-size: 18px;
+            margin: 20px 0 12px 0;
+        }
+
+        p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        /* Definition, Theorem, etc. Boxes */
+        .definition-box, .theorem-box, .example-box, .warning-box, .tip-box {
+            margin: 25px 0;
+            padding: 20px 25px;
+            border-left: 5px solid;
+            border-radius: 8px;
+            background: #f3f4f6;
+        }
+
+        .definition-box {
+            border-left-color: #0d9488;
+            background: #ecfdf5;
+        }
+
+        .definition-box strong {
+            color: #0d9488;
+        }
+
+        .theorem-box {
+            border-left-color: #7c3aed;
+            background: #f3e8ff;
+        }
+
+        .theorem-box strong {
+            color: #7c3aed;
+        }
+
+        .example-box {
+            border-left-color: #0d9488;
+            background: #ecfdf5;
+        }
+
+        .warning-box {
+            border-left-color: #dc2626;
+            background: #fee2e2;
+        }
+
+        .warning-box strong {
+            color: #dc2626;
+        }
+
+        .tip-box {
+            border-left-color: #d97706;
+            background: #fef3c7;
+        }
+
+        .tip-box strong {
+            color: #d97706;
+        }
+
+        /* Objectives */
+        .objectives {
+            background: #ecfdf5;
+            border: 2px solid #0d9488;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .objectives h3 {
+            color: #0d9488;
+            margin-top: 0;
+        }
+
+        .objectives ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .objectives li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .objectives li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #0d9488;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        /* Step Lists */
+        .step-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .step-list li {
+            display: flex;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+
+        .step-list li:before {
+            content: attr(data-step);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            background: #0d9488;
+            color: white;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .step-list li span {
+            flex: 1;
+            padding-top: 8px;
+        }
+
+        /* Example Items (Collapsible) */
+        .example-item {
+            margin: 20px 0;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .example-header {
+            background: linear-gradient(135deg, #059669, #10b981);
+            color: white;
+            padding: 18px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .example-header:hover {
+            background: linear-gradient(135deg, #047857, #059669);
+        }
+
+        .example-header .toggle-arrow {
+            display: inline-block;
+            transition: transform 0.3s;
+            font-size: 20px;
+        }
+
+        .example-item.active .example-header .toggle-arrow {
+            transform: rotate(180deg);
+        }
+
+        .example-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out;
+            padding: 0 25px;
+        }
+
+        .example-item.active .example-content {
+            max-height: 5000px;
+            padding: 25px;
+        }
+
+        .example-content p {
+            margin-bottom: 12px;
+        }
+
+        .solution-step {
+            background: #f0f9ff;
+            border-left: 4px solid #0d9488;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+
+        /* Quiz Questions */
+        .quiz-question {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+            page-break-inside: avoid;
+        }
+
+        .quiz-question .question-text {
+            font-weight: 600;
+            margin-bottom: 18px;
+            color: #1f2937;
+        }
+
+        .choices {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .choice-btn {
+            background: white;
+            border: 2px solid #d1d5db;
+            border-radius: 6px;
+            padding: 12px 18px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s;
+            font-size: 15px;
+        }
+
+        .choice-btn:hover {
+            border-color: #0d9488;
+            background: #f0fdf4;
+        }
+
+        .choice-btn.correct {
+            background: #dcfce7;
+            border-color: #16a34a;
+            color: #15803d;
+        }
+
+        .choice-btn.incorrect {
+            background: #fee2e2;
+            border-color: #dc2626;
+            color: #991b1b;
+        }
+
+        .choice-btn.disabled {
+            cursor: not-allowed;
+        }
+
+        .quiz-feedback {
+            margin-top: 15px;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .quiz-feedback.show {
+            display: block;
+        }
+
+        .quiz-feedback.correct {
+            background: #dcfce7;
+            color: #15803d;
+            border-left: 4px solid #16a34a;
+        }
+
+        .quiz-feedback.incorrect {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 4px solid #dc2626;
+        }
+
+        /* Interactive Visualizations */
+        .visualization-container {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .visualization-controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            background: #0d9488;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+        }
+
+        .btn.secondary {
+            background: #7c3aed;
+        }
+
+        .btn.secondary:hover {
+            background: #6d28d9;
+        }
+
+        .btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        canvas {
+            max-width: 100%;
+            background: #0f172a;
+            border-radius: 6px;
+        }
+
+        .visualization-info {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .matrix-display {
+            font-family: 'Courier New', monospace;
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .operation-description {
+            background: #fef3c7;
+            border-left: 4px solid #d97706;
+            padding: 12px 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        /* Key Takeaways */
+        .key-takeaways {
+            background: linear-gradient(135deg, #ecfdf5, #f0fdf4);
+            border: 2px solid #0d9488;
+            border-radius: 8px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+
+        .key-takeaways h3 {
+            color: #0d9488;
+            margin-top: 0;
+        }
+
+        .key-takeaways ol {
+            padding-left: 25px;
+        }
+
+        .key-takeaways li {
+            margin-bottom: 12px;
+            color: #1f2937;
+        }
+
+        /* Navigation Footer */
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 60px 0 40px 0;
+            padding: 25px 0;
+            border-top: 2px solid #e5e7eb;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .nav-footer a {
+            color: #0d9488;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .nav-footer a:hover {
+            color: #059669;
+        }
+
+        /* Footer */
+        footer {
+            background: #1f2937;
+            color: #d1d5db;
+            text-align: center;
+            padding: 30px;
+            font-size: 14px;
+        }
+
+        /* Code/Matrix formatting */
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 0 15px;
+                gap: 15px;
+            }
+
+            .nav-links {
+                gap: 15px;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            .container {
+                padding: 30px 20px;
+            }
+
+            .nav-footer {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-footer a {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="index.html" class="nav-brand">LA Course</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="why-linear-algebra.html">Why LA?</a></li>
+            <li><a href="ch1-linear-systems.html" class="active">1.1 Systems</a></li>
+            <li><a href="#1.2">1.2 Matrix Alg.</a></li>
+            <li><a href="#1.3">1.3 Inverses</a></li>
+            <li><a href="#1.4">1.4 Determinants</a></li>
+            <li><a href="exam-generator.html">Exam Generator</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <main>
+        <div class="hero">
+            <h1>Systems of Linear Equations</h1>
+            <p>The foundation of linear algebra — from two lines meeting to millions of equations solved by computers</p>
+        </div>
+
+        <!-- Main Content -->
+        <div class="container">
+            <!-- Learning Objectives -->
+            <div class="objectives">
+                <h3>Learning Objectives</h3>
+                <ul>
+                    <li>Recognize and write a system of linear equations in augmented matrix form</li>
+                    <li>Perform elementary row operations correctly</li>
+                    <li>Use Gaussian elimination to reach row echelon form (REF)</li>
+                    <li>Use Gauss-Jordan elimination to reach reduced row echelon form (RREF)</li>
+                    <li>Classify systems as consistent/inconsistent with unique/infinite solutions</li>
+                    <li>Express solutions in parametric vector form</li>
+                </ul>
+            </div>
+
+            <!-- Section 1: What is a Linear System? -->
+            <h2>What is a Linear System?</h2>
+
+            <p>A <strong>linear equation</strong> in \(n\) variables \(x_1, x_2, \ldots, x_n\) has the form:</p>
+            <div class="definition-box">
+                <strong>Definition:</strong> \(a_1 x_1 + a_2 x_2 + \cdots + a_n x_n = b\)
+                <br><br>
+                where \(a_1, a_2, \ldots, a_n, b\) are real (or complex) constants, and not all \(a_i\) are zero.
+            </div>
+
+            <p>The key word is <strong>linear</strong>: each variable appears to the first power only, with no products of variables.</p>
+
+            <h3>System of Linear Equations</h3>
+            <p>A <strong>system of linear equations</strong> is a collection of one or more linear equations in the same variables. For example, a system of \(m\) equations in \(n\) unknowns:</p>
+
+            <div class="definition-box">
+                <strong>System of Linear Equations:</strong>
+                <br><br>
+                \(\begin{align}
+                a_{11}x_1 + a_{12}x_2 + \cdots + a_{1n}x_n &= b_1 \\
+                a_{21}x_1 + a_{22}x_2 + \cdots + a_{2n}x_n &= b_2 \\
+                &\vdots \\
+                a_{m1}x_1 + a_{m2}x_2 + \cdots + a_{mn}x_n &= b_m
+                \end{align}\)
+                <br><br>
+                A <strong>solution</strong> is an assignment of values \((x_1, x_2, \ldots, x_n)\) that satisfies <em>all</em> equations simultaneously.
+                <br><br>
+                The solution set is all such assignments, or empty if no solution exists.
+            </div>
+
+            <h3>Geometric Interpretation</h3>
+            <p><strong>In \(\mathbb{R}^2\):</strong> Each equation \(ax + by = c\) is a line. A system of 2 equations in 2 unknowns represents two lines in the plane. The solution set is their intersection.</p>
+
+            <p><strong>In \(\mathbb{R}^3\):</strong> Each equation \(ax + by + cz = d\) is a plane. A system of 3 equations represents three planes in space.</p>
+
+            <h3>Three Possible Cases</h3>
+            <div class="example-box">
+                <strong>Case 1: Unique Solution</strong> — The lines/planes intersect at exactly one point.
+                <br><br>
+                <strong>Case 2: No Solution (Inconsistent)</strong> — The lines/planes are parallel or don't share a common point. The system is called <em>inconsistent</em>.
+                <br><br>
+                <strong>Case 3: Infinitely Many Solutions</strong> — The lines/planes are the same, or they intersect along a line or subspace. The system is <em>consistent with infinitely many solutions</em>.
+            </div>
+
+            <!-- Interactive: 2D Geometry Visualization -->
+            <h2>Interactive Visualization: 2D System Geometry</h2>
+            <p>Explore how systems of linear equations behave geometrically. Choose a preset case or experiment with the interactive diagram below.</p>
+
+            <div class="visualization-container">
+                <div class="visualization-controls">
+                    <button class="btn" onclick="loadPreset('unique')">Unique Solution</button>
+                    <button class="btn" onclick="loadPreset('no')">No Solution</button>
+                    <button class="btn" onclick="loadPreset('infinite')">Infinite Solutions</button>
+                    <button class="btn secondary" onclick="resetVisualization()">Reset</button>
+                </div>
+                <canvas id="geometryCanvas" width="500" height="500"></canvas>
+                <div class="visualization-info">
+                    <div id="equationDisplay" style="margin-top: 15px; font-weight: 600;"></div>
+                    <div id="solutionDisplay" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+
+            <!-- Section 2: Augmented Matrix and Row Operations -->
+            <h2>Augmented Matrix and Elementary Row Operations</h2>
+
+            <p>Instead of working with equations directly, we work with matrices. The <strong>augmented matrix</strong> compactly encodes all information in a system.</p>
+
+            <div class="definition-box">
+                <strong>Augmented Matrix:</strong> For the system:
+                <br><br>
+                \(\begin{align}
+                a_{11}x_1 + a_{12}x_2 + \cdots + a_{1n}x_n &= b_1 \\
+                a_{21}x_1 + a_{22}x_2 + \cdots + a_{2n}x_n &= b_2 \\
+                &\vdots \\
+                a_{m1}x_1 + a_{m2}x_2 + \cdots + a_{mn}x_n &= b_m
+                \end{align}\)
+                <br><br>
+                The augmented matrix \([A \mid b]\) is:
+                <br><br>
+                \(\left[\begin{array}{cccc|c}
+                a_{11} & a_{12} & \cdots & a_{1n} & b_1 \\
+                a_{21} & a_{22} & \cdots & a_{2n} & b_2 \\
+                \vdots & \vdots & \ddots & \vdots & \vdots \\
+                a_{m1} & a_{m2} & \cdots & a_{mn} & b_m
+                \end{array}\right]\)
+            </div>
+
+            <h3>Elementary Row Operations (EROs)</h3>
+            <p>Three operations transform a matrix while preserving the solution set:</p>
+
+            <div class="tip-box">
+                <strong>ERO 1: Swap Rows</strong> — Exchange two rows.
+                <br>Notation: \(R_i \leftrightarrow R_j\)
+                <br><br>
+                <strong>ERO 2: Scale a Row</strong> — Multiply a row by a nonzero constant \(k\).
+                <br>Notation: \(kR_i \to R_i\)
+                <br><br>
+                <strong>ERO 3: Add Multiple of One Row to Another</strong> — Replace row \(i\) with row \(i\) plus \(k\) times row \(j\).
+                <br>Notation: \(R_i + kR_j \to R_i\)
+            </div>
+
+            <div class="theorem-box">
+                <strong>Theorem:</strong> If two augmented matrices are related by elementary row operations, they represent equivalent systems with the same solution set.
+            </div>
+
+            <h3>Why Row Operations?</h3>
+            <p>These operations allow us to systematically eliminate variables, transforming a complicated system into a simpler one that is easy to solve. We perform row operations until the matrix is in <strong>row echelon form</strong> or <strong>reduced row echelon form</strong>.</p>
+
+            <!-- Interactive: Row Reduction Animator -->
+            <h2>Interactive Visualization: Row Reduction Animator</h2>
+            <p>Watch how Gaussian elimination transforms a system step by step. Select a preset example and click "Next Step" to see each row operation.</p>
+
+            <div class="visualization-container">
+                <div class="visualization-controls">
+                    <button class="btn" onclick="loadRowReductionExample('example1')">Example 1: Simple</button>
+                    <button class="btn" onclick="loadRowReductionExample('example2')">Example 2: Medium</button>
+                    <button class="btn" onclick="loadRowReductionExample('example3')">Example 3: Complex</button>
+                    <button class="btn secondary" onclick="rowReductionNextStep()">Next Step</button>
+                    <button class="btn secondary" onclick="resetRowReduction()">Reset</button>
+                </div>
+                <div style="margin-top: 20px; width: 100%; max-width: 600px;">
+                    <div class="matrix-display" id="matrixDisplay">
+                        \[\begin{bmatrix} 1 & 2 & | & 3 \\ 4 & 5 & | & 6 \end{bmatrix}\]
+                    </div>
+                    <div class="operation-description" id="operationDescription" style="display: none;">
+                        Operation: <span id="operationText"></span>
+                    </div>
+                    <div id="stepExplanation" style="margin-top: 15px; font-size: 14px; color: #6b7280;"></div>
+                </div>
+            </div>
+
+            <!-- Section 3: REF, RREF, and Solution Classification -->
+            <h2>Row Echelon Form (REF) and Reduced Row Echelon Form (RREF)</h2>
+
+            <div class="definition-box">
+                <strong>Row Echelon Form (REF):</strong> A matrix is in REF if:
+                <br><br>
+                1. All nonzero rows are above any rows of all zeros.
+                <br>2. The leading entry (pivot) of each nonzero row is to the right of the pivot of the row above it.
+                <br>3. The leading entry of each row is 1 (after scaling).
+                <br><br>
+                <strong>Example of REF:</strong>
+                <br>\(\left[\begin{array}{ccc|c}
+                1 & 2 & 3 & 4 \\
+                0 & 1 & 5 & 6 \\
+                0 & 0 & 1 & 7
+                \end{array}\right]\)
+            </div>
+
+            <div class="definition-box">
+                <strong>Reduced Row Echelon Form (RREF):</strong> A matrix is in RREF if it is in REF and additionally:
+                <br><br>
+                4. Each pivot is the only nonzero entry in its column.
+                <br><br>
+                <strong>Example of RREF:</strong>
+                <br>\(\left[\begin{array}{ccc|c}
+                1 & 0 & 0 & 4 \\
+                0 & 1 & 0 & 6 \\
+                0 & 0 & 1 & 7
+                \end{array}\right]\)
+            </div>
+
+            <h3>Pivot Positions and Free Variables</h3>
+            <p>A <strong>pivot position</strong> is a position in a matrix corresponding to a leading 1 in REF. A <strong>pivot column</strong> is a column containing a pivot position. A <strong>free variable</strong> corresponds to a non-pivot column.</p>
+
+            <p>Free variables can take any value; the other variables are determined by back-substitution.</p>
+
+            <h3>Consistency Theorem</h3>
+            <div class="theorem-box">
+                <strong>Theorem (Consistency):</strong> A system \([A \mid b]\) is <strong>consistent</strong> (has at least one solution) if and only if the rightmost column of the augmented matrix in REF is <strong>not a pivot column</strong>.
+                <br><br>
+                Equivalently: the system is inconsistent if and only if a row of the form \([0 \, 0 \, \cdots \, 0 \mid 1]\) appears (which represents \(0 = 1\), a contradiction).
+            </div>
+
+            <h3>Solution Classification</h3>
+            <div class="example-box">
+                <strong>Unique Solution:</strong> RREF has a pivot in each column (except possibly the augmented column). Each variable is determined uniquely.
+                <br><br>
+                <strong>Infinitely Many Solutions:</strong> RREF has free variables (non-pivot columns). Solutions form a parametric family.
+                <br><br>
+                <strong>No Solution:</strong> A row in REF has the form \([0 \, 0 \, \cdots \, 0 \mid 1]\).
+            </div>
+
+            <!-- Section 4: Worked Examples -->
+            <h2>Worked Examples</h2>
+            <p>Click on each example to reveal the complete step-by-step solution.</p>
+
+            <!-- Easy Examples -->
+            <h3>Easy Examples</h3>
+
+            <!-- Example 1 -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 1: Solve a 2×2 System</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Solve the system:
+                    <br>\(\begin{align}
+                    2x + y &= 5 \\
+                    x - y &= 1
+                    \end{align}\)</strong></p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Write the augmented matrix</strong></p>
+                    <div class="solution-step">
+\[\left[\begin{array}{cc|c}
+2 & 1 & 5 \\
+1 & -1 & 1
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 2: Swap rows to get a leading 1 in position (1,1)</strong></p>
+                    <p>Operation: \(R_1 \leftrightarrow R_2\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{cc|c}
+1 & -1 & 1 \\
+2 & 1 & 5
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 3: Eliminate below the first pivot</strong></p>
+                    <p>Operation: \(R_2 - 2R_1 \to R_2\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{cc|c}
+1 & -1 & 1 \\
+0 & 3 & 3
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 4: Scale row 2 to get a pivot of 1</strong></p>
+                    <p>Operation: \(\frac{1}{3}R_2 \to R_2\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{cc|c}
+1 & -1 & 1 \\
+0 & 1 & 1
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 5: Back-substitute (or continue to RREF)</strong></p>
+                    <p>Operation: \(R_1 + R_2 \to R_1\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{cc|c}
+1 & 0 & 2 \\
+0 & 1 & 1
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 6: Read the solution</strong></p>
+                    <p>From the RREF, we have \(x = 2\) and \(y = 1\).</p>
+
+                    <p><strong>Verification:</strong>
+                    <br>\(2(2) + 1 = 4 + 1 = 5\) ✓
+                    <br>\(2 - 1 = 1\) ✓</p>
+
+                    <p><strong>Geometric Interpretation:</strong> The two lines \(2x + y = 5\) and \(x - y = 1\) intersect at the single point \((2, 1)\).</p>
+                </div>
+            </div>
+
+            <!-- Example 2 -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 2: A 2×2 System with No Solution</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Solve the system:
+                    <br>\(\begin{align}
+                    x + 2y &= 4 \\
+                    2x + 4y &= 3
+                    \end{align}\)</strong></p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Write the augmented matrix</strong></p>
+                    <div class="solution-step">
+\[\left[\begin{array}{cc|c}
+1 & 2 & 4 \\
+2 & 4 & 3
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 2: Eliminate below the first pivot</strong></p>
+                    <p>Operation: \(R_2 - 2R_1 \to R_2\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{cc|c}
+1 & 2 & 4 \\
+0 & 0 & -5
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 3: Analyze the second row</strong></p>
+                    <p>The second row represents the equation \(0 \cdot x + 0 \cdot y = -5\), or \(0 = -5\).</p>
+                    <p>This is a contradiction! No values of \(x\) and \(y\) can satisfy this.</p>
+
+                    <p><strong>Conclusion:</strong> The system has <strong>no solution</strong>. The solution set is empty, and the system is <strong>inconsistent</strong>.</p>
+
+                    <p><strong>Geometric Interpretation:</strong> The two equations represent parallel lines (same slope, different intercepts). They never intersect, so there is no solution.</p>
+                </div>
+            </div>
+
+            <!-- Example 3 -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 3: A 2×2 System with Infinitely Many Solutions</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Solve the system:
+                    <br>\(\begin{align}
+                    x - y &= 2 \\
+                    2x - 2y &= 4
+                    \end{align}\)</strong></p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Write the augmented matrix</strong></p>
+                    <div class="solution-step">
+\[\left[\begin{array}{cc|c}
+1 & -1 & 2 \\
+2 & -2 & 4
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 2: Eliminate below the first pivot</strong></p>
+                    <p>Operation: \(R_2 - 2R_1 \to R_2\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{cc|c}
+1 & -1 & 2 \\
+0 & 0 & 0
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 3: Interpret the result</strong></p>
+                    <p>The second row is all zeros: \(0 = 0\), which is always true. The second equation is dependent on the first (it's the first equation multiplied by 2).</p>
+                    <p>We have only one independent equation: \(x - y = 2\).</p>
+
+                    <p><strong>Step 4: Express the solution in parametric form</strong></p>
+                    <p>\(y\) is a free variable. Let \(y = t\) where \(t \in \mathbb{R}\).</p>
+                    <p>From \(x - y = 2\), we get \(x = y + 2 = t + 2\).</p>
+                    <p>The general solution is:</p>
+                    <div class="solution-step">
+\[(x, y) = (t + 2, t) = (2, 0) + t(1, 1), \quad t \in \mathbb{R}\]
+                    </div>
+
+                    <p><strong>Conclusion:</strong> The system has <strong>infinitely many solutions</strong>, forming a line in the \(xy\)-plane parameterized by \(t\).</p>
+
+                    <p><strong>Geometric Interpretation:</strong> The two equations represent the same line (one is a scalar multiple of the other). Every point on the line is a solution.</p>
+                </div>
+            </div>
+
+            <!-- Medium Examples -->
+            <h3>Medium Examples</h3>
+
+            <!-- Example 4 -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 4: Solve a 3×3 System</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Solve the system:
+                    <br>\(\begin{align}
+                    2x + y - z &= 8 \\
+                    -3x - y + 2z &= -11 \\
+                    -2x + y + 2z &= -3
+                    \end{align}\)</strong></p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Write the augmented matrix</strong></p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+2 & 1 & -1 & 8 \\
+-3 & -1 & 2 & -11 \\
+-2 & 1 & 2 & -3
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 2: Scale row 1 to get a leading 1</strong></p>
+                    <p>Operation: \(\frac{1}{2}R_1 \to R_1\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 1/2 & -1/2 & 4 \\
+-3 & -1 & 2 & -11 \\
+-2 & 1 & 2 & -3
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 3: Eliminate in column 1 below the pivot</strong></p>
+                    <p>Operation: \(R_2 + 3R_1 \to R_2\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 1/2 & -1/2 & 4 \\
+0 & 1/2 & 1/2 & 1 \\
+-2 & 1 & 2 & -3
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 4: Eliminate in column 1 for row 3</strong></p>
+                    <p>Operation: \(R_3 + 2R_1 \to R_3\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 1/2 & -1/2 & 4 \\
+0 & 1/2 & 1/2 & 1 \\
+0 & 2 & 1 & 5
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 5: Scale row 2 to get a pivot of 1</strong></p>
+                    <p>Operation: \(2R_2 \to R_2\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 1/2 & -1/2 & 4 \\
+0 & 1 & 1 & 2 \\
+0 & 2 & 1 & 5
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 6: Eliminate in column 2 for row 3</strong></p>
+                    <p>Operation: \(R_3 - 2R_2 \to R_3\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 1/2 & -1/2 & 4 \\
+0 & 1 & 1 & 2 \\
+0 & 0 & -1 & 1
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 7: Scale row 3 to get a pivot of 1</strong></p>
+                    <p>Operation: \(-R_3 \to R_3\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 1/2 & -1/2 & 4 \\
+0 & 1 & 1 & 2 \\
+0 & 0 & 1 & -1
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>This is REF. Now back-substitute (or continue to RREF).</strong></p>
+
+                    <p><strong>Step 8: From row 3: \(z = -1\)</strong></p>
+
+                    <p><strong>Step 9: From row 2: \(y + z = 2 \Rightarrow y + (-1) = 2 \Rightarrow y = 3\)</strong></p>
+
+                    <p><strong>Step 10: From row 1: \(x + \frac{1}{2}y - \frac{1}{2}z = 4\)</strong></p>
+                    <p>\(x + \frac{1}{2}(3) - \frac{1}{2}(-1) = 4\)</p>
+                    <p>\(x + \frac{3}{2} + \frac{1}{2} = 4\)</p>
+                    <p>\(x + 2 = 4 \Rightarrow x = 2\)</p>
+
+                    <p><strong>Solution:</strong> \(x = 2, y = 3, z = -1\)</p>
+
+                    <p><strong>Verification:</strong>
+                    <br>Row 1: \(2(2) + 3 - (-1) = 4 + 3 + 1 = 8\) ✓
+                    <br>Row 2: \(-3(2) - 3 + 2(-1) = -6 - 3 - 2 = -11\) ✓
+                    <br>Row 3: \(-2(2) + 3 + 2(-1) = -4 + 3 - 2 = -3\) ✓</p>
+                </div>
+            </div>
+
+            <!-- Example 5 -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 5: A 3×3 System with a Free Variable</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Solve the system:
+                    <br>\(\begin{align}
+                    x + y - z &= 2 \\
+                    2x + y + z &= 5 \\
+                    x - z &= 3
+                    \end{align}\)</strong></p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Write the augmented matrix</strong></p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 1 & -1 & 2 \\
+2 & 1 & 1 & 5 \\
+1 & 0 & -1 & 3
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 2: Eliminate in column 1</strong></p>
+                    <p>Operation: \(R_2 - 2R_1 \to R_2\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 1 & -1 & 2 \\
+0 & -1 & 3 & 1 \\
+1 & 0 & -1 & 3
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 3: Continue elimination in column 1</strong></p>
+                    <p>Operation: \(R_3 - R_1 \to R_3\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 1 & -1 & 2 \\
+0 & -1 & 3 & 1 \\
+0 & -1 & 0 & 1
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 4: Scale row 2 to get a pivot of 1</strong></p>
+                    <p>Operation: \(-R_2 \to R_2\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 1 & -1 & 2 \\
+0 & 1 & -3 & -1 \\
+0 & -1 & 0 & 1
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 5: Eliminate in column 2 for row 3</strong></p>
+                    <p>Operation: \(R_3 + R_2 \to R_3\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 1 & -1 & 2 \\
+0 & 1 & -3 & -1 \\
+0 & 0 & -3 & 0
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 6: Scale row 3</strong></p>
+                    <p>Operation: \(-\frac{1}{3}R_3 \to R_3\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 1 & -1 & 2 \\
+0 & 1 & -3 & -1 \\
+0 & 0 & 1 & 0
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 7: Back-substitute from row 3</strong></p>
+                    <p>From row 3: \(z = 0\)</p>
+
+                    <p><strong>Step 8: From row 2</strong></p>
+                    <p>\(y - 3z = -1 \Rightarrow y - 3(0) = -1 \Rightarrow y = -1\)</p>
+
+                    <p><strong>Step 9: From row 1</strong></p>
+                    <p>\(x + y - z = 2 \Rightarrow x + (-1) - 0 = 2 \Rightarrow x = 3\)</p>
+
+                    <p><strong>Solution:</strong> \(x = 3, y = -1, z = 0\)</p>
+
+                    <p><strong>Note:</strong> This system has a unique solution (no free variables, despite what the example name suggests—this shows the system is fully determined).</p>
+                </div>
+            </div>
+
+            <!-- Example 6 -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 6: Row Reduce to RREF</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Reduce the augmented matrix to RREF and identify the solution(s):
+                    <br>\(\left[\begin{array}{ccc|c}
+                    1 & 2 & -1 & 3 \\
+                    2 & 5 & 0 & 7 \\
+                    -1 & -1 & 2 & 0
+                    \end{array}\right]\)</strong></p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Starting matrix (already has a leading 1 in row 1)</strong></p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 2 & -1 & 3 \\
+2 & 5 & 0 & 7 \\
+-1 & -1 & 2 & 0
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 2: Eliminate in column 1</strong></p>
+                    <p>Operation: \(R_2 - 2R_1 \to R_2\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 2 & -1 & 3 \\
+0 & 1 & 2 & 1 \\
+-1 & -1 & 2 & 0
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 3: Continue elimination</strong></p>
+                    <p>Operation: \(R_3 + R_1 \to R_3\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 2 & -1 & 3 \\
+0 & 1 & 2 & 1 \\
+0 & 1 & 1 & 3
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 4: Eliminate in column 2 for row 3</strong></p>
+                    <p>Operation: \(R_3 - R_2 \to R_3\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 2 & -1 & 3 \\
+0 & 1 & 2 & 1 \\
+0 & 0 & -1 & 2
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 5: Scale row 3 to get a pivot of 1</strong></p>
+                    <p>Operation: \(-R_3 \to R_3\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 2 & -1 & 3 \\
+0 & 1 & 2 & 1 \\
+0 & 0 & 1 & -2
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>This is REF. Now we continue to RREF by eliminating above pivots.</strong></p>
+
+                    <p><strong>Step 6: Eliminate above the third pivot</strong></p>
+                    <p>Operation: \(R_2 - 2R_3 \to R_2\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 2 & -1 & 3 \\
+0 & 1 & 0 & 5 \\
+0 & 0 & 1 & -2
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 7: Eliminate above the third pivot in row 1</strong></p>
+                    <p>Operation: \(R_1 + R_3 \to R_1\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 2 & 0 & 1 \\
+0 & 1 & 0 & 5 \\
+0 & 0 & 1 & -2
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 8: Eliminate above the second pivot in row 1</strong></p>
+                    <p>Operation: \(R_1 - 2R_2 \to R_1\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 0 & 0 & -9 \\
+0 & 1 & 0 & 5 \\
+0 & 0 & 1 & -2
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>This is RREF. The solution is read directly: \(x = -9, y = 5, z = -2\)</strong></p>
+                </div>
+            </div>
+
+            <!-- Example 7 -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 7: System from an Application — Network Flow</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Three nodes in a network have flow conservation constraints. At each node, flow in equals flow out. Using the diagram:</p>
+                    <ul>
+                        <li>External input to Node 1: 10 units</li>
+                        <li>Flow from Node 1 to Node 2: \(x_1\)</li>
+                        <li>Flow from Node 1 to Node 3: \(x_2\)</li>
+                        <li>Flow from Node 2 to Node 3: \(x_3\)</li>
+                        <li>External output from Node 3: 10 units</li>
+                    </ul>
+                    <p>Set up and solve the flow conservation equations.</p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Write flow conservation equations</strong></p>
+                    <p><strong>Node 1:</strong> In = Out → \(10 = x_1 + x_2\)</p>
+                    <p><strong>Node 2:</strong> In = Out → \(x_1 = x_3\)</p>
+                    <p><strong>Node 3:</strong> In = Out → \(x_2 + x_3 = 10\)</p>
+
+                    <p><strong>Step 2: Rewrite in standard form</strong></p>
+                    <p>\(\begin{align}
+                    x_1 + x_2 &= 10 \\
+                    x_1 - x_3 &= 0 \\
+                    x_2 + x_3 &= 10
+                    \end{align}\)</p>
+
+                    <p><strong>Step 3: Write the augmented matrix</strong></p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 1 & 0 & 10 \\
+1 & 0 & -1 & 0 \\
+0 & 1 & 1 & 10
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 4: Row reduce</strong></p>
+                    <p>Operation: \(R_2 - R_1 \to R_2\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 1 & 0 & 10 \\
+0 & -1 & -1 & -10 \\
+0 & 1 & 1 & 10
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 5: Scale row 2</strong></p>
+                    <p>Operation: \(-R_2 \to R_2\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 1 & 0 & 10 \\
+0 & 1 & 1 & 10 \\
+0 & 1 & 1 & 10
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 6: Eliminate row 3</strong></p>
+                    <p>Operation: \(R_3 - R_2 \to R_3\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 1 & 0 & 10 \\
+0 & 1 & 1 & 10 \\
+0 & 0 & 0 & 0
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 7: Interpret the result</strong></p>
+                    <p>We have two independent equations and three unknowns. \(x_3\) is a free variable.</p>
+                    <p>Let \(x_3 = t\) where \(t \geq 0\) (since it represents flow).</p>
+
+                    <p><strong>Step 8: Back-substitute</strong></p>
+                    <p>From row 2: \(x_2 + x_3 = 10 \Rightarrow x_2 = 10 - t\)</p>
+                    <p>From row 1: \(x_1 + x_2 = 10 \Rightarrow x_1 = 10 - x_2 = 10 - (10 - t) = t\)</p>
+
+                    <p><strong>General Solution (Parametric Form):</strong></p>
+                    <div class="solution-step">
+\[\begin{pmatrix} x_1 \\ x_2 \\ x_3 \end{pmatrix} = \begin{pmatrix} t \\ 10 - t \\ t \end{pmatrix} = \begin{pmatrix} 0 \\ 10 \\ 0 \end{pmatrix} + t \begin{pmatrix} 1 \\ -1 \\ 1 \end{pmatrix}, \quad 0 \leq t \leq 10\]
+                    </div>
+
+                    <p><strong>Physical Interpretation:</strong> The flows are not uniquely determined; they form a family of valid solutions. For example:</p>
+                    <ul>
+                        <li>If \(t = 0\): all flow goes from 1 to 2, then 2 to 3.</li>
+                        <li>If \(t = 5\): balanced flow from 1 directly to 3 and via 2.</li>
+                        <li>If \(t = 10\): all flow goes from 1 directly to 3.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Hard Examples -->
+            <h3>Hard Examples</h3>
+
+            <!-- Example 8 -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 8: A 4×4 System</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Solve the system:
+                    <br>\(\begin{align}
+                    w + 2x + 2y + z &= 7 \\
+                    2w + 5x + 5y + 4z &= 20 \\
+                    w + 3x + 4y + 3z &= 11 \\
+                    3w + 8x + 10y + 9z &= 32
+                    \end{align}\)</strong></p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Write the augmented matrix</strong></p>
+                    <div class="solution-step">
+\[\left[\begin{array}{cccc|c}
+1 & 2 & 2 & 1 & 7 \\
+2 & 5 & 5 & 4 & 20 \\
+1 & 3 & 4 & 3 & 11 \\
+3 & 8 & 10 & 9 & 32
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 2: Eliminate column 1</strong></p>
+                    <p>Operation: \(R_2 - 2R_1 \to R_2\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{cccc|c}
+1 & 2 & 2 & 1 & 7 \\
+0 & 1 & 1 & 2 & 6 \\
+1 & 3 & 4 & 3 & 11 \\
+3 & 8 & 10 & 9 & 32
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 3: Continue elimination in column 1</strong></p>
+                    <p>Operation: \(R_3 - R_1 \to R_3\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{cccc|c}
+1 & 2 & 2 & 1 & 7 \\
+0 & 1 & 1 & 2 & 6 \\
+0 & 1 & 2 & 2 & 4 \\
+3 & 8 & 10 & 9 & 32
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 4: Continue elimination</strong></p>
+                    <p>Operation: \(R_4 - 3R_1 \to R_4\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{cccc|c}
+1 & 2 & 2 & 1 & 7 \\
+0 & 1 & 1 & 2 & 6 \\
+0 & 1 & 2 & 2 & 4 \\
+0 & 2 & 4 & 6 & 11
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 5: Eliminate column 2 below row 2</strong></p>
+                    <p>Operation: \(R_3 - R_2 \to R_3\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{cccc|c}
+1 & 2 & 2 & 1 & 7 \\
+0 & 1 & 1 & 2 & 6 \\
+0 & 0 & 1 & 0 & -2 \\
+0 & 2 & 4 & 6 & 11
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 6: Continue elimination</strong></p>
+                    <p>Operation: \(R_4 - 2R_2 \to R_4\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{cccc|c}
+1 & 2 & 2 & 1 & 7 \\
+0 & 1 & 1 & 2 & 6 \\
+0 & 0 & 1 & 0 & -2 \\
+0 & 0 & 2 & 2 & -1
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 7: Eliminate column 3</strong></p>
+                    <p>Operation: \(R_4 - 2R_3 \to R_4\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{cccc|c}
+1 & 2 & 2 & 1 & 7 \\
+0 & 1 & 1 & 2 & 6 \\
+0 & 0 & 1 & 0 & -2 \\
+0 & 0 & 0 & 2 & 3
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 8: Scale row 4</strong></p>
+                    <p>Operation: \(\frac{1}{2}R_4 \to R_4\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{cccc|c}
+1 & 2 & 2 & 1 & 7 \\
+0 & 1 & 1 & 2 & 6 \\
+0 & 0 & 1 & 0 & -2 \\
+0 & 0 & 0 & 1 & 3/2
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>This is REF. Now back-substitute.</strong></p>
+
+                    <p><strong>From row 4:</strong> \(z = \frac{3}{2}\)</p>
+
+                    <p><strong>From row 3:</strong> \(y = -2\)</p>
+
+                    <p><strong>From row 2:</strong> \(x + y + 2z = 6\)</p>
+                    <p>\(x + (-2) + 2(\frac{3}{2}) = 6\)</p>
+                    <p>\(x - 2 + 3 = 6 \Rightarrow x = 5\)</p>
+
+                    <p><strong>From row 1:</strong> \(w + 2x + 2y + z = 7\)</p>
+                    <p>\(w + 2(5) + 2(-2) + \frac{3}{2} = 7\)</p>
+                    <p>\(w + 10 - 4 + \frac{3}{2} = 7\)</p>
+                    <p>\(w + 6 + \frac{3}{2} = 7 \Rightarrow w = \frac{1}{2}\)</p>
+
+                    <p><strong>Solution:</strong> \(w = \frac{1}{2}, x = 5, y = -2, z = \frac{3}{2}\)</p>
+                </div>
+            </div>
+
+            <!-- Example 9 -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 9: Homogeneous System with Nontrivial Solutions</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Solve the homogeneous system (all right-hand sides are zero):
+                    <br>\(\begin{align}
+                    x + 2y + 3z &= 0 \\
+                    2x + 4y + 6z &= 0 \\
+                    3x + 6y + 9z &= 0
+                    \end{align}\)</strong></p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Observe that all three equations are scalar multiples of the first</strong></p>
+                    <ul>
+                        <li>Row 2 = 2 × Row 1</li>
+                        <li>Row 3 = 3 × Row 1</li>
+                    </ul>
+
+                    <p><strong>Step 2: Write the augmented matrix</strong></p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 2 & 3 & 0 \\
+2 & 4 & 6 & 0 \\
+3 & 6 & 9 & 0
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 3: Eliminate</strong></p>
+                    <p>Operation: \(R_2 - 2R_1 \to R_2\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 2 & 3 & 0 \\
+0 & 0 & 0 & 0 \\
+3 & 6 & 9 & 0
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 4: Continue</strong></p>
+                    <p>Operation: \(R_3 - 3R_1 \to R_3\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 2 & 3 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 5: Interpret</strong></p>
+                    <p>Only one independent equation: \(x + 2y + 3z = 0\).</p>
+                    <p>We have two free variables (columns 2 and 3 are not pivot columns). Let \(y = s\) and \(z = t\) where \(s, t \in \mathbb{R}\).</p>
+
+                    <p><strong>From the equation:</strong> \(x = -2y - 3z = -2s - 3t\)</p>
+
+                    <p><strong>General Solution (Parametric Vector Form):</strong></p>
+                    <div class="solution-step">
+\[\begin{pmatrix} x \\ y \\ z \end{pmatrix} = \begin{pmatrix} -2s - 3t \\ s \\ t \end{pmatrix} = s\begin{pmatrix} -2 \\ 1 \\ 0 \end{pmatrix} + t\begin{pmatrix} -3 \\ 0 \\ 1 \end{pmatrix}\]
+                    </div>
+
+                    <p><strong>Or in another form:</strong></p>
+                    <div class="solution-step">
+\[\text{Solution set} = \text{span}\left\{\begin{pmatrix} -2 \\ 1 \\ 0 \end{pmatrix}, \begin{pmatrix} -3 \\ 0 \\ 1 \end{pmatrix}\right\}\]
+                    </div>
+
+                    <p><strong>Interpretation:</strong> The solution set is the null space of the coefficient matrix \(A\), which is a plane in \(\mathbb{R}^3\) passing through the origin. The two vectors form a basis for this plane.</p>
+
+                    <p><strong>Note:</strong> Homogeneous systems always have at least the trivial solution \((0, 0, 0)\). If there are free variables (as here), there are infinitely many nontrivial solutions.</p>
+                </div>
+            </div>
+
+            <!-- Example 10 -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 10: Rank and Consistency Analysis with Parameter</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> For what values of the parameter \(k\) is the following system consistent?
+                    <br>\(\begin{align}
+                    x + y + z &= 1 \\
+                    2x + 3y + 2z &= 3 \\
+                    3x + 5y + kz &= 5
+                    \end{align}\)</strong></p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Write the augmented matrix</strong></p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 1 & 1 & 1 \\
+2 & 3 & 2 & 3 \\
+3 & 5 & k & 5
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 2: Eliminate column 1</strong></p>
+                    <p>Operation: \(R_2 - 2R_1 \to R_2\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 1 & 1 & 1 \\
+0 & 1 & 0 & 1 \\
+3 & 5 & k & 5
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 3: Continue elimination</strong></p>
+                    <p>Operation: \(R_3 - 3R_1 \to R_3\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 1 & 1 & 1 \\
+0 & 1 & 0 & 1 \\
+0 & 2 & k-3 & 2
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 4: Eliminate column 2</strong></p>
+                    <p>Operation: \(R_3 - 2R_2 \to R_3\)</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 1 & 1 & 1 \\
+0 & 1 & 0 & 1 \\
+0 & 0 & k-3 & 0
+\end{array}\right]\]
+                    </div>
+
+                    <p><strong>Step 5: Analyze the third row</strong></p>
+                    <p>The third row represents the equation: \((k-3)z = 0\)</p>
+
+                    <p><strong>Case 1: If \(k \neq 3\), then \(k - 3 \neq 0\)</strong></p>
+                    <p>The third row is \((k-3)z = 0\), which gives \(z = 0\).</p>
+                    <p>Scaling: \(R_3 \to \frac{1}{k-3}R_3\) gives \(z = 0\).</p>
+                    <p>Back-substitution gives unique values for \(x\) and \(y\).</p>
+                    <p><strong>The system is consistent with a unique solution.</strong></p>
+
+                    <p><strong>Case 2: If \(k = 3\)</strong></p>
+                    <p>The third row becomes \(0 = 0\), which is always true.</p>
+                    <div class="solution-step">
+\[\left[\begin{array}{ccc|c}
+1 & 1 & 1 & 1 \\
+0 & 1 & 0 & 1 \\
+0 & 0 & 0 & 0
+\end{array}\right]\]
+                    </div>
+                    <p>From row 2: \(y = 1\)</p>
+                    <p>From row 1: \(x + y + z = 1 \Rightarrow x + 1 + z = 1 \Rightarrow x = -z\)</p>
+                    <p>\(z\) is a free variable. Let \(z = t\).</p>
+                    <p>General solution: \((x, y, z) = (-t, 1, t)\) for \(t \in \mathbb{R}\).</p>
+                    <p><strong>The system is consistent with infinitely many solutions.</strong></p>
+
+                    <p><strong>Conclusion:</strong></p>
+                    <p>The system is consistent for <strong>all values</strong> of \(k\):</p>
+                    <ul>
+                        <li>If \(k \neq 3\): unique solution</li>
+                        <li>If \(k = 3\): infinitely many solutions</li>
+                    </ul>
+                    <p>(Note: There is no value of \(k\) for which the system is inconsistent because the augmented column never becomes a pivot column.)</p>
+                </div>
+            </div>
+
+            <!-- Practice Quiz -->
+            <h2>Practice Quiz</h2>
+            <p>Test your understanding with these multiple-choice questions. Click a choice to check your answer.</p>
+
+            <!-- Question 1 -->
+            <div class="quiz-question">
+                <div class="question-text">1. Which of the following matrices is in reduced row echelon form (RREF)?</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, 'q1', false)">
+                        \(\left[\begin{array}{cc|c} 1 & 2 & 0 \\ 0 & 1 & 1 \end{array}\right]\)
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q1', true)">
+                        \(\left[\begin{array}{cc|c} 1 & 0 & 2 \\ 0 & 1 & 3 \end{array}\right]\)
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q1', false)">
+                        \(\left[\begin{array}{cc|c} 1 & 1 & 2 \\ 0 & 2 & 4 \end{array}\right]\)
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q1', false)">
+                        \(\left[\begin{array}{cc|c} 0 & 1 & 1 \\ 1 & 0 & 2 \end{array}\right]\)
+                    </button>
+                </div>
+                <div class="quiz-feedback" id="feedback-q1"></div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="quiz-question">
+                <div class="question-text">2. How many solutions does the system represented by \(\left[\begin{array}{cc|c} 1 & 0 & 5 \\ 0 & 1 & 3 \end{array}\right]\) have?</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, 'q2', true)">
+                        One unique solution
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q2', false)">
+                        No solution
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q2', false)">
+                        Infinitely many solutions
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q2', false)">
+                        Cannot be determined
+                    </button>
+                </div>
+                <div class="quiz-feedback" id="feedback-q2"></div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="quiz-question">
+                <div class="question-text">3. Which of the following is a valid elementary row operation?</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, 'q3', false)">
+                        Multiply a row by zero
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q3', true)">
+                        \(R_2 - 3R_1 \to R_2\)
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q3', false)">
+                        Multiply two rows together
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q3', false)">
+                        Add a row to itself
+                    </button>
+                </div>
+                <div class="quiz-feedback" id="feedback-q3"></div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="quiz-question">
+                <div class="question-text">4. In the matrix \(\left[\begin{array}{ccc|c} 1 & 2 & 0 & 5 \\ 0 & 0 & 1 & 3 \end{array}\right]\), which columns are pivot columns?</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, 'q4', true)">
+                        Columns 1 and 3
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q4', false)">
+                        Columns 1 and 2
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q4', false)">
+                        Columns 2 and 3
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q4', false)">
+                        All four columns
+                    </button>
+                </div>
+                <div class="quiz-feedback" id="feedback-q4"></div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="quiz-question">
+                <div class="question-text">5. If a 3×3 system has RREF \(\left[\begin{array}{ccc|c} 1 & 0 & 2 & 4 \\ 0 & 1 & 3 & 5 \\ 0 & 0 & 0 & 0 \end{array}\right]\), express the solution in parametric form with \(z = t\).</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, 'q5', false)">
+                        \((x, y, z) = (4 - 2t, 5 - 3t, t)\)
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q5', true)">
+                        \((x, y, z) = (4 - 2t, 5 - 3t, t)\)
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q5', false)">
+                        \((x, y, z) = (4 + 2t, 5 + 3t, t)\)
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q5', false)">
+                        No solution exists
+                    </button>
+                </div>
+                <div class="quiz-feedback" id="feedback-q5"></div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="quiz-question">
+                <div class="question-text">6. A system is inconsistent if and only if:</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, 'q6', false)">
+                        The augmented matrix has more rows than columns
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q6', true)">
+                        A row in REF has the form [0 0 ... 0 | b] where b ≠ 0
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q6', false)">
+                        The system has free variables
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q6', false)">
+                        All pivot entries are positive
+                    </button>
+                </div>
+                <div class="quiz-feedback" id="feedback-q6"></div>
+            </div>
+
+            <!-- Key Takeaways -->
+            <div class="key-takeaways">
+                <h3>Key Takeaways</h3>
+                <ol>
+                    <li><strong>Systems of linear equations</strong> can be efficiently solved using augmented matrices and elementary row operations, which preserve the solution set.</li>
+                    <li><strong>Gaussian elimination</strong> systematically transforms a system to REF, making it easy to perform back-substitution; <strong>Gauss-Jordan elimination</strong> continues to RREF for direct solution reading.</li>
+                    <li><strong>Solution classification:</strong> A system is consistent if its RREF has no row of the form [0 0 ... 0 | 1]; it has a unique solution if every variable is a pivot variable, and infinitely many if free variables exist.</li>
+                    <li><strong>Parametric vector form</strong> elegantly expresses infinite solution families by writing non-pivot variables as parameters and solving for pivot variables in terms of these parameters.</li>
+                    <li><strong>Homogeneous systems</strong> (Ax = 0) always have at least the trivial solution; nontrivial solutions exist if and only if there are free variables, forming the null space of A.</li>
+                </ol>
+            </div>
+
+            <!-- Navigation Footer -->
+            <div class="nav-footer">
+                <a href="index.html">← Course Home</a>
+                <span>Chapter 1: Linear Systems</span>
+                <a href="#1.2">1.2 Matrix Algebra →</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 Dr. Mohamed Mabrok — Qatar University</p>
+    </footer>
+
+    <script>
+        // Initialize KaTeX rendering
+        document.addEventListener('DOMContentLoaded', function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    { left: '$$', right: '$$', display: true },
+                    { left: '$', right: '$', display: false },
+                    { left: '\\(', right: '\\)', display: false },
+                    { left: '\\[', right: '\\]', display: true }
+                ]
+            });
+        });
+
+        // Toggle collapsible examples
+        function toggle(element) {
+            const item = element.closest('.example-item');
+            item.classList.toggle('active');
+        }
+
+        // Quiz functionality
+        function checkChoice(btn, qId, isCorrect) {
+            const choices = btn.parentElement.querySelectorAll('.choice-btn');
+            choices.forEach(c => c.disabled = true);
+
+            const feedback = document.getElementById(`feedback-${qId}`);
+            feedback.classList.add('show');
+
+            if (isCorrect) {
+                btn.classList.add('correct');
+                feedback.classList.add('correct');
+                feedback.innerHTML = '<strong>✓ Correct!</strong> Well done.';
+            } else {
+                btn.classList.add('incorrect');
+                feedback.classList.add('incorrect');
+                feedback.innerHTML = '<strong>✗ Not quite.</strong> Review the material and try again.';
+            }
+        }
+
+        // 2D Geometry Visualization
+        let currentPreset = null;
+
+        function drawGeometryCanvas() {
+            const canvas = document.getElementById('geometryCanvas');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+
+            // Clear background
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, w, h);
+
+            // Draw grid
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 1;
+            const scale = 40;
+            for (let i = 0; i <= w; i += scale) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i, h);
+                ctx.stroke();
+            }
+            for (let i = 0; i <= h; i += scale) {
+                ctx.beginPath();
+                ctx.moveTo(0, i);
+                ctx.lineTo(w, i);
+                ctx.stroke();
+            }
+
+            // Draw axes
+            ctx.strokeStyle = '#64748b';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(w/2, 0);
+            ctx.lineTo(w/2, h);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(0, h/2);
+            ctx.lineTo(w, h/2);
+            ctx.stroke();
+
+            // Helper function to convert coordinates
+            const toScreen = (x, y) => [w/2 + x * scale, h/2 - y * scale];
+            const fromScreen = (sx, sy) => [(sx - w/2) / scale, (h/2 - sy) / scale];
+
+            // Draw lines based on preset
+            if (currentPreset === 'unique') {
+                // Lines: 2x + y = 5 and x - y = 1 (intersect at (2, 1))
+                drawLine(ctx, 2, 1, 5, scale, w, h, '#0d9488');
+                drawLine(ctx, 1, -1, 1, scale, w, h, '#7c3aed');
+
+                // Draw intersection point
+                const [sx, sy] = toScreen(2, 1);
+                ctx.fillStyle = '#d97706';
+                ctx.beginPath();
+                ctx.arc(sx, sy, 6, 0, 2*Math.PI);
+                ctx.fill();
+
+                document.getElementById('equationDisplay').innerHTML =
+                    '2x + y = 5 (teal) and x − y = 1 (purple)';
+                document.getElementById('solutionDisplay').innerHTML =
+                    '<strong>Unique Solution:</strong> (2, 1)';
+            } else if (currentPreset === 'no') {
+                // Parallel lines: x + 2y = 4 and 2x + 4y = 3
+                drawLine(ctx, 1, 2, 4, scale, w, h, '#0d9488');
+                drawLine(ctx, 2, 4, 3, scale, w, h, '#7c3aed');
+
+                document.getElementById('equationDisplay').innerHTML =
+                    'x + 2y = 4 (teal) and 2x + 4y = 3 (purple)';
+                document.getElementById('solutionDisplay').innerHTML =
+                    '<strong>No Solution:</strong> Lines are parallel (inconsistent)';
+            } else if (currentPreset === 'infinite') {
+                // Same line: x - y = 2 and 2x - 2y = 4
+                drawLine(ctx, 1, -1, 2, scale, w, h, '#10b981');
+
+                document.getElementById('equationDisplay').innerHTML =
+                    'x − y = 2 and 2x − 2y = 4 (same line)';
+                document.getElementById('solutionDisplay').innerHTML =
+                    '<strong>Infinitely Many Solutions:</strong> All points on the line';
+            }
+        }
+
+        function drawLine(ctx, a, b, c, scale, w, h, color) {
+            // Line: ax + by = c
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 3;
+
+            let x1 = -w / (2 * scale);
+            let y1 = (c - a * x1) / b;
+            let x2 = w / (2 * scale);
+            let y2 = (c - a * x2) / b;
+
+            const [sx1, sy1] = [w/2 + x1 * scale, h/2 - y1 * scale];
+            const [sx2, sy2] = [w/2 + x2 * scale, h/2 - y2 * scale];
+
+            ctx.beginPath();
+            ctx.moveTo(sx1, sy1);
+            ctx.lineTo(sx2, sy2);
+            ctx.stroke();
+        }
+
+        function loadPreset(preset) {
+            currentPreset = preset;
+            drawGeometryCanvas();
+        }
+
+        function resetVisualization() {
+            currentPreset = null;
+            const canvas = document.getElementById('geometryCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            document.getElementById('equationDisplay').innerHTML = '';
+            document.getElementById('solutionDisplay').innerHTML = '';
+        }
+
+        // Row Reduction Animator
+        let currentStep = 0;
+        let currentExample = null;
+        const rowReductionExamples = {
+            example1: {
+                initial: [[1, 2, 3], [4, 5, 6]],
+                steps: [
+                    { matrix: [[1, 2, 3], [4, 5, 6]], operation: 'Start', desc: 'Initial matrix' },
+                    { matrix: [[1, 2, 3], [0, -3, -6]], operation: 'R₂ - 4R₁ → R₂', desc: 'Eliminate below first pivot' },
+                    { matrix: [[1, 2, 3], [0, 1, 2]], operation: '-⅓R₂ → R₂', desc: 'Scale second row to pivot' }
+                ]
+            },
+            example2: {
+                initial: [[1, 1, 1, 2], [2, 1, 1, 3], [1, 2, 1, 4]],
+                steps: [
+                    { matrix: [[1, 1, 1, 2], [2, 1, 1, 3], [1, 2, 1, 4]], operation: 'Start', desc: 'Initial 3×4 matrix' },
+                    { matrix: [[1, 1, 1, 2], [0, -1, -1, -1], [1, 2, 1, 4]], operation: 'R₂ - 2R₁ → R₂', desc: 'Eliminate in column 1' },
+                    { matrix: [[1, 1, 1, 2], [0, -1, -1, -1], [0, 1, 0, 2]], operation: 'R₃ - R₁ → R₃', desc: 'Eliminate in column 1' },
+                    { matrix: [[1, 1, 1, 2], [0, 1, 1, 1], [0, 1, 0, 2]], operation: '-R₂ → R₂', desc: 'Scale row 2' },
+                    { matrix: [[1, 1, 1, 2], [0, 1, 1, 1], [0, 0, -1, 1]], operation: 'R₃ - R₂ → R₃', desc: 'Eliminate in column 2' }
+                ]
+            },
+            example3: {
+                initial: [[2, 1, -1, 8], [-3, -1, 2, -11], [-2, 1, 2, -3]],
+                steps: [
+                    { matrix: [[2, 1, -1, 8], [-3, -1, 2, -11], [-2, 1, 2, -3]], operation: 'Start', desc: 'Initial 3×4 matrix' },
+                    { matrix: [[1, 0.5, -0.5, 4], [-3, -1, 2, -11], [-2, 1, 2, -3]], operation: '½R₁ → R₁', desc: 'Scale row 1' },
+                    { matrix: [[1, 0.5, -0.5, 4], [0, 0.5, 0.5, 1], [-2, 1, 2, -3]], operation: 'R₂ + 3R₁ → R₂', desc: 'Eliminate in column 1' }
+                ]
+            }
+        };
+
+        function formatMatrix(matrix) {
+            let html = '\\[\\begin{bmatrix}';
+            for (let i = 0; i < matrix.length; i++) {
+                for (let j = 0; j < matrix[i].length; j++) {
+                    html += matrix[i][j].toFixed(1);
+                    if (j < matrix[i].length - 1) html += ' & ';
+                }
+                if (i < matrix.length - 1) html += ' \\\\ ';
+            }
+            html += '\\end{bmatrix}\\]';
+            return html;
+        }
+
+        function loadRowReductionExample(example) {
+            currentExample = example;
+            currentStep = 0;
+            rowReductionNextStep();
+        }
+
+        function rowReductionNextStep() {
+            if (!currentExample) return;
+
+            const example = rowReductionExamples[currentExample];
+            if (currentStep >= example.steps.length) return;
+
+            const step = example.steps[currentStep];
+            const matrixDisplay = document.getElementById('matrixDisplay');
+            const operationDesc = document.getElementById('operationDescription');
+            const stepExplanation = document.getElementById('stepExplanation');
+
+            matrixDisplay.innerHTML = formatMatrix(step.matrix);
+
+            if (step.operation !== 'Start') {
+                operationDesc.style.display = 'block';
+                document.getElementById('operationText').textContent = step.operation;
+            } else {
+                operationDesc.style.display = 'none';
+            }
+
+            stepExplanation.textContent = step.desc;
+            currentStep++;
+
+            renderMathInElement(document.body);
+        }
+
+        function resetRowReduction() {
+            currentStep = 0;
+            currentExample = null;
+            document.getElementById('matrixDisplay').innerHTML = '\\[\\begin{bmatrix} 1 & 2 & | & 3 \\\\ 4 & 5 & | & 6 \\end{bmatrix}\\]';
+            document.getElementById('operationDescription').style.display = 'none';
+            document.getElementById('stepExplanation').textContent = '';
+            renderMathInElement(document.body);
+        }
+
+        // Initialize visualizations
+        drawGeometryCanvas();
+    </script>
+</body>
+</html>
