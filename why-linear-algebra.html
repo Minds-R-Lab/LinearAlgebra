@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Study Linear Algebra? | Linear Algebra — Dr. Mohamed Mabrok</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+  :root {
+    --primary: #0d9488; --primary-light: #ccfbf1; --primary-dark: #115e59;
+    --accent: #7c3aed; --accent-light: #ede9fe;
+    --success: #059669; --success-light: #d1fae5;
+    --warning: #d97706; --warning-light: #fef3c7;
+    --danger: #dc2626; --blue: #2563eb; --blue-light: #dbeafe;
+    --rose: #e11d48; --rose-light: #ffe4e6;
+    --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --text-muted: #64748b;
+    --border: #e2e8f0; --radius: 12px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.08);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 17px; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border); padding: 0 2rem;
+    display: flex; align-items: center; height: 60px; box-shadow: var(--shadow);
+  }
+  nav .logo a { font-weight: 700; font-size: 1.15rem; color: var(--primary); text-decoration: none; margin-right: 2rem; white-space: nowrap; }
+  nav .nav-links { display: flex; gap: 0.25rem; overflow-x: auto; }
+  nav .nav-links a {
+    text-decoration: none; color: var(--text-muted); padding: 0.4rem 0.85rem;
+    border-radius: 8px; font-size: 0.88rem; font-weight: 500; white-space: nowrap; transition: all 0.2s;
+  }
+  nav .nav-links a:hover, nav .nav-links a.active { background: var(--primary-light); color: var(--primary); }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 80px 1.5rem 3rem; }
+
+  /* Hero */
+  .page-hero {
+    background: linear-gradient(135deg, #0f172a 0%, #134e4a 40%, #7c3aed 100%);
+    color: #fff; border-radius: var(--radius); padding: 3rem 2.5rem; margin-bottom: 2.5rem;
+    position: relative; overflow: hidden;
+  }
+  .page-hero::before {
+    content: ''; position: absolute; inset: 0; opacity: 0.06;
+    background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23fff'%3E%3Ccircle cx='20' cy='20' r='1.5'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  .page-hero h1 { font-size: 2.4rem; font-weight: 800; position: relative; margin-bottom: 0.5rem; }
+  .page-hero p { font-size: 1.1rem; opacity: 0.9; position: relative; max-width: 650px; }
+
+  section { background: var(--card); border-radius: var(--radius); padding: 2.5rem; margin-bottom: 2rem; border: 1px solid var(--border); box-shadow: var(--shadow); }
+  h2 { font-size: 1.5rem; font-weight: 700; color: var(--text); margin-bottom: 1rem; border-bottom: 3px solid var(--primary); padding-bottom: 0.5rem; display: inline-block; }
+  h3 { font-size: 1.2rem; font-weight: 600; margin: 1.5rem 0 0.75rem; color: var(--accent); }
+  p { margin-bottom: 1rem; }
+
+  .quote-box {
+    background: linear-gradient(135deg, #fefce8, #fef9c3); border-left: 5px solid var(--warning);
+    border-radius: var(--radius); padding: 1.5rem 1.5rem 1.5rem 2rem; margin: 2rem 0;
+    font-style: italic; position: relative;
+  }
+  .quote-box::before { content: '\201C'; font-size: 4rem; color: var(--warning); opacity: 0.3; position: absolute; top: -0.2rem; left: 0.5rem; font-family: Georgia, serif; }
+  .quote-box .attribution { font-style: normal; font-weight: 600; color: var(--warning); margin-top: 0.5rem; font-size: 0.95rem; }
+
+  .islamic-box {
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-left: 5px solid var(--success);
+    border-radius: var(--radius); padding: 1.5rem 1.5rem 1.5rem 2rem; margin: 2rem 0;
+    position: relative;
+  }
+  .islamic-box .arabic { font-size: 1.3rem; text-align: center; margin-bottom: 0.5rem; font-family: 'Traditional Arabic', 'Scheherazade New', serif; direction: rtl; color: var(--success); font-weight: 600; }
+  .islamic-box .translation { font-style: italic; color: #065f46; }
+  .islamic-box .source { font-weight: 600; color: var(--success); margin-top: 0.5rem; font-size: 0.9rem; }
+
+  .definition-box { background: var(--primary-light); border-left: 5px solid var(--primary); border-radius: var(--radius); padding: 1.5rem; margin: 1.5rem 0; }
+  .tip-box { background: #f0f9ff; border-left: 5px solid #0ea5e9; border-radius: var(--radius); padding: 1.5rem; margin: 1.5rem 0; }
+  .warning-box { background: var(--warning-light); border-left: 5px solid var(--warning); border-radius: var(--radius); padding: 1.5rem; margin: 1.5rem 0; }
+  .box-label { font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+  .definition-box .box-label { color: var(--primary); }
+  .tip-box .box-label { color: #0ea5e9; }
+
+  .math-display { background: #f1f5f9; border-radius: 8px; padding: 1.2rem; text-align: center; margin: 1rem 0; font-size: 1.1em; overflow-x: auto; }
+
+  /* Example cards */
+  .example-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; margin: 1.5rem 0; }
+  .example-card {
+    background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius);
+    padding: 1.5rem; transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .example-card:hover { border-color: var(--primary); box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+  .example-card .icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+  .example-card h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text); }
+  .example-card p { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 0.75rem; }
+  .example-card .equation { background: #f8fafc; border-radius: 8px; padding: 0.75rem; text-align: center; margin-top: 0.5rem; }
+  .example-card .takeaway { font-size: 0.9rem; color: var(--primary); font-weight: 600; margin-top: 0.75rem; }
+
+  /* Timeline */
+  .timeline { position: relative; padding-left: 2.5rem; margin: 1.5rem 0; }
+  .timeline::before { content: ''; position: absolute; left: 0.75rem; top: 0; bottom: 0; width: 3px; background: var(--primary-light); border-radius: 2px; }
+  .timeline-item { position: relative; margin-bottom: 1.5rem; }
+  .timeline-item::before {
+    content: ''; position: absolute; left: -2.15rem; top: 0.4rem;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--primary); border: 3px solid var(--primary-light);
+  }
+  .timeline-item .year { font-weight: 700; color: var(--primary); font-size: 0.9rem; }
+  .timeline-item .event { margin-top: 0.15rem; }
+
+  /* Comparison grid */
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+  .compare-card {
+    background: #fff; border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 1.25rem; text-align: center;
+  }
+  .compare-card h4 { font-size: 1rem; margin-bottom: 0.5rem; }
+  .compare-card .eq { background: #f1f5f9; border-radius: 8px; padding: 0.75rem; margin: 0.5rem 0; }
+  .compare-card .desc { font-size: 0.9rem; color: var(--text-muted); }
+  @media (max-width: 640px) { .compare-grid { grid-template-columns: 1fr; } }
+
+  /* Interactive visualization */
+  .viz-container {
+    background: #0f172a; border-radius: var(--radius); padding: 1.5rem;
+    margin: 1.5rem 0; position: relative; overflow: hidden;
+  }
+  .viz-container canvas { display: block; margin: 0 auto; border-radius: 8px; cursor: crosshair; }
+  .viz-controls {
+    display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center;
+    margin-top: 1rem;
+  }
+  .viz-btn {
+    padding: 0.5rem 1.2rem; border-radius: 8px; border: 1.5px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.08); color: #fff; font-size: 0.85rem; font-weight: 600;
+    cursor: pointer; transition: all 0.2s; font-family: inherit;
+  }
+  .viz-btn:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.4); }
+  .viz-btn.active { background: var(--primary); border-color: var(--primary); }
+  .viz-label { color: rgba(255,255,255,0.6); font-size: 0.8rem; text-align: center; margin-top: 0.75rem; }
+
+  /* Application domain cards */
+  .domain-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin: 1.5rem 0; }
+  .domain-card {
+    background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius);
+    padding: 1.75rem; transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .domain-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+  .domain-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  }
+  .domain-card .domain-icon {
+    width: 52px; height: 52px; border-radius: 12px; display: flex;
+    align-items: center; justify-content: center; font-size: 1.5rem;
+    color: #fff; margin-bottom: 1rem;
+  }
+  .domain-card h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .domain-card p { font-size: 0.92rem; color: var(--text-muted); margin-bottom: 0.75rem; }
+  .domain-card .equation { background: #f8fafc; border-radius: 8px; padding: 0.6rem; text-align: center; font-size: 0.95rem; }
+
+  /* SVG interactive demos */
+  .demo-container {
+    background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius);
+    padding: 1.5rem; margin: 1.5rem 0; text-align: center;
+  }
+  .demo-container svg { max-width: 100%; }
+
+  /* Slider */
+  .slider-group { display: flex; align-items: center; gap: 1rem; margin: 1rem 0; flex-wrap: wrap; justify-content: center; }
+  .slider-group label { font-weight: 600; font-size: 0.9rem; white-space: nowrap; }
+  .slider-group input[type="range"] { width: 200px; accent-color: var(--primary); }
+  .slider-group .val { font-weight: 700; color: var(--primary); min-width: 60px; }
+
+  /* Table */
+  .la-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.95rem; }
+  .la-table th {
+    background: var(--primary); color: #fff; padding: 0.75rem 1rem;
+    text-align: left; font-weight: 600; font-size: 0.9rem;
+  }
+  .la-table th:first-child { border-radius: 8px 0 0 0; }
+  .la-table th:last-child { border-radius: 0 8px 0 0; }
+  .la-table td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .la-table tr:last-child td { border-bottom: none; }
+  .la-table tr:nth-child(even) { background: #f8fafc; }
+  .la-table tr:hover { background: var(--primary-light); }
+
+  /* Pillar boxes */
+  .pillar-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+  .pillar-box {
+    border-radius: var(--radius); padding: 1.5rem; text-align: center;
+    border: 1.5px solid var(--border);
+  }
+  .pillar-box .pillar-num { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+  .pillar-box h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .pillar-box p { font-size: 0.88rem; color: var(--text-muted); }
+  @media (max-width: 700px) { .pillar-grid { grid-template-columns: 1fr; } }
+
+  footer { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid var(--border); margin-top: 2rem; }
+
+  @media (max-width: 640px) {
+    .page-hero h1 { font-size: 1.7rem; }
+    section { padding: 1.5rem; }
+    .example-grid { grid-template-columns: 1fr; }
+    .domain-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><a href="index.html">LA Course</a></div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="why-linear-algebra.html" class="active">Why LA?</a>
+    <a href="exam-generator.html">Exam Generator</a>
+  </div>
+</nav>
+
+<div class="container">
+
+<!-- Hero -->
+<div class="page-hero">
+  <h1>Why Study Linear Algebra?</h1>
+  <p>The mathematical language of data, space, and transformation &mdash; and the hidden engine behind modern technology</p>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 1: THE LANGUAGE OF STRUCTURE -->
+<!-- ============================================================ -->
+<section>
+  <h2>The Language of Structure</h2>
+
+  <p>Look at the world through a different lens. Every image on your screen is a matrix of pixel values. Every search query you type triggers a massive matrix multiplication. Every 3D video game renders frames by multiplying transformation matrices sixty times per second. <strong>Linear algebra is the mathematics of organized information</strong> &mdash; and organized information is the foundation of modern civilization.</p>
+
+  <p>While calculus studies <em>change</em>, linear algebra studies <em>structure</em>: how data is arranged, how spaces are shaped, how transformations move objects from one form to another. It answers questions like:</p>
+
+  <div class="pillar-grid">
+    <div class="pillar-box" style="background: var(--primary-light);">
+      <div class="pillar-num" style="color: var(--primary);">Ax=b</div>
+      <h4>Solving Systems</h4>
+      <p>Given interconnected constraints, what values satisfy them all simultaneously?</p>
+    </div>
+    <div class="pillar-box" style="background: var(--accent-light);">
+      <div class="pillar-num" style="color: var(--accent);">T(x)</div>
+      <h4>Transformations</h4>
+      <p>How do rotations, reflections, and projections change objects in space?</p>
+    </div>
+    <div class="pillar-box" style="background: var(--rose-light);">
+      <div class="pillar-num" style="color: var(--rose);">Av=&lambda;v</div>
+      <h4>Spectral Analysis</h4>
+      <p>What are the fundamental modes, frequencies, or principal directions of a system?</p>
+    </div>
+  </div>
+
+  <div class="islamic-box">
+    <div class="arabic">وَكُلَّ شَيْءٍ أَحْصَيْنَاهُ فِي إِمَامٍ مُّبِينٍ</div>
+    <div class="translation">"And all things We have recorded in a clear register."</div>
+    <div class="source">&mdash; Quran 36:12</div>
+    <p style="margin-top:0.75rem; margin-bottom:0;">The idea that information can be organized, quantified, and analyzed in structured form resonates deeply with the spirit of linear algebra. Matrices and vectors are our "registers" for understanding the numerical patterns woven into creation.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: WHAT IS LINEAR ALGEBRA? -->
+<!-- ============================================================ -->
+<section>
+  <h2>What is Linear Algebra, Exactly?</h2>
+
+  <p>At its core, linear algebra is the study of <strong>vectors</strong>, <strong>matrices</strong>, and <strong>linear transformations</strong>. But what does "linear" really mean?</p>
+
+  <div class="definition-box">
+    <div class="box-label">Definition &mdash; Linearity</div>
+    <p>A function \(T\) is <strong>linear</strong> if it satisfies two properties for all vectors \(\mathbf{u}, \mathbf{v}\) and scalar \(c\):</p>
+    <div class="math-display">$$T(\mathbf{u} + \mathbf{v}) = T(\mathbf{u}) + T(\mathbf{v}) \qquad \text{(additivity)}$$</div>
+    <div class="math-display">$$T(c\,\mathbf{u}) = c\,T(\mathbf{u}) \qquad \text{(homogeneity)}$$</div>
+    <p style="margin-bottom:0;">These two properties together mean: <em>the function preserves addition and scaling</em>. Remarkably, every such function can be represented as multiplication by a matrix.</p>
+  </div>
+
+  <h3>The Three Fundamental Objects</h3>
+
+  <div class="example-grid">
+    <div class="example-card" style="border-top: 4px solid var(--primary);">
+      <div class="icon">&#10145;</div>
+      <h4>Vectors</h4>
+      <p>Ordered lists of numbers representing points, directions, states, or data.</p>
+      <div class="equation">\(\mathbf{v} = \begin{pmatrix} 3 \\ -1 \\ 4 \end{pmatrix}\)</div>
+      <div class="takeaway">A single data point in \(\mathbb{R}^n\)</div>
+    </div>
+    <div class="example-card" style="border-top: 4px solid var(--accent);">
+      <div class="icon">&#9638;</div>
+      <h4>Matrices</h4>
+      <p>Rectangular arrays of numbers &mdash; they encode systems of equations, transformations, and data.</p>
+      <div class="equation">\(A = \begin{pmatrix} 2 & 1 \\ 0 & 3 \end{pmatrix}\)</div>
+      <div class="takeaway">A linear transformation or a data table</div>
+    </div>
+    <div class="example-card" style="border-top: 4px solid var(--rose);">
+      <div class="icon">&#8634;</div>
+      <h4>Linear Transformations</h4>
+      <p>Functions that map vectors to vectors while preserving linearity.</p>
+      <div class="equation">\(T(\mathbf{x}) = A\mathbf{x}\)</div>
+      <div class="takeaway">Every linear map is a matrix multiply</div>
+    </div>
+  </div>
+
+  <div class="quote-box">
+    "Linear algebra is arguably the most useful branch of mathematics for anyone working in science, engineering, or data science. It provides the language and the computational tools for nearly everything."
+    <div class="attribution">&mdash; Gilbert Strang, MIT</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: INTERACTIVE — 2D TRANSFORMATIONS -->
+<!-- ============================================================ -->
+<section>
+  <h2>See It: Linear Transformations in 2D</h2>
+
+  <p>A \(2 \times 2\) matrix transforms every point in the plane. Watch how a unit square and its grid change shape under different transformations. Click each button to see the matrix in action:</p>
+
+  <div class="viz-container" id="transform-viz">
+    <canvas id="transformCanvas" width="600" height="400"></canvas>
+    <div class="viz-controls">
+      <button class="viz-btn active" onclick="setTransform('identity')">Identity</button>
+      <button class="viz-btn" onclick="setTransform('rotate')">Rotate 45&deg;</button>
+      <button class="viz-btn" onclick="setTransform('shear')">Shear</button>
+      <button class="viz-btn" onclick="setTransform('scale')">Scale</button>
+      <button class="viz-btn" onclick="setTransform('reflect')">Reflect</button>
+      <button class="viz-btn" onclick="setTransform('project')">Project</button>
+    </div>
+    <div class="viz-label" id="transformLabel">
+      \(A = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}\) &mdash; Identity: no change
+    </div>
+  </div>
+
+  <div class="tip-box">
+    <div class="box-label">Key Insight</div>
+    <p>Every \(2\times 2\) matrix defines a transformation of the entire plane. The columns of the matrix tell you where the standard basis vectors \(\mathbf{e}_1 = (1,0)\) and \(\mathbf{e}_2 = (0,1)\) land. <strong>Once you know where the basis goes, you know where everything goes.</strong></p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: THE CENTRAL PROBLEM — Ax = b -->
+<!-- ============================================================ -->
+<section>
+  <h2>The Central Problem: Solving Ax = b</h2>
+
+  <p>If there is one equation that summarizes the entire course, it is this:</p>
+
+  <div class="math-display" style="font-size: 1.4em; padding: 1.5rem;">$$A\mathbf{x} = \mathbf{b}$$</div>
+
+  <p>Given a matrix \(A\) and a vector \(\mathbf{b}\), find the vector \(\mathbf{x}\) (if it exists). This single equation encodes:</p>
+
+  <table class="la-table">
+    <tr><th>Interpretation</th><th>What \(A\), \(\mathbf{x}\), \(\mathbf{b}\) represent</th></tr>
+    <tr><td><strong>System of equations</strong></td><td>Coefficients, unknowns, right-hand side</td></tr>
+    <tr><td><strong>Linear transformation</strong></td><td>Transformation, input, output</td></tr>
+    <tr><td><strong>Data fitting</strong></td><td>Design matrix, parameters, observations</td></tr>
+    <tr><td><strong>Network flow</strong></td><td>Incidence matrix, flows, demands</td></tr>
+    <tr><td><strong>Machine learning</strong></td><td>Feature matrix, weights, predictions</td></tr>
+    <tr><td><strong>Graph theory</strong></td><td>Adjacency matrix, ranking scores, constraints</td></tr>
+  </table>
+
+  <p>The remarkable thing is that one set of tools &mdash; Gaussian elimination, matrix factorizations, eigenvalue decomposition &mdash; solves <strong>all</strong> of these problems. That is the power and elegance of linear algebra.</p>
+
+  <h3>Quick Example: Three Equations, Three Unknowns</h3>
+
+  <p>Consider the system:</p>
+  <div class="math-display">$$\begin{cases} 2x + y - z = 8 \\ -3x - y + 2z = -11 \\ -2x + y + 2z = -3 \end{cases}$$</div>
+
+  <p>In matrix form, this is \(A\mathbf{x} = \mathbf{b}\) with:</p>
+  <div class="math-display">$$\underbrace{\begin{pmatrix} 2 & 1 & -1 \\ -3 & -1 & 2 \\ -2 & 1 & 2 \end{pmatrix}}_{A} \underbrace{\begin{pmatrix} x \\ y \\ z \end{pmatrix}}_{\mathbf{x}} = \underbrace{\begin{pmatrix} 8 \\ -11 \\ -3 \end{pmatrix}}_{\mathbf{b}}$$</div>
+
+  <p>Gaussian elimination (which we will study in Chapter 1) gives us \(x = 2, \; y = 3, \; z = -1\). One algorithm, one framework &mdash; works whether the system has 3 variables or 3 million.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: INTERACTIVE — EIGENVECTORS -->
+<!-- ============================================================ -->
+<section>
+  <h2>See It: Eigenvalues and Eigenvectors</h2>
+
+  <p>Most vectors change direction when multiplied by a matrix. But special vectors called <strong>eigenvectors</strong> keep their direction &mdash; they only get stretched or shrunk by a factor \(\lambda\) (the eigenvalue). This is perhaps the most powerful concept in all of linear algebra.</p>
+
+  <div class="definition-box">
+    <div class="box-label">Definition &mdash; Eigenvalue Equation</div>
+    <p>\(A\mathbf{v} = \lambda\mathbf{v}\), where \(\mathbf{v} \neq \mathbf{0}\). The scalar \(\lambda\) is an <strong>eigenvalue</strong> and \(\mathbf{v}\) is the corresponding <strong>eigenvector</strong>.</p>
+  </div>
+
+  <div class="demo-container" id="eigen-demo">
+    <svg id="eigenSvg" viewBox="0 0 600 400" width="600" height="400" style="background:#0f172a; border-radius:8px;">
+      <!-- Grid -->
+      <g stroke="rgba(255,255,255,0.06)" stroke-width="0.5">
+        <line x1="0" y1="200" x2="600" y2="200"/><line x1="300" y1="0" x2="300" y2="400"/>
+        <line x1="0" y1="100" x2="600" y2="100"/><line x1="0" y1="300" x2="600" y2="300"/>
+        <line x1="100" y1="0" x2="100" y2="400"/><line x1="200" y1="0" x2="200" y2="400"/>
+        <line x1="400" y1="0" x2="400" y2="400"/><line x1="500" y1="0" x2="500" y2="400"/>
+      </g>
+      <text x="590" y="195" fill="rgba(255,255,255,0.3)" font-size="12" font-style="italic">x</text>
+      <text x="305" y="15" fill="rgba(255,255,255,0.3)" font-size="12" font-style="italic">y</text>
+
+      <!-- Eigenvector 1 -->
+      <line id="ev1" x1="300" y1="200" x2="440" y2="60" stroke="#5eead4" stroke-width="3" marker-end="url(#arrowTeal)"/>
+      <text id="ev1label" x="450" y="55" fill="#5eead4" font-size="13" font-weight="600">v&#x2081; (&lambda;=3)</text>
+
+      <!-- Eigenvector 2 -->
+      <line id="ev2" x1="300" y1="200" x2="180" y2="80" stroke="#a78bfa" stroke-width="3" marker-end="url(#arrowPurple)"/>
+      <text id="ev2label" x="130" y="70" fill="#a78bfa" font-size="13" font-weight="600">v&#x2082; (&lambda;=1)</text>
+
+      <!-- Transformed Eigenvector 1 (dashed) -->
+      <line id="ev1t" x1="300" y1="200" x2="720" y2="0" stroke="#5eead4" stroke-width="2" stroke-dasharray="8,4" opacity="0.5"/>
+
+      <!-- Random vector -->
+      <line id="randV" x1="300" y1="200" x2="420" y2="120" stroke="#fbbf24" stroke-width="2.5" marker-end="url(#arrowYellow)"/>
+      <text id="randVlabel" x="425" y="115" fill="#fbbf24" font-size="12" font-weight="600">u (random)</text>
+
+      <!-- Transformed random vector -->
+      <line id="randVt" x1="300" y1="200" x2="480" y2="60" stroke="#fbbf24" stroke-width="2" stroke-dasharray="8,4" opacity="0.5"/>
+      <text id="randVtLabel" x="485" y="55" fill="#fbbf24" font-size="12" opacity="0.7">Au (changed direction!)</text>
+
+      <defs>
+        <marker id="arrowTeal" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#5eead4"/></marker>
+        <marker id="arrowPurple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#a78bfa"/></marker>
+        <marker id="arrowYellow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#fbbf24"/></marker>
+      </defs>
+    </svg>
+    <p style="margin-top:1rem; font-size:0.9rem; color:var(--text-muted);">The teal and purple vectors (<strong>eigenvectors</strong>) keep their direction when transformed &mdash; only their length changes. The yellow vector changes direction entirely. Eigenvectors reveal a matrix's <em>natural axes of action</em>.</p>
+  </div>
+
+  <p>Eigenvalues tell us:</p>
+  <div class="example-grid" style="grid-template-columns: 1fr 1fr;">
+    <div class="example-card" style="border-top: 4px solid #5eead4;">
+      <h4>|\(\lambda\)| &gt; 1 &rarr; Stretching</h4>
+      <p>The system amplifies along this direction. In a vibrating system, this means resonance or instability.</p>
+    </div>
+    <div class="example-card" style="border-top: 4px solid #a78bfa;">
+      <h4>|\(\lambda\)| &lt; 1 &rarr; Shrinking</h4>
+      <p>The system contracts along this direction. In dynamics, this means decay toward equilibrium.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: A BRIEF HISTORY -->
+<!-- ============================================================ -->
+<section>
+  <h2>A Brief History of Linear Algebra</h2>
+
+  <p>Linear algebra's roots stretch back millennia, but it became the powerhouse it is today through centuries of mathematical development:</p>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="year">~200 BCE &mdash; China</div>
+      <div class="event">The <em>Nine Chapters on the Mathematical Art</em> describes solving systems of linear equations using a method equivalent to Gaussian elimination &mdash; nearly 2000 years before Gauss.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="year">~800 CE &mdash; Islamic Golden Age</div>
+      <div class="event"><strong>Al-Khwarizmi</strong> (from whose name we get "algorithm") develops systematic methods for solving linear and quadratic equations. The algebraic thinking that would later underpin matrix theory traces directly to this era.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="year">1683 &mdash; Seki Takakazu (Japan)</div>
+      <div class="event">Independently develops the concept of <strong>determinants</strong> for solving systems of equations, around the same time as Leibniz in Europe.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="year">1750 &mdash; Gabriel Cramer</div>
+      <div class="event">Publishes <strong>Cramer's Rule</strong>, giving an explicit formula for solving \(n \times n\) systems using determinants.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="year">1810 &mdash; Carl Friedrich Gauss</div>
+      <div class="event">Formalizes <strong>Gaussian elimination</strong> while working on astronomical calculations. The method becomes the standard algorithm for solving linear systems.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="year">1855 &mdash; Arthur Cayley</div>
+      <div class="event">Introduces <strong>matrix algebra</strong> as a formal mathematical system &mdash; the first person to treat matrices as objects in their own right with operations like multiplication.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="year">1904 &mdash; David Hilbert</div>
+      <div class="event">Develops the theory of <strong>infinite-dimensional vector spaces</strong> (Hilbert spaces), laying the mathematical foundation for quantum mechanics.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="year">1929 &mdash; John von Neumann</div>
+      <div class="event">Rigorously axiomatizes <strong>quantum mechanics</strong> using linear algebra. Observables become matrices, states become vectors &mdash; the language of linear algebra becomes the language of physics.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="year">1965 &mdash; Gene Golub &amp; William Kahan</div>
+      <div class="event">Develop practical algorithms for the <strong>Singular Value Decomposition (SVD)</strong>, which becomes one of the most important computational tools in data science and engineering.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="year">1998 &mdash; Larry Page &amp; Sergey Brin</div>
+      <div class="event">Google's <strong>PageRank algorithm</strong> uses the dominant eigenvector of a massive web-link matrix to rank web pages &mdash; linear algebra literally powers the internet's search engine.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="year">2012&ndash;present &mdash; Deep Learning Revolution</div>
+      <div class="event">Neural networks are sequences of <strong>matrix multiplications + nonlinearities</strong>. GPUs (originally for graphics matrix math) become AI accelerators. Linear algebra is the computational backbone of modern AI.</div>
+    </div>
+  </div>
+
+  <div class="quote-box">
+    "The theory of matrices is one of the most powerful tools in mathematics and its applications. I cannot overemphasize the importance of matrices in modern applied mathematics."
+    <div class="attribution">&mdash; Richard Bellman, pioneer of dynamic programming</div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: APPLICATIONS IN CS & ENGINEERING -->
+<!-- ============================================================ -->
+<section>
+  <h2>Applications: Where Linear Algebra Powers the World</h2>
+
+  <p>Linear algebra isn't just abstract theory &mdash; it is the <strong>working engine</strong> behind technology you use every day. Here are the major domains, with special focus on computer science applications:</p>
+
+  <h3>Computer Science &amp; AI</h3>
+
+  <div class="domain-grid">
+    <div class="domain-card" style="border-top: 4px solid var(--primary);">
+      <div class="domain-icon" style="background: linear-gradient(135deg, var(--primary), #14b8a6);">&#129302;</div>
+      <h4>Machine Learning &amp; AI</h4>
+      <p>Every neural network forward pass is a chain of matrix multiplications. Training uses gradient descent &mdash; which computes derivatives of matrix expressions. PCA reduces high-dimensional data to its most informative axes via eigenvalue decomposition.</p>
+      <div class="equation">\(\hat{y} = \sigma(W_2 \cdot \sigma(W_1 \mathbf{x} + \mathbf{b}_1) + \mathbf{b}_2)\)</div>
+    </div>
+    <div class="domain-card" style="border-top: 4px solid var(--accent);">
+      <div class="domain-icon" style="background: linear-gradient(135deg, var(--accent), #8b5cf6);">&#127912;</div>
+      <h4>Computer Graphics</h4>
+      <p>Every rotation, translation, scaling, and projection in 3D graphics is a matrix multiplication. Game engines perform millions of these per frame. Homogeneous coordinates let us combine all transforms into a single \(4 \times 4\) matrix.</p>
+      <div class="equation">\(\mathbf{p}' = M_{\text{proj}} \cdot M_{\text{view}} \cdot M_{\text{model}} \cdot \mathbf{p}\)</div>
+    </div>
+    <div class="domain-card" style="border-top: 4px solid var(--rose);">
+      <div class="domain-icon" style="background: linear-gradient(135deg, var(--rose), #f43f5e);">&#128269;</div>
+      <h4>Search Engines (PageRank)</h4>
+      <p>Google ranks web pages by computing the dominant eigenvector of the web's link matrix. A page is important if important pages link to it &mdash; a self-referential definition solved elegantly by eigenvalue theory.</p>
+      <div class="equation">\(\mathbf{r} = M\mathbf{r} \quad \Longleftrightarrow \quad M\mathbf{r} = 1 \cdot \mathbf{r}\)</div>
+    </div>
+    <div class="domain-card" style="border-top: 4px solid var(--blue);">
+      <div class="domain-icon" style="background: linear-gradient(135deg, var(--blue), #3b82f6);">&#128202;</div>
+      <h4>Data Science &amp; Recommender Systems</h4>
+      <p>Netflix recommendations use SVD to factorize the user-movie ratings matrix into lower-rank components, predicting what you'll watch next. The same idea powers Amazon, Spotify, and YouTube.</p>
+      <div class="equation">\(R \approx U \Sigma V^T \quad \text{(low-rank approx.)}\)</div>
+    </div>
+    <div class="domain-card" style="border-top: 4px solid var(--warning);">
+      <div class="domain-icon" style="background: linear-gradient(135deg, var(--warning), #f59e0b);">&#128247;</div>
+      <h4>Image Compression &amp; Processing</h4>
+      <p>JPEG 2000 and many compression algorithms use SVD or wavelets (which are matrix transforms) to compress images. Keeping only the top singular values preserves the image while dramatically reducing file size.</p>
+      <div class="equation">\(A_k = \sum_{i=1}^{k} \sigma_i \mathbf{u}_i \mathbf{v}_i^T\)</div>
+    </div>
+    <div class="domain-card" style="border-top: 4px solid var(--success);">
+      <div class="domain-icon" style="background: linear-gradient(135deg, var(--success), #10b981);">&#128274;</div>
+      <h4>Cryptography</h4>
+      <p>Public key cryptography, lattice-based cryptography (post-quantum), and error-correcting codes all rely heavily on linear algebra over finite fields. The Hill cipher directly encrypts using matrix multiplication.</p>
+      <div class="equation">\(\mathbf{c} = A\mathbf{p} \pmod{26}\)</div>
+    </div>
+  </div>
+
+  <h3>Engineering &amp; Science</h3>
+
+  <div class="domain-grid">
+    <div class="domain-card" style="border-top: 4px solid #06b6d4;">
+      <div class="domain-icon" style="background: linear-gradient(135deg, #06b6d4, #22d3ee);">&#128268;</div>
+      <h4>Signal Processing</h4>
+      <p>The Discrete Fourier Transform (DFT) is a matrix multiplication. Filters are convolution matrices. Every audio, radio, and telecommunications system relies on linear algebra.</p>
+      <div class="equation">\(\mathbf{X} = F_N \mathbf{x} \quad \text{(DFT matrix)}\)</div>
+    </div>
+    <div class="domain-card" style="border-top: 4px solid #8b5cf6;">
+      <div class="domain-icon" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">&#9881;</div>
+      <h4>Control Systems</h4>
+      <p>State-space models represent dynamic systems as \(\dot{\mathbf{x}} = A\mathbf{x} + B\mathbf{u}\). Stability depends on eigenvalues of \(A\). Controllers are designed using matrix algebra.</p>
+      <div class="equation">\(\dot{\mathbf{x}} = A\mathbf{x} + B\mathbf{u}, \quad \mathbf{y} = C\mathbf{x}\)</div>
+    </div>
+    <div class="domain-card" style="border-top: 4px solid #f97316;">
+      <div class="domain-icon" style="background: linear-gradient(135deg, #f97316, #fb923c);">&#127959;</div>
+      <h4>Structural Engineering</h4>
+      <p>The finite element method discretizes structures into elements connected at nodes. The stiffness matrix \(K\) relates forces to displacements: \(K\mathbf{d} = \mathbf{f}\). Linear algebra solves for deflections.</p>
+      <div class="equation">\(K\mathbf{d} = \mathbf{f} \quad \text{(stiffness eq.)}\)</div>
+    </div>
+    <div class="domain-card" style="border-top: 4px solid #ec4899;">
+      <div class="domain-icon" style="background: linear-gradient(135deg, #ec4899, #f472b6);">&#9883;</div>
+      <h4>Quantum Computing</h4>
+      <p>Quantum states are vectors in a Hilbert space. Quantum gates are unitary matrices. Measurement is a projection. The entire framework of quantum computing is linear algebra.</p>
+      <div class="equation">\(|\psi'\rangle = U |\psi\rangle \quad \text{(unitary gate)}\)</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: INTERACTIVE — IMAGE COMPRESSION WITH SVD -->
+<!-- ============================================================ -->
+<section>
+  <h2>See It: Image Compression with SVD</h2>
+
+  <p>One of the most striking applications of linear algebra is using the Singular Value Decomposition to compress images. The idea: any \(m \times n\) matrix (image) can be written as a sum of rank-1 matrices. Keeping only the first \(k\) terms gives an approximation that captures most of the image with far less data.</p>
+
+  <div class="math-display">$$A = U \Sigma V^T = \sigma_1 \mathbf{u}_1 \mathbf{v}_1^T + \sigma_2 \mathbf{u}_2 \mathbf{v}_2^T + \cdots + \sigma_r \mathbf{u}_r \mathbf{v}_r^T$$</div>
+
+  <div class="demo-container">
+    <canvas id="svdCanvas" width="600" height="260"></canvas>
+    <div class="slider-group">
+      <label>Rank \(k\):</label>
+      <input type="range" id="svdRank" min="1" max="50" value="5" oninput="updateSVD()">
+      <span class="val" id="svdRankVal">k = 5</span>
+      <span style="color:var(--text-muted); font-size:0.85rem;" id="svdCompression">| Compression: 90%</span>
+    </div>
+    <p style="margin-top:0.75rem; font-size:0.9rem; color:var(--text-muted);">Drag the slider to see how many rank-1 components are needed to reconstruct the image. Low \(k\) = more compression, less detail. Higher \(k\) = less compression, more detail.</p>
+  </div>
+
+  <div class="tip-box">
+    <div class="box-label">Why This Matters</div>
+    <p>A \(100 \times 100\) image stores 10,000 numbers. With rank-\(k\) SVD, you only store \(k(100 + 100 + 1) = 201k\) numbers. At \(k = 10\), that's 2,010 numbers &mdash; <strong>80% compression</strong> while retaining recognizable quality. This principle underlies image compression, noise reduction, and dimensionality reduction across science and engineering.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: COURSE OVERVIEW -->
+<!-- ============================================================ -->
+<section>
+  <h2>What You Will Learn in This Course</h2>
+
+  <p>This course takes you from the basics of solving linear systems all the way to the Singular Value Decomposition. Here is the journey:</p>
+
+  <table class="la-table">
+    <tr><th>Chapter</th><th>Topic</th><th>The Big Question</th></tr>
+    <tr><td style="font-weight:700; color:var(--primary);">Ch 1</td><td>Systems &amp; Matrices</td><td>How do we solve systems of linear equations efficiently?</td></tr>
+    <tr><td style="font-weight:700; color:var(--blue);">Ch 2</td><td>Vector Spaces</td><td>What is the "shape" and "size" of a solution set?</td></tr>
+    <tr><td style="font-weight:700; color:var(--accent);">Ch 3</td><td>Eigenvalues &amp; Diag.</td><td>What are the natural axes and modes of a linear system?</td></tr>
+    <tr><td style="font-weight:700; color:var(--warning);">Ch 4</td><td>Orthogonality</td><td>How do we find the best approximation when exact solutions don't exist?</td></tr>
+    <tr><td style="font-weight:700; color:var(--rose);">Ch 5</td><td>SVD &amp; Applications</td><td>How do we extract the most important structure from data?</td></tr>
+  </table>
+
+  <div class="definition-box" style="background: linear-gradient(135deg, var(--primary-light), var(--accent-light));">
+    <div class="box-label" style="color: var(--primary-dark);">The Unifying Thread</div>
+    <p>Every chapter builds toward one goal: understanding the <strong>structure of linear maps</strong> from multiple perspectives &mdash; algebraic (solving equations), geometric (transformations and spaces), and computational (algorithms and data). By the end, you'll see these as three views of the same beautiful idea.</p>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 10: WHY LA FOR ENGINEERS & CS -->
+<!-- ============================================================ -->
+<section>
+  <h2>Why This Course is Essential for Engineers &amp; CS Students</h2>
+
+  <p>Unlike a pure mathematics course, our focus is on <strong>computation</strong>, <strong>visualization</strong>, and <strong>applications</strong>. Here is why linear algebra is non-negotiable for your career:</p>
+
+  <div class="compare-grid" style="grid-template-columns: 1fr 1fr;">
+    <div class="compare-card" style="border-color: var(--primary); text-align: left; padding: 1.5rem;">
+      <h4 style="color: var(--primary); text-align: center;">If you work in CS...</h4>
+      <p class="desc" style="text-align: left; margin-top: 1rem;">&#x2022; Machine Learning = matrix calculus<br>
+      &#x2022; Computer Graphics = transformation matrices<br>
+      &#x2022; Databases = relational algebra (linear algebra cousin)<br>
+      &#x2022; Algorithms = graph theory (adjacency matrices)<br>
+      &#x2022; Compression = SVD and transforms<br>
+      &#x2022; Quantum Computing = unitary matrices</p>
+    </div>
+    <div class="compare-card" style="border-color: var(--accent); text-align: left; padding: 1.5rem;">
+      <h4 style="color: var(--accent); text-align: center;">If you work in Engineering...</h4>
+      <p class="desc" style="text-align: left; margin-top: 1rem;">&#x2022; Controls = state-space models<br>
+      &#x2022; Signals = Fourier = matrix multiplication<br>
+      &#x2022; Structures = finite element method<br>
+      &#x2022; Circuits = network analysis (Kirchhoff)<br>
+      &#x2022; Robotics = rotation &amp; transformation matrices<br>
+      &#x2022; Optimization = convex problems</p>
+    </div>
+  </div>
+
+  <div class="quote-box">
+    "In God we trust. All others must bring data."
+    <div class="attribution">&mdash; W. Edwards Deming, statistician &amp; engineer</div>
+  </div>
+
+  <p>And data, as we've seen, is inherently <strong>linear algebraic</strong>. Every dataset is a matrix. Every model is a transformation. Every insight comes from decomposing that matrix into its fundamental components.</p>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 11: START THE JOURNEY -->
+<!-- ============================================================ -->
+<section style="background: linear-gradient(135deg, #134e4a, #7c3aed); color:#fff; border:none;">
+  <h2 style="color:#fff; border-color: rgba(255,255,255,0.3);">Ready to Begin?</h2>
+  <p style="opacity:0.9;">You now have a sense of what linear algebra is, where it came from, and why it matters. In <strong>Chapter 1</strong>, we start with the most fundamental task: solving systems of linear equations. This is the gateway to everything else.</p>
+
+  <div style="display:flex; gap:1rem; margin-top:1.5rem; flex-wrap:wrap;">
+    <a href="index.html" style="display:inline-block; padding:0.75rem 1.5rem; background:rgba(255,255,255,0.15); color:#fff; text-decoration:none; border-radius:10px; font-weight:600; border:1.5px solid rgba(255,255,255,0.25); transition:all 0.2s;">&#8592; Course Home</a>
+    <a href="ch1-linear-systems.html" style="display:inline-block; padding:0.75rem 1.5rem; background:#fff; color:#134e4a; text-decoration:none; border-radius:10px; font-weight:700; transition:all 0.2s;">Start Chapter 1: Linear Systems &#8594;</a>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <p>&copy; 2026 Dr. Mohamed Mabrok &mdash; Qatar University &middot; Mathematics &amp; Statistics</p>
+</footer>
+
+<!-- ============================================================ -->
+<!-- JAVASCRIPT: INTERACTIVE DEMOS -->
+<!-- ============================================================ -->
+<script>
+// ── KaTeX Auto-Render ────────────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", function() {
+  renderMathInElement(document.body, {
+    delimiters: [
+      { left: "\\(", right: "\\)", display: false },
+      { left: "\\[", right: "\\]", display: true },
+      { left: "$$", right: "$$", display: true }
+    ],
+    throwOnError: false
+  });
+  drawTransform();
+  updateSVD();
+});
+
+// ── 2D Transformation Visualization ──────────────────────────────────
+var currentMatrix = [1,0,0,1];
+var animProgress = 1;
+var targetMatrix = [1,0,0,1];
+var startMatrix = [1,0,0,1];
+
+var transforms = {
+  identity:  { m: [1,0,0,1],   label: 'A = [[1,0],[0,1]] — Identity: no change' },
+  rotate:    { m: [0.707,-0.707,0.707,0.707], label: 'A = [[cos45°, -sin45°],[sin45°, cos45°]] — Rotation by 45°' },
+  shear:     { m: [1,0,1.5,1], label: 'A = [[1, 1.5],[0, 1]] — Horizontal shear' },
+  scale:     { m: [2,0,0,0.5], label: 'A = [[2, 0],[0, 0.5]] — Scale: stretch x, compress y' },
+  reflect:   { m: [0,1,1,0],   label: 'A = [[0, 1],[1, 0]] — Reflection across y = x' },
+  project:   { m: [1,0,0,0],   label: 'A = [[1, 0],[0, 0]] — Projection onto x-axis' }
+};
+
+function setTransform(name) {
+  document.querySelectorAll('.viz-btn').forEach(function(b){ b.classList.remove('active'); });
+  event.target.classList.add('active');
+  startMatrix = currentMatrix.slice();
+  targetMatrix = transforms[name].m;
+  animProgress = 0;
+  document.getElementById('transformLabel').textContent = transforms[name].label;
+  renderMathInElement(document.getElementById('transformLabel'), {
+    delimiters: [{ left: "\\(", right: "\\)", display: false }], throwOnError: false
+  });
+  animateTransform();
+}
+
+function lerp(a, b, t) { return a + (b - a) * t; }
+
+function animateTransform() {
+  if (animProgress >= 1) { currentMatrix = targetMatrix.slice(); drawTransform(); return; }
+  animProgress += 0.03;
+  if (animProgress > 1) animProgress = 1;
+  var t = animProgress * animProgress * (3 - 2 * animProgress); // smoothstep
+  currentMatrix = [
+    lerp(startMatrix[0], targetMatrix[0], t),
+    lerp(startMatrix[1], targetMatrix[1], t),
+    lerp(startMatrix[2], targetMatrix[2], t),
+    lerp(startMatrix[3], targetMatrix[3], t)
+  ];
+  drawTransform();
+  requestAnimationFrame(animateTransform);
+}
+
+function drawTransform() {
+  var c = document.getElementById('transformCanvas');
+  if (!c) return;
+  var ctx = c.getContext('2d');
+  var w = c.width, h = c.height;
+  var cx = w/2, cy = h/2;
+  var scale = 80;
+
+  ctx.clearRect(0, 0, w, h);
+  ctx.fillStyle = '#0f172a';
+  ctx.fillRect(0, 0, w, h);
+
+  // Grid lines
+  ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+  ctx.lineWidth = 0.5;
+  for (var i = -4; i <= 4; i++) {
+    ctx.beginPath(); ctx.moveTo(cx + i*scale, 0); ctx.lineTo(cx + i*scale, h); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0, cy + i*scale); ctx.lineTo(w, cy + i*scale); ctx.stroke();
+  }
+
+  // Axes
+  ctx.strokeStyle = 'rgba(255,255,255,0.2)'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(0, cy); ctx.lineTo(w, cy); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx, 0); ctx.lineTo(cx, h); ctx.stroke();
+
+  var m = currentMatrix;
+
+  // Draw transformed grid
+  ctx.strokeStyle = 'rgba(94,234,212,0.12)'; ctx.lineWidth = 0.8;
+  for (var i = -4; i <= 4; i++) {
+    ctx.beginPath();
+    var x0 = m[0]*(-4) + m[2]*i, y0 = m[1]*(-4) + m[3]*i;
+    var x1 = m[0]*(4) + m[2]*i, y1 = m[1]*(4) + m[3]*i;
+    ctx.moveTo(cx + x0*scale, cy - y0*scale);
+    ctx.lineTo(cx + x1*scale, cy - y1*scale);
+    ctx.stroke();
+    ctx.beginPath();
+    x0 = m[0]*i + m[2]*(-4); y0 = m[1]*i + m[3]*(-4);
+    x1 = m[0]*i + m[2]*(4); y1 = m[1]*i + m[3]*(4);
+    ctx.moveTo(cx + x0*scale, cy - y0*scale);
+    ctx.lineTo(cx + x1*scale, cy - y1*scale);
+    ctx.stroke();
+  }
+
+  // Original unit square (faded)
+  ctx.strokeStyle = 'rgba(255,255,255,0.15)'; ctx.lineWidth = 1;
+  ctx.setLineDash([4,4]);
+  ctx.beginPath();
+  ctx.moveTo(cx, cy); ctx.lineTo(cx+scale, cy); ctx.lineTo(cx+scale, cy-scale); ctx.lineTo(cx, cy-scale);
+  ctx.closePath(); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Transformed unit square
+  var pts = [[0,0],[1,0],[1,1],[0,1]];
+  var tp = pts.map(function(p) {
+    return [cx + (m[0]*p[0]+m[2]*p[1])*scale, cy - (m[1]*p[0]+m[3]*p[1])*scale];
+  });
+
+  ctx.fillStyle = 'rgba(94,234,212,0.15)';
+  ctx.strokeStyle = '#5eead4'; ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(tp[0][0], tp[0][1]);
+  for (var i = 1; i < 4; i++) ctx.lineTo(tp[i][0], tp[i][1]);
+  ctx.closePath(); ctx.fill(); ctx.stroke();
+
+  // Basis vector e1 (where (1,0) goes)
+  drawArrow(ctx, cx, cy, cx + m[0]*scale, cy - m[1]*scale, '#5eead4', 3);
+  ctx.fillStyle = '#5eead4'; ctx.font = 'bold 13px Segoe UI';
+  ctx.fillText('Ae₁', cx + m[0]*scale + 5, cy - m[1]*scale - 5);
+
+  // Basis vector e2 (where (0,1) goes)
+  drawArrow(ctx, cx, cy, cx + m[2]*scale, cy - m[3]*scale, '#a78bfa', 3);
+  ctx.fillStyle = '#a78bfa'; ctx.font = 'bold 13px Segoe UI';
+  ctx.fillText('Ae₂', cx + m[2]*scale + 5, cy - m[3]*scale - 5);
+
+  // Origin dot
+  ctx.fillStyle = '#fff';
+  ctx.beginPath(); ctx.arc(cx, cy, 4, 0, Math.PI*2); ctx.fill();
+}
+
+function drawArrow(ctx, x0, y0, x1, y1, color, width) {
+  var angle = Math.atan2(y1-y0, x1-x0);
+  var len = 10;
+  ctx.strokeStyle = color; ctx.lineWidth = width;
+  ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke();
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x1 - len*Math.cos(angle - 0.3), y1 - len*Math.sin(angle - 0.3));
+  ctx.lineTo(x1 - len*Math.cos(angle + 0.3), y1 - len*Math.sin(angle + 0.3));
+  ctx.closePath(); ctx.fill();
+}
+
+// ── SVD Image Compression Demo ───────────────────────────────────────
+var svdImage = null;
+var svdU = [], svdS = [], svdV = [];
+var IMG_SIZE = 100;
+
+function generateSVDData() {
+  // Create a synthetic "image" matrix with recognizable structure
+  var A = [];
+  for (var i = 0; i < IMG_SIZE; i++) {
+    A[i] = [];
+    for (var j = 0; j < IMG_SIZE; j++) {
+      var val = 0;
+      // Horizontal bands
+      val += 0.3 * Math.sin(i * Math.PI / 15);
+      // Diagonal pattern
+      val += 0.2 * Math.cos((i + j) * Math.PI / 20);
+      // Circle
+      var di = (i - 50) / 50, dj = (j - 50) / 50;
+      var r = Math.sqrt(di*di + dj*dj);
+      if (r < 0.4) val += 0.5 * (1 - r/0.4);
+      // Small square
+      if (i > 20 && i < 40 && j > 60 && j < 80) val += 0.4;
+      // Gradient
+      val += 0.1 * j / IMG_SIZE;
+      // Cross
+      if (Math.abs(i - 50) < 3 || Math.abs(j - 50) < 3) val += 0.2;
+      A[i][j] = Math.max(0, Math.min(1, val + 0.5));
+    }
+  }
+  svdImage = A;
+  // Compute simple SVD via power iteration (approximate for demo)
+  computeApproxSVD(A);
+}
+
+function computeApproxSVD(A) {
+  var m = A.length, n = A[0].length;
+  var R = A.map(function(row){ return row.slice(); });
+  svdU = []; svdS = []; svdV = [];
+  var maxRank = 50;
+
+  for (var k = 0; k < maxRank; k++) {
+    // Power iteration for dominant singular triplet
+    var v = [];
+    for (var j = 0; j < n; j++) v[j] = Math.random() - 0.5;
+    var norm = Math.sqrt(v.reduce(function(s,x){return s+x*x;}, 0));
+    v = v.map(function(x){return x/norm;});
+
+    for (var iter = 0; iter < 30; iter++) {
+      // u = Rv
+      var u = [];
+      for (var i = 0; i < m; i++) {
+        var s = 0; for (var j = 0; j < n; j++) s += R[i][j] * v[j];
+        u[i] = s;
+      }
+      var sigma = Math.sqrt(u.reduce(function(s,x){return s+x*x;}, 0));
+      if (sigma < 1e-10) break;
+      u = u.map(function(x){return x/sigma;});
+      // v = R^T u
+      v = [];
+      for (var j = 0; j < n; j++) {
+        var s = 0; for (var i = 0; i < m; i++) s += R[i][j] * u[i];
+        v[j] = s;
+      }
+      norm = Math.sqrt(v.reduce(function(s,x){return s+x*x;}, 0));
+      if (norm < 1e-10) break;
+      v = v.map(function(x){return x/norm;});
+    }
+
+    var sigma2 = 0;
+    var u2 = [];
+    for (var i = 0; i < m; i++) {
+      var s = 0; for (var j = 0; j < n; j++) s += R[i][j] * v[j];
+      u2[i] = s;
+    }
+    sigma = Math.sqrt(u2.reduce(function(s,x){return s+x*x;}, 0));
+    if (sigma < 1e-10) break;
+    u2 = u2.map(function(x){return x/sigma;});
+
+    svdU.push(u2);
+    svdS.push(sigma);
+    svdV.push(v);
+
+    // Deflate: R = R - sigma * u * v^T
+    for (var i = 0; i < m; i++) {
+      for (var j = 0; j < n; j++) {
+        R[i][j] -= sigma * u2[i] * v[j];
+      }
+    }
+  }
+}
+
+function updateSVD() {
+  if (!svdImage) generateSVDData();
+  var k = parseInt(document.getElementById('svdRank').value);
+  document.getElementById('svdRankVal').textContent = 'k = ' + k;
+  var totalData = IMG_SIZE * IMG_SIZE;
+  var svdData = k * (IMG_SIZE + IMG_SIZE + 1);
+  var compression = Math.round((1 - svdData / totalData) * 100);
+  document.getElementById('svdCompression').textContent = '| Compression: ' + compression + '%';
+
+  var c = document.getElementById('svdCanvas');
+  if (!c) return;
+  var ctx = c.getContext('2d');
+  var w = c.width, h = c.height;
+  ctx.clearRect(0, 0, w, h);
+  ctx.fillStyle = '#f8fafc';
+  ctx.fillRect(0, 0, w, h);
+
+  var pixSize = Math.min(2.5, (w/2 - 30) / IMG_SIZE);
+  var offX1 = 20, offX2 = w/2 + 20, offY = (h - IMG_SIZE * pixSize) / 2;
+
+  // Draw original
+  ctx.fillStyle = '#1e293b'; ctx.font = 'bold 13px Segoe UI';
+  ctx.fillText('Original (rank ' + Math.min(svdS.length, IMG_SIZE) + ')', offX1, offY - 8);
+  for (var i = 0; i < IMG_SIZE; i++) {
+    for (var j = 0; j < IMG_SIZE; j++) {
+      var v = Math.round(svdImage[i][j] * 255);
+      ctx.fillStyle = 'rgb('+v+','+v+','+v+')';
+      ctx.fillRect(offX1 + j * pixSize, offY + i * pixSize, pixSize, pixSize);
+    }
+  }
+
+  // Draw rank-k approximation
+  ctx.fillStyle = '#1e293b';
+  ctx.fillText('Rank-' + k + ' approximation (' + compression + '% compressed)', offX2, offY - 8);
+  for (var i = 0; i < IMG_SIZE; i++) {
+    for (var j = 0; j < IMG_SIZE; j++) {
+      var val = 0;
+      for (var s = 0; s < Math.min(k, svdS.length); s++) {
+        val += svdS[s] * svdU[s][i] * svdV[s][j];
+      }
+      var v = Math.max(0, Math.min(255, Math.round(val * 255)));
+      ctx.fillStyle = 'rgb('+v+','+v+','+v+')';
+      ctx.fillRect(offX2 + j * pixSize, offY + i * pixSize, pixSize, pixSize);
+    }
+  }
+
+  // Singular value bar chart (bottom)
+  var barH = 30, barY = h - barH - 10;
+  ctx.fillStyle = '#e2e8f0';
+  ctx.fillRect(offX1, barY, w - 40, barH);
+  var maxS = svdS[0] || 1;
+  for (var s = 0; s < svdS.length; s++) {
+    var bw = Math.max(1, (w - 40) / svdS.length - 1);
+    var bh = (svdS[s] / maxS) * barH;
+    ctx.fillStyle = s < k ? '#0d9488' : '#cbd5e1';
+    ctx.fillRect(offX1 + s * ((w - 40) / svdS.length), barY + barH - bh, bw, bh);
+  }
+  ctx.fillStyle = '#64748b'; ctx.font = '11px Segoe UI';
+  ctx.fillText('Singular values (teal = used, gray = discarded)', offX1, barY - 4);
+}
+
+</script>
+
+</body>
+</html>

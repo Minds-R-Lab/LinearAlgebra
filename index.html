@@ -264,6 +264,7 @@
 <nav>
   <a href="index.html" class="brand">LA Course</a>
   <a href="index.html" class="active">Home</a>
+  <a href="why-linear-algebra.html">Why LA?</a>
   <a href="exam-generator.html">Exam Generator</a>
 </nav>
 
@@ -437,6 +438,8 @@
       </defs>
 
       <!-- ===== CONNECTION LINES ===== -->
+      <!-- Ch0 → Center (dashed intro) -->
+      <path d="M 550,95 L 550,155" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6,4" opacity="0.5"/>
       <!-- Center → Ch1 -->
       <path d="M 440,215 C 340,240 220,230 200,215" stroke="#0d9488" stroke-width="2.5" fill="none" marker-end="url(#arr-teal)" opacity="0.6"/>
       <!-- Center → Ch2 -->
@@ -464,6 +467,13 @@
         <text x="310" y="215" text-anchor="middle" font-size="11" fill="#64748b" font-weight="500" transform="rotate(-8,310,215)">foundations</text>
         <text x="790" y="300" text-anchor="middle" font-size="11" fill="#64748b" font-weight="500" transform="rotate(12,790,300)">eigenvalues &amp; diag.</text>
         <text x="600" y="275" text-anchor="middle" font-size="11" fill="#92400e" font-weight="500" opacity="0.6">spans &amp; bases underpin all</text>
+      </g>
+
+      <!-- ===== CH 00: Why Linear Algebra ===== -->
+      <g style="cursor:pointer;" class="mm-node" onclick="window.location.href='why-linear-algebra.html'">
+        <rect x="460" y="18" rx="14" ry="14" width="180" height="60" fill="#1e293b" stroke="#64748b" stroke-width="1.5" filter="url(#shadow-sm)"/>
+        <text x="550" y="41" text-anchor="middle" font-size="11" fill="#94a3b8" font-weight="700" letter-spacing="1">CHAPTER 0</text>
+        <text x="550" y="62" text-anchor="middle" font-size="15" fill="#fff" font-weight="700">Why Linear Algebra?</text>
       </g>
 
       <!-- ===== CENTRAL NODE ===== -->
@@ -565,6 +575,20 @@
   </div>
 
   <div class="chapter-grid">
+
+    <!-- Chapter 0 — Why Linear Algebra? -->
+    <a class="chapter-card active" href="why-linear-algebra.html">
+      <span class="status-badge available">Available</span>
+      <div class="chapter-num">00</div>
+      <h3>Why Study Linear Algebra?</h3>
+      <p>Discover how linear algebra is the hidden engine behind modern technology &mdash; from Google Search to AI, computer graphics, and data science. Includes history, interactive demos, and real applications.</p>
+      <div class="topic-list">
+        <span class="topic-tag" style="background:var(--success-light); color:var(--success);">Motivation</span>
+        <span class="topic-tag" style="background:var(--success-light); color:var(--success);">History</span>
+        <span class="topic-tag" style="background:var(--success-light); color:var(--success);">Applications</span>
+        <span class="topic-tag" style="background:var(--success-light); color:var(--success);">Interactive Demos</span>
+      </div>
+    </a>
 
     <!-- Chapter 1 -->
     <a class="chapter-card active" href="#chapter1">
