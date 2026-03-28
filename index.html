@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linear Algebra for Engineering &amp; CS — Dr. Mohamed Mabrok</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+  :root {
+    --primary: #0d9488;
+    --primary-light: #ccfbf1;
+    --primary-dark: #115e59;
+    --accent: #7c3aed;
+    --accent-light: #ede9fe;
+    --success: #059669;
+    --success-light: #d1fae5;
+    --warning: #d97706;
+    --warning-light: #fef3c7;
+    --blue: #2563eb;
+    --blue-light: #dbeafe;
+    --rose: #e11d48;
+    --rose-light: #ffe4e6;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --radius: 14px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.08);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.7;
+  }
+
+  /* Top Navigation */
+  nav{position:fixed;top:0;left:0;right:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);z-index:1000;padding:0.6rem 1.5rem;display:flex;align-items:center;gap:1.5rem;font-size:0.9rem;}
+  nav a{text-decoration:none;color:var(--text-muted);font-weight:500;transition:color 0.2s;}
+  nav a:hover{color:var(--primary);}
+  nav .brand{font-weight:800;color:var(--primary);font-size:1.05rem;letter-spacing:-0.02em;}
+  nav .active{color:var(--accent);font-weight:700;}
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #0f172a 0%, #134e4a 35%, #0d9488 65%, #7c3aed 100%);
+    color: #fff; padding: 0; text-align: center;
+    position: relative; overflow: hidden; min-height: 520px;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 600px 400px at 20% 50%, rgba(13,148,136,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 500px 350px at 80% 40%, rgba(124,58,237,0.15) 0%, transparent 70%);
+  }
+  .hero-inner {
+    position: relative; z-index: 2; max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; align-items: center;
+    gap: 2rem; padding: 3rem 2rem 2.5rem; min-height: 520px;
+  }
+  .hero-left { text-align: left; }
+  .hero-right { display: flex; justify-content: center; align-items: center; }
+  .hero .badge {
+    display: inline-block; background: rgba(255,255,255,0.12); padding: 0.35rem 1.2rem;
+    border-radius: 20px; font-size: 0.9rem; margin-bottom: 1.25rem;
+    backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.15);
+    letter-spacing: 0.03em;
+  }
+  .hero h1 {
+    font-size: 3.2rem; font-weight: 800; margin-bottom: 0.3rem;
+    line-height: 1.15; letter-spacing: -0.02em;
+  }
+  .hero h1 .course-word {
+    display: block; font-size: 1.1rem; font-weight: 600; letter-spacing: 0.25em;
+    text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 0.4rem;
+  }
+  .hero h1 .highlight {
+    background: linear-gradient(90deg, #5eead4, #a78bfa, #f9a8d4);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero .subtitle {
+    font-size: 1.15rem; opacity: 0.85; max-width: 500px; margin: 1rem 0 0;
+    line-height: 1.6;
+  }
+
+  /* Instructor integrated into hero */
+  .hero-instructor {
+    display: flex; align-items: center; gap: 1rem;
+    margin-top: 1.5rem; padding: 1rem 1.25rem;
+    background: rgba(255,255,255,0.08); border-radius: 16px;
+    backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1);
+    max-width: 420px;
+  }
+  .hero-instructor .initials-fallback {
+    width: 72px; height: 72px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg, #0d9488, #7c3aed);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; font-weight: 800; color: #fff;
+    border: 2.5px solid rgba(255,255,255,0.4);
+  }
+  .hero-instructor img {
+    width: 72px; height: 72px; border-radius: 50%; object-fit: cover;
+    border: 2.5px solid rgba(255,255,255,0.4); flex-shrink: 0;
+  }
+  .hero-instructor .info h3 { font-size: 1.05rem; font-weight: 700; }
+  .hero-instructor .info .role { font-size: 0.85rem; color: #5eead4; font-weight: 500; }
+  .hero-instructor .info .dept { font-size: 0.8rem; opacity: 0.65; margin-top: 0.1rem; }
+  .hero-instructor .info .email { font-size: 0.8rem; margin-top: 0.25rem; }
+  .hero-instructor .info .email a { color: #5eead4; text-decoration: none; }
+  .hero-instructor .info .email a:hover { text-decoration: underline; }
+
+  /* Hero SVG */
+  .hero-viz { width: 100%; max-width: 420px; aspect-ratio: 1; }
+
+  /* Stats bar */
+  .hero-stats {
+    display: flex; gap: 0; margin-top: 2rem; max-width: 420px;
+    background: rgba(255,255,255,0.06); border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.1); overflow: hidden;
+    backdrop-filter: blur(8px);
+  }
+  .hero-stat {
+    flex: 1; text-align: center; padding: 0.9rem 0.5rem;
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+  .hero-stat:last-child { border-right: none; }
+  .hero-stat .num { font-size: 1.7rem; font-weight: 800; line-height: 1.1; }
+  .hero-stat .label { font-size: 0.78rem; opacity: 0.65; margin-top: 0.15rem; }
+
+  /* Container */
+  .container { max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem; }
+
+  /* Chapter grid */
+  .chapter-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem; margin-top: 2rem;
+  }
+  .chapter-card {
+    background: var(--card); border-radius: var(--radius);
+    border: 1.5px solid var(--border); padding: 2rem;
+    box-shadow: var(--shadow); transition: all 0.3s;
+    cursor: pointer; position: relative; overflow: hidden;
+    text-decoration: none; color: var(--text); display: block;
+  }
+  .chapter-card:hover {
+    transform: translateY(-4px); box-shadow: var(--shadow-lg);
+    border-color: var(--primary);
+  }
+  .chapter-card.active { border-color: var(--primary); }
+  .chapter-card.coming-soon { opacity: 0.6; cursor: default; }
+  .chapter-card.coming-soon:hover { transform: none; box-shadow: var(--shadow); border-color: var(--border); }
+
+  .chapter-num {
+    font-size: 3rem; font-weight: 800; line-height: 1;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; margin-bottom: 0.75rem;
+  }
+  .chapter-card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .chapter-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; }
+  .chapter-card .topic-list {
+    margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.4rem;
+  }
+  .topic-tag {
+    background: var(--primary-light); color: var(--primary-dark);
+    padding: 0.2rem 0.7rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600;
+  }
+  .topic-tag.soon { background: #f1f5f9; color: var(--text-muted); }
+  .chapter-card .status-badge {
+    position: absolute; top: 1rem; right: 1rem;
+    padding: 0.2rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .status-badge.available { background: var(--success-light); color: var(--success); }
+  .status-badge.soon { background: #f1f5f9; color: var(--text-muted); }
+
+  /* Section header */
+  .section-header { margin-bottom: 0.5rem; }
+  .section-header h2 {
+    font-size: 1.6rem; font-weight: 700; color: var(--text);
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .section-header p { color: var(--text-muted); font-size: 1rem; margin-top: 0.25rem; }
+
+  /* Chapter detail sections */
+  .ch-detail {
+    background: var(--card); border-radius: var(--radius);
+    border: 1.5px solid var(--border); padding: 2.5rem;
+    box-shadow: var(--shadow); margin-top: 3rem;
+  }
+  .ch-detail h2 {
+    font-size: 1.6rem; font-weight: 700; margin-bottom: 0.5rem;
+    color: var(--primary);
+  }
+  .ch-detail > p { color: var(--text-muted); margin-bottom: 1.5rem; }
+
+  .topic-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+  .topic-card {
+    display: flex; align-items: start; gap: 1rem;
+    padding: 1.25rem; border-radius: 10px; border: 1.5px solid var(--border);
+    text-decoration: none; color: var(--text); transition: all 0.25s;
+    background: #fff;
+  }
+  .topic-card:hover { border-color: var(--primary); background: var(--primary-light); transform: translateY(-2px); }
+  .topic-icon {
+    width: 48px; height: 48px; border-radius: 10px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; font-weight: 800; color: #fff;
+  }
+  .topic-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.2rem; }
+  .topic-card p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
+  .topic-card .math-preview { font-size: 0.9rem; color: var(--accent); margin-top: 0.3rem; }
+
+  /* CTA grid */
+  .cta-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3rem;
+  }
+  .cta-card {
+    display: flex; align-items: center; gap: 1.25rem; padding: 2rem;
+    border-radius: var(--radius); text-decoration: none; color: var(--text);
+    transition: all 0.3s; border: 1.5px solid var(--border);
+    background: var(--card); box-shadow: var(--shadow);
+  }
+  .cta-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+  .cta-icon {
+    width: 60px; height: 60px; border-radius: 14px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; color: #fff;
+  }
+  .cta-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.2rem; }
+  .cta-card p { font-size: 0.9rem; color: var(--text-muted); }
+
+  /* Footer */
+  footer {
+    text-align: center; padding: 2rem; color: var(--text-muted);
+    font-size: 0.9rem; border-top: 1px solid var(--border); margin-top: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .hero-inner { grid-template-columns: 1fr; text-align: center; min-height: auto; padding: 2.5rem 1.5rem 2rem; }
+    .hero-left { text-align: center; }
+    .hero-right { display: none; }
+    .hero h1 { font-size: 2.2rem; }
+    .hero .subtitle { margin: 1rem auto 0; }
+    .hero-instructor { margin: 1.5rem auto 0; }
+    .hero-stats { margin: 1.5rem auto 0; }
+    .chapter-grid { grid-template-columns: 1fr; }
+    .cta-grid { grid-template-columns: 1fr; }
+  }
+
+  .mm-node { transition: transform 0.2s, filter 0.2s; }
+  .mm-node:hover { transform: scale(1.05); filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15)); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="brand">LA Course</a>
+  <a href="index.html" class="active">Home</a>
+  <a href="exam-generator.html">Exam Generator</a>
+</nav>
+
+<div class="hero" style="margin-top:42px;">
+  <div class="hero-inner">
+    <!-- Left: Text content -->
+    <div class="hero-left">
+      <h1>
+        <span class="course-word">Course</span>
+        Linear<br><span class="highlight">Algebra</span>
+      </h1>
+      <p class="subtitle">For Engineering &amp; Computer Science &mdash; an interactive course with visualizations, worked examples, and real-world applications from ML to computer graphics.</p>
+
+      <!-- Instructor -->
+      <div class="hero-instructor">
+        <img src="mabrok.jpg" alt="Dr. Mohamed Mabrok"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="initials-fallback" style="display:none;">MM</div>
+        <div class="info">
+          <h3>Dr. Mohamed Mabrok</h3>
+          <div class="role">Associate Professor</div>
+          <div class="dept">Mathematics &amp; Statistics, Qatar University</div>
+          <div class="email"><a href="mailto:m.a.mabrok@gmail.com">m.a.mabrok@gmail.com</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Matrix / vector visualization -->
+    <div class="hero-right">
+      <svg class="hero-viz" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="hg1" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(13,148,136,0.25)"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+          <radialGradient id="hg2" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(124,58,247,0.2)"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+        </defs>
+        <!-- Background glow -->
+        <circle cx="200" cy="200" r="180" fill="url(#hg1)"/>
+        <circle cx="230" cy="170" r="120" fill="url(#hg2)"/>
+
+        <!-- Grid (representing R^2 space) -->
+        <g stroke="rgba(255,255,255,0.06)" stroke-width="0.5">
+          <line x1="40" y1="60" x2="40" y2="340"/><line x1="100" y1="60" x2="100" y2="340"/>
+          <line x1="160" y1="60" x2="160" y2="340"/><line x1="220" y1="60" x2="220" y2="340"/>
+          <line x1="280" y1="60" x2="280" y2="340"/><line x1="340" y1="60" x2="340" y2="340"/>
+          <line x1="40" y1="60" x2="340" y2="60"/><line x1="40" y1="120" x2="340" y2="120"/>
+          <line x1="40" y1="180" x2="340" y2="180"/><line x1="40" y1="240" x2="340" y2="240"/>
+          <line x1="40" y1="300" x2="340" y2="300"/><line x1="40" y1="340" x2="340" y2="340"/>
+        </g>
+
+        <!-- Axes -->
+        <line x1="40" y1="200" x2="370" y2="200" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+        <line x1="200" y1="30" x2="200" y2="370" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+        <text x="375" y="205" font-size="12" fill="rgba(255,255,255,0.4)" font-style="italic">x</text>
+        <text x="204" y="28" font-size="12" fill="rgba(255,255,255,0.4)" font-style="italic">y</text>
+
+        <!-- Eigenvector 1 (teal) -->
+        <line x1="200" y1="200" x2="330" y2="110" stroke="#5eead4" stroke-width="2.5" opacity="0.9">
+          <animate attributeName="x2" values="200;330;200" dur="4s" repeatCount="indefinite"/>
+          <animate attributeName="y2" values="200;110;200" dur="4s" repeatCount="indefinite"/>
+        </line>
+        <circle r="5" fill="#5eead4">
+          <animate attributeName="cx" values="200;330;200" dur="4s" repeatCount="indefinite"/>
+          <animate attributeName="cy" values="200;110;200" dur="4s" repeatCount="indefinite"/>
+        </circle>
+
+        <!-- Eigenvector 2 (purple) -->
+        <line x1="200" y1="200" x2="100" y2="90" stroke="#a78bfa" stroke-width="2.5" opacity="0.8">
+          <animate attributeName="x2" values="200;100;200" dur="5s" repeatCount="indefinite"/>
+          <animate attributeName="y2" values="200;90;200" dur="5s" repeatCount="indefinite"/>
+        </line>
+        <circle r="5" fill="#a78bfa">
+          <animate attributeName="cx" values="200;100;200" dur="5s" repeatCount="indefinite"/>
+          <animate attributeName="cy" values="200;90;200" dur="5s" repeatCount="indefinite"/>
+        </circle>
+
+        <!-- Transformed unit square -->
+        <polygon points="200,200 300,160 340,100 240,140" fill="rgba(94,234,212,0.08)" stroke="#5eead4" stroke-width="1.5" opacity="0.7">
+          <animate attributeName="opacity" values="0.3;0.7;0.3" dur="3s" repeatCount="indefinite"/>
+        </polygon>
+
+        <!-- Original unit square (faded) -->
+        <rect x="200" y="140" width="60" height="60" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)" stroke-width="1" stroke-dasharray="4,3"/>
+
+        <!-- Matrix label -->
+        <g font-family="'Segoe UI',system-ui,sans-serif">
+          <rect x="60" y="260" rx="8" ry="8" width="120" height="50" fill="rgba(15,23,42,0.6)" stroke="rgba(94,234,212,0.4)" stroke-width="1"/>
+          <text x="120" y="282" text-anchor="middle" font-size="14" fill="#5eead4" font-weight="600">A = [2  1]</text>
+          <text x="120" y="300" text-anchor="middle" font-size="14" fill="#5eead4" font-weight="600">    [1  3]</text>
+        </g>
+
+        <!-- Eigenvalue label -->
+        <g font-family="'Segoe UI',system-ui,sans-serif">
+          <rect x="240" y="290" rx="8" ry="8" width="120" height="28" fill="rgba(15,23,42,0.6)" stroke="rgba(167,139,250,0.4)" stroke-width="1"/>
+          <text x="300" y="309" text-anchor="middle" font-size="13" fill="#a78bfa" font-weight="600">Av = &lambda;v</text>
+        </g>
+
+        <!-- Decorative dots at origin -->
+        <circle cx="200" cy="200" r="5" fill="#fff" opacity="0.6">
+          <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite"/>
+        </circle>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Course Roadmap -->
+  <div class="section-header">
+    <h2>Course Roadmap</h2>
+    <p>How the chapters connect &mdash; click any chapter to jump to its topics</p>
+  </div>
+
+  <div id="roadmap-container" style="background:var(--card); border-radius:var(--radius); border:1px solid var(--border); box-shadow:var(--shadow); padding:2rem; margin-bottom:2rem; overflow-x:auto;">
+    <svg id="mindmap" viewBox="0 0 1100 820" style="width:100%; max-width:1100px; margin:0 auto; display:block; font-family:'Segoe UI',system-ui,sans-serif;">
+      <defs>
+        <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/>
+        </marker>
+        <marker id="arr-teal" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#0d9488"/>
+        </marker>
+        <marker id="arr-blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb"/>
+        </marker>
+        <marker id="arr-purple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#7c3aed"/>
+        </marker>
+        <marker id="arr-amber" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#d97706"/>
+        </marker>
+        <marker id="arr-rose" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#e11d48"/>
+        </marker>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="4" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="shadow-sm">
+          <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.08"/>
+        </filter>
+        <linearGradient id="grad-center" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#134e4a"/>
+          <stop offset="100%" style="stop-color:#7c3aed"/>
+        </linearGradient>
+        <linearGradient id="grad-ch1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#0d9488"/>
+          <stop offset="100%" style="stop-color:#14b8a6"/>
+        </linearGradient>
+        <linearGradient id="grad-ch2" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#2563eb"/>
+          <stop offset="100%" style="stop-color:#3b82f6"/>
+        </linearGradient>
+        <linearGradient id="grad-ch3" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#7c3aed"/>
+          <stop offset="100%" style="stop-color:#8b5cf6"/>
+        </linearGradient>
+        <linearGradient id="grad-ch4" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#d97706"/>
+          <stop offset="100%" style="stop-color:#f59e0b"/>
+        </linearGradient>
+        <linearGradient id="grad-ch5" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#e11d48"/>
+          <stop offset="100%" style="stop-color:#f43f5e"/>
+        </linearGradient>
+      </defs>
+
+      <!-- ===== CONNECTION LINES ===== -->
+      <!-- Center → Ch1 -->
+      <path d="M 440,215 C 340,240 220,230 200,215" stroke="#0d9488" stroke-width="2.5" fill="none" marker-end="url(#arr-teal)" opacity="0.6"/>
+      <!-- Center → Ch2 -->
+      <path d="M 440,235 C 320,310 220,370 200,405" stroke="#2563eb" stroke-width="2.5" fill="none" marker-end="url(#arr-blue)" opacity="0.6"/>
+      <!-- Center → Ch3 -->
+      <path d="M 660,235 C 780,310 880,370 900,405" stroke="#7c3aed" stroke-width="2.5" fill="none" marker-end="url(#arr-purple)" opacity="0.6"/>
+      <!-- Center → Ch4 -->
+      <path d="M 660,215 C 760,240 880,230 900,215" stroke="#d97706" stroke-width="2.5" fill="none" marker-end="url(#arr-amber)" opacity="0.6"/>
+      <!-- Ch5 (bottom center) connected from Ch3 and Ch4 -->
+      <path d="M 250,590 C 350,640 450,660 490,660" stroke="#e11d48" stroke-width="2" fill="none" marker-end="url(#arr-rose)" opacity="0.5"/>
+      <path d="M 850,590 C 750,640 650,660 610,660" stroke="#e11d48" stroke-width="2" fill="none" marker-end="url(#arr-rose)" opacity="0.5"/>
+
+      <!-- Ch1 → Ch2 (prerequisite) -->
+      <path d="M 145,310 L 145,390" stroke="#0d9488" stroke-width="2.5" fill="none" marker-end="url(#arr-teal)" opacity="0.7"/>
+      <!-- Ch1 → Ch3 (basis for eigenvalues) -->
+      <path d="M 290,240 C 500,280 770,350 900,405" stroke="#7c3aed" stroke-width="1.8" fill="none" marker-end="url(#arr-purple)" opacity="0.35" stroke-dasharray="6,3"/>
+      <!-- Ch2 → Ch4 (transformations use orthogonality) -->
+      <path d="M 290,460 C 450,420 770,350 900,220" stroke="#d97706" stroke-width="1.8" fill="none" marker-end="url(#arr-amber)" opacity="0.3" stroke-dasharray="6,3"/>
+
+      <!-- ===== FLOW LABELS ===== -->
+      <g font-family="'Segoe UI',system-ui,sans-serif">
+        <rect x="58" y="338" rx="6" ry="6" width="88" height="22" fill="#ccfbf1" opacity="0.9"/>
+        <text x="102" y="353" text-anchor="middle" font-size="11" fill="#0d9488" font-weight="600">prerequisite</text>
+
+        <text x="310" y="215" text-anchor="middle" font-size="11" fill="#64748b" font-weight="500" transform="rotate(-8,310,215)">foundations</text>
+        <text x="790" y="300" text-anchor="middle" font-size="11" fill="#64748b" font-weight="500" transform="rotate(12,790,300)">eigenvalues &amp; diag.</text>
+        <text x="600" y="275" text-anchor="middle" font-size="11" fill="#92400e" font-weight="500" opacity="0.6">spans &amp; bases underpin all</text>
+      </g>
+
+      <!-- ===== CENTRAL NODE ===== -->
+      <g style="cursor:pointer;" class="mm-node">
+        <rect x="430" y="160" rx="20" ry="20" width="240" height="90" fill="url(#grad-center)" filter="url(#glow)"/>
+        <text x="550" y="196" text-anchor="middle" font-size="20" fill="#fff" font-weight="800">Linear</text>
+        <text x="550" y="220" text-anchor="middle" font-size="20" fill="#fff" font-weight="800">Algebra</text>
+        <text x="550" y="242" text-anchor="middle" font-size="12" fill="#c7d2fe" font-style="italic">The Language of Data &amp; Space</text>
+      </g>
+
+      <!-- ===== CH 01: Systems & Matrices ===== -->
+      <g style="cursor:pointer;" class="mm-node" onclick="document.getElementById('chapter1').scrollIntoView({behavior:'smooth'})">
+        <rect x="5" y="130" rx="14" ry="14" width="290" height="180" fill="#fff" stroke="#0d9488" stroke-width="2.5" filter="url(#shadow-sm)"/>
+        <path d="M5,144 a14,14 0 0 1 14,-14 H281 a14,14 0 0 1 14,14 V164 H5 Z" fill="url(#grad-ch1)"/>
+        <text x="150" y="155" text-anchor="middle" font-size="14" fill="#fff" font-weight="700">Ch 1 · Systems &amp; Matrices</text>
+        <text x="150" y="185" text-anchor="middle" font-size="13" fill="#374151" font-weight="600">Topics:</text>
+        <text x="30" y="205" font-size="12" fill="#374151">  &#9656; Systems of Linear Equations</text>
+        <text x="30" y="223" font-size="12" fill="#374151">  &#9656; Gaussian Elimination &amp; RREF</text>
+        <text x="30" y="241" font-size="12" fill="#374151">  &#9656; Matrix Algebra &amp; Inverses</text>
+        <text x="30" y="259" font-size="12" fill="#374151">  &#9656; Determinants</text>
+        <text x="150" y="283" text-anchor="middle" font-size="12" fill="#0d9488" font-style="italic" font-weight="500">Ax = b &mdash; the central problem</text>
+        <rect x="220" y="295" rx="8" ry="8" width="68" height="18" fill="#ccfbf1"/>
+        <text x="254" y="308" text-anchor="middle" font-size="10" fill="#0d9488" font-weight="700">4 topics</text>
+      </g>
+
+      <!-- ===== CH 02: Vector Spaces ===== -->
+      <g style="cursor:pointer;" class="mm-node" onclick="document.getElementById('chapter2').scrollIntoView({behavior:'smooth'})">
+        <rect x="5" y="390" rx="14" ry="14" width="290" height="200" fill="#fff" stroke="#2563eb" stroke-width="2.5" filter="url(#shadow-sm)"/>
+        <path d="M5,404 a14,14 0 0 1 14,-14 H281 a14,14 0 0 1 14,14 V424 H5 Z" fill="url(#grad-ch2)"/>
+        <text x="150" y="415" text-anchor="middle" font-size="14" fill="#fff" font-weight="700">Ch 2 · Vector Spaces</text>
+        <text x="150" y="445" text-anchor="middle" font-size="13" fill="#374151" font-weight="600">Topics:</text>
+        <text x="30" y="465" font-size="12" fill="#374151">  &#9656; Vector Spaces &amp; Subspaces</text>
+        <text x="30" y="483" font-size="12" fill="#374151">  &#9656; Span, Linear Independence</text>
+        <text x="30" y="501" font-size="12" fill="#374151">  &#9656; Basis &amp; Dimension</text>
+        <text x="30" y="519" font-size="12" fill="#374151">  &#9656; Rank, Column &amp; Null Space</text>
+        <text x="30" y="537" font-size="12" fill="#374151">  &#9656; Change of Basis</text>
+        <text x="150" y="561" text-anchor="middle" font-size="12" fill="#2563eb" font-style="italic" font-weight="500">Structure of solution spaces</text>
+        <rect x="220" y="568" rx="8" ry="8" width="68" height="18" fill="#dbeafe"/>
+        <text x="254" y="581" text-anchor="middle" font-size="10" fill="#2563eb" font-weight="700">5 topics</text>
+      </g>
+
+      <!-- ===== CH 03: Eigenvalues & Diagonalization ===== -->
+      <g style="cursor:pointer;" class="mm-node" onclick="document.getElementById('chapter3').scrollIntoView({behavior:'smooth'})">
+        <rect x="805" y="390" rx="14" ry="14" width="290" height="200" fill="#fff" stroke="#7c3aed" stroke-width="2.5" filter="url(#shadow-sm)"/>
+        <path d="M805,404 a14,14 0 0 1 14,-14 H1081 a14,14 0 0 1 14,14 V424 H805 Z" fill="url(#grad-ch3)"/>
+        <text x="950" y="415" text-anchor="middle" font-size="14" fill="#fff" font-weight="700">Ch 3 · Eigenvalues &amp; Diag.</text>
+        <text x="950" y="445" text-anchor="middle" font-size="13" fill="#374151" font-weight="600">Topics:</text>
+        <text x="830" y="465" font-size="12" fill="#374151">  &#9656; Eigenvalues &amp; Eigenvectors</text>
+        <text x="830" y="483" font-size="12" fill="#374151">  &#9656; Characteristic Equation</text>
+        <text x="830" y="501" font-size="12" fill="#374151">  &#9656; Diagonalization</text>
+        <text x="830" y="519" font-size="12" fill="#374151">  &#9656; Applications: Markov Chains</text>
+        <text x="830" y="537" font-size="12" fill="#374151">  &#9656; Dynamical Systems</text>
+        <text x="950" y="561" text-anchor="middle" font-size="12" fill="#7c3aed" font-style="italic" font-weight="500">Av = &lambda;v &mdash; the spectral view</text>
+        <rect x="1020" y="568" rx="8" ry="8" width="68" height="18" fill="#ede9fe"/>
+        <text x="1054" y="581" text-anchor="middle" font-size="10" fill="#7c3aed" font-weight="700">5 topics</text>
+      </g>
+
+      <!-- ===== CH 04: Linear Transformations & Orthogonality ===== -->
+      <g style="cursor:pointer;" class="mm-node" onclick="document.getElementById('chapter4').scrollIntoView({behavior:'smooth'})">
+        <rect x="805" y="130" rx="14" ry="14" width="290" height="180" fill="#fff" stroke="#d97706" stroke-width="2.5" filter="url(#shadow-sm)"/>
+        <path d="M805,144 a14,14 0 0 1 14,-14 H1081 a14,14 0 0 1 14,14 V164 H805 Z" fill="url(#grad-ch4)"/>
+        <text x="950" y="155" text-anchor="middle" font-size="14" fill="#fff" font-weight="700">Ch 4 · Orthogonality</text>
+        <text x="950" y="185" text-anchor="middle" font-size="13" fill="#374151" font-weight="600">Topics:</text>
+        <text x="830" y="205" font-size="12" fill="#374151">  &#9656; Inner Products &amp; Norms</text>
+        <text x="830" y="223" font-size="12" fill="#374151">  &#9656; Orthogonal &amp; Orthonormal Sets</text>
+        <text x="830" y="241" font-size="12" fill="#374151">  &#9656; Gram-Schmidt Process</text>
+        <text x="830" y="259" font-size="12" fill="#374151">  &#9656; Projections &amp; Least Squares</text>
+        <text x="950" y="283" text-anchor="middle" font-size="12" fill="#d97706" font-style="italic" font-weight="500">Geometry in n dimensions</text>
+        <rect x="1020" y="295" rx="8" ry="8" width="68" height="18" fill="#fef3c7"/>
+        <text x="1054" y="308" text-anchor="middle" font-size="10" fill="#d97706" font-weight="700">4 topics</text>
+      </g>
+
+      <!-- ===== CH 05: SVD & Applications ===== -->
+      <g style="cursor:pointer;" class="mm-node" onclick="document.getElementById('chapter5').scrollIntoView({behavior:'smooth'})">
+        <rect x="395" y="630" rx="14" ry="14" width="310" height="110" fill="#fff" stroke="#e11d48" stroke-width="2.5" filter="url(#shadow-sm)"/>
+        <path d="M395,644 a14,14 0 0 1 14,-14 H691 a14,14 0 0 1 14,14 V664 H395 Z" fill="url(#grad-ch5)"/>
+        <text x="550" y="655" text-anchor="middle" font-size="14" fill="#fff" font-weight="700">Ch 5 · SVD &amp; Applications</text>
+        <text x="420" y="688" font-size="12" fill="#374151">  &#9656; SVD &amp; PCA</text>
+        <text x="420" y="706" font-size="12" fill="#374151">  &#9656; Image Compression</text>
+        <text x="570" y="688" font-size="12" fill="#374151">  &#9656; Linear Transformations</text>
+        <text x="570" y="706" font-size="12" fill="#374151">  &#9656; PageRank &amp; Networks</text>
+        <rect x="630" y="718" rx="8" ry="8" width="68" height="18" fill="#ffe4e6"/>
+        <text x="664" y="731" text-anchor="middle" font-size="10" fill="#e11d48" font-weight="700">4 topics</text>
+      </g>
+
+      <!-- ===== BOTTOM: Engineering Applications Bar ===== -->
+      <rect x="150" y="770" rx="12" ry="12" width="800" height="42" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+      <text x="550" y="796" text-anchor="middle" font-size="12" fill="#64748b">Computer Graphics  ·  Machine Learning  ·  Signal Processing  ·  Control Systems  ·  Data Science  ·  Networks</text>
+
+      <!-- ===== LEGEND ===== -->
+      <g transform="translate(370, 755)">
+      </g>
+    </svg>
+  </div>
+
+  <div class="section-header">
+    <h2>Course Chapters</h2>
+    <p>Click any available chapter to explore its topics</p>
+  </div>
+
+  <div class="chapter-grid">
+
+    <!-- Chapter 1 -->
+    <a class="chapter-card active" href="#chapter1">
+      <span class="status-badge available">Available</span>
+      <div class="chapter-num">01</div>
+      <h3>Systems of Equations &amp; Matrices</h3>
+      <p>From solving systems of linear equations to matrix algebra, inverses, and determinants &mdash; the computational backbone of linear algebra.</p>
+      <div class="topic-list">
+        <span class="topic-tag soon">Linear Systems</span>
+        <span class="topic-tag soon">Gaussian Elim.</span>
+        <span class="topic-tag soon">Matrix Algebra</span>
+        <span class="topic-tag soon">Determinants</span>
+      </div>
+    </a>
+
+    <!-- Chapter 2 -->
+    <a class="chapter-card active" href="#chapter2">
+      <span class="status-badge available">Available</span>
+      <div class="chapter-num">02</div>
+      <h3>Vector Spaces</h3>
+      <p>Abstract structure of solution sets: subspaces, span, linear independence, basis, dimension, and the fundamental theorem of linear algebra.</p>
+      <div class="topic-list">
+        <span class="topic-tag soon">Subspaces</span>
+        <span class="topic-tag soon">Span &amp; Independence</span>
+        <span class="topic-tag soon">Basis &amp; Dimension</span>
+        <span class="topic-tag soon">Rank</span>
+        <span class="topic-tag soon">Change of Basis</span>
+      </div>
+    </a>
+
+    <!-- Chapter 3 -->
+    <a class="chapter-card active" href="#chapter3">
+      <span class="status-badge available">Available</span>
+      <div class="chapter-num">03</div>
+      <h3>Eigenvalues &amp; Diagonalization</h3>
+      <p>The spectral theory: characteristic equations, eigenspaces, diagonalization, and applications to dynamical systems and Markov chains.</p>
+      <div class="topic-list">
+        <span class="topic-tag soon">Eigenvalues</span>
+        <span class="topic-tag soon">Eigenvectors</span>
+        <span class="topic-tag soon">Diagonalization</span>
+        <span class="topic-tag soon">Markov Chains</span>
+        <span class="topic-tag soon">Dynamical Sys.</span>
+      </div>
+    </a>
+
+    <!-- Chapter 4 -->
+    <a class="chapter-card active" href="#chapter4">
+      <span class="status-badge available">Available</span>
+      <div class="chapter-num">04</div>
+      <h3>Orthogonality &amp; Least Squares</h3>
+      <p>Inner products, orthogonal projections, Gram-Schmidt process, QR factorization, and least-squares fitting for data analysis.</p>
+      <div class="topic-list">
+        <span class="topic-tag soon">Inner Products</span>
+        <span class="topic-tag soon">Gram-Schmidt</span>
+        <span class="topic-tag soon">Projections</span>
+        <span class="topic-tag soon">Least Squares</span>
+      </div>
+    </a>
+
+    <!-- Chapter 5 -->
+    <a class="chapter-card active" href="#chapter5">
+      <span class="status-badge available">Available</span>
+      <div class="chapter-num">05</div>
+      <h3>SVD &amp; Applications</h3>
+      <p>Singular Value Decomposition, PCA, linear transformations, image compression, PageRank, and real-world engineering applications.</p>
+      <div class="topic-list">
+        <span class="topic-tag soon">SVD</span>
+        <span class="topic-tag soon">PCA</span>
+        <span class="topic-tag soon">Transformations</span>
+        <span class="topic-tag soon">PageRank</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ===== Chapter 1 Detail ===== -->
+  <div class="ch-detail" id="chapter1">
+    <h2>Chapter 1 &mdash; Systems of Equations &amp; Matrices</h2>
+    <p>The computational foundation: from systems of linear equations to matrix algebra and determinants. Every topic includes theory, worked examples, and practice problems.</p>
+    <div class="topic-grid">
+      <a class="topic-card" href="ch1-linear-systems.html">
+        <div class="topic-icon" style="background: linear-gradient(135deg, #0d9488, #14b8a6);">S</div>
+        <div>
+          <h4>1.1 &mdash; Systems of Linear Equations</h4>
+          <p>Gaussian elimination, row echelon form, RREF, free variables, and parametric solutions.</p>
+          <div class="math-preview">\(Ax = b\)</div>
+        </div>
+      </a>
+      <a class="topic-card" href="ch1-matrix-algebra.html">
+        <div class="topic-icon" style="background: linear-gradient(135deg, #0d9488, #14b8a6);">M</div>
+        <div>
+          <h4>1.2 &mdash; Matrix Algebra</h4>
+          <p>Matrix operations, properties, transpose, symmetric matrices, and matrix powers.</p>
+          <div class="math-preview">\((AB)^T = B^T A^T\)</div>
+        </div>
+      </a>
+      <a class="topic-card" href="ch1-inverses.html">
+        <div class="topic-icon" style="background: linear-gradient(135deg, #0d9488, #14b8a6);">I</div>
+        <div>
+          <h4>1.3 &mdash; Matrix Inverses</h4>
+          <p>Elementary matrices, invertibility criteria, computing inverses, and applications.</p>
+          <div class="math-preview">\(A^{-1}A = I\)</div>
+        </div>
+      </a>
+      <a class="topic-card" href="ch1-determinants.html">
+        <div class="topic-icon" style="background: linear-gradient(135deg, #0d9488, #14b8a6);">D</div>
+        <div>
+          <h4>1.4 &mdash; Determinants</h4>
+          <p>Cofactor expansion, properties, Cramer's rule, and geometric interpretation.</p>
+          <div class="math-preview">\(\det(AB) = \det(A)\det(B)\)</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ===== Chapter 2 Detail ===== -->
+  <div class="ch-detail" id="chapter2">
+    <h2>Chapter 2 &mdash; Vector Spaces</h2>
+    <p>The abstract framework: understanding the structure of solution sets through subspaces, bases, dimension, and the rank theorem.</p>
+    <div class="topic-grid">
+      <a class="topic-card" href="ch2-vector-spaces.html">
+        <div class="topic-icon" style="background: linear-gradient(135deg, #2563eb, #3b82f6);">V</div>
+        <div>
+          <h4>2.1 &mdash; Vector Spaces &amp; Subspaces</h4>
+          <p>Definition, examples, closure properties, column space, null space of a matrix.</p>
+          <div class="math-preview">\(\text{Col}(A),\; \text{Nul}(A)\)</div>
+        </div>
+      </a>
+      <a class="topic-card" href="ch2-independence.html">
+        <div class="topic-icon" style="background: linear-gradient(135deg, #2563eb, #3b82f6);">L</div>
+        <div>
+          <h4>2.2 &mdash; Span &amp; Linear Independence</h4>
+          <p>Linearly independent sets, spanning sets, and the connection to systems of equations.</p>
+          <div class="math-preview">\(c_1\mathbf{v}_1 + \cdots + c_n\mathbf{v}_n = \mathbf{0}\)</div>
+        </div>
+      </a>
+      <a class="topic-card" href="ch2-basis-dimension.html">
+        <div class="topic-icon" style="background: linear-gradient(135deg, #2563eb, #3b82f6);">B</div>
+        <div>
+          <h4>2.3 &mdash; Basis &amp; Dimension</h4>
+          <p>Basis for a subspace, dimension, rank theorem, and coordinate systems.</p>
+          <div class="math-preview">\(\dim(\text{Col}\,A) + \dim(\text{Nul}\,A) = n\)</div>
+        </div>
+      </a>
+      <a class="topic-card" href="ch2-rank.html">
+        <div class="topic-icon" style="background: linear-gradient(135deg, #2563eb, #3b82f6);">R</div>
+        <div>
+          <h4>2.4 &mdash; Rank &amp; the Fundamental Theorem</h4>
+          <p>Row space, column space, null space, left null space, and their dimensions.</p>
+          <div class="math-preview">\(\text{rank}(A) = \text{rank}(A^T)\)</div>
+        </div>
+      </a>
+      <a class="topic-card" href="ch2-change-of-basis.html">
+        <div class="topic-icon" style="background: linear-gradient(135deg, #2563eb, #3b82f6);">C</div>
+        <div>
+          <h4>2.5 &mdash; Change of Basis</h4>
+          <p>Coordinate vectors, change-of-basis matrices, and applications to computer graphics.</p>
+          <div class="math-preview">\([\mathbf{x}]_{\mathcal{C}} = P_{\mathcal{C} \leftarrow \mathcal{B}} [\mathbf{x}]_{\mathcal{B}}\)</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ===== Chapter 3 Detail ===== -->
+  <div class="ch-detail" id="chapter3">
+    <h2>Chapter 3 &mdash; Eigenvalues &amp; Diagonalization</h2>
+    <p>The spectral perspective: finding eigenvalues and eigenvectors, diagonalizing matrices, and applying these to dynamical systems and stochastic models.</p>
+    <div class="topic-grid">
+      <a class="topic-card" href="ch3-eigenvalues.html">
+        <div class="topic-icon" style="background: linear-gradient(135deg, #7c3aed, #8b5cf6);">E</div>
+        <div>
+          <h4>3.1 &mdash; Eigenvalues &amp; Eigenvectors</h4>
+          <p>Characteristic equation, finding eigenvalues and eigenvectors, eigenspaces.</p>
+          <div class="math-preview">\(\det(A - \lambda I) = 0\)</div>
+        </div>
+      </a>
+      <a class="topic-card" href="ch3-diagonalization.html">
+        <div class="topic-icon" style="background: linear-gradient(135deg, #7c3aed, #8b5cf6);">D</div>
+        <div>
+          <h4>3.2 &mdash; Diagonalization</h4>
+          <p>Diagonalizability criteria, computing \(P\) and \(D\) such that \(A = PDP^{-1}\).</p>
+          <div class="math-preview">\(A^k = PD^kP^{-1}\)</div>
+        </div>
+      </a>
+      <a class="topic-card" href="ch3-markov.html">
+        <div class="topic-icon" style="background: linear-gradient(135deg, #7c3aed, #8b5cf6);">M</div>
+        <div>
+          <h4>3.3 &mdash; Markov Chains</h4>
+          <p>Stochastic matrices, steady-state vectors, and long-term behavior of systems.</p>
+          <div class="math-preview">\(\mathbf{x}_{k+1} = P\mathbf{x}_k\)</div>
+        </div>
+      </a>
+      <a class="topic-card" href="ch3-dynamical.html">
+        <div class="topic-icon" style="background: linear-gradient(135deg, #7c3aed, #8b5cf6);">S</div>
+        <div>
+          <h4>3.4 &mdash; Dynamical Systems</h4>
+          <p>Discrete dynamical systems, trajectories, attractors, and stability analysis.</p>
+          <div class="math-preview">\(\mathbf{x}_k = c_1 \lambda_1^k \mathbf{v}_1 + c_2 \lambda_2^k \mathbf{v}_2\)</div>
+        </div>
+      </a>
+      <a class="topic-card" href="ch3-complex-eigen.html">
+        <div class="topic-icon" style="background: linear-gradient(135deg, #7c3aed, #8b5cf6);">C</div>
+        <div>
+          <h4>3.5 &mdash; Complex Eigenvalues</h4>
+          <p>Complex roots of the characteristic equation, rotation-dilation interpretation.</p>
+          <div class="math-preview">\(\lambda = a \pm bi\)</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ===== Chapter 4 Detail ===== -->
+  <div class="ch-detail" id="chapter4">
+    <h2>Chapter 4 &mdash; Orthogonality &amp; Least Squares</h2>
+    <p>Geometry in \(\mathbb{R}^n\): inner products, orthogonal projections, the Gram-Schmidt process, and least-squares solutions for data fitting.</p>
+    <div class="topic-grid">
+      <a class="topic-card" href="ch4-inner-products.html">
+        <div class="topic-icon" style="background: linear-gradient(135deg, #d97706, #f59e0b);">I</div>
+        <div>
+          <h4>4.1 &mdash; Inner Products &amp; Norms</h4>
+          <p>Dot product, length, distance, angle between vectors, Cauchy-Schwarz inequality.</p>
+          <div class="math-preview">\(\|\mathbf{u}\| = \sqrt{\mathbf{u} \cdot \mathbf{u}}\)</div>
+        </div>
+      </a>
+      <a class="topic-card" href="ch4-orthogonal-sets.html">
+        <div class="topic-icon" style="background: linear-gradient(135deg, #d97706, #f59e0b);">O</div>
+        <div>
+          <h4>4.2 &mdash; Orthogonal &amp; Orthonormal Sets</h4>
+          <p>Orthogonal bases, orthogonal matrices, and their computational advantages.</p>
+          <div class="math-preview">\(Q^TQ = I\)</div>
+        </div>
+      </a>
+      <a class="topic-card" href="ch4-gram-schmidt.html">
+        <div class="topic-icon" style="background: linear-gradient(135deg, #d97706, #f59e0b);">G</div>
+        <div>
+          <h4>4.3 &mdash; Gram-Schmidt &amp; QR</h4>
+          <p>Gram-Schmidt orthogonalization process and QR factorization.</p>
+          <div class="math-preview">\(A = QR\)</div>
+        </div>
+      </a>
+      <a class="topic-card" href="ch4-least-squares.html">
+        <div class="topic-icon" style="background: linear-gradient(135deg, #d97706, #f59e0b);">L</div>
+        <div>
+          <h4>4.4 &mdash; Least-Squares Problems</h4>
+          <p>Normal equations, projections, data fitting, and linear regression.</p>
+          <div class="math-preview">\(A^TA\hat{\mathbf{x}} = A^T\mathbf{b}\)</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ===== Chapter 5 Detail ===== -->
+  <div class="ch-detail" id="chapter5">
+    <h2>Chapter 5 &mdash; SVD &amp; Applications</h2>
+    <p>The capstone: Singular Value Decomposition, principal component analysis, linear transformations, and real-world applications from image compression to Google's PageRank.</p>
+    <div class="topic-grid">
+      <a class="topic-card" href="ch5-svd.html">
+        <div class="topic-icon" style="background: linear-gradient(135deg, #e11d48, #f43f5e);">S</div>
+        <div>
+          <h4>5.1 &mdash; Singular Value Decomposition</h4>
+          <p>Computing the SVD, geometric interpretation, and low-rank approximations.</p>
+          <div class="math-preview">\(A = U\Sigma V^T\)</div>
+        </div>
+      </a>
+      <a class="topic-card" href="ch5-pca.html">
+        <div class="topic-icon" style="background: linear-gradient(135deg, #e11d48, #f43f5e);">P</div>
+        <div>
+          <h4>5.2 &mdash; PCA &amp; Dimensionality Reduction</h4>
+          <p>Principal Component Analysis, covariance matrices, and data visualization.</p>
+          <div class="math-preview">\(C = \frac{1}{n-1}X^TX\)</div>
+        </div>
+      </a>
+      <a class="topic-card" href="ch5-transformations.html">
+        <div class="topic-icon" style="background: linear-gradient(135deg, #e11d48, #f43f5e);">T</div>
+        <div>
+          <h4>5.3 &mdash; Linear Transformations</h4>
+          <p>Geometric transformations in 2D/3D, rotation, reflection, shear, and homogeneous coordinates.</p>
+          <div class="math-preview">\(T(\mathbf{x}) = A\mathbf{x}\)</div>
+        </div>
+      </a>
+      <a class="topic-card" href="ch5-applications.html">
+        <div class="topic-icon" style="background: linear-gradient(135deg, #e11d48, #f43f5e);">A</div>
+        <div>
+          <h4>5.4 &mdash; PageRank &amp; Network Analysis</h4>
+          <p>Google's PageRank algorithm, adjacency matrices, graph Laplacians, and network science.</p>
+          <div class="math-preview">\(\mathbf{r} = M\mathbf{r}\)</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- CTA Cards -->
+  <div class="cta-grid">
+    <a class="cta-card" href="exam-generator.html">
+      <div class="cta-icon" style="background: linear-gradient(135deg, #0d9488, #7c3aed);">&#9998;</div>
+      <div>
+        <h3>Exam Generator</h3>
+        <p>Generate custom practice exams from any combination of chapters and topics.</p>
+      </div>
+    </a>
+    <a class="cta-card" href="Linear_Algebra_Syllabus.docx">
+      <div class="cta-icon" style="background: linear-gradient(135deg, #2563eb, #3b82f6);">&#128196;</div>
+      <div>
+        <h3>Course Syllabus</h3>
+        <p>Download the detailed course syllabus with schedule, grading, and policies.</p>
+      </div>
+    </a>
+  </div>
+
+</div>
+
+<footer>
+  <p>&copy; 2026 Dr. Mohamed Mabrok &mdash; Qatar University &middot; Mathematics &amp; Statistics</p>
+  <p style="margin-top:0.5rem; font-size:0.8rem;">Linear Algebra for Engineering &amp; Computer Science &mdash; Interactive Course</p>
+</footer>
+
+<script>
+// Smooth scroll for anchor links only
+document.querySelectorAll('.chapter-card.active').forEach(function(card) {
+  card.addEventListener('click', function(e) {
+    var href = this.getAttribute('href');
+    if (href && href.startsWith('#')) {
+      e.preventDefault();
+      var el = document.getElementById(href.substring(1));
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// KaTeX auto-render
+document.addEventListener("DOMContentLoaded", function() {
+  renderMathInElement(document.body, {
+    delimiters: [
+      { left: "\\(", right: "\\)", display: false },
+      { left: "\\[", right: "\\]", display: true },
+      { left: "$$", right: "$$", display: true }
+    ],
+    throwOnError: false
+  });
+});
+</script>
+
+</body>
+</html>
