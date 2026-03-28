@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.4 Determinants | LA Course</title>
+
+    <!-- KaTeX for math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: white;
+            border-bottom: 2px solid #0d9488;
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            gap: 40px;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .nav-brand {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0d9488;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+            margin-left: auto;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #0d9488;
+        }
+
+        .nav-links a.active {
+            color: #0d9488;
+            border-bottom: 2px solid #0d9488;
+            padding-bottom: 2px;
+        }
+
+        main {
+            margin-top: 60px;
+            padding: 0;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #0d9488 0%, #059669 100%);
+            color: white;
+            padding: 60px 30px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Content Container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+
+        /* Section Headings */
+        h2 {
+            color: #0d9488;
+            font-size: 32px;
+            margin: 50px 0 30px 0;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #0d9488;
+        }
+
+        h3 {
+            color: #1f2937;
+            font-size: 24px;
+            margin: 35px 0 20px 0;
+        }
+
+        h4 {
+            color: #374151;
+            font-size: 18px;
+            margin: 20px 0 12px 0;
+        }
+
+        p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        /* Definition, Theorem, etc. Boxes */
+        .definition-box, .theorem-box, .example-box, .warning-box, .tip-box {
+            margin: 25px 0;
+            padding: 20px 25px;
+            border-left: 5px solid;
+            border-radius: 8px;
+            background: #f3f4f6;
+        }
+
+        .definition-box {
+            border-left-color: #0d9488;
+            background: #ecfdf5;
+        }
+
+        .definition-box strong {
+            color: #0d9488;
+        }
+
+        .theorem-box {
+            border-left-color: #7c3aed;
+            background: #f3e8ff;
+        }
+
+        .theorem-box strong {
+            color: #7c3aed;
+        }
+
+        .example-box {
+            border-left-color: #0d9488;
+            background: #ecfdf5;
+        }
+
+        .warning-box {
+            border-left-color: #dc2626;
+            background: #fee2e2;
+        }
+
+        .warning-box strong {
+            color: #dc2626;
+        }
+
+        .tip-box {
+            border-left-color: #d97706;
+            background: #fef3c7;
+        }
+
+        .tip-box strong {
+            color: #d97706;
+        }
+
+        /* Objectives */
+        .objectives {
+            background: #ecfdf5;
+            border: 2px solid #0d9488;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .objectives h3 {
+            color: #0d9488;
+            margin-top: 0;
+        }
+
+        .objectives ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .objectives li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .objectives li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #0d9488;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        /* Step Lists */
+        .step-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .step-list li {
+            display: flex;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+
+        .step-list li:before {
+            content: attr(data-step);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            background: #0d9488;
+            color: white;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .step-list li span {
+            flex: 1;
+            padding-top: 8px;
+        }
+
+        /* Example Items (Collapsible) */
+        .example-item {
+            margin: 20px 0;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .example-header {
+            background: linear-gradient(135deg, #059669, #10b981);
+            color: white;
+            padding: 18px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .example-header:hover {
+            background: linear-gradient(135deg, #047857, #059669);
+        }
+
+        .example-header .toggle-arrow {
+            display: inline-block;
+            transition: transform 0.3s;
+            font-size: 20px;
+        }
+
+        .example-item.active .example-header .toggle-arrow {
+            transform: rotate(180deg);
+        }
+
+        .example-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out;
+            padding: 0 25px;
+        }
+
+        .example-item.active .example-content {
+            max-height: 5000px;
+            padding: 25px;
+        }
+
+        .example-content p {
+            margin-bottom: 12px;
+        }
+
+        .solution-step {
+            background: #f0f9ff;
+            border-left: 4px solid #0d9488;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+
+        /* Quiz Questions */
+        .quiz-question {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+            page-break-inside: avoid;
+        }
+
+        .quiz-question .question-text {
+            font-weight: 600;
+            margin-bottom: 18px;
+            color: #1f2937;
+        }
+
+        .choices {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .choice-btn {
+            background: white;
+            border: 2px solid #d1d5db;
+            border-radius: 6px;
+            padding: 12px 18px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s;
+            font-size: 15px;
+        }
+
+        .choice-btn:hover {
+            border-color: #0d9488;
+            background: #f0fdf4;
+        }
+
+        .choice-btn.correct {
+            background: #dcfce7;
+            border-color: #16a34a;
+            color: #15803d;
+        }
+
+        .choice-btn.incorrect {
+            background: #fee2e2;
+            border-color: #dc2626;
+            color: #991b1b;
+        }
+
+        .choice-btn.disabled {
+            cursor: not-allowed;
+        }
+
+        .quiz-feedback {
+            margin-top: 15px;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .quiz-feedback.show {
+            display: block;
+        }
+
+        .quiz-feedback.correct {
+            background: #dcfce7;
+            color: #15803d;
+            border-left: 4px solid #16a34a;
+        }
+
+        .quiz-feedback.incorrect {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 4px solid #dc2626;
+        }
+
+        /* Interactive Visualizations */
+        .visualization-container {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .visualization-controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            background: #0d9488;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+        }
+
+        .btn.secondary {
+            background: #7c3aed;
+        }
+
+        .btn.secondary:hover {
+            background: #6d28d9;
+        }
+
+        .btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        canvas {
+            max-width: 100%;
+            background: #0f172a;
+            border-radius: 6px;
+        }
+
+        .visualization-info {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .matrix-display {
+            font-family: 'Courier New', monospace;
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .operation-description {
+            background: #fef3c7;
+            border-left: 4px solid #d97706;
+            padding: 12px 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        /* Key Takeaways */
+        .key-takeaways {
+            background: linear-gradient(135deg, #ecfdf5, #f0fdf4);
+            border: 2px solid #0d9488;
+            border-radius: 8px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+
+        .key-takeaways h3 {
+            color: #0d9488;
+            margin-top: 0;
+        }
+
+        .key-takeaways ol {
+            padding-left: 25px;
+        }
+
+        .key-takeaways li {
+            margin-bottom: 12px;
+            color: #1f2937;
+        }
+
+        /* Navigation Footer */
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 60px 0 40px 0;
+            padding: 25px 0;
+            border-top: 2px solid #e5e7eb;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .nav-footer a {
+            color: #0d9488;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .nav-footer a:hover {
+            color: #059669;
+        }
+
+        /* Footer */
+        footer {
+            background: #1f2937;
+            color: #d1d5db;
+            text-align: center;
+            padding: 30px;
+            font-size: 14px;
+        }
+
+        /* Code/Matrix formatting */
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        /* Cofactor Animator Styles */
+        .cofactor-animator {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .cofactor-step {
+            background: #f9fafb;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border-left: 4px solid #0d9488;
+        }
+
+        .cofactor-step.highlight {
+            background: #fef3c7;
+            border-left-color: #d97706;
+        }
+
+        .cofactor-step.completed {
+            background: #dcfce7;
+            border-left-color: #16a34a;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 0 15px;
+                gap: 15px;
+            }
+
+            .nav-links {
+                gap: 15px;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            .container {
+                padding: 30px 20px;
+            }
+
+            .nav-footer {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-footer a {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="index.html" class="nav-brand">LA Course</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="why-linear-algebra.html">Why LA?</a></li>
+            <li><a href="ch1-linear-systems.html">§ 1.1</a></li>
+            <li><a href="ch1-matrix-algebra.html">§ 1.2</a></li>
+            <li><a href="ch1-inverses.html">§ 1.3</a></li>
+            <li><a href="ch1-determinants.html" class="active">§ 1.4</a></li>
+            <li><a href="exam-generator.html">Exam Generator</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <main>
+        <div class="hero">
+            <h1>Determinants</h1>
+            <p>A single number that captures invertibility, volume scaling, and orientation — the determinant is a powerful tool in matrix analysis</p>
+        </div>
+
+        <!-- Main Content -->
+        <div class="container">
+            <!-- Learning Objectives -->
+            <div class="objectives">
+                <h3>Learning Objectives</h3>
+                <ul>
+                    <li>Compute the determinant of 2×2 and 3×3 matrices</li>
+                    <li>Use cofactor expansion along any row or column</li>
+                    <li>Apply properties of determinants (row operations, triangular matrices, products)</li>
+                    <li>Understand the geometric meaning of the determinant (area/volume scaling, orientation)</li>
+                    <li>Use Cramer's Rule to solve systems of linear equations</li>
+                    <li>Connect determinants to invertibility via the Invertible Matrix Theorem</li>
+                </ul>
+            </div>
+
+            <!-- Section: The Determinant of a 2×2 Matrix -->
+            <h2>The Determinant of a 2×2 Matrix</h2>
+
+            <p>The <strong>determinant</strong> of a 2×2 matrix is a single number that encodes critical information about the matrix. It appears in formulas for area, inverse matrices, and eigenvalues.</p>
+
+            <div class="definition-box">
+                <strong>Definition:</strong> For a 2×2 matrix \[A = \begin{bmatrix} a & b \\ c & d \end{bmatrix}\]
+                <br><br>
+                the <strong>determinant</strong> is:
+                <br><br>
+                \[\det(A) = ad - bc\]
+            </div>
+
+            <h3>Geometric Interpretation</h3>
+            <p>The column vectors of the matrix form a parallelogram (or, in degenerate cases, a line or point). The determinant equals the <strong>signed area</strong> of this parallelogram:</p>
+
+            <ul>
+                <li><strong>|det(A)| =</strong> the area of the parallelogram</li>
+                <li><strong>sign(det(A)) =</strong> the orientation: positive = counterclockwise, negative = clockwise</li>
+                <li><strong>det(A) = 0 ⟺</strong> the columns are linearly dependent (the parallelogram collapses to a line or point)</li>
+            </ul>
+
+            <p>This is why \(\det(A) = 0\) is equivalent to the matrix being singular (non-invertible).</p>
+
+            <!-- Section: The Determinant of a 3×3 Matrix -->
+            <h2>The Determinant of a 3×3 Matrix</h2>
+
+            <p>For larger matrices, we use <strong>cofactor expansion</strong> to compute the determinant recursively.</p>
+
+            <div class="definition-box">
+                <strong>Minors and Cofactors:</strong>
+                <br><br>
+                For an \(n \times n\) matrix \(A\), the <strong>minor</strong> \(M_{ij}\) is the determinant of the \((n-1) \times (n-1)\) submatrix obtained by deleting row \(i\) and column \(j\).
+                <br><br>
+                The <strong>cofactor</strong> is: \(C_{ij} = (-1)^{i+j} M_{ij}\)
+                <br><br>
+                The sign pattern is:
+                <br>\[\begin{bmatrix} + & - & + \\ - & + & - \\ + & - & + \end{bmatrix}\]
+            </div>
+
+            <div class="definition-box">
+                <strong>Cofactor Expansion Formula:</strong>
+                <br><br>
+                The determinant can be expanded along any row \(i\):
+                <br><br>
+                \[\det(A) = a_{i1}C_{i1} + a_{i2}C_{i2} + \cdots + a_{in}C_{in}\]
+                <br><br>
+                Or along any column \(j\):
+                <br><br>
+                \[\det(A) = a_{1j}C_{1j} + a_{2j}C_{2j} + \cdots + a_{nj}C_{nj}\]
+            </div>
+
+            <div class="tip-box">
+                <strong>Tip:</strong> Choose the row or column with the most zeros to minimize computation!
+            </div>
+
+            <!-- Section: Properties of Determinants -->
+            <h2>Properties of Determinants</h2>
+
+            <div class="theorem-box">
+                <strong>Key Properties:</strong>
+                <br><br>
+                1. \(\det(I) = 1\) — The identity matrix has determinant 1
+                <br><br>
+                2. <strong>Row swap:</strong> Swapping two rows multiplies det by −1
+                <br><br>
+                3. <strong>Row scaling:</strong> Multiplying a row by \(k\) multiplies det by \(k\)
+                <br><br>
+                4. <strong>Row addition:</strong> Adding a multiple of one row to another does not change det
+                <br><br>
+                5. \(\det(AB) = \det(A)\det(B)\) — The determinant of a product is the product of determinants
+                <br><br>
+                6. \(\det(A^T) = \det(A)\) — Transposing does not change the determinant
+                <br><br>
+                7. \(\det(A^{-1}) = \frac{1}{\det(A)}\) — (if \(\det(A) \neq 0\))
+                <br><br>
+                8. \(\det(cA) = c^n \det(A)\) — For an \(n \times n\) matrix, scaling all entries by \(c\)
+            </div>
+
+            <div class="tip-box">
+                <strong>Tip:</strong> For triangular matrices (upper or lower), \(\det(A)\) = product of diagonal entries
+            </div>
+
+            <div class="warning-box">
+                <strong>Warning:</strong> \(\det(A + B) \neq \det(A) + \det(B)\) in general!
+            </div>
+
+            <!-- Section: Computing Determinants via Row Reduction -->
+            <h2>Computing Determinants via Row Reduction</h2>
+
+            <p>Elementary row operations relate the determinant of a matrix to the determinant of its row-reduced form. This is often <strong>more efficient</strong> than cofactor expansion for large matrices.</p>
+
+            <h3>Strategy</h3>
+            <ol class="step-list" style="list-style: decimal; padding-left: 25px;">
+                <li><span>Row reduce the matrix to upper triangular form</span></li>
+                <li><span>Track each row operation and adjust the determinant accordingly</span></li>
+                <li><span>Once in upper triangular form, det = (product of diagonal) × (adjustment factor)</span></li>
+            </ol>
+
+            <p><strong>Adjustments:</strong></p>
+            <ul>
+                <li>Each row swap: multiply determinant by −1</li>
+                <li>Multiplying row \(i\) by \(k\): multiply determinant by \(k\)</li>
+                <li>Adding multiple of row \(j\) to row \(i\): no change to determinant</li>
+            </ul>
+
+            <!-- Section: Cramer's Rule -->
+            <h2>Cramer's Rule</h2>
+
+            <p>For an invertible matrix \(A\), Cramer's Rule gives a formula for the solution \(\mathbf{x}\) to \(A\mathbf{x} = \mathbf{b}\).</p>
+
+            <div class="theorem-box">
+                <strong>Cramer's Rule:</strong>
+                <br><br>
+                If \(\det(A) \neq 0\), then:
+                <br><br>
+                \[x_i = \frac{\det(A_i)}{\det(A)}\]
+                <br><br>
+                where \(A_i\) is the matrix obtained by replacing column \(i\) of \(A\) with the vector \(\mathbf{b}\).
+            </div>
+
+            <div class="tip-box">
+                <strong>Tip:</strong> Cramer's Rule is elegant but <strong>computationally expensive</strong> for large systems (requires computing \(n+1\) determinants). Use Gaussian elimination instead!
+            </div>
+
+            <!-- Section: Geometric Interpretation -->
+            <h2>Geometric Meaning of the Determinant</h2>
+
+            <h3>In 2D</h3>
+            <p>For a 2×2 matrix \(A\) with column vectors \(\mathbf{v}_1\) and \(\mathbf{v}_2\):</p>
+            <ul>
+                <li>\(|\det(A)|\) = area of the parallelogram spanned by \(\mathbf{v}_1\) and \(\mathbf{v}_2\)</li>
+                <li>\(\det(A) > 0\) if \(\mathbf{v}_2\) is counterclockwise from \(\mathbf{v}_1\) (positive orientation)</li>
+                <li>\(\det(A) < 0\) if \(\mathbf{v}_2\) is clockwise from \(\mathbf{v}_1\) (negative orientation)</li>
+            </ul>
+
+            <h3>In 3D</h3>
+            <p>For a 3×3 matrix \(A\) with column vectors \(\mathbf{v}_1, \mathbf{v}_2, \mathbf{v}_3\):</p>
+            <ul>
+                <li>\(|\det(A)|\) = volume of the parallelepiped (3D box) spanned by \(\mathbf{v}_1, \mathbf{v}_2, \mathbf{v}_3\)</li>
+                <li>\(\det(A) = 0\) means the vectors are coplanar (the 3D box collapses to a plane)</li>
+            </ul>
+
+            <!-- Interactive Visualization 1: Determinant & Area Visualizer -->
+            <h2>Interactive Visualization: Determinant & Area Visualizer</h2>
+            <p>Enter the entries of a 2×2 matrix and visualize the parallelogram formed by its column vectors. The area equals |det(A)|.</p>
+
+            <div class="visualization-container">
+                <div style="width: 100%; max-width: 500px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px;">
+                        <div>
+                            <label style="font-weight: 600; display: block; margin-bottom: 5px;">\(a\)</label>
+                            <input type="number" id="mat-a" value="3" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+                        </div>
+                        <div>
+                            <label style="font-weight: 600; display: block; margin-bottom: 5px;">\(b\)</label>
+                            <input type="number" id="mat-b" value="1" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+                        </div>
+                        <div>
+                            <label style="font-weight: 600; display: block; margin-bottom: 5px;">\(c\)</label>
+                            <input type="number" id="mat-c" value="1" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+                        </div>
+                        <div>
+                            <label style="font-weight: 600; display: block; margin-bottom: 5px;">\(d\)</label>
+                            <input type="number" id="mat-d" value="2" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="visualization-controls">
+                    <button class="btn" onclick="drawParallelogram()">Draw</button>
+                    <button class="btn secondary" onclick="loadDeterminantPreset('identity')">Identity</button>
+                    <button class="btn secondary" onclick="loadDeterminantPreset('rotation')">Rotation 30°</button>
+                    <button class="btn secondary" onclick="loadDeterminantPreset('shear')">Shear</button>
+                    <button class="btn secondary" onclick="loadDeterminantPreset('scale')">Scale 2×3</button>
+                    <button class="btn secondary" onclick="loadDeterminantPreset('singular')">Singular</button>
+                    <button class="btn secondary" onclick="loadDeterminantPreset('reflection')">Reflection</button>
+                </div>
+
+                <canvas id="parallelogramCanvas" width="500" height="500"></canvas>
+
+                <div class="visualization-info">
+                    <div id="matrixInfo" style="margin-top: 15px; font-weight: 600;">Matrix A = [[3, 1], [1, 2]]</div>
+                    <div id="detInfo" style="margin-top: 10px; font-size: 16px; color: #0d9488; font-weight: 600;">det(A) = 5, Area = 5</div>
+                </div>
+            </div>
+
+            <!-- Interactive Visualization 2: Cofactor Expansion Animator -->
+            <h2>Interactive Visualization: Cofactor Expansion Animator</h2>
+            <p>Watch the step-by-step cofactor expansion of a 3×3 matrix. Choose a preset or enter your own values, then select a row or column to expand along.</p>
+
+            <div class="visualization-container">
+                <div class="visualization-controls">
+                    <button class="btn" onclick="loadCofactorPreset('simple')">Simple Example</button>
+                    <button class="btn" onclick="loadCofactorPreset('zeros')">Example with Zeros</button>
+                    <button class="btn" onclick="loadCofactorPreset('general')">General Example</button>
+                </div>
+
+                <div style="margin-top: 20px; width: 100%; max-width: 600px;">
+                    <div class="matrix-display" id="cofactorMatrixDisplay">
+\[\begin{bmatrix} 2 & 1 & 3 \\ 0 & 4 & 1 \\ 1 & 0 & 2 \end{bmatrix}\]
+                    </div>
+
+                    <div style="margin-top: 15px;">
+                        <label style="font-weight: 600; display: block; margin-bottom: 8px;">Expand along row/column:</label>
+                        <div class="visualization-controls" style="justify-content: flex-start;">
+                            <button class="btn" onclick="expandCofactor(1, 'row')">Row 1</button>
+                            <button class="btn" onclick="expandCofactor(2, 'row')">Row 2</button>
+                            <button class="btn" onclick="expandCofactor(3, 'row')">Row 3</button>
+                            <button class="btn secondary" onclick="expandCofactor(1, 'col')">Col 1</button>
+                            <button class="btn secondary" onclick="expandCofactor(2, 'col')">Col 2</button>
+                            <button class="btn secondary" onclick="expandCofactor(3, 'col')">Col 3</button>
+                        </div>
+                    </div>
+
+                    <div id="cofactorSteps" style="margin-top: 20px;"></div>
+                </div>
+            </div>
+
+            <!-- Section 4: Worked Examples -->
+            <h2>Worked Examples</h2>
+            <p>Click on each example to reveal the complete step-by-step solution.</p>
+
+            <!-- Easy Examples -->
+            <h3>Easy Examples</h3>
+
+            <!-- Example 1: 2×2 Determinant -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 1: Determinant of a 2×2 Matrix</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Compute \(\det(A)\) where \(A = \begin{bmatrix} 3 & -1 \\ 2 & 5 \end{bmatrix}\)</strong></p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Apply the formula</strong></p>
+                    <p>For a 2×2 matrix \(\begin{bmatrix} a & b \\ c & d \end{bmatrix}\), we have \(\det(A) = ad - bc\).</p>
+
+                    <p><strong>Step 2: Identify entries</strong></p>
+                    <p>\(a = 3, b = -1, c = 2, d = 5\)</p>
+
+                    <p><strong>Step 3: Compute</strong></p>
+                    <div class="solution-step">
+\[\det(A) = (3)(5) - (-1)(2) = 15 - (-2) = 15 + 2 = 17\]
+                    </div>
+
+                    <p><strong>Geometric Interpretation:</strong> The column vectors \(\begin{bmatrix} 3 \\ 2 \end{bmatrix}\) and \(\begin{bmatrix} -1 \\ 5 \end{bmatrix}\) form a parallelogram with area 17. Since det > 0, the vectors have counterclockwise orientation.</p>
+
+                    <p><strong>Answer:</strong> \(\det(A) = 17\)</p>
+                </div>
+            </div>
+
+            <!-- Example 2: 3×3 Determinant via Cofactor Expansion -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 2: Determinant of a 3×3 Matrix (Cofactor Expansion)</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Compute \(\det(A)\) where \(A = \begin{bmatrix} 2 & 1 & 3 \\ 0 & 4 & 1 \\ 1 & 0 & 2 \end{bmatrix}\)</strong></p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Choose a row or column to expand along</strong></p>
+                    <p>Row 2 has a zero in position (2,1), so expanding along Row 2 will save work.</p>
+
+                    <p><strong>Step 2: Cofactor expansion along Row 2</strong></p>
+                    <p>\[\det(A) = a_{21}C_{21} + a_{22}C_{22} + a_{23}C_{23}\]</p>
+                    <p>where \(C_{ij} = (-1)^{i+j}M_{ij}\)</p>
+
+                    <p><strong>Step 3: Compute each cofactor</strong></p>
+
+                    <p><strong>Cofactor \(C_{21}\):</strong></p>
+                    <p>\(C_{21} = (-1)^{2+1}M_{21} = -M_{21}\)</p>
+                    <p>\(M_{21} = \det\begin{bmatrix} 1 & 3 \\ 0 & 2 \end{bmatrix} = (1)(2) - (3)(0) = 2\)</p>
+                    <p>So \(C_{21} = -2\)</p>
+
+                    <p><strong>Cofactor \(C_{22}\):</strong></p>
+                    <p>\(C_{22} = (-1)^{2+2}M_{22} = M_{22}\)</p>
+                    <p>\(M_{22} = \det\begin{bmatrix} 2 & 3 \\ 1 & 2 \end{bmatrix} = (2)(2) - (3)(1) = 4 - 3 = 1\)</p>
+                    <p>So \(C_{22} = 1\)</p>
+
+                    <p><strong>Cofactor \(C_{23}\):</strong></p>
+                    <p>\(C_{23} = (-1)^{2+3}M_{23} = -M_{23}\)</p>
+                    <p>\(M_{23} = \det\begin{bmatrix} 2 & 1 \\ 1 & 0 \end{bmatrix} = (2)(0) - (1)(1) = -1\)</p>
+                    <p>So \(C_{23} = -(-1) = 1\)</p>
+
+                    <p><strong>Step 4: Compute determinant</strong></p>
+                    <div class="solution-step">
+\[\det(A) = 0 \cdot (-2) + 4 \cdot 1 + 1 \cdot 1 = 0 + 4 + 1 = 5\]
+                    </div>
+
+                    <p><strong>Answer:</strong> \(\det(A) = 5\)</p>
+                </div>
+            </div>
+
+            <!-- Example 3: Triangular Matrix Determinant -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 3: Determinant of a Triangular Matrix</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Find \(\det(A)\) where \(A = \begin{bmatrix} 2 & 3 & 1 \\ 0 & 5 & 2 \\ 0 & 0 & 4 \end{bmatrix}\)</strong></p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Recognize the form</strong></p>
+                    <p>\(A\) is an upper triangular matrix (all entries below the diagonal are zero).</p>
+
+                    <p><strong>Step 2: Apply the property</strong></p>
+                    <p>For triangular matrices, \(\det(A) = \) product of diagonal entries.</p>
+
+                    <p><strong>Step 3: Compute</strong></p>
+                    <div class="solution-step">
+\[\det(A) = 2 \cdot 5 \cdot 4 = 40\]
+                    </div>
+
+                    <p><strong>Answer:</strong> \(\det(A) = 40\)</p>
+                </div>
+            </div>
+
+            <!-- Medium Examples -->
+            <h3>Medium Examples</h3>
+
+            <!-- Example 4: Row Operations and Determinant -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 4: Using Row Operations to Find Determinant</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Compute \(\det(A)\) where \(A = \begin{bmatrix} 2 & 1 & 3 \\ 4 & 3 & 1 \\ 2 & 2 & 5 \end{bmatrix}\) using row reduction.</strong></p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Start with the original matrix</strong></p>
+                    <div class="solution-step">
+\[\begin{bmatrix} 2 & 1 & 3 \\ 4 & 3 & 1 \\ 2 & 2 & 5 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Step 2: Scale Row 1 by 1/2 (multiply determinant by 2)</strong></p>
+                    <p>Operation: \(\frac{1}{2}R_1 \to R_1\)</p>
+                    <div class="solution-step">
+\[\begin{bmatrix} 1 & 1/2 & 3/2 \\ 4 & 3 & 1 \\ 2 & 2 & 5 \end{bmatrix}\]
+                    </div>
+                    <p>Determinant factor so far: \(2\)</p>
+
+                    <p><strong>Step 3: Eliminate below first pivot</strong></p>
+                    <p>Operation: \(R_2 - 4R_1 \to R_2\)</p>
+                    <div class="solution-step">
+\[\begin{bmatrix} 1 & 1/2 & 3/2 \\ 0 & 1 & -5 \\ 2 & 2 & 5 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Step 4: Continue elimination</strong></p>
+                    <p>Operation: \(R_3 - 2R_1 \to R_3\)</p>
+                    <div class="solution-step">
+\[\begin{bmatrix} 1 & 1/2 & 3/2 \\ 0 & 1 & -5 \\ 0 & 1 & 2 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Step 5: Eliminate in second column</strong></p>
+                    <p>Operation: \(R_3 - R_2 \to R_3\)</p>
+                    <div class="solution-step">
+\[\begin{bmatrix} 1 & 1/2 & 3/2 \\ 0 & 1 & -5 \\ 0 & 0 & 7 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Step 6: Read off determinant</strong></p>
+                    <p>The matrix is upper triangular with diagonal entries 1, 1, 7.</p>
+                    <p>Determinant of triangular form: \(1 \cdot 1 \cdot 7 = 7\)</p>
+                    <p>Adjust for scaling: \(\det(A) = 7 \cdot 2 = 14\)</p>
+
+                    <p><strong>Answer:</strong> \(\det(A) = 14\)</p>
+                </div>
+            </div>
+
+            <!-- Example 5: Product Property -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 5: Verify det(AB) = det(A)det(B)</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Let \(A = \begin{bmatrix} 2 & 1 \\ 1 & 3 \end{bmatrix}\) and \(B = \begin{bmatrix} 1 & 2 \\ 0 & 1 \end{bmatrix}\). Verify that \(\det(AB) = \det(A)\det(B)\).</strong></p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Compute det(A)</strong></p>
+                    <div class="solution-step">
+\[\det(A) = (2)(3) - (1)(1) = 6 - 1 = 5\]
+                    </div>
+
+                    <p><strong>Step 2: Compute det(B)</strong></p>
+                    <div class="solution-step">
+\[\det(B) = (1)(1) - (2)(0) = 1 - 0 = 1\]
+                    </div>
+
+                    <p><strong>Step 3: Compute AB</strong></p>
+                    <div class="solution-step">
+\[AB = \begin{bmatrix} 2 & 1 \\ 1 & 3 \end{bmatrix}\begin{bmatrix} 1 & 2 \\ 0 & 1 \end{bmatrix} = \begin{bmatrix} 2 & 5 \\ 1 & 5 \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Step 4: Compute det(AB)</strong></p>
+                    <div class="solution-step">
+\[\det(AB) = (2)(5) - (5)(1) = 10 - 5 = 5\]
+                    </div>
+
+                    <p><strong>Step 5: Verify the property</strong></p>
+                    <p>\(\det(A)\det(B) = 5 \cdot 1 = 5 = \det(AB)\) ✓</p>
+
+                    <p><strong>Conclusion:</strong> The property holds!</p>
+                </div>
+            </div>
+
+            <!-- Example 6: Cramer's Rule (2×2) -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 6: Cramer's Rule for a 2×2 System</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Solve the system using Cramer's Rule:
+                    <br>\[\begin{aligned} 2x + 3y &= 7 \\ 4x - y &= 1 \end{aligned}\]</strong></p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Write in matrix form Ax = b</strong></p>
+                    <p>\(A = \begin{bmatrix} 2 & 3 \\ 4 & -1 \end{bmatrix}, \quad \mathbf{b} = \begin{bmatrix} 7 \\ 1 \end{bmatrix}\)</p>
+
+                    <p><strong>Step 2: Compute det(A)</strong></p>
+                    <div class="solution-step">
+\[\det(A) = (2)(-1) - (3)(4) = -2 - 12 = -14\]
+                    </div>
+
+                    <p><strong>Step 3: Compute det(A₁) — replace column 1 with b</strong></p>
+                    <p>\(A_1 = \begin{bmatrix} 7 & 3 \\ 1 & -1 \end{bmatrix}\)</p>
+                    <div class="solution-step">
+\[\det(A_1) = (7)(-1) - (3)(1) = -7 - 3 = -10\]
+                    </div>
+
+                    <p><strong>Step 4: Compute det(A₂) — replace column 2 with b</strong></p>
+                    <p>\(A_2 = \begin{bmatrix} 2 & 7 \\ 4 & 1 \end{bmatrix}\)</p>
+                    <div class="solution-step">
+\[\det(A_2) = (2)(1) - (7)(4) = 2 - 28 = -26\]
+                    </div>
+
+                    <p><strong>Step 5: Apply Cramer's Rule</strong></p>
+                    <div class="solution-step">
+\[x = \frac{\det(A_1)}{\det(A)} = \frac{-10}{-14} = \frac{5}{7}\]
+\[y = \frac{\det(A_2)}{\det(A)} = \frac{-26}{-14} = \frac{13}{7}\]
+                    </div>
+
+                    <p><strong>Verification:</strong></p>
+                    <p>\(2 \cdot \frac{5}{7} + 3 \cdot \frac{13}{7} = \frac{10}{7} + \frac{39}{7} = \frac{49}{7} = 7\) ✓</p>
+                    <p>\(4 \cdot \frac{5}{7} - \frac{13}{7} = \frac{20}{7} - \frac{13}{7} = \frac{7}{7} = 1\) ✓</p>
+
+                    <p><strong>Answer:</strong> \((x, y) = \left(\frac{5}{7}, \frac{13}{7}\right)\)</p>
+                </div>
+            </div>
+
+            <!-- Example 7: Cramer's Rule (3×3) -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 7: Cramer's Rule for a 3×3 System</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Solve using Cramer's Rule:
+                    <br>\[\begin{aligned} x + 2y + z &= 4 \\ 2x + 3y - z &= 2 \\ x + y + 3z &= 5 \end{aligned}\]</strong></p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Write in matrix form</strong></p>
+                    <p>\(A = \begin{bmatrix} 1 & 2 & 1 \\ 2 & 3 & -1 \\ 1 & 1 & 3 \end{bmatrix}, \quad \mathbf{b} = \begin{bmatrix} 4 \\ 2 \\ 5 \end{bmatrix}\)</p>
+
+                    <p><strong>Step 2: Compute det(A) — expand along Row 1</strong></p>
+                    <div class="solution-step">
+\[\det(A) = 1 \cdot \det\begin{bmatrix} 3 & -1 \\ 1 & 3 \end{bmatrix} - 2 \cdot \det\begin{bmatrix} 2 & -1 \\ 1 & 3 \end{bmatrix} + 1 \cdot \det\begin{bmatrix} 2 & 3 \\ 1 & 1 \end{bmatrix}\]
+
+\[= 1(9 + 1) - 2(6 + 1) + 1(2 - 3) = 10 - 14 - 1 = -5\]
+                    </div>
+
+                    <p><strong>Step 3: Compute det(A₁)</strong></p>
+                    <p>\(A_1 = \begin{bmatrix} 4 & 2 & 1 \\ 2 & 3 & -1 \\ 5 & 1 & 3 \end{bmatrix}\) (replace column 1 with b)</p>
+                    <div class="solution-step">
+\[\det(A_1) = 4 \cdot \det\begin{bmatrix} 3 & -1 \\ 1 & 3 \end{bmatrix} - 2 \cdot \det\begin{bmatrix} 2 & 1 \\ 1 & 3 \end{bmatrix} + 1 \cdot \det\begin{bmatrix} 2 & 1 \\ 3 & -1 \end{bmatrix}\]
+
+\[= 4(10) - 2(5) + 1(-5) = 40 - 10 - 5 = 25\]
+                    </div>
+
+                    <p><strong>Step 4: Compute det(A₂) and det(A₃) similarly</strong></p>
+                    <p>(Detailed calculations omitted for brevity. You can verify:)</p>
+                    <p>\(\det(A_2) = -10, \quad \det(A_3) = -15\)</p>
+
+                    <p><strong>Step 5: Apply Cramer's Rule</strong></p>
+                    <div class="solution-step">
+\[x = \frac{25}{-5} = -5, \quad y = \frac{-10}{-5} = 2, \quad z = \frac{-15}{-5} = 3\]
+                    </div>
+
+                    <p><strong>Answer:</strong> \((x, y, z) = (-5, 2, 3)\)</p>
+                </div>
+            </div>
+
+            <!-- Hard Examples -->
+            <h3>Hard Examples</h3>
+
+            <!-- Example 8: Area and Volume Applications -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 8: Application — Area and Volume via Determinants</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem (Part A):</strong> Find the area of a triangle with vertices \(P = (1, 2), Q = (4, 6), R = (3, 1)\).</p>
+
+                    <p><strong>Solution (Part A):</strong></p>
+
+                    <p>The area of a triangle with vertices \((x_1, y_1), (x_2, y_2), (x_3, y_3)\) is:</p>
+                    <div class="solution-step">
+\[\text{Area} = \frac{1}{2}\left|\det\begin{bmatrix} x_1 & y_1 & 1 \\ x_2 & y_2 & 1 \\ x_3 & y_3 & 1 \end{bmatrix}\right|\]
+                    </div>
+
+                    <div class="solution-step">
+\[\text{Area} = \frac{1}{2}\left|\det\begin{bmatrix} 1 & 2 & 1 \\ 4 & 6 & 1 \\ 3 & 1 & 1 \end{bmatrix}\right|\]
+                    </div>
+
+                    <p>Expand along column 3:</p>
+                    <div class="solution-step">
+\[\det = 1 \cdot \det\begin{bmatrix} 4 & 6 \\ 3 & 1 \end{bmatrix} - 1 \cdot \det\begin{bmatrix} 1 & 2 \\ 3 & 1 \end{bmatrix} + 1 \cdot \det\begin{bmatrix} 1 & 2 \\ 4 & 6 \end{bmatrix}\]
+
+\[= (4 - 18) - (1 - 6) + (6 - 8) = -14 + 5 - 2 = -11\]
+                    </div>
+
+                    <p>\[\text{Area} = \frac{1}{2}|-11| = \frac{11}{2} = 5.5\]</p>
+
+                    <p><strong>Problem (Part B):</strong> Find the volume of a parallelepiped with edge vectors \(\mathbf{u} = \begin{bmatrix} 2 \\ 1 \\ 0 \end{bmatrix}, \mathbf{v} = \begin{bmatrix} 1 \\ 3 \\ 0 \end{bmatrix}, \mathbf{w} = \begin{bmatrix} 0 \\ 0 \\ 4 \end{bmatrix}\).</p>
+
+                    <p><strong>Solution (Part B):</strong></p>
+
+                    <p>The volume is \(|\det(A)|\) where \(A\) has columns \(\mathbf{u}, \mathbf{v}, \mathbf{w}\):</p>
+                    <div class="solution-step">
+\[A = \begin{bmatrix} 2 & 1 & 0 \\ 1 & 3 & 0 \\ 0 & 0 & 4 \end{bmatrix}\]
+                    </div>
+
+                    <p>Expand along column 3:</p>
+                    <div class="solution-step">
+\[\det(A) = 4 \cdot \det\begin{bmatrix} 2 & 1 \\ 1 & 3 \end{bmatrix} = 4(6 - 1) = 4 \cdot 5 = 20\]
+                    </div>
+
+                    <p>\[\text{Volume} = |20| = 20\]</p>
+
+                    <p><strong>Answers:</strong> Triangle area = 5.5, Parallelepiped volume = 20</p>
+                </div>
+            </div>
+
+            <!-- Example 9: Cross Product via Determinants -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 9: Cross Product via Determinants</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Compute the cross product \(\mathbf{u} \times \mathbf{v}\) where \(\mathbf{u} = \begin{bmatrix} 1 \\ 2 \\ 3 \end{bmatrix}, \mathbf{v} = \begin{bmatrix} 2 \\ 0 \\ 1 \end{bmatrix}\) using determinants.</strong></p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p>The cross product is computed as:</p>
+                    <div class="solution-step">
+\[\mathbf{u} \times \mathbf{v} = \det\begin{bmatrix} \mathbf{i} & \mathbf{j} & \mathbf{k} \\ 1 & 2 & 3 \\ 2 & 0 & 1 \end{bmatrix}\]
+                    </div>
+
+                    <p>Expand along the first row:</p>
+                    <div class="solution-step">
+\[\mathbf{u} \times \mathbf{v} = \mathbf{i} \det\begin{bmatrix} 2 & 3 \\ 0 & 1 \end{bmatrix} - \mathbf{j} \det\begin{bmatrix} 1 & 3 \\ 2 & 1 \end{bmatrix} + \mathbf{k} \det\begin{bmatrix} 1 & 2 \\ 2 & 0 \end{bmatrix}\]
+
+\[= \mathbf{i}(2 - 0) - \mathbf{j}(1 - 6) + \mathbf{k}(0 - 4)\]
+
+\[= 2\mathbf{i} + 5\mathbf{j} - 4\mathbf{k}\]
+                    </div>
+
+                    <p><strong>Answer:</strong> \(\mathbf{u} \times \mathbf{v} = \begin{bmatrix} 2 \\ 5 \\ -4 \end{bmatrix}\)</p>
+
+                    <p><strong>Geometric Interpretation:</strong> This vector is perpendicular to both \(\mathbf{u}\) and \(\mathbf{v}\), and its magnitude is the area of the parallelogram spanned by \(\mathbf{u}\) and \(\mathbf{v}\).</p>
+                </div>
+            </div>
+
+            <!-- Example 10: Eigenvalue Preview -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 10: Eigenvalue Preview — Characteristic Equation</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Find values of \(\lambda\) for which \(\det(A - \lambda I) = 0\), where \(A = \begin{bmatrix} 4 & 1 \\ 2 & 3 \end{bmatrix}\). (This previews eigenvalues from Chapter 3.)</strong></p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Compute A - λI</strong></p>
+                    <div class="solution-step">
+\[A - \lambda I = \begin{bmatrix} 4 & 1 \\ 2 & 3 \end{bmatrix} - \begin{bmatrix} \lambda & 0 \\ 0 & \lambda \end{bmatrix} = \begin{bmatrix} 4-\lambda & 1 \\ 2 & 3-\lambda \end{bmatrix}\]
+                    </div>
+
+                    <p><strong>Step 2: Compute det(A - λI)</strong></p>
+                    <div class="solution-step">
+\[\det(A - \lambda I) = (4-\lambda)(3-\lambda) - (1)(2)\]
+
+\[= 12 - 4\lambda - 3\lambda + \lambda^2 - 2\]
+
+\[= \lambda^2 - 7\lambda + 10\]
+                    </div>
+
+                    <p><strong>Step 3: Solve the characteristic equation det(A - λI) = 0</strong></p>
+                    <div class="solution-step">
+\[\lambda^2 - 7\lambda + 10 = 0\]
+
+\[(\lambda - 5)(\lambda - 2) = 0\]
+
+\[\lambda = 5 \quad \text{or} \quad \lambda = 2\]
+                    </div>
+
+                    <p><strong>Answer:</strong> The eigenvalues are \(\lambda = 5\) and \(\lambda = 2\).</p>
+
+                    <p><strong>Preview:</strong> In Chapter 3, we'll learn that these values are the scalars by which certain special vectors (eigenvectors) are scaled when multiplied by \(A\).</p>
+                </div>
+            </div>
+
+            <!-- Practice Quiz -->
+            <h2>Practice Quiz</h2>
+            <p>Test your understanding with these multiple-choice questions. Click a choice to check your answer.</p>
+
+            <!-- Question 1 -->
+            <div class="quiz-question">
+                <div class="question-text">1. What is \(\det\begin{bmatrix} 5 & 3 \\ 2 & 1 \end{bmatrix}\)?</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, 'q1', false)">
+                        2
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q1', true)">
+                        -1
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q1', false)">
+                        1
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q1', false)">
+                        7
+                    </button>
+                </div>
+                <div class="quiz-feedback" id="feedback-q1"></div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="quiz-question">
+                <div class="question-text">2. If \(\det(A) = 3\) and \(\det(B) = -2\), what is \(\det(AB)\)?</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, 'q2', false)">
+                        1
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q2', false)">
+                        -6
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q2', true)">
+                        -6
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q2', false)">
+                        5
+                    </button>
+                </div>
+                <div class="quiz-feedback" id="feedback-q2"></div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="quiz-question">
+                <div class="question-text">3. If one row of a matrix is all zeros, what is the determinant?</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, 'q3', true)">
+                        0
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q3', false)">
+                        1
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q3', false)">
+                        -1
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q3', false)">
+                        Cannot be determined
+                    </button>
+                </div>
+                <div class="quiz-feedback" id="feedback-q3"></div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="quiz-question">
+                <div class="question-text">4. What happens to the determinant if you swap two rows of a matrix?</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, 'q4', false)">
+                        The determinant is unchanged
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q4', true)">
+                        The determinant changes sign
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q4', false)">
+                        The determinant becomes zero
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q4', false)">
+                        The determinant is multiplied by 2
+                    </button>
+                </div>
+                <div class="quiz-feedback" id="feedback-q4"></div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="quiz-question">
+                <div class="question-text">5. What is the determinant of a 3×3 upper triangular matrix with diagonal entries 2, 3, 4?</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, 'q5', false)">
+                        9
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q5', false)">
+                        12
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q5', true)">
+                        24
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q5', false)">
+                        0
+                    </button>
+                </div>
+                <div class="quiz-feedback" id="feedback-q5"></div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="quiz-question">
+                <div class="question-text">6. In Cramer's Rule, if \(\det(A) = 5\) and \(\det(A_1) = 10\), what is \(x_1\)?</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, 'q6', false)">
+                        0.5
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q6', true)">
+                        2
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q6', false)">
+                        5
+                    </button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q6', false)">
+                        15
+                    </button>
+                </div>
+                <div class="quiz-feedback" id="feedback-q6"></div>
+            </div>
+
+            <!-- Key Takeaways -->
+            <div class="key-takeaways">
+                <h3>Key Takeaways</h3>
+                <ol>
+                    <li><strong>The determinant of a 2×2 matrix</strong> \(\begin{bmatrix} a & b \\ c & d \end{bmatrix}\) is \(ad - bc\), which equals the signed area of the parallelogram formed by the column vectors.</li>
+                    <li><strong>Cofactor expansion</strong> allows us to compute determinants of larger matrices recursively by expanding along any row or column; choose the one with the most zeros to simplify calculations.</li>
+                    <li><strong>Elementary row operations affect the determinant</strong> in predictable ways: row swaps change the sign, row scaling multiplies the determinant, and row addition doesn't change it. This enables efficient computation via row reduction.</li>
+                    <li><strong>Key determinant properties</strong> include \(\det(AB) = \det(A)\det(B)\), \(\det(A^T) = \det(A)\), and for triangular matrices, \(\det = \) product of diagonal entries.</li>
+                    <li><strong>Cramer's Rule</strong> provides an elegant formula to solve \(A\mathbf{x} = \mathbf{b}\) when \(\det(A) \neq 0\), though it is computationally expensive for large systems compared to Gaussian elimination.</li>
+                    <li><strong>Geometrically</strong>, \(|\det(A)|\) represents the volume scaling factor under the linear transformation defined by \(A\); \(\det(A) = 0\) signals that the transformation collapses space to a lower dimension.</li>
+                    <li><strong>The determinant characterizes invertibility</strong>: A is invertible if and only if \(\det(A) \neq 0\), a fact central to the Invertible Matrix Theorem (Chapter 2).</li>
+                    <li><strong>Eigenvalues</strong> (Chapter 3) are found by solving \(\det(A - \lambda I) = 0\), the characteristic equation, showing that determinants bridge matrix theory and linear transformations.</li>
+                </ol>
+            </div>
+
+            <!-- Navigation Footer -->
+            <div class="nav-footer">
+                <a href="ch1-inverses.html">← 1.3 Matrix Inverses</a>
+                <span>Chapter 1: Determinants</span>
+                <a href="index.html">Home →</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 Dr. Mohamed Mabrok — Qatar University</p>
+    </footer>
+
+    <script>
+        // Initialize KaTeX rendering
+        document.addEventListener('DOMContentLoaded', function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    { left: '$$', right: '$$', display: true },
+                    { left: '$', right: '$', display: false },
+                    { left: '\\(', right: '\\)', display: false },
+                    { left: '\\[', right: '\\]', display: true }
+                ]
+            });
+            drawParallelogram();
+        });
+
+        // Toggle collapsible examples
+        function toggle(element) {
+            const item = element.closest('.example-item');
+            item.classList.toggle('active');
+        }
+
+        // Quiz functionality
+        function checkChoice(btn, qId, isCorrect) {
+            const choices = btn.parentElement.querySelectorAll('.choice-btn');
+            choices.forEach(c => c.disabled = true);
+
+            const feedback = document.getElementById(`feedback-${qId}`);
+            feedback.classList.add('show');
+
+            if (isCorrect) {
+                btn.classList.add('correct');
+                feedback.classList.add('correct');
+                feedback.innerHTML = '<strong>✓ Correct!</strong> Well done.';
+            } else {
+                btn.classList.add('incorrect');
+                feedback.classList.add('incorrect');
+                feedback.innerHTML = '<strong>✗ Not quite.</strong> Review the material and try again.';
+            }
+        }
+
+        // Parallelogram Visualizer
+        function drawParallelogram() {
+            const a = parseFloat(document.getElementById('mat-a').value) || 1;
+            const b = parseFloat(document.getElementById('mat-b').value) || 0;
+            const c = parseFloat(document.getElementById('mat-c').value) || 0;
+            const d = parseFloat(document.getElementById('mat-d').value) || 1;
+
+            const canvas = document.getElementById('parallelogramCanvas');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+            const scale = 50;
+
+            // Clear background
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, w, h);
+
+            // Draw grid
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= w; i += scale) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i, h);
+                ctx.stroke();
+            }
+            for (let i = 0; i <= h; i += scale) {
+                ctx.beginPath();
+                ctx.moveTo(0, i);
+                ctx.lineTo(w, i);
+                ctx.stroke();
+            }
+
+            // Draw axes
+            ctx.strokeStyle = '#64748b';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(w/2, 0);
+            ctx.lineTo(w/2, h);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(0, h/2);
+            ctx.lineTo(w, h/2);
+            ctx.stroke();
+
+            const toScreen = (x, y) => [w/2 + x * scale, h/2 - y * scale];
+
+            // Draw parallelogram
+            const [x1, y1] = toScreen(a, c);
+            const [x2, y2] = toScreen(b, d);
+            const [x3, y3] = toScreen(a + b, c + d);
+
+            const det = a * d - b * c;
+            const area = Math.abs(det);
+
+            // Fill parallelogram
+            ctx.beginPath();
+            ctx.moveTo(w/2, h/2);
+            ctx.lineTo(x1, y1);
+            ctx.lineTo(x3, y3);
+            ctx.lineTo(x2, y2);
+            ctx.closePath();
+
+            if (det > 0) {
+                ctx.fillStyle = 'rgba(13, 148, 136, 0.3)';
+                ctx.strokeStyle = '#0d9488';
+            } else if (det < 0) {
+                ctx.fillStyle = 'rgba(124, 58, 237, 0.3)';
+                ctx.strokeStyle = '#7c3aed';
+            } else {
+                ctx.fillStyle = 'rgba(220, 38, 38, 0)';
+                ctx.strokeStyle = '#dc2626';
+            }
+
+            ctx.fill();
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Draw vectors
+            ctx.strokeStyle = '#0d9488';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(w/2, h/2);
+            ctx.lineTo(x1, y1);
+            ctx.stroke();
+
+            ctx.strokeStyle = '#7c3aed';
+            ctx.beginPath();
+            ctx.moveTo(w/2, h/2);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+
+            // Update info
+            document.getElementById('matrixInfo').innerHTML = `Matrix A = [[${a}, ${b}], [${c}, ${d}]]`;
+            document.getElementById('detInfo').innerHTML = `det(A) = ${det.toFixed(2)}, Area = ${area.toFixed(2)}`;
+
+            renderMathInElement(document.body);
+        }
+
+        function loadDeterminantPreset(preset) {
+            if (preset === 'identity') {
+                document.getElementById('mat-a').value = 1;
+                document.getElementById('mat-b').value = 0;
+                document.getElementById('mat-c').value = 0;
+                document.getElementById('mat-d').value = 1;
+            } else if (preset === 'rotation') {
+                const cos30 = Math.cos(Math.PI/6);
+                const sin30 = Math.sin(Math.PI/6);
+                document.getElementById('mat-a').value = cos30.toFixed(3);
+                document.getElementById('mat-b').value = (-sin30).toFixed(3);
+                document.getElementById('mat-c').value = sin30.toFixed(3);
+                document.getElementById('mat-d').value = cos30.toFixed(3);
+            } else if (preset === 'shear') {
+                document.getElementById('mat-a').value = 1;
+                document.getElementById('mat-b').value = 0.5;
+                document.getElementById('mat-c').value = 0;
+                document.getElementById('mat-d').value = 1;
+            } else if (preset === 'scale') {
+                document.getElementById('mat-a').value = 2;
+                document.getElementById('mat-b').value = 0;
+                document.getElementById('mat-c').value = 0;
+                document.getElementById('mat-d').value = 3;
+            } else if (preset === 'singular') {
+                document.getElementById('mat-a').value = 1;
+                document.getElementById('mat-b').value = 2;
+                document.getElementById('mat-c').value = 2;
+                document.getElementById('mat-d').value = 4;
+            } else if (preset === 'reflection') {
+                document.getElementById('mat-a').value = 1;
+                document.getElementById('mat-b').value = 0;
+                document.getElementById('mat-c').value = 0;
+                document.getElementById('mat-d').value = -1;
+            }
+            drawParallelogram();
+        }
+
+        // Cofactor Expansion Animator
+        const cofactorExamples = {
+            simple: {
+                matrix: [[2, 1, 3], [0, 4, 1], [1, 0, 2]],
+                det: 5
+            },
+            zeros: {
+                matrix: [[1, 0, 2], [3, 0, 4], [5, 0, 6]],
+                det: 0
+            },
+            general: {
+                matrix: [[1, 2, 1], [2, 3, -1], [1, 1, 3]],
+                det: -5
+            }
+        };
+
+        function loadCofactorPreset(preset) {
+            const ex = cofactorExamples[preset];
+            const matrix = ex.matrix;
+            let html = '\\[\\begin{bmatrix}';
+            for (let i = 0; i < matrix.length; i++) {
+                for (let j = 0; j < matrix[i].length; j++) {
+                    html += matrix[i][j];
+                    if (j < matrix[i].length - 1) html += ' & ';
+                }
+                if (i < matrix.length - 1) html += ' \\\\ ';
+            }
+            html += '\\end{bmatrix}\\]';
+            document.getElementById('cofactorMatrixDisplay').innerHTML = html;
+            document.getElementById('cofactorSteps').innerHTML = '<p style="color: #6b7280;">Select a row or column to expand along.</p>';
+            renderMathInElement(document.body);
+        }
+
+        function expandCofactor(index, type) {
+            const matStr = document.getElementById('cofactorMatrixDisplay').textContent;
+            let html = '<div class="cofactor-step highlight" style="margin-bottom: 15px;">';
+            if (type === 'row') {
+                html += `<strong>Expanding along Row ${index}:</strong><br><br>`;
+                html += `\\[\\det(A) = a_{${index}1}C_{${index}1} + a_{${index}2}C_{${index}2} + a_{${index}3}C_{${index}3}\\]`;
+            } else {
+                html += `<strong>Expanding along Column ${index}:</strong><br><br>`;
+                html += `\\[\\det(A) = a_{1${index}}C_{1${index}} + a_{2${index}}C_{2${index}} + a_{3${index}}C_{3${index}}\\]`;
+            }
+            html += '</div>';
+            html += '<p style="color: #6b7280;">Complete the calculation by computing each 2×2 minor and cofactor.</p>';
+            document.getElementById('cofactorSteps').innerHTML = html;
+            renderMathInElement(document.body);
+        }
+    </script>
+</body>
+</html>
