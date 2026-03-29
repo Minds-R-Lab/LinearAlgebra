@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.2 Span & Linear Independence | LA Course</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #1f2937; background: #f9fafb; }
+        nav { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: white; border-bottom: 2px solid #0d9488; display: flex; align-items: center; padding: 0 30px; gap: 40px; z-index: 1000; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .nav-brand { font-size: 18px; font-weight: 700; color: #0d9488; text-decoration: none; }
+        .nav-links { display: flex; gap: 30px; list-style: none; margin-left: auto; }
+        .nav-links a { color: #6b7280; text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: #0d9488; }
+        .nav-links a.active { color: #0d9488; border-bottom: 2px solid #0d9488; padding-bottom: 2px; }
+        main { margin-top: 60px; }
+        .hero { background: linear-gradient(135deg, #0d9488 0%, #059669 100%); color: white; padding: 60px 30px; text-align: center; }
+        .hero h1 { font-size: 48px; font-weight: 700; margin-bottom: 15px; }
+        .hero p { font-size: 20px; opacity: 0.95; max-width: 800px; margin: 0 auto; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 40px 30px; }
+        h2 { color: #0d9488; font-size: 32px; margin: 50px 0 30px 0; padding-bottom: 10px; border-bottom: 3px solid #0d9488; }
+        h3 { color: #1f2937; font-size: 24px; margin: 35px 0 20px 0; }
+        h4 { color: #374151; font-size: 18px; margin: 20px 0 12px 0; }
+        p { margin-bottom: 15px; line-height: 1.8; }
+        .definition-box, .theorem-box, .example-box, .warning-box, .tip-box { margin: 25px 0; padding: 20px 25px; border-left: 5px solid; border-radius: 8px; background: #f3f4f6; }
+        .definition-box { border-left-color: #0d9488; background: #ecfdf5; }
+        .definition-box strong { color: #0d9488; }
+        .theorem-box { border-left-color: #7c3aed; background: #f3e8ff; }
+        .theorem-box strong { color: #7c3aed; }
+        .warning-box { border-left-color: #dc2626; background: #fee2e2; }
+        .warning-box strong { color: #dc2626; }
+        .tip-box { border-left-color: #d97706; background: #fef3c7; }
+        .tip-box strong { color: #d97706; }
+        .objectives { background: #ecfdf5; border: 2px solid #0d9488; border-radius: 8px; padding: 25px; margin: 30px 0; }
+        .objectives h3 { color: #0d9488; margin-top: 0; }
+        .objectives ul { list-style: none; padding: 0; }
+        .objectives li { padding: 10px 0; padding-left: 30px; position: relative; }
+        .objectives li:before { content: "✓"; position: absolute; left: 0; color: #0d9488; font-weight: bold; font-size: 18px; }
+        .example-item { margin: 20px 0; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; background: white; }
+        .example-header { background: linear-gradient(135deg, #059669, #10b981); color: white; padding: 18px 25px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; font-weight: 600; font-size: 16px; transition: all 0.3s; }
+        .example-header:hover { background: linear-gradient(135deg, #047857, #059669); }
+        .example-header .toggle-arrow { display: inline-block; transition: transform 0.3s; font-size: 20px; }
+        .example-item.active .example-header .toggle-arrow { transform: rotate(180deg); }
+        .example-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out; padding: 0 25px; }
+        .example-item.active .example-content { max-height: 5000px; padding: 25px; }
+        .example-content p { margin-bottom: 12px; }
+        .solution-step { background: #f0f9ff; border-left: 4px solid #0d9488; padding: 15px; margin: 15px 0; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 14px; overflow-x: auto; }
+        .quiz-question { background: white; border: 2px solid #e5e7eb; border-radius: 8px; padding: 25px; margin: 25px 0; }
+        .quiz-question .question-text { font-weight: 600; margin-bottom: 18px; color: #1f2937; }
+        .choices { display: flex; flex-direction: column; gap: 12px; }
+        .choice-btn { background: white; border: 2px solid #d1d5db; border-radius: 6px; padding: 12px 18px; cursor: pointer; text-align: left; transition: all 0.3s; font-size: 15px; }
+        .choice-btn:hover { border-color: #0d9488; background: #f0fdf4; }
+        .choice-btn.correct { background: #dcfce7; border-color: #16a34a; color: #15803d; }
+        .choice-btn.incorrect { background: #fee2e2; border-color: #dc2626; color: #991b1b; }
+        .choice-btn.disabled { cursor: not-allowed; }
+        .quiz-feedback { margin-top: 15px; padding: 12px 15px; border-radius: 6px; font-size: 14px; display: none; }
+        .quiz-feedback.show { display: block; }
+        .quiz-feedback.correct { background: #dcfce7; color: #15803d; border-left: 4px solid #16a34a; }
+        .quiz-feedback.incorrect { background: #fee2e2; color: #991b1b; border-left: 4px solid #dc2626; }
+        .visualization-container { background: white; border: 2px solid #e5e7eb; border-radius: 8px; padding: 25px; margin: 30px 0; display: flex; flex-direction: column; align-items: center; }
+        .visualization-controls { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
+        .btn { background: #0d9488; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.3s; }
+        .btn:hover { background: #059669; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3); }
+        .btn.secondary { background: #7c3aed; }
+        .btn.secondary:hover { background: #6d28d9; }
+        canvas { max-width: 100%; background: #0f172a; border-radius: 6px; }
+        .key-takeaways { background: linear-gradient(135deg, #ecfdf5, #f0fdf4); border: 2px solid #0d9488; border-radius: 8px; padding: 30px; margin: 40px 0; }
+        .key-takeaways h3 { color: #0d9488; margin-top: 0; }
+        .key-takeaways ol { padding-left: 25px; }
+        .key-takeaways li { margin-bottom: 12px; color: #1f2937; }
+        .nav-footer { display: flex; justify-content: space-between; align-items: center; margin: 60px 0 40px 0; padding: 25px 0; border-top: 2px solid #e5e7eb; border-bottom: 2px solid #e5e7eb; }
+        .nav-footer a { color: #0d9488; text-decoration: none; font-weight: 600; }
+        footer { background: #1f2937; color: #d1d5db; text-align: center; padding: 30px; font-size: 14px; }
+        .vector-input-group { margin: 15px 0; padding: 15px; background: #f3f4f6; border-radius: 6px; }
+        .vector-input-group label { display: block; margin-bottom: 8px; font-weight: 600; }
+        .vector-input-group input { width: 100%; padding: 8px; margin-bottom: 8px; border: 1px solid #d1d5db; border-radius: 4px; }
+        .independence-result { margin-top: 20px; padding: 15px; background: #f0f9ff; border-left: 4px solid #0d9488; border-radius: 4px; }
+        .matrix-display { font-family: 'Courier New', monospace; background: #0f172a; color: #10b981; padding: 15px; border-radius: 4px; margin: 10px 0; overflow-x: auto; }
+        @media (max-width: 768px) { nav { padding: 0 15px; gap: 15px; } .nav-links { gap: 15px; } .nav-links a { font-size: 12px; } .hero h1 { font-size: 32px; } .hero p { font-size: 16px; } h2 { font-size: 24px; } .container { padding: 30px 20px; } .nav-footer { flex-direction: column; gap: 15px; } }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="nav-brand">LA Course</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="why-linear-algebra.html">Why LA?</a></li>
+            <li><a href="ch1-linear-systems.html">§ 1.1</a></li>
+            <li><a href="ch1-matrix-algebra.html">§ 1.2</a></li>
+            <li><a href="ch1-inverses.html">§ 1.3</a></li>
+            <li><a href="ch1-determinants.html">§ 1.4</a></li>
+            <li><a href="ch2-vector-spaces.html">§ 2.1</a></li>
+            <li><a href="ch2-independence.html" class="active">§ 2.2</a></li>
+            <li><a href="ch2-basis-dimension.html">§ 2.3</a></li>
+            <li><a href="ch2-rank.html">§ 2.4</a></li>
+            <li><a href="ch2-change-of-basis.html">§ 2.5</a></li>
+            <li><a href="exam-generator.html">Exam</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="hero">
+            <h1>Span & Linear Independence</h1>
+            <p>When are vectors redundant? Understanding span, linear independence, and their connection to matrix equations</p>
+        </div>
+
+        <div class="container">
+            <!-- LEARNING OBJECTIVES -->
+            <div class="objectives">
+                <h3>Learning Objectives</h3>
+                <ul>
+                    <li>Determine if a vector is in the span of a set</li>
+                    <li>Test vectors for linear independence using row reduction</li>
+                    <li>Understand the geometric meaning of linear dependence</li>
+                    <li>Connect independence to properties of the matrix (pivot columns)</li>
+                    <li>Apply the theorem: more vectors than dimension implies dependence</li>
+                </ul>
+            </div>
+
+            <!-- SECTION 1: SPAN OF A SET -->
+            <h2>1. Span of a Set</h2>
+            <p>The span of a set of vectors is the collection of all linear combinations of those vectors. It represents the "reach" of those vectors.</p>
+
+            <div class="definition-box">
+                <strong>Definition: Span</strong>
+                <p>The span of vectors $v_1, v_2, \ldots, v_k$ in $\mathbb{R}^n$, denoted $\text{Span}\{v_1, v_2, \ldots, v_k\}$, is the set of all vectors of the form:</p>
+                <div class="solution-step">
+                    $c_1 v_1 + c_2 v_2 + \cdots + c_k v_k$
+                </div>
+                <p>where $c_1, c_2, \ldots, c_k$ are any scalars. In other words, it's the set of all possible linear combinations of these vectors.</p>
+            </div>
+
+            <h3>Geometric Interpretation</h3>
+            <p>The geometric meaning of span depends on the vectors:</p>
+            <ul>
+                <li><strong>One non-zero vector:</strong> $\text{Span}\{v\}$ is a line through the origin</li>
+                <li><strong>Two independent vectors:</strong> $\text{Span}\{v_1, v_2\}$ is a plane through the origin</li>
+                <li><strong>Three independent vectors in $\mathbb{R}^3$:</strong> $\text{Span}\{v_1, v_2, v_3\} = \mathbb{R}^3$ (all of space)</li>
+                <li><strong>Dependent vectors:</strong> The span is lower-dimensional than expected</li>
+            </ul>
+
+            <div class="tip-box">
+                <strong>Tip:</strong> To check if a vector $b$ is in $\text{Span}\{v_1, \ldots, v_k\}$, set up the system $c_1 v_1 + \cdots + c_k v_k = b$ and row reduce the augmented matrix $[v_1 \cdots v_k | b]$.
+            </div>
+
+            <!-- SECTION 2: LINEAR INDEPENDENCE -->
+            <h2>2. Linear Independence</h2>
+            <p>Vectors are linearly independent if none of them can be written as a combination of the others. They carry "independent information."</p>
+
+            <div class="definition-box">
+                <strong>Definition: Linear Independence</strong>
+                <p>Vectors $v_1, v_2, \ldots, v_k$ are <strong>linearly independent</strong> if the equation:</p>
+                <div class="solution-step">
+                    $c_1 v_1 + c_2 v_2 + \cdots + c_k v_k = 0$
+                </div>
+                <p>has <strong>only the trivial solution</strong> $c_1 = c_2 = \cdots = c_k = 0$.</p>
+                <p>If there exists a non-trivial solution, the vectors are <strong>linearly dependent</strong>.</p>
+            </div>
+
+            <h3>Testing for Linear Independence</h3>
+            <p>To test if vectors $v_1, \ldots, v_k$ are linearly independent:</p>
+            <ol>
+                <li>Form the matrix $A = [v_1 \, v_2 \, \cdots \, v_k]$ (vectors as columns)</li>
+                <li>Row reduce to RREF</li>
+                <li>If every column has a pivot, the vectors are independent</li>
+                <li>If any column is non-pivot, the vectors are dependent</li>
+            </ol>
+
+            <div class="theorem-box">
+                <strong>Theorem: Independence & Homogeneous Systems</strong>
+                <p>The vectors $v_1, \ldots, v_k$ are linearly independent if and only if the only solution to $Ax = 0$ (where $A = [v_1 \cdots v_k]$) is $x = 0$.</p>
+            </div>
+
+            <!-- SECTION 3: LINEAR DEPENDENCE -->
+            <h2>3. Linear Dependence</h2>
+            <p>When vectors are linearly dependent, at least one vector can be written as a combination of the others. This indicates redundancy.</p>
+
+            <div class="definition-box">
+                <strong>Definition: Linear Dependence</strong>
+                <p>Vectors $v_1, v_2, \ldots, v_k$ are <strong>linearly dependent</strong> if there exist scalars $c_1, c_2, \ldots, c_k$ (not all zero) such that:</p>
+                <div class="solution-step">
+                    $c_1 v_1 + c_2 v_2 + \cdots + c_k v_k = 0$
+                </div>
+                <p>This non-trivial solution is called a <strong>dependence relation</strong>.</p>
+            </div>
+
+            <h3>Geometric Meaning</h3>
+            <p>If vectors are linearly dependent, one of the following is true:</p>
+            <ul>
+                <li>At least one vector is the zero vector</li>
+                <li>At least two vectors are scalar multiples of each other</li>
+                <li>One vector lies in the span of the others</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>Warning:</strong> A set containing the zero vector is <strong>always</strong> linearly dependent, since $1 \cdot 0 = 0$ with a non-trivial coefficient.
+            </div>
+
+            <!-- SECTION 4: KEY THEOREMS -->
+            <h2>4. Key Theorems</h2>
+
+            <div class="theorem-box">
+                <strong>Theorem 1: More Vectors than Dimension</strong>
+                <p>If you have more than $n$ vectors in $\mathbb{R}^n$, they must be linearly dependent.</p>
+                <p><em>Intuition:</em> You can't fit more than $n$ independent directions in an $n$-dimensional space.</p>
+            </div>
+
+            <div class="theorem-box">
+                <strong>Theorem 2: Independence & Matrix Rank</strong>
+                <p>Let $A = [v_1 \, v_2 \, \cdots \, v_k]$. The columns are linearly independent if and only if $\text{rank}(A) = k$ (there is a pivot in every column).</p>
+            </div>
+
+            <div class="theorem-box">
+                <strong>Theorem 3: Zero Vector in a Set</strong>
+                <p>Any set containing the zero vector is linearly dependent.</p>
+                <p><em>Proof:</em> If $0 \in \{v_1, \ldots, v_k\}$, then $1 \cdot 0 + 0 \cdot v_1 + \cdots + 0 \cdot v_k = 0$ is a non-trivial solution.</p>
+            </div>
+
+            <div class="theorem-box">
+                <strong>Theorem 4: Consistency & Span</strong>
+                <p>A vector $b$ is in $\text{Span}\{v_1, \ldots, v_k\}$ if and only if $Ax = b$ is consistent, where $A = [v_1 \cdots v_k]$.</p>
+            </div>
+
+            <!-- SECTION 5: CONNECTION TO MATRICES -->
+            <h2>5. Connection to Matrices</h2>
+            <p>Linear independence is intimately connected to the structure of matrices and their row-reduced forms.</p>
+
+            <h3>Pivot Columns and Independence</h3>
+            <p>When you row-reduce a matrix $A$ to RREF:</p>
+            <ul>
+                <li><strong>Pivot columns</strong> of $A$ correspond to linearly independent vectors</li>
+                <li><strong>Non-pivot (free) columns</strong> are linear combinations of earlier pivot columns</li>
+                <li>The pivot columns form a maximal linearly independent subset</li>
+            </ul>
+
+            <div class="solution-step">
+                Example: If $A = [v_1 \, v_2 \, v_3 \, v_4]$ has pivots in columns 1 and 3, then:
+                <br>• $v_1, v_3$ are linearly independent
+                <br>• $v_2$ is a combination of $v_1$ and earlier pivots
+                <br>• $v_4$ is a combination of $v_1, v_3$, and earlier pivots
+            </div>
+
+            <h3>Rank and Dimension</h3>
+            <p>The rank of a matrix $A$ equals the number of linearly independent columns, which also equals the dimension of the column space.</p>
+
+            <!-- VISUALIZATION 1 -->
+            <div class="visualization-container">
+                <h3>Visualization 1: Span & Independence in R²</h3>
+                <p>Interact with the vectors to see how span changes with dependence:</p>
+                <div class="visualization-controls">
+                    <button class="btn" onclick="drawIndependentVectors()">Independent Vectors</button>
+                    <button class="btn secondary" onclick="drawDependentVectors()">Dependent Vectors</button>
+                </div>
+                <canvas id="spanCanvas" width="500" height="500"></canvas>
+            </div>
+
+            <!-- WORKED EXAMPLES -->
+            <h2>Worked Examples</h2>
+
+            <!-- EASY EXAMPLES -->
+            <h3>Easy Examples</h3>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggleExample(this)">
+                    Example 1: Is v = (3,5) in Span{(1,2), (1,1)}?
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Question:</strong> Determine if the vector $(3, 5)$ is in $\text{Span}\{(1, 2), (1, 1)\}$.</p>
+                    <div class="solution-step">
+                        Step 1: Set up the system
+                        <br>We need to find $c_1, c_2$ such that:
+                        <br>$c_1 \begin{bmatrix} 1 \\ 2 \end{bmatrix} + c_2 \begin{bmatrix} 1 \\ 1 \end{bmatrix} = \begin{bmatrix} 3 \\ 5 \end{bmatrix}$
+                        <br><br>This gives us:
+                        <br>$c_1 + c_2 = 3$
+                        <br>$2c_1 + c_2 = 5$
+                    </div>
+                    <div class="solution-step">
+                        Step 2: Solve the system
+                        <br>From equation 1: $c_2 = 3 - c_1$
+                        <br>Substitute into equation 2: $2c_1 + (3 - c_1) = 5$
+                        <br>Simplify: $c_1 + 3 = 5$
+                        <br>Solution: $c_1 = 2, c_2 = 1$
+                    </div>
+                    <div class="solution-step">
+                        Step 3: Verify and conclude
+                        <br>Check: $2(1,2) + 1(1,1) = (2,4) + (1,1) = (3,5)$ ✓
+                        <br><br>YES, $(3,5)$ is in the span because we found coefficients $(2,1)$.
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggleExample(this)">
+                    Example 2: Are v₁ = (1,2) and v₂ = (3,6) linearly independent?
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Question:</strong> Test if $v_1 = (1, 2)$ and $v_2 = (3, 6)$ are linearly independent.</p>
+                    <div class="solution-step">
+                        Step 1: Form the augmented system
+                        <br>We need to solve $c_1 v_1 + c_2 v_2 = 0$:
+                        <br>$c_1 \begin{bmatrix} 1 \\ 2 \end{bmatrix} + c_2 \begin{bmatrix} 3 \\ 6 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix}$
+                        <br><br>This gives:
+                        <br>$c_1 + 3c_2 = 0$
+                        <br>$2c_1 + 6c_2 = 0$
+                    </div>
+                    <div class="solution-step">
+                        Step 2: Observe the relationship
+                        <br>Notice that equation 2 is exactly 2 times equation 1.
+                        <br>This means the equations are dependent!
+                        <br><br>From $c_1 + 3c_2 = 0$: $c_1 = -3c_2$
+                        <br>We can choose $c_2 = 1$, giving $c_1 = -3$.
+                    </div>
+                    <div class="solution-step">
+                        Step 3: Check the non-trivial solution
+                        <br>$-3(1,2) + 1(3,6) = (-3,-6) + (3,6) = (0,0)$ ✓
+                        <br><br>Since there is a non-trivial solution $(c_1, c_2) = (-3, 1)$,
+                        <br>the vectors are LINEARLY DEPENDENT.
+                        <br><br>Geometrically: $v_2 = 3v_1$ (they're parallel).
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggleExample(this)">
+                    Example 3: Test {(1,0,0), (0,1,0), (0,0,1)} for independence
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Question:</strong> Are the standard basis vectors in $\mathbb{R}^3$ linearly independent?</p>
+                    <div class="solution-step">
+                        Step 1: Form the matrix
+                        <br>$A = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix}$
+                        <br><br>This is already in RREF (the identity matrix).
+                    </div>
+                    <div class="solution-step">
+                        Step 2: Check for pivots
+                        <br>Every column has a pivot (columns 1, 2, and 3 all have pivots).
+                        <br>$\text{rank}(A) = 3$ (number of columns)
+                    </div>
+                    <div class="solution-step">
+                        Step 3: Conclude
+                        <br>Since every column is a pivot column, the vectors are
+                        <br>LINEARLY INDEPENDENT.
+                        <br><br>This makes sense: the only way to get zero from the standard
+                        <br>basis vectors is with all coefficients zero.
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggleExample(this)">
+                    Example 4: Is (2,3,1) in Span{(1,1,0), (0,1,1)}?
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Question:</strong> Check if $(2, 3, 1)$ is in $\text{Span}\{(1, 1, 0), (0, 1, 1)\}$.</p>
+                    <div class="solution-step">
+                        Step 1: Set up the augmented matrix
+                        <br>We solve $c_1(1,1,0) + c_2(0,1,1) = (2,3,1)$:
+                        <br>$\left[\begin{array}{cc|c} 1 & 0 & 2 \\ 1 & 1 & 3 \\ 0 & 1 & 1 \end{array}\right]$
+                    </div>
+                    <div class="solution-step">
+                        Step 2: Row reduce
+                        <br>$R_2 \to R_2 - R_1$:
+                        <br>$\left[\begin{array}{cc|c} 1 & 0 & 2 \\ 0 & 1 & 1 \\ 0 & 1 & 1 \end{array}\right]$
+                        <br><br>$R_3 \to R_3 - R_2$:
+                        <br>$\left[\begin{array}{cc|c} 1 & 0 & 2 \\ 0 & 1 & 1 \\ 0 & 0 & 0 \end{array}\right]$
+                    </div>
+                    <div class="solution-step">
+                        Step 3: Interpret
+                        <br>The system is consistent! The solution is $c_1 = 2, c_2 = 1$.
+                        <br><br>Verify: $2(1,1,0) + 1(0,1,1) = (2,2,0) + (0,1,1) = (2,3,1)$ ✓
+                        <br><br>YES, $(2,3,1)$ is in the span.
+                    </div>
+                </div>
+            </div>
+
+            <!-- MEDIUM EXAMPLES -->
+            <h3>Medium Examples</h3>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggleExample(this)">
+                    Example 5: Find a dependence relation among v₁=(1,2,3), v₂=(4,5,6), v₃=(7,8,9)
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Question:</strong> Find scalars $c_1, c_2, c_3$ (not all zero) such that $c_1 v_1 + c_2 v_2 + c_3 v_3 = 0$.</p>
+                    <div class="solution-step">
+                        Step 1: Form and row reduce the matrix
+                        <br>$A = \begin{bmatrix} 1 & 4 & 7 \\ 2 & 5 & 8 \\ 3 & 6 & 9 \end{bmatrix}$
+                        <br><br>$R_2 \to R_2 - 2R_1, R_3 \to R_3 - 3R_1$:
+                        <br>$\begin{bmatrix} 1 & 4 & 7 \\ 0 & -3 & -6 \\ 0 & -6 & -12 \end{bmatrix}$
+                    </div>
+                    <div class="solution-step">
+                        Step 2: Continue reducing
+                        <br>$R_2 \to -\frac{1}{3}R_2$:
+                        <br>$\begin{bmatrix} 1 & 4 & 7 \\ 0 & 1 & 2 \\ 0 & -6 & -12 \end{bmatrix}$
+                        <br><br>$R_3 \to R_3 + 6R_2$:
+                        <br>$\begin{bmatrix} 1 & 4 & 7 \\ 0 & 1 & 2 \\ 0 & 0 & 0 \end{bmatrix}$
+                    </div>
+                    <div class="solution-step">
+                        Step 3: Back-substitute to RREF
+                        <br>$R_1 \to R_1 - 4R_2$:
+                        <br>$\begin{bmatrix} 1 & 0 & -1 \\ 0 & 1 & 2 \\ 0 & 0 & 0 \end{bmatrix}$
+                        <br><br>Variables: $c_1 - c_3 = 0 \Rightarrow c_1 = c_3$
+                        <br>$c_2 + 2c_3 = 0 \Rightarrow c_2 = -2c_3$
+                        <br>$c_3$ is free.
+                    </div>
+                    <div class="solution-step">
+                        Step 4: Find the dependence relation
+                        <br>Let $c_3 = 1$. Then $c_1 = 1, c_2 = -2$.
+                        <br><br>The dependence relation is:
+                        <br>$v_1 - 2v_2 + v_3 = 0$
+                        <br><br>Or equivalently: $v_3 = 2v_2 - v_1$
+                        <br><br>Verify: $(7,8,9) = 2(4,5,6) - (1,2,3) = (8,10,12) - (1,2,3) = (7,8,9)$ ✓
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggleExample(this)">
+                    Example 6: Determine the span of {(1,1,0), (0,1,1), (1,0,-1)} in R³
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Question:</strong> What is the dimension of $\text{Span}\{(1,1,0), (0,1,1), (1,0,-1)\}$?</p>
+                    <div class="solution-step">
+                        Step 1: Form the matrix
+                        <br>$A = \begin{bmatrix} 1 & 0 & 1 \\ 1 & 1 & 0 \\ 0 & 1 & -1 \end{bmatrix}$
+                    </div>
+                    <div class="solution-step">
+                        Step 2: Row reduce
+                        <br>$R_2 \to R_2 - R_1$:
+                        <br>$\begin{bmatrix} 1 & 0 & 1 \\ 0 & 1 & -1 \\ 0 & 1 & -1 \end{bmatrix}$
+                        <br><br>$R_3 \to R_3 - R_2$:
+                        <br>$\begin{bmatrix} 1 & 0 & 1 \\ 0 & 1 & -1 \\ 0 & 0 & 0 \end{bmatrix}$
+                    </div>
+                    <div class="solution-step">
+                        Step 3: Analyze the result
+                        <br>There are 2 pivot columns (columns 1 and 2).
+                        <br>Column 3 is a free column: the third vector is dependent.
+                        <br><br>In fact: $(1,0,-1) = 1(1,1,0) - 1(0,1,1) = (1,0,-1)$ ✓
+                        <br><br>$\text{rank}(A) = 2$, so the span is 2-dimensional (a plane in $\mathbb{R}^3$).
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggleExample(this)">
+                    Example 7: Show {1, x, x²} is linearly independent in P₂
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Question:</strong> Prove that the polynomials $1, x, x^2$ are linearly independent in the space $P_2$ of polynomials of degree at most 2.</p>
+                    <div class="solution-step">
+                        Step 1: Set up the equation
+                        <br>Assume $c_1 \cdot 1 + c_2 \cdot x + c_3 \cdot x^2 = 0$ (the zero polynomial)
+                        <br><br>This means: $c_1 + c_2 x + c_3 x^2 = 0$ for all $x$.
+                    </div>
+                    <div class="solution-step">
+                        Step 2: Evaluate at specific points
+                        <br>A polynomial is zero for all $x$ only if all coefficients are zero.
+                        <br><br>Specifically:
+                        <br>• At $x = 0$: $c_1 = 0$
+                        <br>• Derivative: $c_2 + 2c_3 x = 0$ for all $x$
+                        <br>  At $x = 0$: $c_2 = 0$
+                        <br>  At $x = 1$: $c_2 + 2c_3 = 0 \Rightarrow c_3 = 0$
+                    </div>
+                    <div class="solution-step">
+                        Step 3: Conclude
+                        <br>The only solution is $c_1 = c_2 = c_3 = 0$.
+                        <br><br>Therefore, $\{1, x, x^2\}$ are LINEARLY INDEPENDENT.
+                        <br><br>This is true for any basis of a polynomial space: different powers
+                        <br>of $x$ are always independent.
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggleExample(this)">
+                    Example 8: Test {(1,2,-1,0), (0,1,1,2), (2,5,-1,2)} for independence
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Question:</strong> Are the vectors $(1, 2, -1, 0)$, $(0, 1, 1, 2)$, $(2, 5, -1, 2)$ linearly independent?</p>
+                    <div class="solution-step">
+                        Step 1: Form the matrix (4×3)
+                        <br>$A = \begin{bmatrix} 1 & 0 & 2 \\ 2 & 1 & 5 \\ -1 & 1 & -1 \\ 0 & 2 & 2 \end{bmatrix}$
+                    </div>
+                    <div class="solution-step">
+                        Step 2: Row reduce
+                        <br>$R_2 \to R_2 - 2R_1, R_3 \to R_3 + R_1$:
+                        <br>$\begin{bmatrix} 1 & 0 & 2 \\ 0 & 1 & 1 \\ 0 & 1 & 1 \\ 0 & 2 & 2 \end{bmatrix}$
+                        <br><br>$R_3 \to R_3 - R_2, R_4 \to R_4 - 2R_2$:
+                        <br>$\begin{bmatrix} 1 & 0 & 2 \\ 0 & 1 & 1 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{bmatrix}$
+                    </div>
+                    <div class="solution-step">
+                        Step 3: Analyze
+                        <br>There are 2 pivot columns (columns 1 and 2).
+                        <br>Column 3 is non-pivot, so the third vector is dependent.
+                        <br><br>From the RREF: $v_3 = 2v_1 + 1v_2$
+                        <br>Check: $(2,5,-1,2) = 2(1,2,-1,0) + 1(0,1,1,2) = (2,4,-2,0) + (0,1,1,2) = (2,5,-1,2)$ ✓
+                        <br><br>The vectors are LINEARLY DEPENDENT.
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggleExample(this)">
+                    Example 9: Find all vectors in the span of {(1,0,1), (2,1,0)}
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Question:</strong> Describe $\text{Span}\{(1, 0, 1), (2, 1, 0)\}$ using a parametric form.</p>
+                    <div class="solution-step">
+                        Step 1: General vector in the span
+                        <br>Any vector in the span has the form:
+                        <br>$c_1(1,0,1) + c_2(2,1,0) = (c_1 + 2c_2, c_2, c_1)$
+                    </div>
+                    <div class="solution-step">
+                        Step 2: Use parameters
+                        <br>Let $c_1 = s$ and $c_2 = t$ (free parameters).
+                        <br>Then any vector in the span is:
+                        <br>$(s + 2t, t, s) = s(1, 0, 1) + t(2, 1, 0)$
+                    </div>
+                    <div class="solution-step">
+                        Step 3: Find the constraint
+                        <br>Let $(x, y, z)$ be in the span. Then:
+                        <br>$x = s + 2t$
+                        <br>$y = t$
+                        <br>$z = s$
+                        <br><br>From the second and third: $x = z + 2y$
+                        <br><br>So the span is: $\{(x, y, z) : x = z + 2y\}$
+                        <br>or equivalently: $\{(x, y, z) : x - z - 2y = 0\}$
+                        <br><br>This is a plane in $\mathbb{R}^3$ passing through the origin.
+                    </div>
+                </div>
+            </div>
+
+            <!-- HARD EXAMPLES -->
+            <h3>Hard Examples</h3>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggleExample(this)">
+                    Example 10: Prove the Wronskian test for independence
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Question:</strong> Prove that if the Wronskian $W(f, g)(x_0) \neq 0$ at some point $x_0$, then $f$ and $g$ are linearly independent.</p>
+                    <div class="solution-step">
+                        Step 1: Define the Wronskian
+                        <br>For functions $f$ and $g$:
+                        <br>$W(f, g)(x) = \begin{vmatrix} f(x) & g(x) \\ f'(x) & g'(x) \end{vmatrix} = f(x)g'(x) - f'(x)g(x)$
+                    </div>
+                    <div class="solution-step">
+                        Step 2: Proof by contradiction
+                        <br>Assume $f$ and $g$ are linearly dependent.
+                        <br>Then $g(x) = cf(x)$ for some constant $c$.
+                        <br><br>Taking derivatives: $g'(x) = cf'(x)$
+                    </div>
+                    <div class="solution-step">
+                        Step 3: Evaluate the Wronskian
+                        <br>$W(f, g)(x) = f(x) \cdot cf'(x) - f'(x) \cdot cf(x)$
+                        <br>$= cf(x)f'(x) - cf'(x)f(x) = 0$
+                        <br><br>So if $f, g$ are dependent, then $W(f, g)(x) = 0$ for all $x$.
+                    </div>
+                    <div class="solution-step">
+                        Step 4: Conclude
+                        <br>Contrapositive: If $W(f, g)(x_0) \neq 0$ for some $x_0$,
+                        <br>then $f$ and $g$ must be linearly independent.
+                        <br><br>This is a powerful test for differential equations, where the
+                        <br>Wronskian can be computed without finding the general solution.
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggleExample(this)">
+                    Example 11: Find a maximal independent subset of {(1,2,3), (4,5,6), (7,8,9), (1,0,-1)}
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Question:</strong> Find the largest linearly independent subset of the given four vectors.</p>
+                    <div class="solution-step">
+                        Step 1: Form the matrix and reduce
+                        <br>$A = \begin{bmatrix} 1 & 4 & 7 & 1 \\ 2 & 5 & 8 & 0 \\ 3 & 6 & 9 & -1 \end{bmatrix}$
+                        <br><br>After row reduction (similar to Example 5):
+                        <br>$\begin{bmatrix} 1 & 0 & -1 & 4/3 \\ 0 & 1 & 2 & -2/3 \\ 0 & 0 & 0 & 0 \end{bmatrix}$
+                    </div>
+                    <div class="solution-step">
+                        Step 2: Identify pivot columns
+                        <br>Pivots are in columns 1 and 2.
+                        <br>So the first two vectors form a linearly independent subset:
+                        <br>$\{(1, 2, 3), (4, 5, 6)\}$ are linearly independent.
+                    </div>
+                    <div class="solution-step">
+                        Step 3: Verify (optional)
+                        <br>To check: $c_1(1,2,3) + c_2(4,5,6) = 0$
+                        <br>gives $c_1 + 4c_2 = 0, 2c_1 + 5c_2 = 0, 3c_1 + 6c_2 = 0$
+                        <br>From first two: $c_1 = -4c_2$ and $2(-4c_2) + 5c_2 = -3c_2 = 0$
+                        <br>So $c_2 = 0, c_1 = 0$. Independent confirmed! ✓
+                    </div>
+                    <div class="solution-step">
+                        Step 4: Conclusion
+                        <br>A maximal linearly independent subset is: $\{(1, 2, 3), (4, 5, 6)\}$
+                        <br>The rank is 2 (dimension of the span is 2).
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggleExample(this)">
+                    Example 12: Polynomial interpolation and independence
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Question:</strong> Show that any $n+1$ distinct points uniquely determine a polynomial of degree $\leq n$.</p>
+                    <div class="solution-step">
+                        Step 1: Setup
+                        <br>Let $(x_0, y_0), (x_1, y_1), \ldots, (x_n, y_n)$ be $n+1$ points
+                        <br>with $x_i$ all distinct.
+                        <br><br>We want to find $p(x) = c_0 + c_1 x + \cdots + c_n x^n$ such that
+                        <br>$p(x_i) = y_i$ for all $i = 0, 1, \ldots, n$.
+                    </div>
+                    <div class="solution-step">
+                        Step 2: Set up the system
+                        <br>This gives $n+1$ equations:
+                        <br>$c_0 + c_1 x_0 + c_2 x_0^2 + \cdots + c_n x_0^n = y_0$
+                        <br>$c_0 + c_1 x_1 + c_2 x_1^2 + \cdots + c_n x_1^n = y_1$
+                        <br>$\vdots$
+                        <br>$c_0 + c_1 x_n + c_2 x_n^2 + \cdots + c_n x_n^n = y_n$
+                        <br><br>In matrix form: $Vc = y$ where $V$ is the Vandermonde matrix.
+                    </div>
+                    <div class="solution-step">
+                        Step 3: The Vandermonde matrix
+                        <br>$V = \begin{bmatrix} 1 & x_0 & x_0^2 & \cdots & x_0^n \\ 1 & x_1 & x_1^2 & \cdots & x_1^n \\ \vdots & \vdots & \vdots & \ddots & \vdots \\ 1 & x_n & x_n^2 & \cdots & x_n^n \end{bmatrix}$
+                        <br><br>$\det(V) = \prod_{0 \le i < j \le n} (x_j - x_i)$
+                    </div>
+                    <div class="solution-step">
+                        Step 4: Uniqueness via linear independence
+                        <br>Since $x_i$ are distinct, $\det(V) \neq 0$.
+                        <br><br>This means $V$ is invertible, so $c = V^{-1}y$ has a unique solution.
+                        <br><br>Equivalently: the polynomials $\{1, x, x^2, \ldots, x^n\}$ are
+                        <br>linearly independent (they span the columns of $V$ with non-zero
+                        <br>determinant when evaluated at distinct points).
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggleExample(this)">
+                    Example 13: If {v₁,...,vₖ} is independent and vₖ₊₁ ∉ Span{v₁,...,vₖ}, then {v₁,...,vₖ,vₖ₊₁} is independent
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Question:</strong> Prove the independence extension lemma.</p>
+                    <div class="solution-step">
+                        Step 1: State what we know
+                        <br>Assumption 1: $\{v_1, \ldots, v_k\}$ are linearly independent
+                        <br>Assumption 2: $v_{k+1} \notin \text{Span}\{v_1, \ldots, v_k\}$
+                        <br><br>To prove: $\{v_1, \ldots, v_k, v_{k+1}\}$ are linearly independent
+                    </div>
+                    <div class="solution-step">
+                        Step 2: Assume a dependence relation and derive contradiction
+                        <br>Suppose: $c_1 v_1 + \cdots + c_k v_k + c_{k+1} v_{k+1} = 0$
+                    </div>
+                    <div class="solution-step">
+                        Step 3: Case 1 – if $c_{k+1} = 0$
+                        <br>Then $c_1 v_1 + \cdots + c_k v_k = 0$
+                        <br>By independence of $\{v_1, \ldots, v_k\}$:
+                        <br>$c_1 = \cdots = c_k = 0$
+                        <br><br>So all coefficients are zero (good news for our proof!).
+                    </div>
+                    <div class="solution-step">
+                        Step 4: Case 2 – if $c_{k+1} \neq 0$
+                        <br>Then: $c_1 v_1 + \cdots + c_k v_k = -c_{k+1} v_{k+1}$
+                        <br><br>Dividing by $-c_{k+1}$:
+                        <br>$v_{k+1} = -\frac{c_1}{c_{k+1}} v_1 - \cdots - \frac{c_k}{c_{k+1}} v_k$
+                        <br><br>This shows $v_{k+1} \in \text{Span}\{v_1, \ldots, v_k\}$,
+                        <br>which CONTRADICTS our assumption!
+                    </div>
+                    <div class="solution-step">
+                        Step 5: Conclusion
+                        <br>Therefore, we must have $c_{k+1} = 0$ and all $c_i = 0$.
+                        <br><br>So $\{v_1, \ldots, v_k, v_{k+1}\}$ are linearly independent. ✓
+                        <br><br>This lemma shows how to extend an independent set: just add a
+                        <br>vector that's not in the current span.
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggleExample(this)">
+                    Example 14: Rows of a matrix in REF with no zero rows are independent
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Question:</strong> Prove that non-zero rows of a matrix in row echelon form (REF) are linearly independent.</p>
+                    <div class="solution-step">
+                        Step 1: Understand REF structure
+                        <br>In row echelon form:
+                        <br>• Each non-zero row has a leading 1
+                        <br>• The leading 1 of row $i$ is to the right of the leading 1 of row $i-1$
+                        <br>• All zero rows (if any) are at the bottom
+                    </div>
+                    <div class="solution-step">
+                        Step 2: Visualize the pattern
+                        <br>Example with $k$ non-zero rows:
+                        <br>$\begin{bmatrix} 1 & * & * & * & * \\ 0 & 0 & 1 & * & * \\ 0 & 0 & 0 & 1 & * \end{bmatrix}$
+                        <br><br>The $*$ denotes arbitrary entries.
+                        <br>Leading 1's are in columns 1, 3, 4 respectively.
+                    </div>
+                    <div class="solution-step">
+                        Step 3: Set up the test for independence
+                        <br>Let $r_1, r_2, \ldots, r_k$ be the non-zero rows.
+                        <br>Suppose: $c_1 r_1 + c_2 r_2 + \cdots + c_k r_k = 0$
+                    </div>
+                    <div class="solution-step">
+                        Step 4: Look at the first leading 1
+                        <br>$r_1$ has its leading 1 in column $j_1$.
+                        <br>For rows $r_2, \ldots, r_k$: column $j_1$ has a 0
+                        <br>(because the leading 1 is to the right).
+                        <br><br>Looking at column $j_1$ in $c_1 r_1 + \cdots + c_k r_k = 0$:
+                        <br>$c_1 \cdot 1 + c_2 \cdot 0 + \cdots + c_k \cdot 0 = 0$
+                        <br>So $c_1 = 0$
+                    </div>
+                    <div class="solution-step">
+                        Step 5: Repeat the argument
+                        <br>Now look at the leading 1 in $r_2$, column $j_2$.
+                        <br>Rows $r_3, \ldots, r_k$ have 0 in this column (staircase property).
+                        <br><br>The equation becomes: $c_2 \cdot 1 + c_3 \cdot 0 + \cdots + c_k \cdot 0 = 0$
+                        <br>So $c_2 = 0$
+                        <br><br>Continue for all rows: $c_1 = c_2 = \cdots = c_k = 0$
+                    </div>
+                    <div class="solution-step">
+                        Step 6: Conclusion
+                        <br>The only solution is the trivial solution.
+                        <br>Therefore, non-zero rows of a matrix in REF are
+                        <br>LINEARLY INDEPENDENT. ✓
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggleExample(this)">
+                    Example 15: Fitting a polynomial through data using span and independence
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Question:</strong> Find the best-fit quadratic $p(x) = a + bx + cx^2$ through the points $(0, 1), (1, 3), (2, 7)$.</p>
+                    <div class="solution-step">
+                        Step 1: Set up the interpolation system
+                        <br>We want:
+                        <br>$p(0) = a = 1$
+                        <br>$p(1) = a + b + c = 3$
+                        <br>$p(2) = a + 2b + 4c = 7$
+                    </div>
+                    <div class="solution-step">
+                        Step 2: Write as a matrix equation
+                        <br>$\begin{bmatrix} 1 & 0 & 0 \\ 1 & 1 & 1 \\ 1 & 2 & 4 \end{bmatrix} \begin{bmatrix} a \\ b \\ c \end{bmatrix} = \begin{bmatrix} 1 \\ 3 \\ 7 \end{bmatrix}$
+                        <br><br>This is the Vandermonde system!
+                    </div>
+                    <div class="solution-step">
+                        Step 3: Row reduce the augmented matrix
+                        <br>$\left[\begin{array}{ccc|c} 1 & 0 & 0 & 1 \\ 1 & 1 & 1 & 3 \\ 1 & 2 & 4 & 7 \end{array}\right]$
+                        <br><br>$R_2 \to R_2 - R_1, R_3 \to R_3 - R_1$:
+                        <br>$\left[\begin{array}{ccc|c} 1 & 0 & 0 & 1 \\ 0 & 1 & 1 & 2 \\ 0 & 2 & 4 & 6 \end{array}\right]$
+                        <br><br>$R_3 \to R_3 - 2R_2$:
+                        <br>$\left[\begin{array}{ccc|c} 1 & 0 & 0 & 1 \\ 0 & 1 & 1 & 2 \\ 0 & 0 & 2 & 2 \end{array}\right]$
+                    </div>
+                    <div class="solution-step">
+                        Step 4: Continue to RREF
+                        <br>$R_3 \to \frac{1}{2}R_3$:
+                        <br>$\left[\begin{array}{ccc|c} 1 & 0 & 0 & 1 \\ 0 & 1 & 1 & 2 \\ 0 & 0 & 1 & 1 \end{array}\right]$
+                        <br><br>$R_2 \to R_2 - R_3$:
+                        <br>$\left[\begin{array}{ccc|c} 1 & 0 & 0 & 1 \\ 0 & 1 & 0 & 1 \\ 0 & 0 & 1 & 1 \end{array}\right]$
+                    </div>
+                    <div class="solution-step">
+                        Step 5: Extract the solution
+                        <br>$a = 1, b = 1, c = 1$
+                        <br><br>So the polynomial is: $p(x) = 1 + x + x^2$
+                    </div>
+                    <div class="solution-step">
+                        Step 6: Verify
+                        <br>$p(0) = 1$ ✓
+                        <br>$p(1) = 1 + 1 + 1 = 3$ ✓
+                        <br>$p(2) = 1 + 2 + 4 = 7$ ✓
+                        <br><br>The reason this has a unique solution: the polynomials
+                        <br>$\{1, x, x^2\}$ are linearly independent at distinct points!
+                    </div>
+                </div>
+            </div>
+
+            <!-- VISUALIZATION 2 -->
+            <div class="visualization-container">
+                <h3>Visualization 2: Independence Tester</h3>
+                <p>Enter vectors to test if they are linearly independent:</p>
+                <div class="vector-input-group">
+                    <label>Number of vectors:</label>
+                    <input type="number" id="numVectors" value="2" min="1" max="4" onchange="updateVectorInputs()">
+                </div>
+                <div id="vectorInputs"></div>
+                <button class="btn" onclick="testIndependence()">Test Independence</button>
+                <div id="independenceResult"></div>
+            </div>
+
+            <!-- QUIZ SECTION -->
+            <h2>Quiz: Test Your Understanding</h2>
+
+            <div class="quiz-question">
+                <div class="question-text">Q1: The span of {v₁, v₂} where v₂ = 3v₁ is:</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, false)">A) The entire plane $\mathbb{R}^2$</button>
+                    <button class="choice-btn" onclick="checkChoice(this, true)">B) A line through the origin</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">C) A single point</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">D) Cannot be determined</button>
+                </div>
+                <div class="quiz-feedback"></div>
+            </div>
+
+            <div class="quiz-question">
+                <div class="question-text">Q2: Vectors {v₁, v₂, v₃} in $\mathbb{R}^2$ are:</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, true)">A) Always linearly dependent</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">B) Always linearly independent</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">C) Sometimes dependent, sometimes independent</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">D) Independent only if they span $\mathbb{R}^2$</button>
+                </div>
+                <div class="quiz-feedback"></div>
+            </div>
+
+            <div class="quiz-question">
+                <div class="question-text">Q3: To test if vectors are independent, we row reduce and check for:</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, false)">A) Free variables</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">C) Zero rows</button>
+                    <button class="choice-btn" onclick="checkChoice(this, true)">D) Pivots in every column</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">E) A unique leading 1</button>
+                </div>
+                <div class="quiz-feedback"></div>
+            </div>
+
+            <div class="quiz-question">
+                <div class="question-text">Q4: The set {(1,0), (0,1), (1,1)} is:</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, true)">A) Linearly dependent</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">B) Linearly independent</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">C) Contains the zero vector</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">D) None of the above</button>
+                </div>
+                <div class="quiz-feedback"></div>
+            </div>
+
+            <div class="quiz-question">
+                <div class="question-text">Q5: If $Ax = 0$ has only the trivial solution, the columns of $A$ are:</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, false)">A) Linearly dependent</button>
+                    <button class="choice-btn" onclick="checkChoice(this, true)">B) Linearly independent</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">C) All zero vectors</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">D) Spanning $\mathbb{R}^m$</button>
+                </div>
+                <div class="quiz-feedback"></div>
+            </div>
+
+            <div class="quiz-question">
+                <div class="question-text">Q6: Which set is linearly independent?</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, false)">A) {(1,2), (2,4), (3,6)}</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">B) {(1,1,1), (1,1,1), (0,0,0)}</button>
+                    <button class="choice-btn" onclick="checkChoice(this, true)">C) {(1,0,0), (0,1,0), (0,0,1)}</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">D) {(1,2,3), (2,4,6), (3,6,9)}</button>
+                </div>
+                <div class="quiz-feedback"></div>
+            </div>
+
+            <!-- KEY TAKEAWAYS -->
+            <div class="key-takeaways">
+                <h3>Key Takeaways</h3>
+                <ol>
+                    <li><strong>Span:</strong> The span of vectors is the set of all linear combinations. Geometrically, it represents a line (1D), plane (2D), or higher-dimensional subspace through the origin.</li>
+                    <li><strong>Linear Independence:</strong> Vectors are independent if no non-trivial linear combination equals zero. This means each vector carries unique information not captured by the others.</li>
+                    <li><strong>Linear Dependence:</strong> Dependent vectors have redundancy: at least one vector is in the span of others. A set with the zero vector is always dependent.</li>
+                    <li><strong>Testing Independence:</strong> Form a matrix with vectors as columns, row reduce to RREF, and check for pivots in every column. All pivots = independent; missing pivots = dependent.</li>
+                    <li><strong>Fundamental Theorem:</strong> More vectors than dimensions implies dependence. In $\mathbb{R}^n$, at most $n$ vectors can be independent. Pivot columns of any matrix are independent; free columns are combinations of pivots.</li>
+                </ol>
+            </div>
+
+            <!-- NAVIGATION FOOTER -->
+            <div class="nav-footer">
+                <a href="ch2-vector-spaces.html">← § 2.1 Vector Spaces</a>
+                <span>Chapter 2</span>
+                <a href="ch2-basis-dimension.html">§ 2.3 Basis & Dimension →</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Dr. Mohamed Mabrok &mdash; Qatar University</p>
+    </footer>
+
+    <script>
+        // KaTeX rendering
+        document.addEventListener('DOMContentLoaded', function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '\\(', right: '\\)', display: false}
+                ]
+            });
+        });
+
+        // Toggle example content
+        function toggleExample(header) {
+            const item = header.closest('.example-item');
+            item.classList.toggle('active');
+        }
+
+        // Quiz functionality
+        function checkChoice(button, isCorrect) {
+            const question = button.closest('.quiz-question');
+            const feedback = question.querySelector('.quiz-feedback');
+            const buttons = question.querySelectorAll('.choice-btn');
+
+            buttons.forEach(btn => {
+                btn.classList.add('disabled');
+                btn.onclick = null;
+            });
+
+            if (isCorrect) {
+                button.classList.add('correct');
+                feedback.classList.add('show', 'correct');
+                feedback.textContent = 'Correct! Well done.';
+            } else {
+                button.classList.add('incorrect');
+                feedback.classList.add('show', 'incorrect');
+                feedback.textContent = 'Incorrect. Try again or review the material.';
+            }
+        }
+
+        // Canvas visualization - Span and Independence
+        const canvas = document.getElementById('spanCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function drawGrid() {
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, 500, 500);
+
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= 10; i++) {
+                ctx.beginPath();
+                ctx.moveTo(i * 50, 0);
+                ctx.lineTo(i * 50, 500);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(0, i * 50);
+                ctx.lineTo(500, i * 50);
+                ctx.stroke();
+            }
+
+            // Axes
+            ctx.strokeStyle = '#64748b';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(250, 0);
+            ctx.lineTo(250, 500);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(0, 250);
+            ctx.lineTo(500, 250);
+            ctx.stroke();
+        }
+
+        function drawVector(x, y, color, label) {
+            const scale = 50;
+            const endX = 250 + x * scale;
+            const endY = 250 - y * scale;
+
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(250, 250);
+            ctx.lineTo(endX, endY);
+            ctx.stroke();
+
+            // Arrowhead
+            const angle = Math.atan2(endY - 250, endX - 250);
+            const headlen = 15;
+            ctx.beginPath();
+            ctx.moveTo(endX, endY);
+            ctx.lineTo(endX - headlen * Math.cos(angle - Math.PI / 6), endY - headlen * Math.sin(angle - Math.PI / 6));
+            ctx.moveTo(endX, endY);
+            ctx.lineTo(endX - headlen * Math.cos(angle + Math.PI / 6), endY - headlen * Math.sin(angle + Math.PI / 6));
+            ctx.stroke();
+
+            // Label
+            ctx.fillStyle = color;
+            ctx.font = 'bold 14px Arial';
+            ctx.fillText(label, endX + 10, endY - 10);
+        }
+
+        function shadeSpan(vectors, color) {
+            ctx.fillStyle = color;
+            ctx.globalAlpha = 0.2;
+
+            if (vectors.length === 1) {
+                // Line
+                const v = vectors[0];
+                const scale = 50;
+                const x1 = 250 + v[0] * scale;
+                const y1 = 250 - v[1] * scale;
+                const x2 = 250 - v[0] * scale;
+                const y2 = 250 + v[1] * scale;
+
+                ctx.beginPath();
+                ctx.moveTo(x2, y2);
+                ctx.lineTo(x1, y1);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 4;
+                ctx.stroke();
+            } else if (vectors.length === 2) {
+                // Plane (full canvas for independent)
+                ctx.fillRect(0, 0, 500, 500);
+            }
+            ctx.globalAlpha = 1.0;
+        }
+
+        function drawIndependentVectors() {
+            drawGrid();
+            const v1 = [1, 0];
+            const v2 = [0, 1];
+            drawVector(v1[0], v1[1], '#0d9488', 'v₁');
+            drawVector(v2[0], v2[1], '#7c3aed', 'v₂');
+            shadeSpan([v1, v2], '#0d9488');
+
+            ctx.fillStyle = '#d1d5db';
+            ctx.font = '14px Arial';
+            ctx.fillText('Independent vectors span a 2D plane', 10, 30);
+        }
+
+        function drawDependentVectors() {
+            drawGrid();
+            const v1 = [1, 1];
+            const v2 = [2, 2];
+            drawVector(v1[0], v1[1], '#0d9488', 'v₁');
+            drawVector(v2[0], v2[1], '#7c3aed', 'v₂ = 2v₁');
+            shadeSpan([v1], '#0d9488');
+
+            ctx.fillStyle = '#d1d5db';
+            ctx.font = '14px Arial';
+            ctx.fillText('Dependent vectors span only a line', 10, 30);
+        }
+
+        drawIndependentVectors();
+
+        // Independence Tester
+        function updateVectorInputs() {
+            const n = parseInt(document.getElementById('numVectors').value);
+            const container = document.getElementById('vectorInputs');
+            container.innerHTML = '';
+
+            for (let i = 0; i < n; i++) {
+                const group = document.createElement('div');
+                group.className = 'vector-input-group';
+                group.innerHTML = `
+                    <label>Vector ${i + 1} (comma-separated values):</label>
+                    <input type="text" id="vector${i}" placeholder="e.g., 1, 2, 3">
+                `;
+                container.appendChild(group);
+            }
+        }
+
+        function testIndependence() {
+            const n = parseInt(document.getElementById('numVectors').value);
+            const vectors = [];
+
+            for (let i = 0; i < n; i++) {
+                const input = document.getElementById(`vector${i}`).value;
+                if (!input.trim()) {
+                    alert('Please fill in all vector fields');
+                    return;
+                }
+                const coords = input.split(',').map(x => parseFloat(x.trim()));
+                if (coords.some(isNaN)) {
+                    alert('Invalid input. Use numbers separated by commas.');
+                    return;
+                }
+                vectors.push(coords);
+            }
+
+            const dim = vectors[0].length;
+            for (let i = 1; i < vectors.length; i++) {
+                if (vectors[i].length !== dim) {
+                    alert('All vectors must have the same dimension');
+                    return;
+                }
+            }
+
+            // Simple check: more vectors than dimension = dependent
+            let resultHTML = '<div class="independence-result">';
+
+            if (vectors.length > dim) {
+                resultHTML += '<h4 style="color: #dc2626;">Linearly Dependent</h4>';
+                resultHTML += '<p>There are more vectors (' + vectors.length + ') than dimensions (' + dim + ').</p>';
+                resultHTML += '<p>By the fundamental theorem, any set with more than n vectors in ℝⁿ must be linearly dependent.</p>';
+            } else if (vectors.length === 1 && vectors[0].some(x => x !== 0)) {
+                resultHTML += '<h4 style="color: #16a34a;">Linearly Independent</h4>';
+                resultHTML += '<p>A single non-zero vector is always linearly independent.</p>';
+            } else if (vectors.length === 1) {
+                resultHTML += '<h4 style="color: #dc2626;">Linearly Dependent</h4>';
+                resultHTML += '<p>The zero vector is always linearly dependent.</p>';
+            } else {
+                // Check if any vector is zero
+                if (vectors.some(v => v.every(x => x === 0))) {
+                    resultHTML += '<h4 style="color: #dc2626;">Linearly Dependent</h4>';
+                    resultHTML += '<p>The set contains the zero vector, which always causes dependence.</p>';
+                } else {
+                    // Check for proportional vectors
+                    let isDependent = false;
+                    for (let i = 0; i < vectors.length && !isDependent; i++) {
+                        for (let j = i + 1; j < vectors.length && !isDependent; j++) {
+                            // Check if proportional
+                            let ratio = null;
+                            for (let k = 0; k < dim; k++) {
+                                if (vectors[i][k] !== 0) {
+                                    const r = vectors[j][k] / vectors[i][k];
+                                    if (ratio === null) {
+                                        ratio = r;
+                                    } else if (Math.abs(ratio - r) > 1e-10) {
+                                        ratio = null;
+                                        break;
+                                    }
+                                } else if (vectors[j][k] !== 0) {
+                                    ratio = null;
+                                    break;
+                                }
+                            }
+                            if (ratio !== null) {
+                                isDependent = true;
+                                resultHTML += '<h4 style="color: #dc2626;">Linearly Dependent</h4>';
+                                resultHTML += '<p>Vector ' + (j + 1) + ' = ' + ratio + ' × Vector ' + (i + 1) + '</p>';
+                            }
+                        }
+                    }
+                    if (!isDependent) {
+                        resultHTML += '<h4 style="color: #16a34a;">Likely Linearly Independent</h4>';
+                        resultHTML += '<p>No obvious dependencies detected (proportional vectors, zero vector).</p>';
+                        resultHTML += '<p><em>Note: For a complete test with more vectors, row reduction is recommended.</em></p>';
+                    }
+                }
+            }
+
+            resultHTML += '<div class="matrix-display" style="margin-top: 15px;">';
+            resultHTML += 'Matrix formed by vectors as columns:<br>';
+            for (let i = 0; i < dim; i++) {
+                resultHTML += '[ ';
+                for (let j = 0; j < vectors.length; j++) {
+                    resultHTML += vectors[j][i].toFixed(2) + ' ';
+                }
+                resultHTML += ']<br>';
+            }
+            resultHTML += '</div>';
+            resultHTML += '</div>';
+
+            document.getElementById('independenceResult').innerHTML = resultHTML;
+        }
+
+        updateVectorInputs();
+    </script>
+</body>
+</html>

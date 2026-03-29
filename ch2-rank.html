@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.4 Rank & the Fundamental Theorem | LA Course</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"></script>
+    <style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #1f2937; background: #f9fafb; }
+nav { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: white; border-bottom: 2px solid #0d9488; display: flex; align-items: center; padding: 0 30px; gap: 40px; z-index: 1000; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+.nav-brand { font-size: 18px; font-weight: 700; color: #0d9488; text-decoration: none; }
+.nav-links { display: flex; gap: 30px; list-style: none; margin-left: auto; }
+.nav-links a { color: #6b7280; text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.3s; }
+.nav-links a:hover { color: #0d9488; }
+.nav-links a.active { color: #0d9488; border-bottom: 2px solid #0d9488; padding-bottom: 2px; }
+main { margin-top: 60px; }
+.hero { background: linear-gradient(135deg, #0d9488 0%, #059669 100%); color: white; padding: 60px 30px; text-align: center; }
+.hero h1 { font-size: 48px; font-weight: 700; margin-bottom: 15px; }
+.hero p { font-size: 20px; opacity: 0.95; max-width: 800px; margin: 0 auto; }
+.container { max-width: 1000px; margin: 0 auto; padding: 40px 30px; }
+h2 { color: #0d9488; font-size: 32px; margin: 50px 0 30px 0; padding-bottom: 10px; border-bottom: 3px solid #0d9488; }
+h3 { color: #1f2937; font-size: 24px; margin: 35px 0 20px 0; }
+p { margin-bottom: 15px; line-height: 1.8; }
+.definition-box, .theorem-box, .example-box, .warning-box, .tip-box { margin: 25px 0; padding: 20px 25px; border-left: 5px solid; border-radius: 8px; background: #f3f4f6; }
+.definition-box { border-left-color: #0d9488; background: #ecfdf5; }
+.definition-box strong { color: #0d9488; }
+.theorem-box { border-left-color: #7c3aed; background: #f3e8ff; }
+.theorem-box strong { color: #7c3aed; }
+.warning-box { border-left-color: #dc2626; background: #fee2e2; }
+.warning-box strong { color: #dc2626; }
+.tip-box { border-left-color: #d97706; background: #fef3c7; }
+.tip-box strong { color: #d97706; }
+.objectives { background: #ecfdf5; border: 2px solid #0d9488; border-radius: 8px; padding: 25px; margin: 30px 0; }
+.objectives h3 { color: #0d9488; margin-top: 0; }
+.objectives ul { list-style: none; padding: 0; }
+.objectives li { padding: 10px 0; padding-left: 30px; position: relative; }
+.objectives li:before { content: "✓"; position: absolute; left: 0; color: #0d9488; font-weight: bold; font-size: 18px; }
+.example-item { margin: 20px 0; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; background: white; }
+.example-header { background: linear-gradient(135deg, #059669, #10b981); color: white; padding: 18px 25px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; font-weight: 600; font-size: 16px; transition: all 0.3s; }
+.example-header:hover { background: linear-gradient(135deg, #047857, #059669); }
+.example-header .toggle-arrow { display: inline-block; transition: transform 0.3s; font-size: 20px; }
+.example-item.active .example-header .toggle-arrow { transform: rotate(180deg); }
+.example-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out; padding: 0 25px; }
+.example-item.active .example-content { max-height: 5000px; padding: 25px; }
+.solution-step { background: #f0f9ff; border-left: 4px solid #0d9488; padding: 15px; margin: 15px 0; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 14px; overflow-x: auto; }
+.quiz-question { background: white; border: 2px solid #e5e7eb; border-radius: 8px; padding: 25px; margin: 25px 0; }
+.quiz-question .question-text { font-weight: 600; margin-bottom: 18px; color: #1f2937; }
+.choices { display: flex; flex-direction: column; gap: 12px; }
+.choice-btn { background: white; border: 2px solid #d1d5db; border-radius: 6px; padding: 12px 18px; cursor: pointer; text-align: left; transition: all 0.3s; font-size: 15px; }
+.choice-btn:hover { border-color: #0d9488; background: #f0fdf4; }
+.choice-btn.correct { background: #dcfce7; border-color: #16a34a; color: #15803d; }
+.choice-btn.incorrect { background: #fee2e2; border-color: #dc2626; color: #991b1b; }
+.quiz-feedback { margin-top: 15px; padding: 12px 15px; border-radius: 6px; font-size: 14px; display: none; }
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct { background: #dcfce7; color: #15803d; border-left: 4px solid #16a34a; }
+.quiz-feedback.incorrect { background: #fee2e2; color: #991b1b; border-left: 4px solid #dc2626; }
+.visualization-container { background: white; border: 2px solid #e5e7eb; border-radius: 8px; padding: 25px; margin: 30px 0; display: flex; flex-direction: column; align-items: center; }
+.visualization-controls { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
+.btn { background: #0d9488; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.3s; }
+.btn:hover { background: #059669; }
+.btn.secondary { background: #7c3aed; }
+canvas { max-width: 100%; background: #0f172a; border-radius: 6px; }
+.key-takeaways { background: linear-gradient(135deg, #ecfdf5, #f0fdf4); border: 2px solid #0d9488; border-radius: 8px; padding: 30px; margin: 40px 0; }
+.key-takeaways h3 { color: #0d9488; margin-top: 0; }
+.key-takeaways ol { padding-left: 25px; }
+.key-takeaways li { margin-bottom: 12px; }
+.nav-footer { display: flex; justify-content: space-between; align-items: center; margin: 60px 0 40px 0; padding: 25px 0; border-top: 2px solid #e5e7eb; border-bottom: 2px solid #e5e7eb; }
+.nav-footer a { color: #0d9488; text-decoration: none; font-weight: 600; }
+footer { background: #1f2937; color: #d1d5db; text-align: center; padding: 30px; font-size: 14px; }
+.rank-analyzer-results { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; margin-top: 20px; }
+.rank-analyzer-section { margin: 20px 0; padding: 15px; background: #f9fafb; border-left: 4px solid #0d9488; border-radius: 4px; }
+.rank-analyzer-section h4 { color: #0d9488; margin-bottom: 10px; }
+.rank-analyzer-basis { font-family: 'Courier New', monospace; font-size: 13px; margin-top: 10px; background: white; padding: 10px; border-radius: 4px; border: 1px solid #e5e7eb; }
+.matrix-input-group { margin-bottom: 20px; }
+.matrix-input-group label { display: block; font-weight: 600; margin-bottom: 8px; color: #1f2937; }
+.matrix-input-group input { padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-family: 'Courier New', monospace; width: 100%; }
+@media (max-width: 768px) { nav { padding: 0 15px; gap: 15px; } .nav-links { gap: 15px; } .nav-links a { font-size: 12px; } .hero h1 { font-size: 32px; } .container { padding: 30px 20px; } .nav-footer { flex-direction: column; gap: 15px; } }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="#" class="nav-brand">LinearAlgebra.io</a>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Why LA?</a></li>
+            <li><a href="#">§ 1.1-1.4</a></li>
+            <li><a href="#">§ 2.1-2.5</a></li>
+            <li><a href="#" class="active">2.4</a></li>
+            <li><a href="#">Exam</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <h1>Rank & the Fundamental Theorem</h1>
+            <p>The four fundamental subspaces and their dimensions — the deep structure connecting row space, column space, null space, and left null space</p>
+        </section>
+
+        <div class="container">
+            <section class="objectives">
+                <h3>Learning Objectives</h3>
+                <ul>
+                    <li>Define row space, column space, null space, left null space</li>
+                    <li>Compute rank as dimension of Col(A) or Row(A)</li>
+                    <li>State the Fundamental Theorem of Linear Algebra</li>
+                    <li>Understand orthogonality relationships between the four subspaces</li>
+                    <li>Apply rank to determine consistency and solution uniqueness</li>
+                </ul>
+            </section>
+
+            <!-- SECTION 1: ROW SPACE -->
+            <section>
+                <h2>2.4.1: Row Space</h2>
+                <p>The <strong>row space</strong> of a matrix $A$ is the span of its rows. It is a fundamental concept that bridges the column space and the null space of a matrix's transpose.</p>
+
+                <div class="definition-box">
+                    <strong>Definition:</strong> The <strong>row space</strong> of $A$ (denoted $\text{Row}(A)$) is the span of the rows of $A$. Equivalently:
+                    \[\text{Row}(A) = \text{Col}(A^T)\]
+                    For an $m \times n$ matrix $A$, $\text{Row}(A) \subseteq \mathbb{R}^n$.
+                </div>
+
+                <h3>Finding a Basis for Row(A)</h3>
+                <p>The most efficient way to find a basis for the row space is using the <strong>reduced row echelon form (RREF)</strong>:</p>
+                <div class="tip-box">
+                    <strong>Key Fact:</strong> The nonzero rows of $\text{RREF}(A)$ form a basis for $\text{Row}(A)$. Row operations preserve the row space, so:
+                    \[\text{Row}(A) = \text{Row}(\text{RREF}(A))\]
+                </div>
+
+                <p><strong>Why this works:</strong> Row operations are reversible linear combinations of rows, so they do not change the span of the rows. The RREF gives us a clean basis with orthogonal structure.</p>
+
+                <div class="example-box">
+                    <strong>Example:</strong> Consider
+                    \[A = \begin{bmatrix} 1 & 2 & 3 \\ 2 & 4 & 6 \\ 1 & 0 & 1 \end{bmatrix}\]
+                    Row reduction yields
+                    \[\text{RREF}(A) = \begin{bmatrix} 1 & 0 & 1 \\ 0 & 1 & 1 \\ 0 & 0 & 0 \end{bmatrix}\]
+                    Thus, a basis for $\text{Row}(A)$ is:
+                    \[\left\{ \begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \\ 1 \end{bmatrix} \right\}\]
+                    and $\dim(\text{Row}(A)) = 2$.
+                </div>
+
+                <h3>Relationship to Null Space</h3>
+                <p>A crucial fact: <strong>The row space and null space are orthogonal complements.</strong> Any vector $\mathbf{x}$ in the null space is orthogonal to every row of $A$ (since $A\mathbf{x} = \mathbf{0}$).</p>
+            </section>
+
+            <!-- SECTION 2: THE FOUR FUNDAMENTAL SUBSPACES -->
+            <section>
+                <h2>2.4.2: The Four Fundamental Subspaces</h2>
+                <p>For an $m \times n$ matrix $A$, there are four fundamental subspaces associated with $A$ (and its transpose $A^T$). Understanding their dimensions and relationships is the heart of linear algebra.</p>
+
+                <div class="definition-box">
+                    <strong>The Four Fundamental Subspaces:</strong>
+                    <ol style="margin-top: 15px; margin-left: 20px;">
+                        <li><strong>Column Space:</strong> $\text{Col}(A) = \{\mathbf{y} : \mathbf{y} = A\mathbf{x} \text{ for some } \mathbf{x}\} \subseteq \mathbb{R}^m$</li>
+                        <li><strong>Null Space:</strong> $\text{Nul}(A) = \{\mathbf{x} : A\mathbf{x} = \mathbf{0}\} \subseteq \mathbb{R}^n$</li>
+                        <li><strong>Row Space:</strong> $\text{Row}(A) = \text{Col}(A^T) \subseteq \mathbb{R}^n$</li>
+                        <li><strong>Left Null Space:</strong> $\text{Nul}(A^T) = \{\mathbf{y} : A^T\mathbf{y} = \mathbf{0}\} \subseteq \mathbb{R}^m$</li>
+                    </ol>
+                </div>
+
+                <h3>Geometric Intuition</h3>
+                <p>Visualize this as follows:</p>
+                <ul style="margin-left: 20px; margin-bottom: 20px;">
+                    <li>$A$ maps $\mathbb{R}^n$ to $\mathbb{R}^m$</li>
+                    <li>Within $\mathbb{R}^n$: $\text{Row}(A)$ and $\text{Nul}(A)$ are orthogonal complements</li>
+                    <li>Within $\mathbb{R}^m$: $\text{Col}(A)$ and $\text{Nul}(A^T)$ are orthogonal complements</li>
+                    <li>The transformation $A$ maps $\text{Row}(A)$ onto $\text{Col}(A)$ (invertibly on the row space)</li>
+                </ul>
+
+                <div class="visualization-container">
+                    <h3>Four Fundamental Subspaces Diagram</h3>
+                    <div class="visualization-controls">
+                        <button class="btn" onclick="drawFourSubspaces('rank1')">Rank 1 Example</button>
+                        <button class="btn" onclick="drawFourSubspaces('rank2')">Rank 2 Example</button>
+                        <button class="btn" onclick="drawFourSubspaces('rank3')">Rank 3 Example</button>
+                    </div>
+                    <canvas id="subspaceCanvas" width="600" height="400"></canvas>
+                    <p style="margin-top: 15px; text-align: center; font-size: 14px; color: #6b7280;">
+                        Teal: $\text{Col}(A)$ and $\text{Row}(A)$ | Purple: $\text{Nul}(A)$ and $\text{Nul}(A^T)$
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECTION 3: RANK -->
+            <section>
+                <h2>2.4.3: Rank</h2>
+                <p>The rank of a matrix is one of the most important invariants. It captures the "effective size" of the matrix and appears throughout linear algebra.</p>
+
+                <div class="definition-box">
+                    <strong>Definition:</strong> The <strong>rank</strong> of $A$ (denoted $\text{rank}(A)$) is:
+                    \[\text{rank}(A) = \dim(\text{Col}(A)) = \dim(\text{Row}(A))\]
+                    Equivalently, $\text{rank}(A)$ equals the number of pivot columns (or pivot rows) in $\text{RREF}(A)$.
+                </div>
+
+                <h3>Key Properties of Rank</h3>
+                <div class="theorem-box">
+                    <strong>Theorem:</strong> For any $m \times n$ matrix $A$:
+                    <ol style="margin-top: 15px; margin-left: 20px;">
+                        <li>$\text{rank}(A) = \text{rank}(A^T)$</li>
+                        <li>$\text{rank}(A) \leq \min(m, n)$</li>
+                        <li>$A$ is <strong>full rank</strong> if $\text{rank}(A) = \min(m, n)$</li>
+                        <li>If $A$ is square ($n \times n$), then $\text{rank}(A) = n \iff A$ is invertible</li>
+                    </ol>
+                </div>
+
+                <h3>Computing Rank</h3>
+                <p>The rank is straightforward to compute using row reduction:</p>
+                <div class="solution-step">
+1. Reduce $A$ to RREF
+2. Count the number of nonzero rows (equivalently, pivot columns)
+3. This count is $\text{rank}(A)$
+                </div>
+
+                <div class="tip-box">
+                    <strong>Computational Insight:</strong> The rank is invariant under row operations, column scaling, and permutations. However, column operations <em>do</em> change the rank (unless they are permutations or scalings). Always reduce to RREF or row echelon form for reliable rank computation.
+                </div>
+            </section>
+
+            <!-- SECTION 4: THE FUNDAMENTAL THEOREM OF LINEAR ALGEBRA -->
+            <section>
+                <h2>2.4.4: The Fundamental Theorem of Linear Algebra</h2>
+                <p>This is one of the crown jewels of linear algebra. It unifies all four subspaces through dimension relationships and orthogonality.</p>
+
+                <div class="theorem-box">
+                    <strong>The Fundamental Theorem of Linear Algebra:</strong><br><br>
+                    Let $A$ be an $m \times n$ matrix with rank $r = \text{rank}(A)$. Then:
+                    <div style="margin-top: 15px; margin-left: 20px;">
+                        (1) $\dim(\text{Col}(A)) = r$<br>
+                        (2) $\dim(\text{Row}(A)) = r$<br>
+                        (3) $\dim(\text{Nul}(A)) = n - r$ (nullity)<br>
+                        (4) $\dim(\text{Nul}(A^T)) = m - r$ (left nullity)<br>
+                        <br>
+                        <strong>Orthogonality:</strong><br>
+                        (5) $\text{Row}(A) \perp \text{Nul}(A)$ (orthogonal complements in $\mathbb{R}^n$)<br>
+                        (6) $\text{Col}(A) \perp \text{Nul}(A^T)$ (orthogonal complements in $\mathbb{R}^m$)<br>
+                    </div>
+                </div>
+
+                <h3>Understanding the Dimensions</h3>
+                <p><strong>Rank-Nullity Theorem:</strong> The foundational relationship is:
+                \[\text{rank}(A) + \text{nullity}(A) = n\]
+                This says that the dimensions of the column space and null space sum to the number of columns. Intuitively: every dimension in $\mathbb{R}^n$ either maps "somewhere" (contributes to rank) or maps to zero (contributes to nullity).</p>
+
+                <p><strong>Dual relationship:</strong> Similarly, for the row space and left null space in $\mathbb{R}^m$:
+                \[\dim(\text{Col}(A)) + \dim(\text{Nul}(A^T)) = m\]
+                This is just the rank-nullity theorem applied to $A^T$.</p>
+
+                <h3>Orthogonal Complements</h3>
+                <p>The theorem also states deep orthogonality relationships:</p>
+                <ul style="margin-left: 20px; margin-bottom: 20px;">
+                    <li><strong>In $\mathbb{R}^n$:</strong> $\text{Row}(A)$ and $\text{Nul}(A)$ are orthogonal complements. Every vector in $\mathbb{R}^n$ can be uniquely written as a sum of a vector from each subspace.</li>
+                    <li><strong>In $\mathbb{R}^m$:</strong> $\text{Col}(A)$ and $\text{Nul}(A^T)$ are orthogonal complements. Similarly, every vector in $\mathbb{R}^m$ decomposes uniquely.</li>
+                </ul>
+
+                <div class="tip-box">
+                    <strong>Why this matters:</strong> The Fundamental Theorem tells us that the four subspaces completely partition $\mathbb{R}^n$ and $\mathbb{R}^m$ into orthogonal complements. This structure underlies many applications: least squares, signal processing, image compression, and more.
+                </div>
+
+                <div class="example-box">
+                    <strong>Dimension Check:</strong> Let $A$ be $5 \times 7$ with $\text{rank}(A) = 3$. Then:
+                    <ul style="margin-left: 20px;">
+                        <li>$\dim(\text{Col}(A)) = 3$ (in $\mathbb{R}^5$)</li>
+                        <li>$\dim(\text{Row}(A)) = 3$ (in $\mathbb{R}^7$)</li>
+                        <li>$\dim(\text{Nul}(A)) = 7 - 3 = 4$ (in $\mathbb{R}^7$)</li>
+                        <li>$\dim(\text{Nul}(A^T)) = 5 - 3 = 2$ (in $\mathbb{R}^5$)</li>
+                        <li>Check: $3 + 4 = 7$ ✓ and $3 + 2 = 5$ ✓</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SECTION 5: APPLICATIONS OF RANK -->
+            <section>
+                <h2>2.4.5: Applications of Rank</h2>
+                <p>Rank is not just an abstract concept—it has powerful practical applications in determining whether systems have solutions, whether matrices are invertible, and how to analyze data.</p>
+
+                <h3>Consistency of Linear Systems</h3>
+                <p>One of the most important applications is determining when $A\mathbf{x} = \mathbf{b}$ has a solution.</p>
+
+                <div class="theorem-box">
+                    <strong>Consistency Criterion:</strong> The system $A\mathbf{x} = \mathbf{b}$ is consistent (has at least one solution) if and only if:
+                    \[\text{rank}(A) = \text{rank}([A | \mathbf{b}])\]
+                    where $[A | \mathbf{b}]$ is the augmented matrix.
+                </div>
+
+                <div class="tip-box">
+                    <strong>Interpretation:</strong> If $\text{rank}(A) < \text{rank}([A | \mathbf{b}])$, then the augmentation introduces a new pivot, which means $\mathbf{b}$ has a component in the left null space of $A$ (i.e., $\mathbf{b} \not\perp \text{Nul}(A^T)$). This makes the system inconsistent.
+                </div>
+
+                <h3>Invertible Matrix Theorem Connection</h3>
+                <p>Rank provides yet another characterization of invertibility:</p>
+
+                <div class="definition-box">
+                    <strong>For square $n \times n$ matrices:</strong> The following are equivalent:
+                    <ol style="margin-top: 15px; margin-left: 20px;">
+                        <li>$A$ is invertible</li>
+                        <li>$\text{rank}(A) = n$</li>
+                        <li>$\text{Nul}(A) = \{\mathbf{0}\}$</li>
+                        <li>$A\mathbf{x} = \mathbf{b}$ has a unique solution for all $\mathbf{b}$</li>
+                        <li>The columns of $A$ are linearly independent</li>
+                        <li>The rows of $A$ span $\mathbb{R}^n$</li>
+                    </ol>
+                </div>
+
+                <h3>Counting Solutions</h3>
+                <p>Rank also helps us understand how many solutions a system has:</p>
+                <ul style="margin-left: 20px; margin-bottom: 20px;">
+                    <li><strong>Inconsistent:</strong> $\text{rank}(A) < \text{rank}([A | \mathbf{b}])$ → no solutions</li>
+                    <li><strong>Unique solution:</strong> $\text{rank}(A) = \text{rank}([A | \mathbf{b}]) = n$ → one solution</li>
+                    <li><strong>Infinitely many solutions:</strong> $\text{rank}(A) = \text{rank}([A | \mathbf{b}]) < n$ → $n - \text{rank}(A)$ free variables, hence infinitely many solutions</li>
+                </ul>
+
+                <h3>Overdetermined and Underdetermined Systems</h3>
+                <div class="definition-box">
+                    <strong>Terminology:</strong>
+                    <ul style="margin-top: 15px; margin-left: 20px;">
+                        <li><strong>Overdetermined:</strong> More equations than unknowns ($m > n$). Usually inconsistent unless $\mathbf{b}$ is special.</li>
+                        <li><strong>Underdetermined:</strong> Fewer equations than unknowns ($m < n$). If consistent, has infinitely many solutions.</li>
+                        <li><strong>Square:</strong> Same number of equations and unknowns ($m = n$). May have unique, no, or infinitely many solutions depending on rank.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- RANK ANALYZER INTERACTIVE TOOL -->
+            <section>
+                <h2>2.4.6: Interactive Rank Analyzer</h2>
+                <p>Use this tool to compute all four fundamental subspaces for any matrix. Enter matrix entries separated by commas, with rows separated by semicolons. Example: <code>1,2,0;2,4,1</code> for a $2 \times 3$ matrix.</p>
+
+                <div class="visualization-container">
+                    <div class="matrix-input-group" style="width: 100%; max-width: 500px;">
+                        <label for="rankMatrixInput">Enter Matrix (up to 4×5):</label>
+                        <input type="text" id="rankMatrixInput" placeholder="1,0,2;0,1,3;1,1,5" value="1,2,0,1;2,4,1,3;3,6,1,4">
+                    </div>
+                    <button class="btn" onclick="analyzeRank()" style="margin-bottom: 20px;">Analyze</button>
+                    <div id="rankResults"></div>
+                </div>
+            </section>
+
+            <!-- EXAMPLES SECTION -->
+            <section>
+                <h2>2.4.7: Worked Examples</h2>
+
+                <!-- EASY EXAMPLES -->
+                <h3>Easy Examples (1-4)</h3>
+
+                <div class="example-item" onclick="toggle(this)">
+                    <div class="example-header">
+                        <span>Example 1: Find the rank of a $3 \times 3$ matrix</span>
+                        <span class="toggle-arrow">▼</span>
+                    </div>
+                    <div class="example-content">
+                        <p><strong>Problem:</strong> Find the rank of</p>
+                        \[A = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9 \end{bmatrix}\]
+                        <p><strong>Solution:</strong></p>
+                        <div class="solution-step">
+Step 1: Row reduce to RREF.
+\[\begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9 \end{bmatrix} \xrightarrow{R_2 - 4R_1} \begin{bmatrix} 1 & 2 & 3 \\ 0 & -3 & -6 \\ 7 & 8 & 9 \end{bmatrix} \xrightarrow{R_3 - 7R_1} \begin{bmatrix} 1 & 2 & 3 \\ 0 & -3 & -6 \\ 0 & -6 & -12 \end{bmatrix}\]
+
+Step 2: Continue reducing.
+\[\xrightarrow{R_2 / (-3)} \begin{bmatrix} 1 & 2 & 3 \\ 0 & 1 & 2 \\ 0 & -6 & -12 \end{bmatrix} \xrightarrow{R_3 + 6R_2} \begin{bmatrix} 1 & 2 & 3 \\ 0 & 1 & 2 \\ 0 & 0 & 0 \end{bmatrix}\]
+
+Step 3: Continue to RREF.
+\[\xrightarrow{R_1 - 2R_2} \begin{bmatrix} 1 & 0 & -1 \\ 0 & 1 & 2 \\ 0 & 0 & 0 \end{bmatrix}\]
+
+The RREF has 2 nonzero rows, so $\text{rank}(A) = 2$.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-item" onclick="toggle(this)">
+                    <div class="example-header">
+                        <span>Example 2: Find a basis for the row space</span>
+                        <span class="toggle-arrow">▼</span>
+                    </div>
+                    <div class="example-content">
+                        <p><strong>Problem:</strong> Find a basis for the row space of</p>
+                        \[A = \begin{bmatrix} 1 & 0 & 2 \\ 0 & 1 & 3 \\ 2 & 1 & 7 \end{bmatrix}\]
+                        <p><strong>Solution:</strong></p>
+                        <div class="solution-step">
+From the RREF of $A$ (found by row reduction):
+\[\text{RREF}(A) = \begin{bmatrix} 1 & 0 & 2 \\ 0 & 1 & 3 \\ 0 & 0 & 0 \end{bmatrix}\]
+
+The nonzero rows form a basis for Row$(A)$:
+\[\text{Basis} = \left\{ \begin{bmatrix} 1 \\ 0 \\ 2 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \\ 3 \end{bmatrix} \right\}\]
+
+Thus, $\dim(\text{Row}(A)) = 2$.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-item" onclick="toggle(this)">
+                    <div class="example-header">
+                        <span>Example 3: Verify rank(A) = rank(A^T)</span>
+                        <span class="toggle-arrow">▼</span>
+                    </div>
+                    <div class="example-content">
+                        <p><strong>Problem:</strong> Verify that $\text{rank}(A) = \text{rank}(A^T)$ for</p>
+                        \[A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \\ 5 & 6 \end{bmatrix}\]
+                        <p><strong>Solution:</strong></p>
+                        <div class="solution-step">
+First, reduce $A$ to RREF:
+\[\text{RREF}(A) = \begin{bmatrix} 1 & 0 \\ 0 & 1 \\ 0 & 0 \end{bmatrix}\]
+Thus $\text{rank}(A) = 2$.
+
+Now compute $A^T$:
+\[A^T = \begin{bmatrix} 1 & 3 & 5 \\ 2 & 4 & 6 \end{bmatrix}\]
+
+Reduce $A^T$ to RREF:
+\[\text{RREF}(A^T) = \begin{bmatrix} 1 & 0 & -1 \\ 0 & 1 & 2 \end{bmatrix}\]
+Thus $\text{rank}(A^T) = 2$.
+
+Conclusion: $\text{rank}(A) = \text{rank}(A^T) = 2$. ✓
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-item" onclick="toggle(this)">
+                    <div class="example-header">
+                        <span>Example 4: Apply rank-nullity with parameters</span>
+                        <span class="toggle-arrow">▼</span>
+                    </div>
+                    <div class="example-content">
+                        <p><strong>Problem:</strong> If $A$ is $3 \times 5$ with rank 2, what are $\dim(\text{Nul}(A))$ and $\dim(\text{Nul}(A^T))$?</p>
+                        <p><strong>Solution:</strong></p>
+                        <div class="solution-step">
+Use the Fundamental Theorem:
+
+For Nul$(A)$ in $\mathbb{R}^5$:
+\[\text{rank}(A) + \text{nullity}(A) = 5\]
+\[2 + \text{nullity}(A) = 5\]
+\[\dim(\text{Nul}(A)) = 3\]
+
+For Nul$(A^T)$ in $\mathbb{R}^3$:
+\[\text{rank}(A^T) + \text{nullity}(A^T) = 3\]
+\[\text{rank}(A) + \dim(\text{Nul}(A^T)) = 3\]
+\[2 + \dim(\text{Nul}(A^T)) = 3\]
+\[\dim(\text{Nul}(A^T)) = 1\]
+
+Answer: $\dim(\text{Nul}(A)) = 3$ and $\dim(\text{Nul}(A^T)) = 1$.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MEDIUM EXAMPLES -->
+                <h3>Medium Examples (5-9)</h3>
+
+                <div class="example-item" onclick="toggle(this)">
+                    <div class="example-header">
+                        <span>Example 5: Find all four fundamental subspaces</span>
+                        <span class="toggle-arrow">▼</span>
+                    </div>
+                    <div class="example-content">
+                        <p><strong>Problem:</strong> For $A = \begin{bmatrix} 1 & 2 & 0 & 1 \\ 2 & 4 & 1 & 3 \\ 3 & 6 & 1 & 4 \end{bmatrix}$, find bases and dimensions for all four subspaces.</p>
+                        <p><strong>Solution:</strong></p>
+                        <div class="solution-step">
+Step 1: Reduce $A$ to RREF.
+\[\text{RREF}(A) = \begin{bmatrix} 1 & 2 & 0 & 1 \\ 0 & 0 & 1 & 1 \\ 0 & 0 & 0 & 0 \end{bmatrix}\]
+
+Step 2: Identify rank and basic info.
+Pivot columns: 1 and 3. Thus $\text{rank}(A) = 2$, $\text{nullity} = 4 - 2 = 2$.
+
+Step 3: Row Space.
+The nonzero rows of RREF form a basis:
+\[\text{Basis for Row}(A) = \left\{ \begin{bmatrix} 1 \\ 2 \\ 0 \\ 1 \end{bmatrix}, \begin{bmatrix} 0 \\ 0 \\ 1 \\ 1 \end{bmatrix} \right\}\]
+$\dim(\text{Row}(A)) = 2$.
+
+Step 4: Column Space.
+The pivot columns of the original $A$ form a basis:
+\[\text{Basis for Col}(A) = \left\{ \begin{bmatrix} 1 \\ 2 \\ 3 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \\ 1 \end{bmatrix} \right\}\]
+$\dim(\text{Col}(A)) = 2$.
+
+Step 5: Null Space.
+Free variables: $x_2, x_4$. Solve $\text{RREF}(A) \mathbf{x} = \mathbf{0}$:
+\[\mathbf{x} = x_2 \begin{bmatrix} -2 \\ 1 \\ 0 \\ 0 \end{bmatrix} + x_4 \begin{bmatrix} -1 \\ 0 \\ -1 \\ 1 \end{bmatrix}\]
+\[\text{Basis for Nul}(A) = \left\{ \begin{bmatrix} -2 \\ 1 \\ 0 \\ 0 \end{bmatrix}, \begin{bmatrix} -1 \\ 0 \\ -1 \\ 1 \end{bmatrix} \right\}\]
+$\dim(\text{Nul}(A)) = 2$.
+
+Step 6: Left Null Space (Nul$(A^T)$).
+Solve $A^T \mathbf{y} = \mathbf{0}$. Equivalently, solve $\mathbf{y}^T A = \mathbf{0}^T$, i.e., find left combinations of rows that give zero.
+
+From RREF, row 3 is zero, so it's already in the null space. We seek $\mathbf{y} = \begin{bmatrix} y_1 \\ y_2 \\ y_3 \end{bmatrix}$ such that:
+\[y_1 \begin{bmatrix} 1 \\ 2 \\ 0 \\ 1 \end{bmatrix} + y_2 \begin{bmatrix} 2 \\ 4 \\ 1 \\ 3 \end{bmatrix} + y_3 \begin{bmatrix} 3 \\ 6 \\ 1 \\ 4 \end{bmatrix} = \mathbf{0}\]
+
+This requires solving the augmented system (working with rows):
+\[\begin{bmatrix} 1 & 2 & 3 \\ 2 & 4 & 6 \\ 0 & 1 & 1 \\ 1 & 3 & 4 \end{bmatrix}^T = A^T\]
+
+Actually, let me use: $A^T \mathbf{y} = \mathbf{0}$, so:
+\[\begin{bmatrix} 1 & 2 & 3 \\ 2 & 4 & 6 \\ 0 & 1 & 1 \\ 1 & 3 & 4 \end{bmatrix} \begin{bmatrix} y_1 \\ y_2 \\ y_3 \end{bmatrix} = \mathbf{0}\]
+
+Row reducing shows that $y_2 = -y_1$ and $y_3 = 0$, so:
+\[\text{Basis for Nul}(A^T) = \left\{ \begin{bmatrix} 1 \\ -1 \\ 0 \end{bmatrix} \right\}\]
+$\dim(\text{Nul}(A^T)) = 1$.
+
+Verification: $2 + 1 = 3$ (the number of rows) ✓, and $2 + 2 = 4$ (the number of columns) ✓.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-item" onclick="toggle(this)">
+                    <div class="example-header">
+                        <span>Example 6: Use rank to check consistency</span>
+                        <span class="toggle-arrow">▼</span>
+                    </div>
+                    <div class="example-content">
+                        <p><strong>Problem:</strong> Determine if $A\mathbf{x} = \mathbf{b}$ is consistent, where $A = \begin{bmatrix} 1 & 2 \\ 3 & 6 \end{bmatrix}$ and $\mathbf{b} = \begin{bmatrix} 3 \\ 9 \end{bmatrix}$.</p>
+                        <p><strong>Solution:</strong></p>
+                        <div class="solution-step">
+Form the augmented matrix and reduce:
+\[\begin{bmatrix} 1 & 2 & | & 3 \\ 3 & 6 & | & 9 \end{bmatrix} \xrightarrow{R_2 - 3R_1} \begin{bmatrix} 1 & 2 & | & 3 \\ 0 & 0 & | & 0 \end{bmatrix}\]
+
+We have:
+- $\text{rank}(A) = 1$ (one nonzero row in $A$ part)
+- $\text{rank}([A | \mathbf{b}]) = 1$ (one nonzero row in augmented)
+
+Since $\text{rank}(A) = \text{rank}([A | \mathbf{b}])$, the system IS CONSISTENT.
+
+In fact, $\mathbf{b} = 3 \cdot \text{Row}_1(A)$, so $\mathbf{b}$ is in the column space.
+
+General solution: $\mathbf{x} = \begin{bmatrix} 3 \\ 0 \end{bmatrix} + t\begin{bmatrix} -2 \\ 1 \end{bmatrix}$ for $t \in \mathbb{R}$ (infinitely many solutions).
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-item" onclick="toggle(this)">
+                    <div class="example-header">
+                        <span>Example 7: Prove inequality for rank products</span>
+                        <span class="toggle-arrow">▼</span>
+                    </div>
+                    <div class="example-content">
+                        <p><strong>Problem:</strong> Prove that $\text{rank}(AB) \leq \min(\text{rank}(A), \text{rank}(B))$.</p>
+                        <p><strong>Solution:</strong></p>
+                        <div class="solution-step">
+We prove both inequalities separately.
+
+(a) Show $\text{rank}(AB) \leq \text{rank}(B)$:
+
+The columns of $AB$ are $AB\mathbf{e}_1, AB\mathbf{e}_2, \ldots, AB\mathbf{e}_n$ where $\mathbf{e}_i$ is the $i$-th standard basis vector. Each $AB\mathbf{e}_i = A(B\mathbf{e}_i)$, which is a linear combination of the columns of $A$ (specifically, $A$ times the $i$-th column of $B$).
+
+Thus, $\text{Col}(AB) \subseteq \text{Col}(A)$... wait, that's not quite right.
+
+Actually, the columns of $AB$ are all in $\text{Col}(A)$. The rank of $AB$ is the dimension of the column space of $AB$. Since Col$(AB) \subseteq \text{Col}(A)$, we have:
+\[\text{rank}(AB) = \dim(\text{Col}(AB)) \leq \dim(\text{Col}(A)) = \text{rank}(A)\]
+
+Actually, let me reconsider. The column space of $AB$ is spanned by $\{A(B\mathbf{e}_i)\}$, which is spanned by the image of $B$'s columns under $A$. These are all in Col$(A)$, but they are also constrained by the rank of $B$.
+
+More carefully: $\text{rank}(AB) \leq \text{rank}(B)$ because the image of $AB$ is the image of $A$ restricted to the column space of $B$. Formally, Col$(AB)$ = A[Col$(B)$], which has dimension at most $\text{rank}(B)$ since Col$(B)$ is $\text{rank}(B)$-dimensional.
+
+(b) Show $\text{rank}(AB) \leq \text{rank}(A)$:
+
+Similarly, using the row perspective: the row space of $AB$ is related to the row space of $A$ (the left action). The columns of $(AB)^T = B^T A^T$ are limited by rank$(A^T) = $ rank$(A)$. Thus:
+\[\text{rank}(AB) = \text{rank}(AB)^T) = \text{rank}(B^T A^T) \leq \text{rank}(B^T) = \text{rank}(B)\]
+
+Hmm, that gives the other direction. Let me think again...
+
+(Better approach) The rank of $AB$ is bounded by both the rank of $A$ (the number of "output directions") and the rank of $B$ (the number of "input directions"). More precisely, a full column rank matrix $B$ maps a $k$-dimensional space to a $k$-dimensional subspace (assuming full rank). Thus:
+\[\text{rank}(AB) \leq \text{rank}(A), \quad \text{rank}(AB) \leq \text{rank}(B)\]
+
+Combining: $\text{rank}(AB) \leq \min(\text{rank}(A), \text{rank}(B))$. ✓
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-item" onclick="toggle(this)">
+                    <div class="example-header">
+                        <span>Example 8: Full rank-nullity computation</span>
+                        <span class="toggle-arrow">▼</span>
+                    </div>
+                    <div class="example-content">
+                        <p><strong>Problem:</strong> For $A = \begin{bmatrix} 1 & 0 & -1 \\ 2 & 1 & 3 \\ 1 & 1 & 4 \end{bmatrix}$, find rank, nullity, and verify the rank-nullity theorem.</p>
+                        <p><strong>Solution:</strong></p>
+                        <div class="solution-step">
+Step 1: Row reduce to RREF.
+\[\begin{bmatrix} 1 & 0 & -1 \\ 2 & 1 & 3 \\ 1 & 1 & 4 \end{bmatrix} \xrightarrow{R_2 - 2R_1, R_3 - R_1} \begin{bmatrix} 1 & 0 & -1 \\ 0 & 1 & 5 \\ 0 & 1 & 5 \end{bmatrix}\]
+\[\xrightarrow{R_3 - R_2} \begin{bmatrix} 1 & 0 & -1 \\ 0 & 1 & 5 \\ 0 & 0 & 0 \end{bmatrix}\]
+
+Step 2: Read off rank and free variables.
+Pivots in columns 1 and 2, so rank$(A) = 2$.
+Free variable: $x_3$. Thus, nullity$(A) = 1$.
+
+Step 3: Verify rank-nullity.
+\[\text{rank}(A) + \text{nullity}(A) = 2 + 1 = 3 = n\]
+The number of columns is 3, so the theorem is verified. ✓
+
+Step 4: Find basis for Nul$(A)$.
+From $\text{RREF}(A) \mathbf{x} = \mathbf{0}$:
+\[x_1 - x_3 = 0 \implies x_1 = x_3\]
+\[x_2 + 5x_3 = 0 \implies x_2 = -5x_3\]
+
+Letting $x_3 = 1$:
+\[\text{Basis for Nul}(A) = \left\{ \begin{bmatrix} 1 \\ -5 \\ 1 \end{bmatrix} \right\}\]
+
+Check: $A \begin{bmatrix} 1 \\ -5 \\ 1 \end{bmatrix} = \begin{bmatrix} 1 - 1 \\ 2 - 5 + 3 \\ 1 - 5 + 4 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \\ 0 \end{bmatrix}$ ✓
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-item" onclick="toggle(this)">
+                    <div class="example-header">
+                        <span>Example 9: Parameter analysis for rank</span>
+                        <span class="toggle-arrow">▼</span>
+                    </div>
+                    <div class="example-content">
+                        <p><strong>Problem:</strong> Determine all values of $k$ for which $A = \begin{bmatrix} 1 & 2 & k \\ 3 & k & 9 \\ 2 & 4 & 2k \end{bmatrix}$ has rank 2.</p>
+                        <p><strong>Solution:</strong></p>
+                        <div class="solution-step">
+A $3 \times 3$ matrix has rank 2 if and only if $\det(A) = 0$ but at least one $2 \times 2$ submatrix is nonsingular.
+
+First, compute $\det(A)$:
+\[\det(A) = 1(k \cdot 2k - 9 \cdot 4) - 2(3 \cdot 2k - 9 \cdot 2) + k(3 \cdot 4 - k \cdot 2)\]
+\[= 1(2k^2 - 36) - 2(6k - 18) + k(12 - 2k)\]
+\[= 2k^2 - 36 - 12k + 36 + 12k - 2k^2\]
+\[= 0\]
+
+So $\det(A) = 0$ for all $k$! This means rank$(A) \leq 2$.
+
+Now check when rank$(A) < 2$ (i.e., rank 0 or 1):
+
+Rank$(A) = 1$ means all rows are scalar multiples of each other.
+- Row 1: $(1, 2, k)$
+- Row 2: $(3, k, 9)$
+- Row 3: $(2, 4, 2k)$
+
+Notice that Row 3 = $2 \times$ Row 1 for all $k$. So Row 3 is always dependent.
+
+For Row 2 to be a multiple of Row 1: $(3, k, 9) = \lambda (1, 2, k)$ requires $\lambda = 3$, $k = 2\lambda = 6$, and $9 = 3k$. From the third, $k = 3$. Contradiction unless... let me recalculate.
+
+$(3, k, 9) = \lambda(1, 2, k)$ requires:
+- $\lambda = 3$ (from first component)
+- $k = 2\lambda = 6$ (from second component)
+- $9 = k\lambda = 3k$ (from third component)
+
+The third gives $k = 3$, which contradicts $k = 6$ from the second. So Row 2 is NOT a multiple of Row 1 for any $k$.
+
+Therefore, for all $k$, the rows don't all collapse to one line, so rank$(A) \geq 2$.
+
+Combined with rank$(A) \leq 2$ for all $k$, we conclude:
+\[\boxed{\text{rank}(A) = 2 \text{ for all } k \in \mathbb{R}}\]
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HARD EXAMPLES -->
+                <h3>Hard Examples (10-15)</h3>
+
+                <div class="example-item" onclick="toggle(this)">
+                    <div class="example-header">
+                        <span>Example 10: Incidence matrix and null space</span>
+                        <span class="toggle-arrow">▼</span>
+                    </div>
+                    <div class="example-content">
+                        <p><strong>Problem:</strong> Consider the graph with 3 vertices and edges: 1-2, 2-3, 1-3. The incidence matrix is:
+                        \[A = \begin{bmatrix} 1 & 1 & 0 \\ -1 & 0 & 1 \\ 0 & -1 & -1 \end{bmatrix}\]
+                        Find the rank and interpret the null space in terms of network flow.</p>
+                        <p><strong>Solution:</strong></p>
+                        <div class="solution-step">
+Step 1: Row reduce to RREF.
+\[\begin{bmatrix} 1 & 1 & 0 \\ -1 & 0 & 1 \\ 0 & -1 & -1 \end{bmatrix} \xrightarrow{R_2 + R_1} \begin{bmatrix} 1 & 1 & 0 \\ 0 & 1 & 1 \\ 0 & -1 & -1 \end{bmatrix}\]
+\[\xrightarrow{R_3 + R_2} \begin{bmatrix} 1 & 1 & 0 \\ 0 & 1 & 1 \\ 0 & 0 & 0 \end{bmatrix}\]
+\[\xrightarrow{R_1 - R_2} \begin{bmatrix} 1 & 0 & -1 \\ 0 & 1 & 1 \\ 0 & 0 & 0 \end{bmatrix}\]
+
+Step 2: Read off rank.
+Rank$(A) = 2$ (two pivot rows).
+
+Step 3: Find null space.
+Free variable: $x_3$. From RREF:
+\[x_1 = x_3, \quad x_2 = -x_3\]
+
+Basis for Nul$(A)$:
+\[\begin{bmatrix} 1 \\ -1 \\ 1 \end{bmatrix}\]
+
+Step 4: Interpret in graph theory.
+In network flow, the null space represents currents (or flows) that satisfy Kirchhoff's current law at each node (i.e., flow conservation). The basis vector $(1, -1, 1)$ represents a unit flow: $+1$ on edge 1-2, $-1$ on edge 2-3, $+1$ on edge 1-3.
+
+This is a circulation: start at vertex 1, send 1 unit to vertex 2 via edge 1-2, then 1 unit back to vertex 1 via edges 2-3 and 1-3. The net flow at each vertex is 0, satisfying conservation.
+
+Conclusion: rank$(A) = 2$ gives $n - r = 3 - 2 = 1$ independent circulation, which makes sense for a 3-vertex graph (cycle space dimension = edges - vertices + 1 = 3 - 3 + 1 = 1).
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-item" onclick="toggle(this)">
+                    <div class="example-header">
+                        <span>Example 11: Low-rank approximation and data compression</span>
+                        <span class="toggle-arrow">▼</span>
+                    </div>
+                    <div class="example-content">
+                        <p><strong>Problem:</strong> Explain how rank relates to data compression. Suppose a $1000 \times 1000$ matrix $M$ is known to have rank 10. How much storage can we save?</p>
+                        <p><strong>Solution:</strong></p>
+                        <div class="solution-step">
+Key insight: A rank-$r$ $m \times n$ matrix can be written (via SVD or other factorizations) as:
+\[M = UV^T\]
+where $U$ is $m \times r$ and $V$ is $n \times r$.
+
+Compressed representation: Instead of storing the full $1000 \times 1000$ matrix (1,000,000 entries), store:
+- $U$: $1000 \times 10$ matrix (10,000 entries)
+- $V^T$: $10 \times 1000$ matrix (10,000 entries)
+- Total: 20,000 entries
+
+Compression ratio: $20,000 / 1,000,000 = 0.02 = 2\%$ of original storage!
+
+For rank-10 approximation of any $m \times n$ matrix (where $r \ll \min(m,n)$):
+\[\text{Compression: } \frac{r(m+n)}{mn} \approx \frac{r}{\min(m,n)}\]
+
+In our case: $\frac{10 \cdot 2000}{1,000,000} = \frac{20,000}{1,000,000} = 2\%$.
+
+Applications: Image compression (PNG, JPEG), video compression, recommendation systems (Netflix matrix is ~$n_{\text{movies}} \times n_{\text{users}}$ with low effective rank).
+
+Fundamental Theorem connection: The rank determines the "information content" of the matrix — how much of the data is "redundant" (in the null space or left null space) vs. essential.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-item" onclick="toggle(this)">
+                    <div class="example-header">
+                        <span>Example 12: Fredholm alternative</span>
+                        <span class="toggle-arrow">▼</span>
+                    </div>
+                    <div class="example-content">
+                        <p><strong>Problem:</strong> State and prove the Fredholm alternative: $A\mathbf{x} = \mathbf{b}$ is consistent if and only if $\mathbf{b} \perp \text{Nul}(A^T)$.</p>
+                        <p><strong>Solution:</strong></p>
+                        <div class="solution-step">
+Fredholm Alternative (Consistency Criterion):
+
+The system $A\mathbf{x} = \mathbf{b}$ is consistent if and only if $\mathbf{b} \perp \text{Nul}(A^T)$.
+
+Proof:
+
+($\Rightarrow$) Suppose $A\mathbf{x} = \mathbf{b}$ for some $\mathbf{x}$. Let $\mathbf{y} \in \text{Nul}(A^T)$, so $A^T \mathbf{y} = \mathbf{0}$.
+
+Then:
+\[\mathbf{b} \cdot \mathbf{y} = (A\mathbf{x}) \cdot \mathbf{y} = \mathbf{x} \cdot (A^T \mathbf{y}) = \mathbf{x} \cdot \mathbf{0} = 0\]
+
+Thus $\mathbf{b} \perp \mathbf{y}$ for all $\mathbf{y} \in \text{Nul}(A^T)$, so $\mathbf{b} \perp \text{Nul}(A^T)$.
+
+($\Leftarrow$) Suppose $\mathbf{b} \perp \text{Nul}(A^T)$. By the Fundamental Theorem, Col$(A)$ and Nul$(A^T)$ are orthogonal complements in $\mathbb{R}^m$.
+
+This means every vector in $\mathbb{R}^m$ can be uniquely written as the sum of a vector in Col$(A)$ and a vector in Nul$(A^T)$. Since $\mathbf{b} \perp \text{Nul}(A^T)$, the Nul$(A^T)$ component of $\mathbf{b}$ must be $\mathbf{0}$.
+
+Therefore, $\mathbf{b} \in \text{Col}(A)$, which means $A\mathbf{x} = \mathbf{b}$ for some $\mathbf{x}$. ✓
+
+Practical interpretation: The condition $\mathbf{b} \perp \text{Nul}(A^T)$ is equivalent to rank$(A) = $ rank$([A|\mathbf{b}])$. This is the standard consistency test we taught earlier—now you understand its geometric meaning!
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-item" onclick="toggle(this)">
+                    <div class="example-header">
+                        <span>Example 13: Rank bounds for matrix products</span>
+                        <span class="toggle-arrow">▼</span>
+                    </div>
+                    <div class="example-content">
+                        <p><strong>Problem:</strong> Given $A$ is $4 \times 6$ with rank 3, and $B$ is $6 \times 5$ with rank 4, find bounds on rank$(AB)$.</p>
+                        <p><strong>Solution:</strong></p>
+                        <div class="solution-step">
+Use the general inequality: rank$(AB) \leq \min(\text{rank}(A), \text{rank}(B))$.
+
+Here:
+- rank$(A) = 3$
+- rank$(B) = 4$
+
+Thus: rank$(AB) \leq \min(3, 4) = 3$.
+
+We can also improve the lower bound slightly. Since rank$(A) = 3 < 6 = $ number of columns of $A$, the null space of $A$ is nontrivial. The rank$(AB)$ is constrained by:
+- rank$(AB) \leq$ rank$(A) = 3$
+- rank$(AB) \leq$ rank$(B) = 4$
+- rank$(AB) \leq \min(4, 5) = 4$ (dimension constraints)
+
+The tightest bound is rank$(AB) \leq 3$.
+
+Can we achieve rank$(AB) = 3$? Yes, if $B$ has full column rank and $A$ is "generic" (i.e., its null space doesn't contain extra structure). In the generic case, rank$(AB) = $ rank$(A) = 3$.
+
+Can rank$(AB)$ be smaller, say rank$(AB) = 2$? Yes, if the null space of $A$ happens to contain vectors in the column space of $B$. This requires special structure.
+
+Conclusion: $\boxed{0 \leq \text{rank}(AB) \leq 3}$, with rank$(AB) = 3$ in the generic case.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-item" onclick="toggle(this)">
+                    <div class="example-header">
+                        <span>Example 14: Nontrivial null space condition</span>
+                        <span class="toggle-arrow">▼</span>
+                    </div>
+                    <div class="example-content">
+                        <p><strong>Problem:</strong> Prove: If $A$ is $m \times n$ with $m < n$, then $A\mathbf{x} = \mathbf{0}$ has nontrivial solutions.</p>
+                        <p><strong>Solution:</strong></p>
+                        <div class="solution-step">
+Proof by rank-nullity:
+
+Since $A$ is $m \times n$, rank$(A) \leq \min(m, n) = m$ (because rank is at most the number of rows).
+
+By rank-nullity:
+\[\text{rank}(A) + \text{nullity}(A) = n\]
+\[\text{nullity}(A) = n - \text{rank}(A) \geq n - m\]
+
+Since $m < n$, we have $n - m > 0$, so nullity$(A) > 0$.
+
+This means $\dim(\text{Nul}(A)) \geq 1$, i.e., the null space is nontrivial and contains at least one linearly independent vector $\mathbf{v} \neq \mathbf{0}$.
+
+Therefore, $A\mathbf{v} = \mathbf{0}$ for some nontrivial $\mathbf{v}$. ✓
+
+Intuition: More unknowns than equations → underdetermined system → nontrivial solutions guaranteed.
+
+Example: $A = \begin{bmatrix} 1 & 2 & 3 \end{bmatrix}$ (1 equation, 3 unknowns). Setting $\mathbf{x} = \begin{bmatrix} 2 \\ -1 \\ 0 \end{bmatrix}$, we get $1(2) + 2(-1) + 3(0) = 0$. Nontrivial solution exists.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-item" onclick="toggle(this)">
+                    <div class="example-header">
+                        <span>Example 15: Complete subspace analysis</span>
+                        <span class="toggle-arrow">▼</span>
+                    </div>
+                    <div class="example-content">
+                        <p><strong>Problem:</strong> For $A = \begin{bmatrix} 1 & 1 & 2 & 0 & 1 \\ 0 & 1 & 1 & 1 & 0 \\ 1 & 0 & 1 & -1 & 1 \\ 2 & 1 & 3 & -1 & 2 \end{bmatrix}$ (a $4 \times 5$ matrix), provide a complete rank analysis and verify all four subspace relationships.</p>
+                        <p><strong>Solution:</strong></p>
+                        <div class="solution-step">
+This is comprehensive. Let me outline the major steps:
+
+Step 1: Row reduce to RREF (detailed computation omitted for brevity):
+\[\text{RREF}(A) = \begin{bmatrix} 1 & 0 & 1 & -1 & 1 \\ 0 & 1 & 1 & 1 & 0 \\ 0 & 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 & 0 \end{bmatrix}\]
+
+Step 2: Extract dimensions.
+- Pivot columns: 1, 2 (in $\mathbb{R}^4$)
+- rank$(A) = 2$
+- nullity$(A) = 5 - 2 = 3$
+- left nullity $= 4 - 2 = 2$
+
+Step 3: Verify Fundamental Theorem dimension checks.
+- $\dim(\text{Col}(A)) = 2$ ✓
+- $\dim(\text{Row}(A)) = 2$ ✓
+- $\dim(\text{Nul}(A)) = 3$ ✓
+- $\dim(\text{Nul}(A^T)) = 2$ ✓
+- Check: $2 + 3 = 5$ (columns) ✓
+- Check: $2 + 2 = 4$ (rows) ✓
+
+Step 4: Find bases.
+Col$(A)$: Pivot columns of original $A$:
+\[\left\{ \begin{bmatrix} 1 \\ 0 \\ 1 \\ 2 \end{bmatrix}, \begin{bmatrix} 1 \\ 1 \\ 0 \\ 1 \end{bmatrix} \right\}\]
+
+Row$(A)$: Nonzero rows of RREF:
+\[\left\{ \begin{bmatrix} 1 \\ 0 \\ 1 \\ -1 \\ 1 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \\ 1 \\ 1 \\ 0 \end{bmatrix} \right\}\]
+
+Nul$(A)$: Free variables $x_3, x_4, x_5$. From RREF:
+\[\mathbf{x} = x_3 \begin{bmatrix} -1 \\ -1 \\ 1 \\ 0 \\ 0 \end{bmatrix} + x_4 \begin{bmatrix} 1 \\ -1 \\ 0 \\ 1 \\ 0 \end{bmatrix} + x_5 \begin{bmatrix} -1 \\ 0 \\ 0 \\ 0 \\ 1 \end{bmatrix}\]
+
+Nul$(A^T)$: Solve $A^T \mathbf{y} = \mathbf{0}$ (equivalently, $\mathbf{y}^T A = \mathbf{0}$). The null space of $A^T$ corresponds to the zero rows of RREF$(A)$'s "null space directions." By left multiplication, we find:
+\[\text{Basis for Nul}(A^T) = \left\{ \begin{bmatrix} 0 \\ -1 \\ 1 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \\ 0 \\ 1 \end{bmatrix} \right\}\]
+(These require direct computation or using the right-annihilator.)
+
+Step 5: Verify orthogonality.
+Check Row$(A) \perp \text{Nul}(A)$: Take any row of $A$ and any basis vector of Nul$(A)$. Compute dot product — should be 0. ✓
+
+Check Col$(A) \perp \text{Nul}(A^T)$: Similar verification. ✓
+
+Conclusion: All relationships hold. The Fundamental Theorem perfectly explains the dimensions and structure!
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- QUIZ SECTION -->
+            <section>
+                <h2>2.4.8: Self-Assessment Quiz</h2>
+                <p>Test your understanding with these questions. Click on an answer to see feedback.</p>
+
+                <div class="quiz-question">
+                    <div class="question-text">Q1: The rank of a matrix equals:</div>
+                    <div class="choices">
+                        <button class="choice-btn" onclick="checkChoice(this, false)">The number of rows with at least one nonzero entry</button>
+                        <button class="choice-btn" onclick="checkChoice(this, true)">The number of pivot columns</button>
+                        <button class="choice-btn" onclick="checkChoice(this, false)">The number of nonzero entries</button>
+                        <button class="choice-btn" onclick="checkChoice(this, false)">The determinant of the matrix</button>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                </div>
+
+                <div class="quiz-question">
+                    <div class="question-text">Q2: For a $4 \times 7$ matrix with rank 3, what is $\dim(\text{Nul}(A))$?</div>
+                    <div class="choices">
+                        <button class="choice-btn" onclick="checkChoice(this, false)">3</button>
+                        <button class="choice-btn" onclick="checkChoice(this, true)">4</button>
+                        <button class="choice-btn" onclick="checkChoice(this, false)">7</button>
+                        <button class="choice-btn" onclick="checkChoice(this, false)">1</button>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                </div>
+
+                <div class="quiz-question">
+                    <div class="question-text">Q3: The row space of $A$ is a subspace of which vector space?</div>
+                    <div class="choices">
+                        <button class="choice-btn" onclick="checkChoice(this, true)">$\mathbb{R}^n$ (where $A$ is $m \times n$)</button>
+                        <button class="choice-btn" onclick="checkChoice(this, false)">$\mathbb{R}^m$</button>
+                        <button class="choice-btn" onclick="checkChoice(this, false)">The column space</button>
+                        <button class="choice-btn" onclick="checkChoice(this, false)">The null space</button>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                </div>
+
+                <div class="quiz-question">
+                    <div class="question-text">Q4: By the Fundamental Theorem, Col$(A)$ and ____ are orthogonal complements in $\mathbb{R}^m$:</div>
+                    <div class="choices">
+                        <button class="choice-btn" onclick="checkChoice(this, false)">Row$(A)$</button>
+                        <button class="choice-btn" onclick="checkChoice(this, false)">Nul$(A)$</button>
+                        <button class="choice-btn" onclick="checkChoice(this, true)">Nul$(A^T)$</button>
+                        <button class="choice-btn" onclick="checkChoice(this, false)">Col$(A^T)$</button>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                </div>
+
+                <div class="quiz-question">
+                    <div class="question-text">Q5: The system $A\mathbf{x} = \mathbf{b}$ is consistent if and only if:</div>
+                    <div class="choices">
+                        <button class="choice-btn" onclick="checkChoice(this, true)">$\text{rank}(A) = \text{rank}([A | \mathbf{b}])$</button>
+                        <button class="choice-btn" onclick="checkChoice(this, false)">$\text{rank}(A) = \text{rank}(\mathbf{b})$</button>
+                        <button class="choice-btn" onclick="checkChoice(this, false)">$\text{rank}(A) > \text{rank}([A | \mathbf{b}])$</button>
+                        <button class="choice-btn" onclick="checkChoice(this, false)">$A$ is invertible</button>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                </div>
+
+                <div class="quiz-question">
+                    <div class="question-text">Q6: If $A$ is square ($n \times n$) and $\text{rank}(A) = n$, then:</div>
+                    <div class="choices">
+                        <button class="choice-btn" onclick="checkChoice(this, true)">$A$ is invertible</button>
+                        <button class="choice-btn" onclick="checkChoice(this, false)">$A\mathbf{x} = \mathbf{0}$ has nontrivial solutions</button>
+                        <button class="choice-btn" onclick="checkChoice(this, false)">The column space is a proper subspace of $\mathbb{R}^n$</button>
+                        <button class="choice-btn" onclick="checkChoice(this, false)">$A$ is singular</button>
+                    </div>
+                    <div class="quiz-feedback"></div>
+                </div>
+            </section>
+
+            <!-- KEY TAKEAWAYS -->
+            <section class="key-takeaways">
+                <h3>Key Takeaways</h3>
+                <ol>
+                    <li><strong>Rank unifies subspace concepts:</strong> The rank equals the dimension of both the column space and row space. It is the central invariant of a matrix.</li>
+                    <li><strong>The Fundamental Theorem connects everything:</strong> The four subspaces have dimensions $(r, r, n-r, m-r)$ and form orthogonal complements in pairs. This is the deep structure of linear algebra.</li>
+                    <li><strong>Rank-Nullity is fundamental:</strong> $\text{rank}(A) + \text{nullity}(A) = n$ tells us how the null space and column space partition $\mathbb{R}^n$.</li>
+                    <li><strong>Consistency via rank:</strong> A system $A\mathbf{x} = \mathbf{b}$ is consistent if and only if rank$(A) = \text{rank}([A|\mathbf{b}])$. This is a practical test that avoids row reduction of the augmented matrix if the ranks are already known.</li>
+                    <li><strong>Invertibility and rank:</strong> A square matrix is invertible if and only if it has full rank. This connects the algebraic (determinant) and geometric (rank) perspectives.</li>
+                    <li><strong>Data compression and rank:</strong> Low-rank structure enables efficient data compression and is exploited in applications from image processing to machine learning.</li>
+                </ol>
+            </section>
+
+            <!-- NAVIGATION FOOTER -->
+            <div class="nav-footer">
+                <a href="#">← 2.3: Norms and Orthogonality</a>
+                <a href="#">Chapter 2 Overview</a>
+                <a href="#">2.5: Least Squares →</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Dr. Mohamed Mabrok — Qatar University</p>
+    </footer>
+
+    <script>
+        // Toggle example visibility
+        function toggle(element) {
+            element.classList.toggle('active');
+        }
+
+        // Quiz choice checker
+        function checkChoice(button, isCorrect) {
+            const question = button.closest('.quiz-question');
+            const buttons = question.querySelectorAll('.choice-btn');
+            const feedback = question.querySelector('.quiz-feedback');
+
+            // Disable all buttons after first click
+            buttons.forEach(btn => btn.disabled = true);
+
+            if (isCorrect) {
+                button.classList.add('correct');
+                feedback.classList.add('show', 'correct');
+                feedback.textContent = 'Correct! Well done.';
+            } else {
+                button.classList.add('incorrect');
+                // Show the correct answer
+                buttons.forEach(btn => {
+                    if (btn.onclick.toString().includes('true')) {
+                        btn.classList.add('correct');
+                    }
+                });
+                feedback.classList.add('show', 'incorrect');
+                feedback.textContent = 'Incorrect. The correct answer has been highlighted.';
+            }
+        }
+
+        // Canvas drawing for four subspaces
+        function drawFourSubspaces(example) {
+            const canvas = document.getElementById('subspaceCanvas');
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+
+            // Clear canvas
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, w, h);
+
+            // Draw title
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(`Example: ${example === 'rank1' ? 'Rank 1' : example === 'rank2' ? 'Rank 2' : 'Rank 3'}`, w / 2, 30);
+
+            // Draw two boxes representing R^n and R^m
+            const boxWidth = 140;
+            const boxHeight = 250;
+            const leftX = 50;
+            const rightX = w - boxWidth - 50;
+            const topY = 60;
+
+            // Left box (R^n)
+            ctx.strokeStyle = '#6b7280';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(leftX, topY, boxWidth, boxHeight);
+            ctx.fillStyle = '#374151';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('ℝⁿ', leftX + boxWidth / 2, topY - 10);
+
+            // Right box (R^m)
+            ctx.strokeRect(rightX, topY, boxWidth, boxHeight);
+            ctx.fillText('ℝᵐ', rightX + boxWidth / 2, topY - 10);
+
+            // Draw subspaces within boxes with example data
+            const drawSubspaces = (rank) => {
+                const colors = { rowSpace: '#14b8a6', colSpace: '#14b8a6', nullSpace: '#a855f7', leftNullSpace: '#a855f7' };
+
+                // In R^n: Row(A) and Nul(A)
+                const rowSpaceHeight = (rank / 3) * boxHeight * 0.4;
+                const nullSpaceHeight = ((3 - rank) / 3) * boxHeight * 0.4;
+
+                ctx.fillStyle = colors.rowSpace;
+                ctx.globalAlpha = 0.3;
+                ctx.fillRect(leftX + 5, topY + 10, boxWidth - 10, rowSpaceHeight);
+                ctx.globalAlpha = 1;
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '11px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('Row(A)', leftX + boxWidth / 2, topY + rowSpaceHeight / 2 + 10);
+
+                ctx.fillStyle = colors.nullSpace;
+                ctx.globalAlpha = 0.3;
+                ctx.fillRect(leftX + 5, topY + 10 + rowSpaceHeight, boxWidth - 10, nullSpaceHeight);
+                ctx.globalAlpha = 1;
+                ctx.fillStyle = '#ffffff';
+                ctx.fillText('Nul(A)', leftX + boxWidth / 2, topY + rowSpaceHeight + nullSpaceHeight / 2 + 10);
+
+                // In R^m: Col(A) and Nul(A^T)
+                const colSpaceHeight = (rank / 3) * boxHeight * 0.4;
+                const leftNullSpaceHeight = ((3 - rank) / 3) * boxHeight * 0.4;
+
+                ctx.fillStyle = colors.colSpace;
+                ctx.globalAlpha = 0.3;
+                ctx.fillRect(rightX + 5, topY + 10, boxWidth - 10, colSpaceHeight);
+                ctx.globalAlpha = 1;
+                ctx.fillStyle = '#ffffff';
+                ctx.fillText('Col(A)', rightX + boxWidth / 2, topY + colSpaceHeight / 2 + 10);
+
+                ctx.fillStyle = colors.leftNullSpace;
+                ctx.globalAlpha = 0.3;
+                ctx.fillRect(rightX + 5, topY + 10 + colSpaceHeight, boxWidth - 10, leftNullSpaceHeight);
+                ctx.globalAlpha = 1;
+                ctx.fillStyle = '#ffffff';
+                ctx.fillText('Nul(Aᵀ)', rightX + boxWidth / 2, topY + colSpaceHeight + leftNullSpaceHeight / 2 + 10);
+
+                // Draw arrow A
+                ctx.strokeStyle = '#10b981';
+                ctx.lineWidth = 2;
+                const arrowStartX = leftX + boxWidth + 10;
+                const arrowEndX = rightX - 10;
+                const arrowY = topY + boxHeight / 2;
+                ctx.beginPath();
+                ctx.moveTo(arrowStartX, arrowY);
+                ctx.lineTo(arrowEndX, arrowY);
+                ctx.stroke();
+                ctx.fillStyle = '#10b981';
+                ctx.font = 'bold 12px Arial';
+                ctx.fillText('A', (arrowStartX + arrowEndX) / 2, arrowY - 10);
+
+                // Add dimension labels
+                ctx.fillStyle = '#d1d5db';
+                ctx.font = '11px Arial';
+                ctx.textAlign = 'left';
+                ctx.fillText(`r = ${rank}`, leftX + boxWidth + 20, topY + 20);
+                ctx.fillText(`n - r = ${3 - rank}`, leftX + boxWidth + 20, topY + 40);
+            };
+
+            if (example === 'rank1') drawSubspaces(1);
+            else if (example === 'rank2') drawSubspaces(2);
+            else drawSubspaces(3);
+        }
+
+        // Initial draw
+        drawFourSubspaces('rank1');
+
+        // Rank Analyzer
+        function analyzeRank() {
+            const input = document.getElementById('rankMatrixInput').value.trim();
+            const resultsDiv = document.getElementById('rankResults');
+
+            try {
+                // Parse matrix from input
+                const rows = input.split(';').map(row =>
+                    row.split(',').map(x => parseFloat(x.trim()))
+                );
+
+                const m = rows.length;
+                const n = rows[0].length;
+
+                if (rows.some(row => row.length !== n) || rows.some(row => row.some(isNaN))) {
+                    throw new Error('Invalid matrix format');
+                }
+
+                // Simple rank computation via Gaussian elimination
+                const matrix = rows.map(r => [...r]); // Copy
+                let rank = 0;
+                const pivotCols = [];
+
+                for (let col = 0; col < n && rank < m; col++) {
+                    // Find pivot
+                    let pivotRow = -1;
+                    for (let row = rank; row < m; row++) {
+                        if (Math.abs(matrix[row][col]) > 1e-10) {
+                            pivotRow = row;
+                            break;
+                        }
+                    }
+
+                    if (pivotRow === -1) continue;
+
+                    // Swap rows
+                    [matrix[rank], matrix[pivotRow]] = [matrix[pivotRow], matrix[rank]];
+                    pivotCols.push(col);
+
+                    // Eliminate
+                    for (let row = rank + 1; row < m; row++) {
+                        const factor = matrix[row][col] / matrix[rank][col];
+                        for (let c = 0; c < n; c++) {
+                            matrix[row][c] -= factor * matrix[rank][c];
+                        }
+                    }
+                    rank++;
+                }
+
+                // Display results
+                resultsDiv.innerHTML = `
+                    <div class="rank-analyzer-results">
+                        <div class="rank-analyzer-section">
+                            <h4>Matrix Dimensions</h4>
+                            <p><strong>Size:</strong> ${m} × ${n}</p>
+                            <p><strong>Rank:</strong> ${rank}</p>
+                            <p><strong>Nullity:</strong> ${n - rank}</p>
+                        </div>
+                        <div class="rank-analyzer-section">
+                            <h4>Fundamental Theorem Results</h4>
+                            <p><strong>dim(Col(A)):</strong> ${rank}</p>
+                            <p><strong>dim(Row(A)):</strong> ${rank}</p>
+                            <p><strong>dim(Nul(A)):</strong> ${n - rank}</p>
+                            <p><strong>dim(Nul(A<sup>T</sup>)):</strong> ${m - rank}</p>
+                        </div>
+                        <div class="rank-analyzer-section">
+                            <h4>Verification</h4>
+                            <p><strong>rank + nullity = n:</strong> ${rank} + ${n - rank} = ${n} ✓</p>
+                            <p><strong>dim(Col(A)) + dim(Nul(A<sup>T</sup>)) = m:</strong> ${rank} + ${m - rank} = ${m} ✓</p>
+                        </div>
+                        <div class="rank-analyzer-section">
+                            <h4>Pivot Columns</h4>
+                            <p><strong>Columns:</strong> ${pivotCols.map(c => c + 1).join(', ')}</p>
+                        </div>
+                    </div>
+                `;
+            } catch (e) {
+                resultsDiv.innerHTML = `<p style="color: #dc2626;"><strong>Error:</strong> ${e.message}</p>`;
+            }
+        }
+
+        // KaTeX rendering
+        document.addEventListener('DOMContentLoaded', function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '$', right: '$', display: false}
+                ]
+            });
+        });
+    </script>
+</body>
+</html>

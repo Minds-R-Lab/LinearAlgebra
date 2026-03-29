@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.5 Change of Basis | LA Course</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"></script>
+    <style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #1f2937; background: #f9fafb; }
+nav { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: white; border-bottom: 2px solid #0d9488; display: flex; align-items: center; padding: 0 30px; gap: 40px; z-index: 1000; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+.nav-brand { font-size: 18px; font-weight: 700; color: #0d9488; text-decoration: none; }
+.nav-links { display: flex; gap: 30px; list-style: none; margin-left: auto; }
+.nav-links a { color: #6b7280; text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.3s; }
+.nav-links a:hover { color: #0d9488; }
+.nav-links a.active { color: #0d9488; border-bottom: 2px solid #0d9488; padding-bottom: 2px; }
+main { margin-top: 60px; }
+.hero { background: linear-gradient(135deg, #0d9488 0%, #059669 100%); color: white; padding: 60px 30px; text-align: center; }
+.hero h1 { font-size: 48px; font-weight: 700; margin-bottom: 15px; }
+.hero p { font-size: 20px; opacity: 0.95; max-width: 800px; margin: 0 auto; }
+.container { max-width: 1000px; margin: 0 auto; padding: 40px 30px; }
+h2 { color: #0d9488; font-size: 32px; margin: 50px 0 30px 0; padding-bottom: 10px; border-bottom: 3px solid #0d9488; }
+h3 { color: #1f2937; font-size: 24px; margin: 35px 0 20px 0; }
+p { margin-bottom: 15px; line-height: 1.8; }
+.definition-box, .theorem-box, .example-box, .warning-box, .tip-box { margin: 25px 0; padding: 20px 25px; border-left: 5px solid; border-radius: 8px; background: #f3f4f6; }
+.definition-box { border-left-color: #0d9488; background: #ecfdf5; }
+.definition-box strong { color: #0d9488; }
+.theorem-box { border-left-color: #7c3aed; background: #f3e8ff; }
+.theorem-box strong { color: #7c3aed; }
+.warning-box { border-left-color: #dc2626; background: #fee2e2; }
+.warning-box strong { color: #dc2626; }
+.tip-box { border-left-color: #d97706; background: #fef3c7; }
+.tip-box strong { color: #d97706; }
+.objectives { background: #ecfdf5; border: 2px solid #0d9488; border-radius: 8px; padding: 25px; margin: 30px 0; }
+.objectives h3 { color: #0d9488; margin-top: 0; }
+.objectives ul { list-style: none; padding: 0; }
+.objectives li { padding: 10px 0; padding-left: 30px; position: relative; }
+.objectives li:before { content: "✓"; position: absolute; left: 0; color: #0d9488; font-weight: bold; font-size: 18px; }
+.example-item { margin: 20px 0; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; background: white; }
+.example-header { background: linear-gradient(135deg, #059669, #10b981); color: white; padding: 18px 25px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; font-weight: 600; font-size: 16px; transition: all 0.3s; }
+.example-header:hover { background: linear-gradient(135deg, #047857, #059669); }
+.example-header .toggle-arrow { display: inline-block; transition: transform 0.3s; font-size: 20px; }
+.example-item.active .example-header .toggle-arrow { transform: rotate(180deg); }
+.example-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out; padding: 0 25px; }
+.example-item.active .example-content { max-height: 5000px; padding: 25px; }
+.solution-step { background: #f0f9ff; border-left: 4px solid #0d9488; padding: 15px; margin: 15px 0; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 14px; overflow-x: auto; }
+.quiz-question { background: white; border: 2px solid #e5e7eb; border-radius: 8px; padding: 25px; margin: 25px 0; }
+.quiz-question .question-text { font-weight: 600; margin-bottom: 18px; color: #1f2937; }
+.choices { display: flex; flex-direction: column; gap: 12px; }
+.choice-btn { background: white; border: 2px solid #d1d5db; border-radius: 6px; padding: 12px 18px; cursor: pointer; text-align: left; transition: all 0.3s; font-size: 15px; }
+.choice-btn:hover { border-color: #0d9488; background: #f0fdf4; }
+.choice-btn.correct { background: #dcfce7; border-color: #16a34a; color: #15803d; }
+.choice-btn.incorrect { background: #fee2e2; border-color: #dc2626; color: #991b1b; }
+.quiz-feedback { margin-top: 15px; padding: 12px 15px; border-radius: 6px; font-size: 14px; display: none; }
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct { background: #dcfce7; color: #15803d; border-left: 4px solid #16a34a; }
+.quiz-feedback.incorrect { background: #fee2e2; color: #991b1b; border-left: 4px solid #dc2626; }
+.visualization-container { background: white; border: 2px solid #e5e7eb; border-radius: 8px; padding: 25px; margin: 30px 0; display: flex; flex-direction: column; align-items: center; }
+.visualization-controls { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
+.btn { background: #0d9488; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.3s; }
+.btn:hover { background: #059669; }
+.btn.secondary { background: #7c3aed; }
+canvas { max-width: 100%; background: #0f172a; border-radius: 6px; }
+.key-takeaways { background: linear-gradient(135deg, #ecfdf5, #f0fdf4); border: 2px solid #0d9488; border-radius: 8px; padding: 30px; margin: 40px 0; }
+.key-takeaways h3 { color: #0d9488; margin-top: 0; }
+.key-takeaways ol { padding-left: 25px; }
+.key-takeaways li { margin-bottom: 12px; }
+.nav-footer { display: flex; justify-content: space-between; align-items: center; margin: 60px 0 40px 0; padding: 25px 0; border-top: 2px solid #e5e7eb; border-bottom: 2px solid #e5e7eb; }
+.nav-footer a { color: #0d9488; text-decoration: none; font-weight: 600; }
+footer { background: #1f2937; color: #d1d5db; text-align: center; padding: 30px; font-size: 14px; }
+.matrix-input-group { margin: 20px 0; }
+.matrix-input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #1f2937; }
+.matrix-input { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-family: 'Courier New', monospace; font-size: 13px; margin-bottom: 8px; }
+.calc-result { background: #f0f9ff; border: 2px solid #0d9488; border-radius: 6px; padding: 15px; margin: 15px 0; font-family: 'Courier New', monospace; }
+.calc-result strong { color: #0d9488; }
+@media (max-width: 768px) { nav { padding: 0 15px; gap: 15px; } .nav-links { gap: 15px; } .nav-links a { font-size: 12px; } .hero h1 { font-size: 32px; } .container { padding: 30px 20px; } .nav-footer { flex-direction: column; gap: 15px; } }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="#" class="nav-brand">LA Course</a>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Why LA?</a></li>
+            <li><a href="#">§ 1.1-1.4</a></li>
+            <li><a href="#">§ 2.1-2.5</a></li>
+            <li><a href="#" class="active">2.5</a></li>
+            <li><a href="#">Exam</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <h1>Change of Basis</h1>
+            <p>Seeing the same vector through different lenses — coordinate transformations, transition matrices, and applications in graphics and compression</p>
+        </section>
+
+        <div class="container">
+            <section class="objectives">
+                <h3>Learning Objectives</h3>
+                <ul>
+                    <li>Find the coordinate vector of <span class="math">x</span> relative to a basis <span class="math">B</span></li>
+                    <li>Construct the change-of-basis matrix <span class="math">P</span> from <span class="math">B</span> to <span class="math">C</span></li>
+                    <li>Apply change of basis to simplify matrix representations</li>
+                    <li>Understand similar matrices: <span class="math">B = P^{-1}AP</span></li>
+                    <li>Connect to applications in computer graphics and data science</li>
+                </ul>
+            </section>
+
+            <!-- SECTION 1: COORDINATE VECTORS -->
+            <h2>1. Coordinate Vectors</h2>
+
+            <div class="definition-box">
+                <strong>Definition: Coordinate Vector</strong><br><br>
+                Let <span class="math">B = \{b_1, b_2, \ldots, b_n\}</span> be a basis for a vector space <span class="math">V</span>. For any vector <span class="math">x \in V</span>, the unique weights <span class="math">c_1, c_2, \ldots, c_n</span> such that
+                \[
+                x = c_1 b_1 + c_2 b_2 + \cdots + c_n b_n
+                \]
+                are called the <strong>coordinates of <span class="math">x</span> relative to <span class="math">B</span></strong>. The <strong>coordinate vector</strong> is:
+                \[
+                [x]_B = \begin{bmatrix} c_1 \\ c_2 \\ \vdots \\ c_n \end{bmatrix}
+                \]
+            </div>
+
+            <p>
+                The coordinate vector represents a vector's location in the coordinate system defined by basis <span class="math">B</span>. Different bases yield different coordinate representations of the same vector.
+            </p>
+
+            <p>
+                <strong>Key insight:</strong> For a basis <span class="math">B = \{b_1, \ldots, b_n\}</span>, we can write it as a matrix <span class="math">[B] = [b_1 \; b_2 \; \cdots \; b_n]</span> with basis vectors as columns. Then:
+                \[
+                x = [B] [x]_B
+                \]
+                which means <span class="math">[x]_B = [B]^{-1} x</span>.
+            </p>
+
+            <!-- SECTION 2: CHANGE-OF-BASIS MATRIX -->
+            <h2>2. Change-of-Basis Matrix</h2>
+
+            <div class="definition-box">
+                <strong>Definition: Change-of-Basis Matrix</strong><br><br>
+                Let <span class="math">B = \{b_1, \ldots, b_n\}</span> and <span class="math">C = \{c_1, \ldots, c_n\}</span> be two bases for <span class="math">V</span>. The <strong>change-of-basis matrix from B to C</strong>, denoted <span class="math">P_{C \leftarrow B}</span>, is defined by:
+                \[
+                [x]_C = P_{C \leftarrow B} [x]_B
+                \]
+                for all <span class="math">x \in V</span>.
+            </div>
+
+            <p>
+                <strong>How to compute <span class="math">P_{C \leftarrow B}</span>:</strong>
+            </p>
+
+            <div class="solution-step">
+Method 1: <span class="math">P_{C \leftarrow B} = C^{-1} B</span><br>
+where <span class="math">[B] = [b_1 \; \cdots \; b_n]</span> and <span class="math">[C] = [c_1 \; \cdots \; c_n]</span>
+            </div>
+
+            <div class="solution-step">
+Method 2: Row reduce <span class="math">[C \; | \; B]</span> to <span class="math">[I \; | \; P_{C \leftarrow B}]</span>
+            </div>
+
+            <p>
+                The second method is numerically more stable. We solve <span class="math">C \cdot P = B</span> by row reduction.
+            </p>
+
+            <div class="theorem-box">
+                <strong>Theorem: Properties of Change-of-Basis Matrices</strong><br><br>
+                <ol style="padding-left: 25px; margin-top: 15px;">
+                    <li><span class="math">P_{B \leftarrow B} = I</span> (identity)</li>
+                    <li><span class="math">P_{C \leftarrow B} \cdot P_{B \leftarrow C} = I</span> (inverses)</li>
+                    <li><span class="math">P_{D \leftarrow B} = P_{D \leftarrow C} \cdot P_{C \leftarrow B}</span> (transitivity)</li>
+                    <li>Each change-of-basis matrix is invertible</li>
+                </ol>
+            </div>
+
+            <!-- SECTION 3: CHANGE OF BASIS FOR LINEAR TRANSFORMATIONS -->
+            <h2>3. Change of Basis for Linear Transformations</h2>
+
+            <p>
+                Suppose <span class="math">T: V \to V</span> is a linear transformation with matrix representation <span class="math">A</span> in basis <span class="math">B</span>. What is the matrix of <span class="math">T</span> in basis <span class="math">C</span>?
+            </p>
+
+            <div class="theorem-box">
+                <strong>Theorem: Matrix Change of Basis</strong><br><br>
+                If <span class="math">A</span> is the matrix of <span class="math">T</span> relative to basis <span class="math">B</span>, then the matrix of <span class="math">T</span> relative to basis <span class="math">C</span> is:
+                \[
+                A' = P_{C \leftarrow B}^{-1} A P_{C \leftarrow B} = P_{B \leftarrow C} A P_{C \leftarrow B}
+                \]
+                where <span class="math">P = P_{C \leftarrow B}</span>.
+            </div>
+
+            <p>
+                <strong>Geometric interpretation:</strong> Change to basis <span class="math">B</span> (apply <span class="math">P</span>), apply transformation <span class="math">A</span>, then change back to basis <span class="math">C</span> (apply <span class="math">P^{-1}</span>).
+            </p>
+
+            <!-- SECTION 4: SIMILAR MATRICES -->
+            <h2>4. Similar Matrices</h2>
+
+            <div class="definition-box">
+                <strong>Definition: Similar Matrices</strong><br><br>
+                Two matrices <span class="math">A</span> and <span class="math">B</span> are <strong>similar</strong> if there exists an invertible matrix <span class="math">P</span> such that:
+                \[
+                B = P^{-1} A P
+                \]
+            </div>
+
+            <div class="theorem-box">
+                <strong>Theorem: Properties Preserved by Similarity</strong><br><br>
+                If <span class="math">A</span> and <span class="math">B</span> are similar matrices, then:
+                <ol style="padding-left: 25px; margin-top: 15px;">
+                    <li><span class="math">\text{det}(A) = \text{det}(B)</span></li>
+                    <li><span class="math">\text{tr}(A) = \text{tr}(B)</span> (trace)</li>
+                    <li><span class="math">A</span> and <span class="math">B</span> have the same characteristic polynomial</li>
+                    <li><span class="math">A</span> and <span class="math">B</span> have the same eigenvalues</li>
+                    <li><span class="math">\text{rank}(A) = \text{rank}(B)</span></li>
+                </ol>
+            </div>
+
+            <p>
+                <strong>Why this matters:</strong> Similar matrices represent the same linear transformation in different bases. Therefore, any property that doesn't depend on the choice of basis must be preserved.
+            </p>
+
+            <!-- SECTION 5: APPLICATIONS -->
+            <h2>5. Applications</h2>
+
+            <h3>5.1 Computer Graphics — World to Camera Coordinates</h3>
+            <p>
+                In 3D graphics, objects have coordinates in <strong>world space</strong>. The camera has its own coordinate system (camera space). To render an object, we must express world coordinates in camera coordinates using a change of basis transformation.
+            </p>
+            <p>
+                If <span class="math">W</span> is the world basis and <span class="math">C</span> is the camera basis, then <span class="math">P_{C \leftarrow W}</span> transforms world coordinates to camera coordinates, where the camera is at the origin looking along the z-axis.
+            </p>
+
+            <h3>5.2 Signal Processing — Time to Frequency Domain</h3>
+            <p>
+                The Fourier transform can be viewed as a change of basis from the standard time basis to the frequency basis. A signal represented as <span class="math">f(t)</span> in time domain becomes <span class="math">\hat{f}(\omega)</span> in frequency domain.
+            </p>
+            <p>
+                This change of basis reveals periodic components that are hidden in the time domain, making signal analysis, filtering, and compression possible.
+            </p>
+
+            <h3>5.3 Data Science — Principal Component Analysis (PCA)</h3>
+            <p>
+                PCA finds a basis where the data covariance matrix becomes diagonal. This change of basis reveals the directions of maximum variance in the data, enabling dimensionality reduction by discarding low-variance components.
+            </p>
+
+            <!-- VISUALIZATIONS -->
+            <h2>Visualizations</h2>
+
+            <h3>Visualization 1: Coordinate Transformer</h3>
+            <p>
+                Watch how a vector's coordinates change as you switch between different bases. The vector itself stays in the same physical location; only its coordinate representation changes.
+            </p>
+            <div class="visualization-container">
+                <div class="visualization-controls">
+                    <button class="btn" onclick="drawStandardBasis()">Standard → Rotated 45°</button>
+                    <button class="btn" onclick="drawSkewedBasis()">Standard → Skewed</button>
+                    <button class="btn" onclick="drawCustomBasis()">Custom → Custom</button>
+                    <button class="btn secondary" onclick="resetVis1()">Reset</button>
+                </div>
+                <canvas id="coordinateCanvas" width="500" height="500"></canvas>
+                <div id="vis1-info" style="margin-top: 20px; text-align: center; font-weight: 600; color: #1f2937;"></div>
+            </div>
+
+            <h3>Visualization 2: Change-of-Basis Calculator</h3>
+            <p>
+                Enter two bases and a vector, then compute the change of basis step by step.
+            </p>
+            <div class="visualization-container">
+                <div style="width: 100%; max-width: 600px;">
+                    <div class="matrix-input-group">
+                        <label>Basis B (2×2 or 3×3, one row per vector):</label>
+                        <textarea class="matrix-input" id="basisB" rows="3" placeholder="1 0
+0 1">1 0
+0 1</textarea>
+                    </div>
+                    <div class="matrix-input-group">
+                        <label>Basis C (2×2 or 3×3, one row per vector):</label>
+                        <textarea class="matrix-input" id="basisC" rows="3" placeholder="0.7071 -0.7071
+0.7071 0.7071">0.7071 -0.7071
+0.7071 0.7071</textarea>
+                    </div>
+                    <div class="matrix-input-group">
+                        <label>Vector x (as column, space-separated):</label>
+                        <input type="text" class="matrix-input" id="vectorX" placeholder="3 4" value="3 4">
+                    </div>
+                    <button class="btn" style="width: 100%; margin-bottom: 15px;" onclick="computeChangeOfBasis()">Compute Change of Basis</button>
+                    <div id="vis2-results"></div>
+                </div>
+            </div>
+
+            <!-- EXAMPLES -->
+            <h2>Examples</h2>
+
+            <!-- EASY EXAMPLES -->
+            <h3>Easy Examples</h3>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    Example 1: Find [x]_B for x=(5,3) and B = {(1,2),(3,1)}
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Find the coordinate vector of <span class="math">x = \begin{bmatrix} 5 \\ 3 \end{bmatrix}</span> relative to <span class="math">B = \left\{ \begin{bmatrix} 1 \\ 2 \end{bmatrix}, \begin{bmatrix} 3 \\ 1 \end{bmatrix} \right\}</span></p>
+                    <p><strong>Solution:</strong> We need to find <span class="math">c_1, c_2</span> such that <span class="math">c_1 \begin{bmatrix} 1 \\ 2 \end{bmatrix} + c_2 \begin{bmatrix} 3 \\ 1 \end{bmatrix} = \begin{bmatrix} 5 \\ 3 \end{bmatrix}</span></p>
+                    <div class="solution-step">
+                        This gives the system:
+                        \[
+                        \begin{aligned}
+                        c_1 + 3c_2 &= 5 \\
+                        2c_1 + c_2 &= 3
+                        \end{aligned}
+                        \]
+                        From the first equation: <span class="math">c_1 = 5 - 3c_2</span><br>
+                        Substitute into the second: <span class="math">2(5 - 3c_2) + c_2 = 3</span><br>
+                        <span class="math">10 - 6c_2 + c_2 = 3</span><br>
+                        <span class="math">-5c_2 = -7</span><br>
+                        <span class="math">c_2 = \frac{7}{5}</span><br>
+                        Then: <span class="math">c_1 = 5 - 3 \cdot \frac{7}{5} = 5 - \frac{21}{5} = \frac{4}{5}</span>
+                    </div>
+                    <p><strong>Answer:</strong> <span class="math">[x]_B = \begin{bmatrix} 4/5 \\ 7/5 \end{bmatrix}</span></p>
+                    <p><strong>Verification:</strong> <span class="math">\frac{4}{5}\begin{bmatrix} 1 \\ 2 \end{bmatrix} + \frac{7}{5}\begin{bmatrix} 3 \\ 1 \end{bmatrix} = \begin{bmatrix} 4/5 + 21/5 \\ 8/5 + 7/5 \end{bmatrix} = \begin{bmatrix} 25/5 \\ 15/5 \end{bmatrix} = \begin{bmatrix} 5 \\ 3 \end{bmatrix}</span> ✓</p>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    Example 2: Construct the change-of-basis matrix from B to standard basis
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Let <span class="math">B = \left\{ \begin{bmatrix} 1 \\ 1 \end{bmatrix}, \begin{bmatrix} 1 \\ -1 \end{bmatrix} \right\}</span> and <span class="math">E = \left\{ \begin{bmatrix} 1 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \end{bmatrix} \right\}</span> (standard basis). Find <span class="math">P_{E \leftarrow B}</span>.</p>
+                    <p><strong>Solution:</strong> Using the formula <span class="math">P_{E \leftarrow B} = E^{-1} B = B</span> (since <span class="math">E = I</span>):</p>
+                    <div class="solution-step">
+                        The columns of the change-of-basis matrix are the vectors of B expressed in basis E (which is just B itself):
+                        \[
+                        P_{E \leftarrow B} = \begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix}
+                        \]
+                    </div>
+                    <p><strong>Answer:</strong> <span class="math">P_{E \leftarrow B} = \begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix}</span></p>
+                    <p><strong>Interpretation:</strong> This matrix converts coordinates relative to B into coordinates relative to the standard basis E.</p>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    Example 3: Verify [x]_C = P_{C←B}[x]_B for a specific example
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Let <span class="math">B = \left\{ \begin{bmatrix} 1 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \end{bmatrix} \right\}</span>, <span class="math">C = \left\{ \begin{bmatrix} 2 \\ 1 \end{bmatrix}, \begin{bmatrix} 1 \\ 1 \end{bmatrix} \right\}</span>, and <span class="math">x = \begin{bmatrix} 5 \\ 3 \end{bmatrix}</span>. Verify that <span class="math">[x]_C = P_{C \leftarrow B} [x]_B</span>.</p>
+                    <p><strong>Solution:</strong></p>
+                    <div class="solution-step">
+                        Step 1: Find <span class="math">[x]_B</span><br>
+                        Since B is the standard basis: <span class="math">[x]_B = \begin{bmatrix} 5 \\ 3 \end{bmatrix}</span>
+                    </div>
+                    <div class="solution-step">
+                        Step 2: Find <span class="math">P_{C \leftarrow B} = C^{-1} B</span><br>
+                        <span class="math">B = I = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}</span><br>
+                        <span class="math">C = \begin{bmatrix} 2 & 1 \\ 1 & 1 \end{bmatrix}</span>, so <span class="math">C^{-1} = \frac{1}{2-1}\begin{bmatrix} 1 & -1 \\ -1 & 2 \end{bmatrix} = \begin{bmatrix} 1 & -1 \\ -1 & 2 \end{bmatrix}</span><br>
+                        <span class="math">P_{C \leftarrow B} = \begin{bmatrix} 1 & -1 \\ -1 & 2 \end{bmatrix}</span>
+                    </div>
+                    <div class="solution-step">
+                        Step 3: Compute <span class="math">[x]_C = P_{C \leftarrow B} [x]_B</span><br>
+                        <span class="math">[x]_C = \begin{bmatrix} 1 & -1 \\ -1 & 2 \end{bmatrix} \begin{bmatrix} 5 \\ 3 \end{bmatrix} = \begin{bmatrix} 5-3 \\ -5+6 \end{bmatrix} = \begin{bmatrix} 2 \\ 1 \end{bmatrix}</span>
+                    </div>
+                    <div class="solution-step">
+                        Step 4: Verify<br>
+                        Check: <span class="math">2\begin{bmatrix} 2 \\ 1 \end{bmatrix} + 1\begin{bmatrix} 1 \\ 1 \end{bmatrix} = \begin{bmatrix} 4 \\ 2 \end{bmatrix} + \begin{bmatrix} 1 \\ 1 \end{bmatrix} = \begin{bmatrix} 5 \\ 3 \end{bmatrix} = x</span> ✓
+                    </div>
+                    <p><strong>Answer:</strong> The formula is verified. <span class="math">[x]_C = \begin{bmatrix} 2 \\ 1 \end{bmatrix}</span></p>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    Example 4: Find coordinates in ℝ³ — 3×3 system
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Find the coordinates of <span class="math">x = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}</span> relative to <span class="math">B = \left\{ \begin{bmatrix} 1 \\ 1 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \\ 1 \end{bmatrix}, \begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix} \right\}</span>.</p>
+                    <p><strong>Solution:</strong> We solve <span class="math">c_1 \begin{bmatrix} 1 \\ 1 \\ 0 \end{bmatrix} + c_2 \begin{bmatrix} 0 \\ 1 \\ 1 \end{bmatrix} + c_3 \begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix} = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}</span></p>
+                    <div class="solution-step">
+                        System of equations:
+                        \[
+                        \begin{aligned}
+                        c_1 + c_3 &= 1 \\
+                        c_1 + c_2 &= 0 \\
+                        c_2 + c_3 &= 0
+                        \end{aligned}
+                        \]
+                        From equation 2: <span class="math">c_1 = -c_2</span><br>
+                        From equation 3: <span class="math">c_3 = -c_2</span><br>
+                        Substitute into equation 1: <span class="math">-c_2 + (-c_2) = 1</span><br>
+                        <span class="math">-2c_2 = 1 \Rightarrow c_2 = -\frac{1}{2}</span><br>
+                        Therefore: <span class="math">c_1 = \frac{1}{2}</span>, <span class="math">c_3 = \frac{1}{2}</span>
+                    </div>
+                    <p><strong>Answer:</strong> <span class="math">[x]_B = \begin{bmatrix} 1/2 \\ -1/2 \\ 1/2 \end{bmatrix}</span></p>
+                </div>
+            </div>
+
+            <!-- MEDIUM EXAMPLES -->
+            <h3>Medium Examples</h3>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    Example 5: Change coordinates between non-standard bases
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Change the coordinates of a vector from basis <span class="math">B = \left\{ \begin{bmatrix} 1 \\ 2 \end{bmatrix}, \begin{bmatrix} 3 \\ 5 \end{bmatrix} \right\}</span> to basis <span class="math">C = \left\{ \begin{bmatrix} 2 \\ 1 \end{bmatrix}, \begin{bmatrix} 1 \\ 1 \end{bmatrix} \right\}</span>. The vector has coordinates <span class="math">[x]_B = \begin{bmatrix} 2 \\ 1 \end{bmatrix}</span>.</p>
+                    <p><strong>Solution:</strong></p>
+                    <div class="solution-step">
+                        Step 1: Compute <span class="math">P_{C \leftarrow B} = C^{-1}B</span><br>
+                        <span class="math">B = \begin{bmatrix} 1 & 3 \\ 2 & 5 \end{bmatrix}</span>, det(B) = 5-6 = -1<br>
+                        <span class="math">B^{-1} = \begin{bmatrix} -5 & 3 \\ 2 & -1 \end{bmatrix}</span><br>
+                        <span class="math">C = \begin{bmatrix} 2 & 1 \\ 1 & 1 \end{bmatrix}</span>, det(C) = 2-1 = 1<br>
+                        <span class="math">C^{-1} = \begin{bmatrix} 1 & -1 \\ -1 & 2 \end{bmatrix}</span><br>
+                        <span class="math">P_{C \leftarrow B} = C^{-1}B = \begin{bmatrix} 1 & -1 \\ -1 & 2 \end{bmatrix}\begin{bmatrix} 1 & 3 \\ 2 & 5 \end{bmatrix} = \begin{bmatrix} -1 & -2 \\ 3 & 7 \end{bmatrix}</span>
+                    </div>
+                    <div class="solution-step">
+                        Step 2: Apply the change of basis<br>
+                        <span class="math">[x]_C = P_{C \leftarrow B}[x]_B = \begin{bmatrix} -1 & -2 \\ 3 & 7 \end{bmatrix}\begin{bmatrix} 2 \\ 1 \end{bmatrix} = \begin{bmatrix} -2-2 \\ 6+7 \end{bmatrix} = \begin{bmatrix} -4 \\ 13 \end{bmatrix}</span>
+                    </div>
+                    <p><strong>Answer:</strong> <span class="math">[x]_C = \begin{bmatrix} -4 \\ 13 \end{bmatrix}</span></p>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    Example 6: Find the matrix of a linear transformation in a new basis
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Let <span class="math">T(x,y) = (2x+y, x-y)</span> with matrix <span class="math">A = \begin{bmatrix} 2 & 1 \\ 1 & -1 \end{bmatrix}</span> in the standard basis. Find the matrix of <span class="math">T</span> relative to <span class="math">B = \left\{ \begin{bmatrix} 1 \\ 1 \end{bmatrix}, \begin{bmatrix} 1 \\ -1 \end{bmatrix} \right\}</span>.</p>
+                    <p><strong>Solution:</strong> We use <span class="math">A' = P^{-1}AP</span> where <span class="math">P = P_{B \leftarrow E}</span>.</p>
+                    <div class="solution-step">
+                        Step 1: Find P (matrix with B vectors as columns)<br>
+                        <span class="math">P = \begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix}</span><br>
+                        <span class="math">P^{-1} = \frac{1}{-2}\begin{bmatrix} -1 & -1 \\ -1 & 1 \end{bmatrix} = \begin{bmatrix} 1/2 & 1/2 \\ 1/2 & -1/2 \end{bmatrix}</span>
+                    </div>
+                    <div class="solution-step">
+                        Step 2: Compute <span class="math">AP</span><br>
+                        <span class="math">AP = \begin{bmatrix} 2 & 1 \\ 1 & -1 \end{bmatrix}\begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix} = \begin{bmatrix} 3 & 1 \\ 0 & 2 \end{bmatrix}</span>
+                    </div>
+                    <div class="solution-step">
+                        Step 3: Compute <span class="math">A' = P^{-1}(AP)</span><br>
+                        <span class="math">A' = \begin{bmatrix} 1/2 & 1/2 \\ 1/2 & -1/2 \end{bmatrix}\begin{bmatrix} 3 & 1 \\ 0 & 2 \end{bmatrix} = \begin{bmatrix} 3/2 & 2 \\ 3/2 & -1/2 \end{bmatrix}</span>
+                    </div>
+                    <p><strong>Answer:</strong> <span class="math">A' = \begin{bmatrix} 3/2 & 2 \\ 3/2 & -1/2 \end{bmatrix}</span></p>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    Example 7: Verify that similar matrices have the same determinant
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Let <span class="math">A = \begin{bmatrix} 3 & 1 \\ 0 & 2 \end{bmatrix}</span> and <span class="math">P = \begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix}</span>. Compute <span class="math">B = P^{-1}AP</span> and verify <span class="math">\det(A) = \det(B)</span>.</p>
+                    <p><strong>Solution:</strong></p>
+                    <div class="solution-step">
+                        Step 1: Compute det(A)<br>
+                        <span class="math">\det(A) = 3 \cdot 2 - 1 \cdot 0 = 6</span>
+                    </div>
+                    <div class="solution-step">
+                        Step 2: Compute <span class="math">B = P^{-1}AP</span><br>
+                        <span class="math">P^{-1} = \begin{bmatrix} 1/2 & 1/2 \\ 1/2 & -1/2 \end{bmatrix}</span><br>
+                        <span class="math">AP = \begin{bmatrix} 3 & 1 \\ 0 & 2 \end{bmatrix}\begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix} = \begin{bmatrix} 4 & 2 \\ 2 & -2 \end{bmatrix}</span><br>
+                        <span class="math">B = \begin{bmatrix} 1/2 & 1/2 \\ 1/2 & -1/2 \end{bmatrix}\begin{bmatrix} 4 & 2 \\ 2 & -2 \end{bmatrix} = \begin{bmatrix} 3 & 0 \\ 1 & 2 \end{bmatrix}</span>
+                    </div>
+                    <div class="solution-step">
+                        Step 3: Compute det(B)<br>
+                        <span class="math">\det(B) = 3 \cdot 2 - 0 \cdot 1 = 6</span> ✓
+                    </div>
+                    <p><strong>Answer:</strong> Indeed <span class="math">\det(A) = \det(B) = 6</span>, confirming that similarity preserves determinant.</p>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    Example 8: Find a basis that diagonalizes a matrix
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Find an invertible matrix <span class="math">P</span> such that <span class="math">P^{-1}AP</span> is diagonal for <span class="math">A = \begin{bmatrix} 3 & 1 \\ 0 & 2 \end{bmatrix}</span>.</p>
+                    <p><strong>Note:</strong> This requires finding eigenvectors (a topic in later chapters), but we preview it here.</p>
+                    <div class="solution-step">
+                        The eigenvalues are found from <span class="math">\det(A - \lambda I) = 0</span>:<br>
+                        <span class="math">\det\begin{bmatrix} 3-\lambda & 1 \\ 0 & 2-\lambda \end{bmatrix} = (3-\lambda)(2-\lambda) = 0</span><br>
+                        So <span class="math">\lambda_1 = 3, \lambda_2 = 2</span>
+                    </div>
+                    <div class="solution-step">
+                        For <span class="math">\lambda_1 = 3</span>: Solve <span class="math">(A - 3I)v = 0</span><br>
+                        <span class="math">\begin{bmatrix} 0 & 1 \\ 0 & -1 \end{bmatrix}\begin{bmatrix} v_1 \\ v_2 \end{bmatrix} = 0</span> gives <span class="math">v_2 = 0</span>, so <span class="math">v = \begin{bmatrix} 1 \\ 0 \end{bmatrix}</span><br>
+                        For <span class="math">\lambda_2 = 2</span>: Solve <span class="math">(A - 2I)v = 0</span><br>
+                        <span class="math">\begin{bmatrix} 1 & 1 \\ 0 & 0 \end{bmatrix}\begin{bmatrix} v_1 \\ v_2 \end{bmatrix} = 0</span> gives <span class="math">v_1 = -v_2</span>, so <span class="math">v = \begin{bmatrix} -1 \\ 1 \end{bmatrix}</span>
+                    </div>
+                    <div class="solution-step">
+                        Thus <span class="math">P = \begin{bmatrix} 1 & -1 \\ 0 & 1 \end{bmatrix}</span>, and we can verify:<br>
+                        <span class="math">P^{-1}AP = \begin{bmatrix} 3 & 0 \\ 0 & 2 \end{bmatrix}</span> (diagonal!)
+                    </div>
+                    <p><strong>Answer:</strong> <span class="math">P = \begin{bmatrix} 1 & -1 \\ 0 & 1 \end{bmatrix}</span> diagonalizes <span class="math">A</span>.</p>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    Example 9: Change of basis for polynomials
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Consider <span class="math">P_2 = \text{span}\{1, x, x^2\}</span> with two bases:<br>
+                    <span class="math">E = \{1, x, x^2\}</span> (standard)<br>
+                    <span class="math">B = \{1, 1+x, 1+x+x^2\}</span><br>
+                    Find the change-of-basis matrix <span class="math">P_{B \leftarrow E}</span>.</p>
+                    <p><strong>Solution:</strong> We express the standard basis vectors in terms of basis <span class="math">B</span>.</p>
+                    <div class="solution-step">
+                        Express <span class="math">1 = 1</span> in basis B:<br>
+                        <span class="math">1 = c_1 \cdot 1 + c_2 \cdot (1+x) + c_3 \cdot (1+x+x^2)</span><br>
+                        <span class="math">1 = (c_1 + c_2 + c_3) + (c_2 + c_3)x + c_3 x^2</span><br>
+                        Comparing: <span class="math">c_3 = 0, c_2 + c_3 = 0 \Rightarrow c_2 = 0, c_1 + c_2 + c_3 = 1 \Rightarrow c_1 = 1</span><br>
+                        So <span class="math">[1]_B = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}</span>
+                    </div>
+                    <div class="solution-step">
+                        Express <span class="math">x</span> in basis B:<br>
+                        <span class="math">x = c_1 \cdot 1 + c_2 \cdot (1+x) + c_3 \cdot (1+x+x^2)</span><br>
+                        Comparing: <span class="math">c_3 = 0, c_2 + c_3 = 1 \Rightarrow c_2 = 1, c_1 + c_2 + c_3 = 0 \Rightarrow c_1 = -1</span><br>
+                        So <span class="math">[x]_B = \begin{bmatrix} -1 \\ 1 \\ 0 \end{bmatrix}</span>
+                    </div>
+                    <div class="solution-step">
+                        Express <span class="math">x^2</span> in basis B:<br>
+                        <span class="math">x^2 = c_1 \cdot 1 + c_2 \cdot (1+x) + c_3 \cdot (1+x+x^2)</span><br>
+                        Comparing: <span class="math">c_3 = 1, c_2 + c_3 = 0 \Rightarrow c_2 = -1, c_1 + c_2 + c_3 = 0 \Rightarrow c_1 = 0</span><br>
+                        So <span class="math">[x^2]_B = \begin{bmatrix} 0 \\ -1 \\ 1 \end{bmatrix}</span>
+                    </div>
+                    <p><strong>Answer:</strong> <span class="math">P_{B \leftarrow E} = \begin{bmatrix} 1 & -1 & 0 \\ 0 & 1 & -1 \\ 0 & 0 & 1 \end{bmatrix}</span></p>
+                </div>
+            </div>
+
+            <!-- HARD EXAMPLES -->
+            <h3>Hard Examples</h3>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    Example 10: Computer graphics — rotated coordinate system
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> A camera is rotated 30° counterclockwise from the standard orientation. Express the world-space point <span class="math">(4, 0)</span> in camera space, then apply a scale transformation <span class="math">S(u, v) = (2u, v)</span> in camera space, then transform back to world space.</p>
+                    <p><strong>Solution:</strong> This is a full transformation pipeline: world → camera → scale → world.</p>
+                    <div class="solution-step">
+                        The camera basis vectors (rotated 30° CCW) are:<br>
+                        <span class="math">\cos(30°) = \frac{\sqrt{3}}{2}, \sin(30°) = \frac{1}{2}</span><br>
+                        Camera x-axis: <span class="math">\begin{bmatrix} \sqrt{3}/2 \\ 1/2 \end{bmatrix}</span><br>
+                        Camera y-axis: <span class="math">\begin{bmatrix} -1/2 \\ \sqrt{3}/2 \end{bmatrix}</span><br>
+                        So the rotation matrix <span class="math">R = \begin{bmatrix} \sqrt{3}/2 & -1/2 \\ 1/2 & \sqrt{3}/2 \end{bmatrix}</span>
+                    </div>
+                    <div class="solution-step">
+                        Step 1: Convert to camera coordinates<br>
+                        <span class="math">[p]_{cam} = R^T p = \begin{bmatrix} \sqrt{3}/2 & 1/2 \\ -1/2 & \sqrt{3}/2 \end{bmatrix}\begin{bmatrix} 4 \\ 0 \end{bmatrix} = \begin{bmatrix} 2\sqrt{3} \\ -2 \end{bmatrix}</span>
+                    </div>
+                    <div class="solution-step">
+                        Step 2: Apply scale in camera space<br>
+                        <span class="math">S[p]_{cam} = \begin{bmatrix} 2 & 0 \\ 0 & 1 \end{bmatrix}\begin{bmatrix} 2\sqrt{3} \\ -2 \end{bmatrix} = \begin{bmatrix} 4\sqrt{3} \\ -2 \end{bmatrix}</span>
+                    </div>
+                    <div class="solution-step">
+                        Step 3: Convert back to world space<br>
+                        <span class="math">p' = R \begin{bmatrix} 4\sqrt{3} \\ -2 \end{bmatrix} = \begin{bmatrix} \sqrt{3}/2 & -1/2 \\ 1/2 & \sqrt{3}/2 \end{bmatrix}\begin{bmatrix} 4\sqrt{3} \\ -2 \end{bmatrix}</span><br>
+                        <span class="math">= \begin{bmatrix} 6 + 1 \\ 2\sqrt{3} - \sqrt{3} \end{bmatrix} = \begin{bmatrix} 7 \\ \sqrt{3} \end{bmatrix}</span>
+                    </div>
+                    <p><strong>Answer:</strong> The transformed point in world space is <span class="math">(7, \sqrt{3})</span>.</p>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    Example 11: PCA interpretation — diagonalizing covariance
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Given a covariance matrix <span class="math">\Sigma = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}</span>, find the basis that diagonalizes it (the principal components).</p>
+                    <p><strong>Solution:</strong> PCA finds the eigenvector basis that diagonalizes the covariance matrix.</p>
+                    <div class="solution-step">
+                        Characteristic polynomial:<br>
+                        <span class="math">\det(\Sigma - \lambda I) = \det\begin{bmatrix} 2-\lambda & 1 \\ 1 & 2-\lambda \end{bmatrix} = (2-\lambda)^2 - 1 = \lambda^2 - 4\lambda + 3 = 0</span><br>
+                        Eigenvalues: <span class="math">\lambda_1 = 3, \lambda_2 = 1</span>
+                    </div>
+                    <div class="solution-step">
+                        For <span class="math">\lambda_1 = 3</span>:<br>
+                        <span class="math">\begin{bmatrix} -1 & 1 \\ 1 & -1 \end{bmatrix}\begin{bmatrix} v_1 \\ v_2 \end{bmatrix} = 0</span> gives <span class="math">v_1 = v_2</span>, so <span class="math">v = \begin{bmatrix} 1 \\ 1 \end{bmatrix}</span> (unnormalized)
+                    </div>
+                    <div class="solution-step">
+                        For <span class="math">\lambda_2 = 1</span>:<br>
+                        <span class="math">\begin{bmatrix} 1 & 1 \\ 1 & 1 \end{bmatrix}\begin{bmatrix} v_1 \\ v_2 \end{bmatrix} = 0</span> gives <span class="math">v_1 = -v_2</span>, so <span class="math">v = \begin{bmatrix} 1 \\ -1 \end{bmatrix}</span> (unnormalized)
+                    </div>
+                    <div class="solution-step">
+                        Normalize and form <span class="math">P = \begin{bmatrix} 1/\sqrt{2} & 1/\sqrt{2} \\ 1/\sqrt{2} & -1/\sqrt{2} \end{bmatrix}</span><br>
+                        Then <span class="math">P^T\Sigma P = \begin{bmatrix} 3 & 0 \\ 0 & 1 \end{bmatrix}</span>
+                    </div>
+                    <p><strong>Interpretation:</strong> In the eigenvector basis, the data has variance 3 along the first principal component and variance 1 along the second. Low-variance components can be discarded for dimensionality reduction.</p>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    Example 12: Fourier basis representation
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Represent <span class="math">f(x) = 1</span> (the constant function) in the basis <span class="math">\{1, \cos(x), \sin(x)\}</span> on <span class="math">[-\pi, \pi]</span> using inner products to find coordinates.</p>
+                    <p><strong>Solution:</strong> For an orthogonal basis, the coordinate is the inner product divided by the norm squared.</p>
+                    <div class="solution-step">
+                        Compute <span class="math">\langle 1, 1 \rangle = \int_{-\pi}^{\pi} 1 \, dx = 2\pi</span><br>
+                        <span class="math">\langle 1, \cos(x) \rangle = \int_{-\pi}^{\pi} \cos(x) \, dx = 0</span><br>
+                        <span class="math">\langle 1, \sin(x) \rangle = \int_{-\pi}^{\pi} \sin(x) \, dx = 0</span>
+                    </div>
+                    <div class="solution-step">
+                        Also compute norms:<br>
+                        <span class="math">\|1\|^2 = 2\pi</span><br>
+                        <span class="math">\|\cos(x)\|^2 = \int_{-\pi}^{\pi} \cos^2(x) \, dx = \pi</span><br>
+                        <span class="math">\|\sin(x)\|^2 = \pi</span>
+                    </div>
+                    <div class="solution-step">
+                        Coordinates:
+                        \[
+                        c_1 = \frac{\langle 1, 1 \rangle}{\|1\|^2} = \frac{2\pi}{2\pi} = 1, \quad c_2 = \frac{0}{\pi} = 0, \quad c_3 = \frac{0}{\pi} = 0
+                        \]
+                    </div>
+                    <p><strong>Answer:</strong> <span class="math">[f]_B = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}</span>, meaning <span class="math">f(x) = 1 \cdot 1 + 0 \cdot \cos(x) + 0 \cdot \sin(x)</span>.</p>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    Example 13: Prove similar matrices have the same eigenvalues
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Prove that if <span class="math">B = P^{-1}AP</span>, then <span class="math">A</span> and <span class="math">B</span> have the same eigenvalues.</p>
+                    <p><strong>Proof:</strong></p>
+                    <div class="solution-step">
+                        Suppose <span class="math">\lambda</span> is an eigenvalue of <span class="math">B</span>. Then there exists a nonzero vector <span class="math">v</span> such that:<br>
+                        <span class="math">Bv = \lambda v</span><br>
+                        Substituting <span class="math">B = P^{-1}AP</span>:<br>
+                        <span class="math">P^{-1}AP v = \lambda v</span><br>
+                        Multiply both sides by <span class="math">P</span>:<br>
+                        <span class="math">AP(v) = \lambda P(v)</span>
+                    </div>
+                    <div class="solution-step">
+                        Let <span class="math">w = Pv</span>. Since <span class="math">P</span> is invertible and <span class="math">v \neq 0</span>, we have <span class="math">w \neq 0</span>. The equation becomes:<br>
+                        <span class="math">Aw = \lambda w</span><br>
+                        So <span class="math">\lambda</span> is also an eigenvalue of <span class="math">A</span>.
+                    </div>
+                    <div class="solution-step">
+                        By symmetry (starting with an eigenvalue of <span class="math">A</span> and using <span class="math">A = P B P^{-1}</span>), we show that every eigenvalue of <span class="math">A</span> is an eigenvalue of <span class="math">B</span>. Thus they have identical eigenvalues. ∎
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    Example 14: Multi-step basis change — transitivity
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Show that <span class="math">P_{D \leftarrow B} = P_{D \leftarrow C} \cdot P_{C \leftarrow B}</span> (basis changes compose multiplicatively).</p>
+                    <p><strong>Solution:</strong> This is a key property for chained transformations.</p>
+                    <div class="solution-step">
+                        By definition:<br>
+                        <span class="math">[x]_C = P_{C \leftarrow B} [x]_B</span> — converts B coordinates to C<br>
+                        <span class="math">[x]_D = P_{D \leftarrow C} [x]_C</span> — converts C coordinates to D<br>
+                        Substitute the first into the second:<br>
+                        <span class="math">[x]_D = P_{D \leftarrow C} (P_{C \leftarrow B} [x]_B) = (P_{D \leftarrow C} \cdot P_{C \leftarrow B}) [x]_B</span>
+                    </div>
+                    <div class="solution-step">
+                        By the definition of <span class="math">P_{D \leftarrow B}</span>, we must have:<br>
+                        <span class="math">P_{D \leftarrow B} = P_{D \leftarrow C} \cdot P_{C \leftarrow B}</span> ∎
+                    </div>
+                    <p><strong>Interpretation:</strong> Multiple basis changes compose as matrix multiplication, allowing complex transformations to be built from simple steps.</p>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    Example 15: Simplifying quadratic forms via change of basis
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Simplify the quadratic form <span class="math">Q(x, y) = 5x^2 + 4xy + 2y^2</span> by diagonalizing the associated matrix.</p>
+                    <p><strong>Solution:</strong> The quadratic form is represented by <span class="math">A = \begin{bmatrix} 5 & 2 \\ 2 & 2 \end{bmatrix}</span>, where the off-diagonal (2) is half of the cross-term coefficient (4).</p>
+                    <div class="solution-step">
+                        Find eigenvalues:<br>
+                        <span class="math">\det(A - \lambda I) = (5-\lambda)(2-\lambda) - 4 = \lambda^2 - 7\lambda + 6 = 0</span><br>
+                        <span class="math">(\lambda - 6)(\lambda - 1) = 0</span><br>
+                        Eigenvalues: <span class="math">\lambda_1 = 6, \lambda_2 = 1</span>
+                    </div>
+                    <div class="solution-step">
+                        For <span class="math">\lambda_1 = 6</span>:<br>
+                        <span class="math">\begin{bmatrix} -1 & 2 \\ 2 & -4 \end{bmatrix}\begin{bmatrix} v_1 \\ v_2 \end{bmatrix} = 0</span> gives <span class="math">v = \begin{bmatrix} 2 \\ 1 \end{bmatrix}</span><br>
+                        For <span class="math">\lambda_2 = 1</span>:<br>
+                        <span class="math">\begin{bmatrix} 4 & 2 \\ 2 & 1 \end{bmatrix}\begin{bmatrix} v_1 \\ v_2 \end{bmatrix} = 0</span> gives <span class="math">v = \begin{bmatrix} -1 \\ 2 \end{bmatrix}</span>
+                    </div>
+                    <div class="solution-step">
+                        Normalize: <span class="math">P = \frac{1}{\sqrt{5}}\begin{bmatrix} 2 & -1 \\ 1 & 2 \end{bmatrix}</span><br>
+                        In the new basis (u, v): <span class="math">Q(u, v) = 6u^2 + v^2</span> (no cross term!)
+                    </div>
+                    <p><strong>Answer:</strong> The simplified form is <span class="math">Q = 6u^2 + v^2</span>, which is diagonal and clearly shows the principal axes.</p>
+                </div>
+            </div>
+
+            <!-- QUIZZES -->
+            <h2>Quick Knowledge Check</h2>
+
+            <div class="quiz-question">
+                <div class="question-text">Q1: The coordinate vector <span class="math">[x]_B</span> represents:</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, false)">The physical location of x in space</button>
+                    <button class="choice-btn" onclick="checkChoice(this, true)">The weights c₁,...,cₙ such that x = c₁b₁+...+cₙbₙ</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">The matrix with basis vectors as columns</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">The determinant of the basis vectors</button>
+                </div>
+                <div class="quiz-feedback"></div>
+            </div>
+
+            <div class="quiz-question">
+                <div class="question-text">Q2: The change-of-basis matrix <span class="math">P_{C \leftarrow B}</span> satisfies:</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, true)">[x]_C = P_{C←B}[x]_B</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">[x]_B = P_{C←B}[x]_C</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">P_{C←B} = B·C</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">P_{C←B} is always the identity matrix</button>
+                </div>
+                <div class="quiz-feedback"></div>
+            </div>
+
+            <div class="quiz-question">
+                <div class="question-text">Q3: If <span class="math">B = P^{-1}AP</span>, then A and B are called:</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, false)">Inverse matrices</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">Orthogonal matrices</button>
+                    <button class="choice-btn" onclick="checkChoice(this, true)">Similar matrices</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">Commuting matrices</button>
+                </div>
+                <div class="quiz-feedback"></div>
+            </div>
+
+            <div class="quiz-question">
+                <div class="question-text">Q4: Similar matrices always share:</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, false)">All the same entries</button>
+                    <button class="choice-btn" onclick="checkChoice(this, true)">Determinant, trace, and eigenvalues</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">The same row space</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">Zero as an eigenvalue</button>
+                </div>
+                <div class="quiz-feedback"></div>
+            </div>
+
+            <div class="quiz-question">
+                <div class="question-text">Q5: To find <span class="math">P_{C \leftarrow B}</span>, we compute:</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, false)">B·C</button>
+                    <button class="choice-btn" onclick="checkChoice(this, true)">C⁻¹B, where B and C are matrices with basis vectors as columns</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">B + C</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">The cross product of the basis vectors</button>
+                </div>
+                <div class="quiz-feedback"></div>
+            </div>
+
+            <div class="quiz-question">
+                <div class="question-text">Q6: If T has matrix A in basis B and matrix D in basis C, then:</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, false)">D = A·P</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">D = P·A</button>
+                    <button class="choice-btn" onclick="checkChoice(this, true)">D = P⁻¹AP where P is the change from B to C</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">A and D are always the same</button>
+                </div>
+                <div class="quiz-feedback"></div>
+            </div>
+
+            <!-- KEY TAKEAWAYS -->
+            <div class="key-takeaways">
+                <h3>Key Takeaways</h3>
+                <ol>
+                    <li><strong>Coordinates are basis-dependent:</strong> The same vector has different coordinate representations in different bases. The coordinate vector <span class="math">[x]_B</span> tells you the weights of basis vectors.</li>
+                    <li><strong>Change-of-basis matrices convert coordinates:</strong> The formula <span class="math">[x]_C = P_{C \leftarrow B}[x]_B</span> is the fundamental tool. Computing <span class="math">P = C^{-1}B</span> is efficient via row reduction.</li>
+                    <li><strong>Similar matrices represent the same transformation:</strong> Different bases yield different matrices for the same linear transformation, related by <span class="math">A' = P^{-1}AP</span>. The choice of basis doesn't change the transformation's geometry.</li>
+                    <li><strong>Similarity preserves critical properties:</strong> Determinant, trace, eigenvalues, and rank are all preserved under similarity. These are intrinsic properties of the transformation, not the basis.</li>
+                    <li><strong>Applications everywhere:</strong> Computer graphics (world↔camera coordinates), signal processing (time↔frequency), and machine learning (PCA) all use change of basis to reveal structure or simplify computation.</li>
+                </ol>
+            </div>
+
+            <!-- NAVIGATION FOOTER -->
+            <div class="nav-footer">
+                <a href="#">← 2.4 Rank</a>
+                <span style="color: #6b7280;">Chapter 2</span>
+                <a href="#">Exam Generator →</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        © 2026 Dr. Mohamed Mabrok — Qatar University
+    </footer>
+
+    <script>
+        // Initialize KaTeX auto-rendering
+        document.addEventListener('DOMContentLoaded', function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    { left: '\\[', right: '\\]', display: true },
+                    { left: '\\(', right: '\\)', display: false }
+                ]
+            });
+        });
+
+        // Toggle example visibility
+        function toggle(element) {
+            const parent = element.parentElement;
+            parent.classList.toggle('active');
+        }
+
+        // Check quiz choice
+        function checkChoice(button, isCorrect) {
+            const buttons = button.parentElement.querySelectorAll('.choice-btn');
+            buttons.forEach(b => b.disabled = true);
+
+            const feedback = button.parentElement.parentElement.querySelector('.quiz-feedback');
+            feedback.classList.add('show');
+
+            if (isCorrect) {
+                button.classList.add('correct');
+                feedback.classList.add('correct');
+                feedback.textContent = '✓ Correct!';
+            } else {
+                button.classList.add('incorrect');
+                feedback.classList.add('incorrect');
+                feedback.textContent = '✗ Incorrect. Try again or review the material.';
+            }
+        }
+
+        // Visualization 1: Coordinate Transformer Canvas
+        let currentVis1Mode = 'standard';
+
+        function drawStandardBasis() {
+            currentVis1Mode = 'rotated45';
+            drawCoordinateVis();
+        }
+
+        function drawSkewedBasis() {
+            currentVis1Mode = 'skewed';
+            drawCoordinateVis();
+        }
+
+        function drawCustomBasis() {
+            currentVis1Mode = 'custom';
+            drawCoordinateVis();
+        }
+
+        function resetVis1() {
+            currentVis1Mode = 'standard';
+            drawCoordinateVis();
+        }
+
+        function drawCoordinateVis() {
+            const canvas = document.getElementById('coordinateCanvas');
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, w, h);
+
+            const centerX = w / 2;
+            const centerY = h / 2;
+            const scale = 60;
+
+            // Draw grid
+            ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+            ctx.lineWidth = 1;
+            for (let i = -4; i <= 4; i++) {
+                ctx.beginPath();
+                ctx.moveTo(centerX + i * scale, centerY - 250);
+                ctx.lineTo(centerX + i * scale, centerY + 250);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(centerX - 250, centerY + i * scale);
+                ctx.lineTo(centerX + 250, centerY + i * scale);
+                ctx.stroke();
+            }
+
+            // Basis vectors
+            let b1x, b1y, b2x, b2y;
+            let b1Name = 'b₁', b2Name = 'b₂';
+            let coordText = '';
+
+            if (currentVis1Mode === 'standard') {
+                b1x = 1; b1y = 0;
+                b2x = 0; b2y = 1;
+                b1Name = 'e₁';
+                b2Name = 'e₂';
+            } else if (currentVis1Mode === 'rotated45') {
+                const angle = Math.PI / 4;
+                b1x = Math.cos(angle); b1y = Math.sin(angle);
+                b2x = -Math.sin(angle); b2y = Math.cos(angle);
+            } else if (currentVis1Mode === 'skewed') {
+                b1x = 1; b1y = 0.5;
+                b2x = 0; b2y = 1;
+            } else if (currentVis1Mode === 'custom') {
+                b1x = 0.8; b1y = 0.6;
+                b2x = -0.6; b2y = 0.8;
+            }
+
+            // Draw basis vectors
+            drawArrow(ctx, centerX, centerY, centerX + b1x * scale, centerY - b1y * scale, '#10b981', 3);
+            drawArrow(ctx, centerX, centerY, centerX + b2x * scale, centerY - b2y * scale, '#f59e0b', 3);
+
+            // The fixed vector x = (3, 2)
+            const xVec = [3, 2];
+
+            // Express in current basis
+            let c1, c2;
+            const det = b1x * b2y - b1y * b2x;
+            c1 = (xVec[0] * b2y - xVec[1] * b2x) / det;
+            c2 = (b1x * xVec[1] - b1y * xVec[0]) / det;
+
+            // Draw the vector (in standard coords, it's always (3,2))
+            drawArrow(ctx, centerX, centerY, centerX + 3 * scale, centerY - 2 * scale, '#ef4444', 4);
+
+            // Draw coordinate frame labels
+            ctx.fillStyle = '#10b981';
+            ctx.font = 'bold 14px sans-serif';
+            ctx.fillText(b1Name, centerX + b1x * scale + 10, centerY - b1y * scale - 5);
+
+            ctx.fillStyle = '#f59e0b';
+            ctx.fillText(b2Name, centerX + b2x * scale + 10, centerY - b2y * scale - 5);
+
+            ctx.fillStyle = '#ef4444';
+            ctx.fillText('x', centerX + 3 * scale + 10, centerY - 2 * scale + 10);
+
+            // Display coordinates
+            const infoDiv = document.getElementById('vis1-info');
+            coordText = `[x]_B = [${c1.toFixed(2)}, ${c2.toFixed(2)}]ᵀ`;
+            infoDiv.textContent = coordText;
+        }
+
+        function drawArrow(ctx, fromX, fromY, toX, toY, color, width) {
+            const headlen = 15;
+            const angle = Math.atan2(toY - fromY, toX - fromX);
+
+            ctx.strokeStyle = color;
+            ctx.lineWidth = width;
+            ctx.beginPath();
+            ctx.moveTo(fromX, fromY);
+            ctx.lineTo(toX, toY);
+            ctx.stroke();
+
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(toX, toY);
+            ctx.lineTo(toX - headlen * Math.cos(angle - Math.PI / 6), toY - headlen * Math.sin(angle - Math.PI / 6));
+            ctx.lineTo(toX - headlen * Math.cos(angle + Math.PI / 6), toY - headlen * Math.sin(angle + Math.PI / 6));
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        // Draw initial visualization
+        drawCoordinateVis();
+
+        // Visualization 2: Change-of-Basis Calculator
+        function computeChangeOfBasis() {
+            const basisBText = document.getElementById('basisB').value;
+            const basisCText = document.getElementById('basisC').value;
+            const vectorXText = document.getElementById('vectorX').value;
+
+            try {
+                // Parse input
+                const basisBLines = basisBText.trim().split('\n');
+                const basisCLines = basisCText.trim().split('\n');
+
+                const B = basisBLines.map(line => line.trim().split(/\s+/).map(Number));
+                const C = basisCLines.map(line => line.trim().split(/\s+/).map(Number));
+                const x = vectorXText.trim().split(/\s+/).map(Number);
+
+                const n = B.length;
+
+                // Compute [x]_B by solving B·c = x
+                const xB = gaussianElimination(B, x);
+
+                // Compute C^{-1}
+                const CInv = matrixInverse(C);
+
+                // Compute P = C^{-1}·B
+                const P = matrixMultiply(CInv, B);
+
+                // Compute [x]_C = P·[x]_B
+                const xC = matrixVectorMultiply(P, xB);
+
+                // Display results
+                let resultsHTML = '<h4 style="color: #0d9488; margin-bottom: 15px;">Results:</h4>';
+
+                resultsHTML += '<div class="calc-result">';
+                resultsHTML += '<strong>Step 1: [x]_B (coordinates in basis B)</strong><br>';
+                resultsHTML += '<code>' + xB.map(v => v.toFixed(4)).join(' ') + '</code>';
+                resultsHTML += '</div>';
+
+                resultsHTML += '<div class="calc-result">';
+                resultsHTML += '<strong>Step 2: P_{C←B} (change-of-basis matrix)</strong><br>';
+                for (let i = 0; i < P.length; i++) {
+                    resultsHTML += '<code>[' + P[i].map(v => v.toFixed(4)).join('  ') + ']</code><br>';
+                }
+                resultsHTML += '</div>';
+
+                resultsHTML += '<div class="calc-result">';
+                resultsHTML += '<strong>Step 3: [x]_C = P_{C←B}·[x]_B (coordinates in basis C)</strong><br>';
+                resultsHTML += '<code>' + xC.map(v => v.toFixed(4)).join(' ') + '</code>';
+                resultsHTML += '</div>';
+
+                resultsHTML += '<div class="calc-result">';
+                resultsHTML += '<strong>Verification: Reconstruct x from basis C</strong><br>';
+                const reconstructed = matrixVectorMultiply(C, xC);
+                resultsHTML += '<code>Original x: [' + x.map(v => v.toFixed(4)).join(', ') + ']</code><br>';
+                resultsHTML += '<code>From [x]_C: [' + reconstructed.map(v => v.toFixed(4)).join(', ') + ']</code>';
+                resultsHTML += '</div>';
+
+                document.getElementById('vis2-results').innerHTML = resultsHTML;
+            } catch (e) {
+                document.getElementById('vis2-results').innerHTML = '<div style="color: red; padding: 15px; background: #fee2e2; border-radius: 6px;">Error: ' + e.message + '</div>';
+            }
+        }
+
+        // Matrix utility functions
+        function gaussianElimination(A, b) {
+            const n = A.length;
+            const M = A.map((row, i) => [...row, b[i]]);
+
+            // Forward elimination
+            for (let i = 0; i < n; i++) {
+                let maxRow = i;
+                for (let k = i + 1; k < n; k++) {
+                    if (Math.abs(M[k][i]) > Math.abs(M[maxRow][i])) maxRow = k;
+                }
+                [M[i], M[maxRow]] = [M[maxRow], M[i]];
+
+                if (Math.abs(M[i][i]) < 1e-10) throw new Error('Singular matrix');
+
+                for (let k = i + 1; k < n; k++) {
+                    const factor = M[k][i] / M[i][i];
+                    for (let j = i; j <= n; j++) {
+                        M[k][j] -= factor * M[i][j];
+                    }
+                }
+            }
+
+            // Back substitution
+            const x = new Array(n);
+            for (let i = n - 1; i >= 0; i--) {
+                x[i] = M[i][n];
+                for (let j = i + 1; j < n; j++) {
+                    x[i] -= M[i][j] * x[j];
+                }
+                x[i] /= M[i][i];
+            }
+            return x;
+        }
+
+        function matrixInverse(A) {
+            const n = A.length;
+            const M = A.map((row, i) => [...row, ...Array(n).fill(0).map((_, j) => i === j ? 1 : 0)]);
+
+            for (let i = 0; i < n; i++) {
+                let maxRow = i;
+                for (let k = i + 1; k < n; k++) {
+                    if (Math.abs(M[k][i]) > Math.abs(M[maxRow][i])) maxRow = k;
+                }
+                [M[i], M[maxRow]] = [M[maxRow], M[i]];
+
+                if (Math.abs(M[i][i]) < 1e-10) throw new Error('Singular matrix');
+
+                for (let j = 0; j < 2 * n; j++) M[i][j] /= M[i][i];
+
+                for (let k = 0; k < n; k++) {
+                    if (k !== i) {
+                        const factor = M[k][i];
+                        for (let j = 0; j < 2 * n; j++) {
+                            M[k][j] -= factor * M[i][j];
+                        }
+                    }
+                }
+            }
+
+            return M.map(row => row.slice(n));
+        }
+
+        function matrixMultiply(A, B) {
+            const result = Array(A.length).fill(0).map(() => Array(B[0].length).fill(0));
+            for (let i = 0; i < A.length; i++) {
+                for (let j = 0; j < B[0].length; j++) {
+                    for (let k = 0; k < B.length; k++) {
+                        result[i][j] += A[i][k] * B[k][j];
+                    }
+                }
+            }
+            return result;
+        }
+
+        function matrixVectorMultiply(M, v) {
+            return M.map(row => row.reduce((sum, val, i) => sum + val * v[i], 0));
+        }
+    </script>
+</body>
+</html>

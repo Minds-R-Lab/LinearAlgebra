@@ -1,0 +1,1963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.1 Vector Spaces & Subspaces | LA Course</title>
+
+    <!-- KaTeX for math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: white;
+            border-bottom: 2px solid #0d9488;
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            gap: 40px;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .nav-brand {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0d9488;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+            margin-left: auto;
+        }
+
+        .nav-links a {
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #0d9488;
+        }
+
+        .nav-links a.active {
+            color: #0d9488;
+            border-bottom: 2px solid #0d9488;
+            padding-bottom: 2px;
+        }
+
+        main {
+            margin-top: 60px;
+            padding: 0;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #0d9488 0%, #059669 100%);
+            color: white;
+            padding: 60px 30px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Content Container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+
+        /* Section Headings */
+        h2 {
+            color: #0d9488;
+            font-size: 32px;
+            margin: 50px 0 30px 0;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #0d9488;
+        }
+
+        h3 {
+            color: #1f2937;
+            font-size: 24px;
+            margin: 35px 0 20px 0;
+        }
+
+        h4 {
+            color: #374151;
+            font-size: 18px;
+            margin: 20px 0 12px 0;
+        }
+
+        p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        /* Definition, Theorem, etc. Boxes */
+        .definition-box, .theorem-box, .example-box, .warning-box, .tip-box {
+            margin: 25px 0;
+            padding: 20px 25px;
+            border-left: 5px solid;
+            border-radius: 8px;
+            background: #f3f4f6;
+        }
+
+        .definition-box {
+            border-left-color: #0d9488;
+            background: #ecfdf5;
+        }
+
+        .definition-box strong {
+            color: #0d9488;
+        }
+
+        .theorem-box {
+            border-left-color: #7c3aed;
+            background: #f3e8ff;
+        }
+
+        .theorem-box strong {
+            color: #7c3aed;
+        }
+
+        .example-box {
+            border-left-color: #0d9488;
+            background: #ecfdf5;
+        }
+
+        .warning-box {
+            border-left-color: #dc2626;
+            background: #fee2e2;
+        }
+
+        .warning-box strong {
+            color: #dc2626;
+        }
+
+        .tip-box {
+            border-left-color: #d97706;
+            background: #fef3c7;
+        }
+
+        .tip-box strong {
+            color: #d97706;
+        }
+
+        /* Objectives */
+        .objectives {
+            background: #ecfdf5;
+            border: 2px solid #0d9488;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .objectives h3 {
+            color: #0d9488;
+            margin-top: 0;
+        }
+
+        .objectives ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .objectives li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .objectives li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #0d9488;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        /* Step Lists */
+        .step-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .step-list li {
+            display: flex;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+
+        .step-list li:before {
+            content: attr(data-step);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            background: #0d9488;
+            color: white;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .step-list li span {
+            flex: 1;
+            padding-top: 8px;
+        }
+
+        /* Example Items (Collapsible) */
+        .example-item {
+            margin: 20px 0;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .example-header {
+            background: linear-gradient(135deg, #059669, #10b981);
+            color: white;
+            padding: 18px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .example-header:hover {
+            background: linear-gradient(135deg, #047857, #059669);
+        }
+
+        .example-header .toggle-arrow {
+            display: inline-block;
+            transition: transform 0.3s;
+            font-size: 20px;
+        }
+
+        .example-item.active .example-header .toggle-arrow {
+            transform: rotate(180deg);
+        }
+
+        .example-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out;
+            padding: 0 25px;
+        }
+
+        .example-item.active .example-content {
+            max-height: 5000px;
+            padding: 25px;
+        }
+
+        .example-content p {
+            margin-bottom: 12px;
+        }
+
+        .solution-step {
+            background: #f0f9ff;
+            border-left: 4px solid #0d9488;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+
+        /* Quiz Questions */
+        .quiz-question {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+            page-break-inside: avoid;
+        }
+
+        .quiz-question .question-text {
+            font-weight: 600;
+            margin-bottom: 18px;
+            color: #1f2937;
+        }
+
+        .choices {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .choice-btn {
+            background: white;
+            border: 2px solid #d1d5db;
+            border-radius: 6px;
+            padding: 12px 18px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s;
+            font-size: 15px;
+        }
+
+        .choice-btn:hover {
+            border-color: #0d9488;
+            background: #f0fdf4;
+        }
+
+        .choice-btn.correct {
+            background: #dcfce7;
+            border-color: #16a34a;
+            color: #15803d;
+        }
+
+        .choice-btn.incorrect {
+            background: #fee2e2;
+            border-color: #dc2626;
+            color: #991b1b;
+        }
+
+        .choice-btn.disabled {
+            cursor: not-allowed;
+        }
+
+        .quiz-feedback {
+            margin-top: 15px;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .quiz-feedback.show {
+            display: block;
+        }
+
+        .quiz-feedback.correct {
+            background: #dcfce7;
+            color: #15803d;
+            border-left: 4px solid #16a34a;
+        }
+
+        .quiz-feedback.incorrect {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 4px solid #dc2626;
+        }
+
+        /* Interactive Visualizations */
+        .visualization-container {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .visualization-controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            background: #0d9488;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+        }
+
+        .btn.secondary {
+            background: #7c3aed;
+        }
+
+        .btn.secondary:hover {
+            background: #6d28d9;
+        }
+
+        .btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        canvas {
+            max-width: 100%;
+            background: #0f172a;
+            border-radius: 6px;
+        }
+
+        .visualization-info {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .matrix-display {
+            font-family: 'Courier New', monospace;
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .operation-description {
+            background: #fef3c7;
+            border-left: 4px solid #d97706;
+            padding: 12px 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        /* Matrix Input */
+        .matrix-input-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .matrix-input-grid input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #d1d5db;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .matrix-input-grid input:focus {
+            outline: none;
+            border-color: #0d9488;
+            background: #f0fdf4;
+        }
+
+        .result-display {
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        /* Key Takeaways */
+        .key-takeaways {
+            background: linear-gradient(135deg, #ecfdf5, #f0fdf4);
+            border: 2px solid #0d9488;
+            border-radius: 8px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+
+        .key-takeaways h3 {
+            color: #0d9488;
+            margin-top: 0;
+        }
+
+        .key-takeaways ol {
+            padding-left: 25px;
+        }
+
+        .key-takeaways li {
+            margin-bottom: 12px;
+            color: #1f2937;
+        }
+
+        /* Navigation Footer */
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 60px 0 40px 0;
+            padding: 25px 0;
+            border-top: 2px solid #e5e7eb;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .nav-footer a {
+            color: #0d9488;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .nav-footer a:hover {
+            color: #059669;
+        }
+
+        /* Footer */
+        footer {
+            background: #1f2937;
+            color: #d1d5db;
+            text-align: center;
+            padding: 30px;
+            font-size: 14px;
+        }
+
+        /* Code/Matrix formatting */
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 0 15px;
+                gap: 15px;
+            }
+
+            .nav-links {
+                gap: 15px;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            .container {
+                padding: 30px 20px;
+            }
+
+            .nav-footer {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-footer a {
+                text-align: center;
+            }
+
+            .matrix-input-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="index.html" class="nav-brand">LA Course</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="why-linear-algebra.html">Why LA?</a></li>
+            <li><a href="ch1-linear-systems.html">§ 1.1</a></li>
+            <li><a href="ch1-matrix-algebra.html">§ 1.2</a></li>
+            <li><a href="ch1-inverses.html">§ 1.3</a></li>
+            <li><a href="ch1-determinants.html">§ 1.4</a></li>
+            <li><a href="ch2-vector-spaces.html" class="active">§ 2.1</a></li>
+            <li><a href="ch2-independence.html">§ 2.2</a></li>
+            <li><a href="ch2-basis-dimension.html">§ 2.3</a></li>
+            <li><a href="ch2-rank.html">§ 2.4</a></li>
+            <li><a href="ch2-change-of-basis.html">§ 2.5</a></li>
+            <li><a href="exam-generator.html">Exam</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <main>
+        <div class="hero">
+            <h1>Vector Spaces & Subspaces</h1>
+            <p>The abstract framework — defining vector spaces, verifying subspaces, and understanding column spaces and null spaces</p>
+        </div>
+
+        <!-- Main Content -->
+        <div class="container">
+            <!-- Learning Objectives -->
+            <div class="objectives">
+                <h3>Learning Objectives</h3>
+                <ul>
+                    <li>Define a vector space and verify the 10 axioms</li>
+                    <li>Identify examples and non-examples of vector spaces</li>
+                    <li>Define subspace and test the subspace criterion (closure under addition and scalar multiplication, contains zero)</li>
+                    <li>Compute the column space Col(A) and null space Nul(A) of a matrix</li>
+                    <li>Understand the relationship between Ax=0 and Nul(A)</li>
+                </ul>
+            </div>
+
+            <!-- Section 1: What is a Vector Space? -->
+            <h2>What is a Vector Space?</h2>
+
+            <p>A <strong>vector space</strong> is an abstract algebraic structure that generalizes the familiar properties of vectors in $\mathbb{R}^n$. Instead of just considering $\mathbb{R}^2$ or $\mathbb{R}^3$, we can define vector spaces over any field (usually the real numbers $\mathbb{R}$ or complex numbers $\mathbb{C}$). A vector space consists of a set $V$ of objects called vectors, along with two operations: addition and scalar multiplication.</p>
+
+            <div class="theorem-box">
+                <strong>The 10 Vector Space Axioms:</strong>
+                <br><br>
+                A set $V$ is a vector space over $\mathbb{R}$ if:
+                <br><br>
+                <strong>Closure:</strong>
+                <br>1. If $\mathbf{u}, \mathbf{v} \in V$, then $\mathbf{u} + \mathbf{v} \in V$ (closed under addition)
+                <br>2. If $\mathbf{u} \in V$ and $c \in \mathbb{R}$, then $c\mathbf{u} \in V$ (closed under scalar multiplication)
+                <br><br>
+                <strong>Addition Properties:</strong>
+                <br>3. $\mathbf{u} + \mathbf{v} = \mathbf{v} + \mathbf{u}$ (commutativity)
+                <br>4. $(\mathbf{u} + \mathbf{v}) + \mathbf{w} = \mathbf{u} + (\mathbf{v} + \mathbf{w})$ (associativity)
+                <br>5. There exists a zero vector $\mathbf{0} \in V$ such that $\mathbf{u} + \mathbf{0} = \mathbf{u}$ for all $\mathbf{u} \in V$
+                <br>6. For each $\mathbf{u} \in V$, there exists $-\mathbf{u} \in V$ such that $\mathbf{u} + (-\mathbf{u}) = \mathbf{0}$
+                <br><br>
+                <strong>Scalar Multiplication Properties:</strong>
+                <br>7. $c(\mathbf{u} + \mathbf{v}) = c\mathbf{u} + c\mathbf{v}$ (distributivity over addition)
+                <br>8. $(c + d)\mathbf{u} = c\mathbf{u} + d\mathbf{u}$ (distributivity over scalars)
+                <br>9. $c(d\mathbf{u}) = (cd)\mathbf{u}$ (associativity of scalar multiplication)
+                <br>10. $1 \cdot \mathbf{u} = \mathbf{u}$ (identity element for scalar multiplication)
+            </div>
+
+            <h3>Fundamental Examples of Vector Spaces</h3>
+
+            <p><strong>1. $\mathbb{R}^n$ — The Standard Example:</strong> The set of all column vectors with $n$ real components.</p>
+
+            <div class="definition-box">
+                <strong>$\mathbb{R}^n$:</strong>
+                \[\mathbb{R}^n = \left\{\begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix} : x_i \in \mathbb{R}\right\}\]
+                with component-wise addition and scalar multiplication.
+            </div>
+
+            <p><strong>2. $P_n$ — Polynomials of Degree at Most $n$:</strong> The set of all polynomials $p(x) = a_0 + a_1 x + a_2 x^2 + \cdots + a_n x^n$ where $a_i \in \mathbb{R}$.</p>
+
+            <p><strong>3. $M_{m \times n}$ — Matrices:</strong> The set of all $m \times n$ matrices with real entries, with matrix addition and scalar multiplication.</p>
+
+            <p><strong>4. $C[a,b]$ — Continuous Functions:</strong> The set of all continuous real-valued functions on the interval $[a,b]$, with pointwise addition and scalar multiplication: $(f+g)(x) = f(x) + g(x)$ and $(cf)(x) = c \cdot f(x)$.</p>
+
+            <h3>Non-Examples of Vector Spaces</h3>
+
+            <div class="warning-box">
+                <strong>Failure 1: Missing Zero Vector</strong> — The set of vectors $\{(x,y) : x + y = 1\}$ is not a vector space because it doesn't contain the zero vector $(0,0)$.
+                <br><br>
+                <strong>Failure 2: Not Closed Under Addition</strong> — The set $\{(x,y) : x, y \geq 0\}$ (first quadrant) is not a vector space because it's not closed under scalar multiplication: $2 \cdot (1, -1) = (2, -2)$ is not in the set.
+                <br><br>
+                <strong>Failure 3: Not Closed Under Scalar Multiplication</strong> — The set of integer vectors $\mathbb{Z}^n$ is closed under addition but not under all scalar multiplication (e.g., $0.5 \cdot (1,1) = (0.5, 0.5) \notin \mathbb{Z}^2$).
+            </div>
+
+            <!-- Section 2: Subspaces -->
+            <h2>Subspaces</h2>
+
+            <p>Instead of checking all 10 axioms for a new set, we often ask: "Is this subset of a known vector space also a vector space?" This leads to the concept of a <strong>subspace</strong>.</p>
+
+            <div class="definition-box">
+                <strong>Subspace:</strong> A subset $W$ of a vector space $V$ is a <strong>subspace</strong> of $V$ if $W$ is itself a vector space under the same operations as $V$.
+            </div>
+
+            <p>Rather than verify all 10 axioms, we can use the following shortcut:</p>
+
+            <div class="theorem-box">
+                <strong>Subspace Test:</strong> A non-empty subset $W$ of a vector space $V$ is a subspace if and only if:
+                <br><br>
+                1. $\mathbf{0} \in W$ (the zero vector is in $W$)
+                <br>2. $W$ is closed under addition: if $\mathbf{u}, \mathbf{v} \in W$, then $\mathbf{u} + \mathbf{v} \in W$
+                <br>3. $W$ is closed under scalar multiplication: if $\mathbf{u} \in W$ and $c \in \mathbb{R}$, then $c\mathbf{u} \in W$
+                <br><br>
+                <strong>Equivalently (even shorter):</strong> $W$ is a subspace if and only if $W$ is non-empty and for all $\mathbf{u}, \mathbf{v} \in W$ and $c \in \mathbb{R}$:
+                \[c\mathbf{u} + \mathbf{v} \in W\]
+            </div>
+
+            <h3>Examples of Subspaces</h3>
+
+            <div class="tip-box">
+                <strong>Example 1: Planes Through the Origin</strong> — The set $W = \{(x,y,z) : 2x - y + z = 0\}$ is a subspace of $\mathbb{R}^3$.
+                <br><br>
+                <strong>Example 2: Column Space</strong> — For any matrix $A$, the column space $\text{Col}(A)$ (the span of its columns) is a subspace.
+                <br><br>
+                <strong>Example 3: Null Space</strong> — For any matrix $A$, the null space $\text{Nul}(A) = \{\mathbf{x} : A\mathbf{x} = \mathbf{0}\}$ is a subspace.
+                <br><br>
+                <strong>Example 4: Polynomial Subspace</strong> — The set of all polynomials with zero constant term, $\{a_0 + a_1 x + a_2 x^2 : a_0 = 0\}$, is a subspace of $P_2$.
+            </div>
+
+            <h3>Trivial Subspaces</h3>
+
+            <p>Every vector space $V$ has two <strong>trivial subspaces</strong>:</p>
+            <ul style="margin-left: 20px; margin-bottom: 15px;">
+                <li>$\{\mathbf{0}\}$ — the subspace containing only the zero vector</li>
+                <li>$V$ itself — the entire vector space</li>
+            </ul>
+
+            <!-- Section 3: Column Space -->
+            <h2>Column Space Col(A)</h2>
+
+            <div class="definition-box">
+                <strong>Column Space:</strong> For a matrix $A$ with columns $\mathbf{a}_1, \mathbf{a}_2, \ldots, \mathbf{a}_n$, the <strong>column space</strong> of $A$ is:
+                \[\text{Col}(A) = \text{span}\{\mathbf{a}_1, \mathbf{a}_2, \ldots, \mathbf{a}_n\} = \{A\mathbf{x} : \mathbf{x} \in \mathbb{R}^n\}\]
+                <br>
+                If $A$ is an $m \times n$ matrix, then $\text{Col}(A)$ is a subspace of $\mathbb{R}^m$.
+            </div>
+
+            <p>The column space is the set of all possible outputs of the matrix equation $A\mathbf{x} = \mathbf{b}$. To find a basis for $\text{Col}(A)$, we perform row reduction and identify the pivot columns — the original (non-reduced) columns corresponding to pivots form a basis for the column space.</p>
+
+            <h3>Finding Column Space by Row Reduction</h3>
+
+            <div class="tip-box">
+                <strong>Method:</strong>
+                <br>1. Row reduce $A$ to row echelon form (REF)
+                <br>2. Identify the pivot columns (columns with leading 1's in REF)
+                <br>3. The corresponding columns in the <strong>original</strong> matrix $A$ form a basis for $\text{Col}(A)$
+                <br><br>
+                <strong>Important:</strong> Use the columns of the original matrix $A$, not the reduced form. The reduced matrix tells us which columns are pivot columns, but the actual basis vectors come from $A$.
+            </div>
+
+            <!-- Section 4: Null Space -->
+            <h2>Null Space Nul(A)</h2>
+
+            <div class="definition-box">
+                <strong>Null Space:</strong> For an $m \times n$ matrix $A$, the <strong>null space</strong> of $A$ is:
+                \[\text{Nul}(A) = \{\mathbf{x} \in \mathbb{R}^n : A\mathbf{x} = \mathbf{0}\}\]
+                <br>
+                The null space consists of all solutions to the homogeneous equation $A\mathbf{x} = \mathbf{0}$.
+            </div>
+
+            <div class="theorem-box">
+                <strong>Theorem:</strong> The null space $\text{Nul}(A)$ is always a subspace of $\mathbb{R}^n$.
+                <br><br>
+                <strong>Proof:</strong>
+                <br>1. $\mathbf{0} \in \text{Nul}(A)$ because $A\mathbf{0} = \mathbf{0}$ ✓
+                <br>2. If $\mathbf{u}, \mathbf{v} \in \text{Nul}(A)$, then $A(\mathbf{u} + \mathbf{v}) = A\mathbf{u} + A\mathbf{v} = \mathbf{0} + \mathbf{0} = \mathbf{0}$, so $\mathbf{u} + \mathbf{v} \in \text{Nul}(A)$ ✓
+                <br>3. If $\mathbf{u} \in \text{Nul}(A)$ and $c \in \mathbb{R}$, then $A(c\mathbf{u}) = c(A\mathbf{u}) = c \cdot \mathbf{0} = \mathbf{0}$, so $c\mathbf{u} \in \text{Nul}(A)$ ✓
+            </div>
+
+            <h3>Finding Null Space by Row Reduction</h3>
+
+            <div class="tip-box">
+                <strong>Method:</strong>
+                <br>1. Row reduce $[A \mid \mathbf{0}]$ to reduced row echelon form (RREF)
+                <br>2. Identify free variables (non-pivot columns)
+                <br>3. Express pivot variables in terms of free variables
+                <br>4. Write the general solution as a linear combination of vectors corresponding to free variables
+                <br>5. These vectors form a basis for $\text{Nul}(A)$
+            </div>
+
+            <!-- Section 5: Span as a Subspace -->
+            <h2>Span as a Subspace</h2>
+
+            <div class="definition-box">
+                <strong>Span:</strong> The <strong>span</strong> of a set of vectors $\{\mathbf{v}_1, \mathbf{v}_2, \ldots, \mathbf{v}_k\}$ is the set of all linear combinations:
+                \[\text{span}\{\mathbf{v}_1, \mathbf{v}_2, \ldots, \mathbf{v}_k\} = \{c_1 \mathbf{v}_1 + c_2 \mathbf{v}_2 + \cdots + c_k \mathbf{v}_k : c_i \in \mathbb{R}\}\]
+            </div>
+
+            <div class="theorem-box">
+                <strong>Theorem:</strong> For any vectors $\mathbf{v}_1, \mathbf{v}_2, \ldots, \mathbf{v}_k$ in a vector space $V$, the span $\text{span}\{\mathbf{v}_1, \mathbf{v}_2, \ldots, \mathbf{v}_k\}$ is a subspace of $V$. Moreover, it is the smallest subspace containing all these vectors.
+            </div>
+
+            <!-- Visualization 1: Subspace Visualizer -->
+            <h2>Interactive Visualization 1: Subspace Visualizer</h2>
+            <p>Explore different subspaces of $\mathbb{R}^3$. Select a subspace type to visualize it in 3D. Planes through the origin, lines through the origin, and the origin itself are all subspaces. A shifted plane (not through the origin) is NOT a subspace.</p>
+
+            <div class="visualization-container">
+                <div class="visualization-controls">
+                    <button class="btn" onclick="setSubspaceType('plane')">Plane through Origin</button>
+                    <button class="btn" onclick="setSubspaceType('line')">Line through Origin</button>
+                    <button class="btn" onclick="setSubspaceType('origin')">Just the Origin</button>
+                    <button class="btn" onclick="setSubspaceType('shifted')">Shifted Plane (NOT a subspace)</button>
+                </div>
+                <canvas id="subspaceCanvas" width="500" height="500"></canvas>
+                <div class="visualization-info">
+                    <div id="subspaceInfo" style="margin-top: 15px;"></div>
+                </div>
+            </div>
+
+            <!-- Visualization 2: Column Space & Null Space Explorer -->
+            <h2>Interactive Visualization 2: Column Space & Null Space Explorer</h2>
+            <p>Enter a 3×3 matrix below and explore its column space and null space. The system performs row reduction to identify pivot columns and free variables.</p>
+
+            <div class="visualization-container">
+                <div style="width: 100%; max-width: 400px;">
+                    <p><strong>Enter a 3×3 matrix:</strong></p>
+                    <div class="matrix-input-grid">
+                        <input type="number" id="m00" value="1" placeholder="a₁₁">
+                        <input type="number" id="m01" value="2" placeholder="a₁₂">
+                        <input type="number" id="m02" value="3" placeholder="a₁₃">
+                        <input type="number" id="m10" value="2" placeholder="a₂₁">
+                        <input type="number" id="m11" value="4" placeholder="a₂₂">
+                        <input type="number" id="m12" value="6" placeholder="a₂₃">
+                        <input type="number" id="m20" value="1" placeholder="a₃₁">
+                        <input type="number" id="m21" value="2" placeholder="a₃₂">
+                        <input type="number" id="m22" value="3" placeholder="a₃₃">
+                    </div>
+                    <div class="visualization-controls">
+                        <button class="btn" onclick="exploreColSpace()">Find Col(A)</button>
+                        <button class="btn secondary" onclick="exploreNulSpace()">Find Nul(A)</button>
+                    </div>
+                    <div id="explorationResult" class="result-display" style="display: none;"></div>
+                </div>
+            </div>
+
+            <!-- Section: Worked Examples -->
+            <h2>Worked Examples</h2>
+            <p>Click on each example to reveal the complete step-by-step solution.</p>
+
+            <!-- Easy Examples -->
+            <h3>Easy Examples</h3>
+
+            <!-- Example 1: Verify R^2 axioms -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 1: Verify that $\mathbb{R}^2$ Satisfies the Vector Space Axioms</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Show that $\mathbb{R}^2 = \left\{\begin{bmatrix} x \\ y \end{bmatrix} : x, y \in \mathbb{R}\right\}$ is a vector space with standard vector addition and scalar multiplication.</p>
+
+                    <p><strong>Solution:</strong> We verify several key axioms. The remaining axioms follow similarly.</p>
+
+                    <p><strong>Step 1: Closure under addition</strong></p>
+                    <div class="solution-step">
+Let $\mathbf{u} = \begin{bmatrix} x_1 \\ y_1 \end{bmatrix}$ and $\mathbf{v} = \begin{bmatrix} x_2 \\ y_2 \end{bmatrix}$ be in $\mathbb{R}^2$.
+
+Then $\mathbf{u} + \mathbf{v} = \begin{bmatrix} x_1 + x_2 \\ y_1 + y_2 \end{bmatrix}$
+
+Since $x_1 + x_2 \in \mathbb{R}$ and $y_1 + y_2 \in \mathbb{R}$, we have $\mathbf{u} + \mathbf{v} \in \mathbb{R}^2$. ✓
+                    </div>
+
+                    <p><strong>Step 2: Closure under scalar multiplication</strong></p>
+                    <div class="solution-step">
+Let $\mathbf{u} = \begin{bmatrix} x \\ y \end{bmatrix} \in \mathbb{R}^2$ and $c \in \mathbb{R}$.
+
+Then $c\mathbf{u} = \begin{bmatrix} cx \\ cy \end{bmatrix}$
+
+Since $cx \in \mathbb{R}$ and $cy \in \mathbb{R}$, we have $c\mathbf{u} \in \mathbb{R}^2$. ✓
+                    </div>
+
+                    <p><strong>Step 3: Zero vector exists</strong></p>
+                    <div class="solution-step">
+The zero vector $\mathbf{0} = \begin{bmatrix} 0 \\ 0 \end{bmatrix} \in \mathbb{R}^2$.
+
+For any $\mathbf{u} = \begin{bmatrix} x \\ y \end{bmatrix}$:
+
+$\mathbf{u} + \mathbf{0} = \begin{bmatrix} x \\ y \end{bmatrix} + \begin{bmatrix} 0 \\ 0 \end{bmatrix} = \begin{bmatrix} x \\ y \end{bmatrix} = \mathbf{u}$ ✓
+                    </div>
+
+                    <p><strong>Step 4: Additive inverses exist</strong></p>
+                    <div class="solution-step">
+For any $\mathbf{u} = \begin{bmatrix} x \\ y \end{bmatrix} \in \mathbb{R}^2$, define $-\mathbf{u} = \begin{bmatrix} -x \\ -y \end{bmatrix}$.
+
+Then $\mathbf{u} + (-\mathbf{u}) = \begin{bmatrix} x - x \\ y - y \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix} = \mathbf{0}$ ✓
+                    </div>
+
+                    <p><strong>Conclusion:</strong> All 10 axioms are satisfied (the remaining axioms are easily verified from properties of real number arithmetic), so $\mathbb{R}^2$ is a vector space.</p>
+                </div>
+            </div>
+
+            <!-- Example 2: Subspace test -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 2: Is $W = \{(x,y,z) : x + y + z = 0\}$ a Subspace of $\mathbb{R}^3$?</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Determine if $W = \{(x,y,z) : x + y + z = 0\}$ is a subspace of $\mathbb{R}^3$.</p>
+
+                    <p><strong>Solution:</strong> Use the subspace test.</p>
+
+                    <p><strong>Step 1: Check if zero vector is in $W$</strong></p>
+                    <div class="solution-step">
+For $\mathbf{0} = (0,0,0)$: $0 + 0 + 0 = 0$ ✓
+
+So $\mathbf{0} \in W$.
+                    </div>
+
+                    <p><strong>Step 2: Check closure under addition</strong></p>
+                    <div class="solution-step">
+Let $\mathbf{u} = (x_1, y_1, z_1) \in W$ and $\mathbf{v} = (x_2, y_2, z_2) \in W$.
+
+This means: $x_1 + y_1 + z_1 = 0$ and $x_2 + y_2 + z_2 = 0$
+
+Now consider $\mathbf{u} + \mathbf{v} = (x_1 + x_2, y_1 + y_2, z_1 + z_2)$.
+
+Sum of coordinates: $(x_1 + x_2) + (y_1 + y_2) + (z_1 + z_2) = (x_1 + y_1 + z_1) + (x_2 + y_2 + z_2) = 0 + 0 = 0$ ✓
+
+So $\mathbf{u} + \mathbf{v} \in W$.
+                    </div>
+
+                    <p><strong>Step 3: Check closure under scalar multiplication</strong></p>
+                    <div class="solution-step">
+Let $\mathbf{u} = (x, y, z) \in W$ and $c \in \mathbb{R}$.
+
+This means: $x + y + z = 0$
+
+Now consider $c\mathbf{u} = (cx, cy, cz)$.
+
+Sum of coordinates: $cx + cy + cz = c(x + y + z) = c \cdot 0 = 0$ ✓
+
+So $c\mathbf{u} \in W$.
+                    </div>
+
+                    <p><strong>Conclusion:</strong> All three conditions are satisfied, so $W$ is a subspace of $\mathbb{R}^3$. ✓</p>
+                </div>
+            </div>
+
+            <!-- Example 3: Nul(A) computation -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 3: Find $\text{Nul}(A)$ for $A = \begin{bmatrix} 1 & 2 & 1 \\ 2 & 4 & 3 \end{bmatrix}$</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Find the null space of $A = \begin{bmatrix} 1 & 2 & 1 \\ 2 & 4 & 3 \end{bmatrix}$ and describe all solutions to $A\mathbf{x} = \mathbf{0}$.</p>
+
+                    <p><strong>Solution:</strong> We solve $A\mathbf{x} = \mathbf{0}$ by row reduction.</p>
+
+                    <p><strong>Step 1: Set up the augmented matrix</strong></p>
+                    <div class="solution-step">
+$\left[\begin{array}{ccc|c} 1 & 2 & 1 & 0 \\ 2 & 4 & 3 & 0 \end{array}\right]$
+                    </div>
+
+                    <p><strong>Step 2: Eliminate below first pivot</strong></p>
+                    <p>Operation: $R_2 - 2R_1 \to R_2$</p>
+                    <div class="solution-step">
+$\left[\begin{array}{ccc|c} 1 & 2 & 1 & 0 \\ 0 & 0 & 1 & 0 \end{array}\right]$
+                    </div>
+
+                    <p><strong>Step 3: Back-substitute to get RREF</strong></p>
+                    <p>Operation: $R_1 - R_2 \to R_1$</p>
+                    <div class="solution-step">
+$\left[\begin{array}{ccc|c} 1 & 2 & 0 & 0 \\ 0 & 0 & 1 & 0 \end{array}\right]$
+                    </div>
+
+                    <p><strong>Step 4: Identify free variables</strong></p>
+                    <div class="solution-step">
+Pivot columns: 1 and 3
+Free variable: $x_2$ (column 2)
+
+From the RREF:
+$x_1 + 2x_2 = 0 \Rightarrow x_1 = -2x_2$
+$x_3 = 0$
+                    </div>
+
+                    <p><strong>Step 5: Write the general solution</strong></p>
+                    <div class="solution-step">
+Let $x_2 = t$ (free variable).
+
+Then:
+$\begin{bmatrix} x_1 \\ x_2 \\ x_3 \end{bmatrix} = \begin{bmatrix} -2t \\ t \\ 0 \end{bmatrix} = t\begin{bmatrix} -2 \\ 1 \\ 0 \end{bmatrix}$
+                    </div>
+
+                    <p><strong>Step 6: Express the null space</strong></p>
+                    <div class="solution-step">
+$\text{Nul}(A) = \left\{t\begin{bmatrix} -2 \\ 1 \\ 0 \end{bmatrix} : t \in \mathbb{R}\right\} = \text{span}\left\{\begin{bmatrix} -2 \\ 1 \\ 0 \end{bmatrix}\right\}$
+
+This is a line through the origin (a 1-dimensional subspace).
+                    </div>
+
+                    <p><strong>Verification:</strong> Check that $\begin{bmatrix} -2 \\ 1 \\ 0 \end{bmatrix}$ satisfies $A\mathbf{x} = \mathbf{0}$:
+                    <br>$\begin{bmatrix} 1 & 2 & 1 \\ 2 & 4 & 3 \end{bmatrix}\begin{bmatrix} -2 \\ 1 \\ 0 \end{bmatrix} = \begin{bmatrix} -2 + 2 + 0 \\ -4 + 4 + 0 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix}$ ✓</p>
+                </div>
+            </div>
+
+            <!-- Example 4: Diagonal matrices subspace -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 4: Is the Set of 2×2 Diagonal Matrices a Subspace of $M_{2 \times 2}$?</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Let $W = \left\{\begin{bmatrix} a & 0 \\ 0 & b \end{bmatrix} : a, b \in \mathbb{R}\right\}$ be the set of 2×2 diagonal matrices. Is $W$ a subspace of $M_{2 \times 2}$?</p>
+
+                    <p><strong>Solution:</strong> Use the subspace test.</p>
+
+                    <p><strong>Step 1: Check if zero matrix is in $W$</strong></p>
+                    <div class="solution-step">
+The zero matrix in $M_{2 \times 2}$ is $\mathbf{0} = \begin{bmatrix} 0 & 0 \\ 0 & 0 \end{bmatrix}$
+
+This is a diagonal matrix (with $a = 0, b = 0$), so $\mathbf{0} \in W$. ✓
+                    </div>
+
+                    <p><strong>Step 2: Check closure under addition</strong></p>
+                    <div class="solution-step">
+Let $A = \begin{bmatrix} a_1 & 0 \\ 0 & b_1 \end{bmatrix}$ and $B = \begin{bmatrix} a_2 & 0 \\ 0 & b_2 \end{bmatrix}$ be in $W$.
+
+Then $A + B = \begin{bmatrix} a_1 + a_2 & 0 \\ 0 & b_1 + b_2 \end{bmatrix}$
+
+This is still a diagonal matrix, so $A + B \in W$. ✓
+                    </div>
+
+                    <p><strong>Step 3: Check closure under scalar multiplication</strong></p>
+                    <div class="solution-step">
+Let $A = \begin{bmatrix} a & 0 \\ 0 & b \end{bmatrix} \in W$ and $c \in \mathbb{R}$.
+
+Then $cA = \begin{bmatrix} ca & 0 \\ 0 & cb \end{bmatrix}$
+
+This is still a diagonal matrix, so $cA \in W$. ✓
+                    </div>
+
+                    <p><strong>Conclusion:</strong> All three conditions are satisfied, so $W$ is a subspace of $M_{2 \times 2}$. ✓</p>
+                </div>
+            </div>
+
+            <!-- Medium Examples -->
+            <h3>Medium Examples</h3>
+
+            <!-- Example 5: Non-example with closure failure -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 5: Show $W = \{(x,y) : x^2 + y^2 \leq 1\}$ is NOT a Subspace of $\mathbb{R}^2$</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Show that $W = \{(x,y) : x^2 + y^2 \leq 1\}$ (the closed unit disk) is not a subspace of $\mathbb{R}^2$.</p>
+
+                    <p><strong>Solution:</strong> We show it fails the closure under scalar multiplication test.</p>
+
+                    <p><strong>Step 1: Find a vector in $W$</strong></p>
+                    <div class="solution-step">
+Consider $(1, 0) \in W$ because $1^2 + 0^2 = 1 \leq 1$. ✓
+                    </div>
+
+                    <p><strong>Step 2: Try scalar multiplication</strong></p>
+                    <div class="solution-step">
+Multiply by scalar $c = 2$:
+$2(1, 0) = (2, 0)$
+
+Check if $(2, 0) \in W$:
+$2^2 + 0^2 = 4 > 1$
+
+So $(2, 0) \notin W$. ✗
+                    </div>
+
+                    <p><strong>Conclusion:</strong> $W$ is not closed under scalar multiplication, so it is not a subspace of $\mathbb{R}^2$. Note: The geometric reason is that $W$ is bounded, but subspaces must extend infinitely (except for the trivial case $\{\mathbf{0}\}$).</p>
+                </div>
+            </div>
+
+            <!-- Example 6: Find Col(A) -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 6: Find $\text{Col}(A)$ for $A = \begin{bmatrix} 1 & 2 & 3 & 4 \\ 2 & 4 & 7 & 10 \\ 1 & 2 & 2 & 2 \end{bmatrix}$</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Find a basis for the column space of $A = \begin{bmatrix} 1 & 2 & 3 & 4 \\ 2 & 4 & 7 & 10 \\ 1 & 2 & 2 & 2 \end{bmatrix}$.</p>
+
+                    <p><strong>Solution:</strong> Row reduce to identify pivot columns.</p>
+
+                    <p><strong>Step 1: Start with the original matrix</strong></p>
+                    <div class="solution-step">
+$A = \begin{bmatrix} 1 & 2 & 3 & 4 \\ 2 & 4 & 7 & 10 \\ 1 & 2 & 2 & 2 \end{bmatrix}$
+                    </div>
+
+                    <p><strong>Step 2: Row reduce to identify pivots</strong></p>
+                    <p>Operation: $R_2 - 2R_1 \to R_2$, $R_3 - R_1 \to R_3$</p>
+                    <div class="solution-step">
+$\begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 0 & 1 & 2 \\ 0 & 0 & -1 & -2 \end{bmatrix}$
+                    </div>
+
+                    <p><strong>Step 3: Continue row reduction</strong></p>
+                    <p>Operation: $R_3 + R_2 \to R_3$</p>
+                    <div class="solution-step">
+$\begin{bmatrix} 1 & 2 & 3 & 4 \\ 0 & 0 & 1 & 2 \\ 0 & 0 & 0 & 0 \end{bmatrix}$
+                    </div>
+
+                    <p><strong>Step 4: Identify pivot columns</strong></p>
+                    <div class="solution-step">
+Pivot columns (with leading 1s in REF): Column 1 and Column 3
+
+Non-pivot columns: Column 2 and Column 4
+                    </div>
+
+                    <p><strong>Step 5: Extract basis from original matrix</strong></p>
+                    <div class="solution-step">
+The columns corresponding to pivots in the ORIGINAL matrix form a basis for $\text{Col}(A)$:
+
+Column 1: $\begin{bmatrix} 1 \\ 2 \\ 1 \end{bmatrix}$
+
+Column 3: $\begin{bmatrix} 3 \\ 7 \\ 2 \end{bmatrix}$
+                    </div>
+
+                    <p><strong>Step 6: Express the column space</strong></p>
+                    <div class="solution-step">
+$\text{Col}(A) = \text{span}\left\{\begin{bmatrix} 1 \\ 2 \\ 1 \end{bmatrix}, \begin{bmatrix} 3 \\ 7 \\ 2 \end{bmatrix}\right\}$
+
+This is a 2-dimensional subspace of $\mathbb{R}^3$ (a plane through the origin).
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 7: Polynomial vector space -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 7: Verify that $P_2$ (Polynomials of Degree $\leq 2$) is a Vector Space</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Show that $P_2 = \{a_0 + a_1 x + a_2 x^2 : a_i \in \mathbb{R}\}$ is a vector space with standard polynomial addition and scalar multiplication.</p>
+
+                    <p><strong>Solution:</strong> We verify key axioms.</p>
+
+                    <p><strong>Step 1: Closure under addition</strong></p>
+                    <div class="solution-step">
+Let $p(x) = a_0 + a_1 x + a_2 x^2$ and $q(x) = b_0 + b_1 x + b_2 x^2$ be in $P_2$.
+
+Then $p(x) + q(x) = (a_0 + b_0) + (a_1 + b_1)x + (a_2 + b_2)x^2$
+
+This is still a polynomial of degree at most 2, so $p(x) + q(x) \in P_2$. ✓
+                    </div>
+
+                    <p><strong>Step 2: Closure under scalar multiplication</strong></p>
+                    <div class="solution-step">
+Let $p(x) = a_0 + a_1 x + a_2 x^2 \in P_2$ and $c \in \mathbb{R}$.
+
+Then $cp(x) = ca_0 + ca_1 x + ca_2 x^2$
+
+This is still a polynomial of degree at most 2, so $cp(x) \in P_2$. ✓
+                    </div>
+
+                    <p><strong>Step 3: Zero element exists</strong></p>
+                    <div class="solution-step">
+The zero polynomial $\mathbf{0}(x) = 0 + 0 \cdot x + 0 \cdot x^2$ is in $P_2$.
+
+For any $p(x) \in P_2$:
+$p(x) + \mathbf{0}(x) = p(x)$ ✓
+                    </div>
+
+                    <p><strong>Step 4: Additive inverses exist</strong></p>
+                    <div class="solution-step">
+For any $p(x) = a_0 + a_1 x + a_2 x^2 \in P_2$, define:
+$-p(x) = -a_0 - a_1 x - a_2 x^2$
+
+This is still in $P_2$, and:
+$p(x) + (-p(x)) = 0 = \mathbf{0}(x)$ ✓
+                    </div>
+
+                    <p><strong>Conclusion:</strong> All 10 axioms are satisfied (the remaining follow from properties of real number arithmetic), so $P_2$ is a vector space. ✓</p>
+                </div>
+            </div>
+
+            <!-- Example 8: Complex null space -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 8: Find Null Space of $A = \begin{bmatrix} 1 & 3 & -2 & 0 & 2 \\ 0 & 0 & 1 & 1 & -1 \\ 1 & 3 & -1 & 1 & 1 \end{bmatrix}$</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Find a basis for $\text{Nul}(A)$ where $A = \begin{bmatrix} 1 & 3 & -2 & 0 & 2 \\ 0 & 0 & 1 & 1 & -1 \\ 1 & 3 & -1 & 1 & 1 \end{bmatrix}$.</p>
+
+                    <p><strong>Solution:</strong> Solve $A\mathbf{x} = \mathbf{0}$ via row reduction.</p>
+
+                    <p><strong>Step 1: Row reduce the augmented matrix</strong></p>
+                    <div class="solution-step">
+Augmented: $\left[\begin{array}{ccccc|c} 1 & 3 & -2 & 0 & 2 & 0 \\ 0 & 0 & 1 & 1 & -1 & 0 \\ 1 & 3 & -1 & 1 & 1 & 0 \end{array}\right]$
+
+Operation: $R_3 - R_1 \to R_3$:
+$\left[\begin{array}{ccccc|c} 1 & 3 & -2 & 0 & 2 & 0 \\ 0 & 0 & 1 & 1 & -1 & 0 \\ 0 & 0 & 1 & 1 & -1 & 0 \end{array}\right]$
+                    </div>
+
+                    <p><strong>Step 2: Continue row reduction</strong></p>
+                    <p>Operation: $R_3 - R_2 \to R_3$</p>
+                    <div class="solution-step">
+$\left[\begin{array}{ccccc|c} 1 & 3 & -2 & 0 & 2 & 0 \\ 0 & 0 & 1 & 1 & -1 & 0 \\ 0 & 0 & 0 & 0 & 0 & 0 \end{array}\right]$
+                    </div>
+
+                    <p><strong>Step 3: Back-substitute to RREF</strong></p>
+                    <p>Operation: $R_1 + 2R_2 \to R_1$</p>
+                    <div class="solution-step">
+$\left[\begin{array}{ccccc|c} 1 & 3 & 0 & 2 & 0 & 0 \\ 0 & 0 & 1 & 1 & -1 & 0 \\ 0 & 0 & 0 & 0 & 0 & 0 \end{array}\right]$
+                    </div>
+
+                    <p><strong>Step 4: Identify free variables</strong></p>
+                    <div class="solution-step">
+Pivot columns: 1 and 3
+Free variables: $x_2$, $x_4$, $x_5$
+
+From the RREF:
+$x_1 + 3x_2 + 2x_4 = 0 \Rightarrow x_1 = -3x_2 - 2x_4$
+$x_3 + x_4 - x_5 = 0 \Rightarrow x_3 = -x_4 + x_5$
+                    </div>
+
+                    <p><strong>Step 5: Write general solution</strong></p>
+                    <div class="solution-step">
+Let $x_2 = s$, $x_4 = t$, $x_5 = u$ (free variables).
+
+$\begin{bmatrix} x_1 \\ x_2 \\ x_3 \\ x_4 \\ x_5 \end{bmatrix} = \begin{bmatrix} -3s - 2t \\ s \\ -t + u \\ t \\ u \end{bmatrix} = s\begin{bmatrix} -3 \\ 1 \\ 0 \\ 0 \\ 0 \end{bmatrix} + t\begin{bmatrix} -2 \\ 0 \\ -1 \\ 1 \\ 0 \end{bmatrix} + u\begin{bmatrix} 0 \\ 0 \\ 1 \\ 0 \\ 1 \end{bmatrix}$
+                    </div>
+
+                    <p><strong>Step 6: Express null space basis</strong></p>
+                    <div class="solution-step">
+$\text{Nul}(A) = \text{span}\left\{\begin{bmatrix} -3 \\ 1 \\ 0 \\ 0 \\ 0 \end{bmatrix}, \begin{bmatrix} -2 \\ 0 \\ -1 \\ 1 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ 0 \\ 1 \\ 0 \\ 1 \end{bmatrix}\right\}$
+
+This is a 3-dimensional subspace of $\mathbb{R}^5$.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 9: Polynomial subspace -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 9: Is $W = \{p(x) \in P_3 : p(0) = 0\}$ a Subspace of $P_3$?</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Show that $W = \{p(x) \in P_3 : p(0) = 0\}$ (polynomials with zero constant term) is a subspace of $P_3$.</p>
+
+                    <p><strong>Solution:</strong> Use the subspace test.</p>
+
+                    <p><strong>Step 1: Check if zero polynomial is in $W$</strong></p>
+                    <div class="solution-step">
+The zero polynomial is $\mathbf{0}(x) = 0$.
+
+$\mathbf{0}(0) = 0$ ✓
+
+So $\mathbf{0} \in W$.
+                    </div>
+
+                    <p><strong>Step 2: Check closure under addition</strong></p>
+                    <div class="solution-step">
+Let $p(x), q(x) \in W$. Then $p(0) = 0$ and $q(0) = 0$.
+
+Consider $(p + q)(x) = p(x) + q(x)$.
+
+$(p + q)(0) = p(0) + q(0) = 0 + 0 = 0$ ✓
+
+So $p + q \in W$.
+                    </div>
+
+                    <p><strong>Step 3: Check closure under scalar multiplication</strong></p>
+                    <div class="solution-step">
+Let $p(x) \in W$ and $c \in \mathbb{R}$. Then $p(0) = 0$.
+
+Consider $(cp)(x) = cp(x)$.
+
+$(cp)(0) = c \cdot p(0) = c \cdot 0 = 0$ ✓
+
+So $cp \in W$.
+                    </div>
+
+                    <p><strong>Conclusion:</strong> All three conditions are satisfied, so $W$ is a subspace of $P_3$. ✓</p>
+
+                    <p><strong>Note:</strong> Polynomials with $p(0) = 0$ have the form $a_1 x + a_2 x^2 + a_3 x^3$ (no constant term). This space is isomorphic to $P_2$ but restricted to have no constant term.</p>
+                </div>
+            </div>
+
+            <!-- Hard Examples -->
+            <h3>Hard Examples</h3>
+
+            <!-- Example 10: Formal proof symmetric matrices -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 10: Prove Symmetric $n \times n$ Matrices Form a Subspace of $M_{n \times n}$</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Let $W = \{A \in M_{n \times n} : A = A^T\}$ be the set of symmetric $n \times n$ matrices. Prove that $W$ is a subspace of $M_{n \times n}$.</p>
+
+                    <p><strong>Solution:</strong> We verify all three conditions of the subspace test with full rigor.</p>
+
+                    <p><strong>Step 1: The zero matrix is in $W$</strong></p>
+                    <div class="solution-step">
+The zero matrix $O \in M_{n \times n}$ is defined by $O_{ij} = 0$ for all $i, j$.
+
+The transpose is $O^T$ with $(O^T)_{ij} = O_{ji} = 0$, so $O^T = O$.
+
+Therefore $O \in W$. ✓
+                    </div>
+
+                    <p><strong>Step 2: $W$ is closed under addition</strong></p>
+                    <div class="solution-step">
+Let $A, B \in W$. Then $A = A^T$ and $B = B^T$.
+
+Consider $A + B$. We have:
+$(A + B)^T = A^T + B^T = A + B$
+
+Therefore $A + B \in W$. ✓
+                    </div>
+
+                    <p><strong>Step 3: $W$ is closed under scalar multiplication</strong></p>
+                    <div class="solution-step">
+Let $A \in W$ and $c \in \mathbb{R}$. Then $A = A^T$.
+
+Consider $cA$. We have:
+$(cA)^T = c A^T = c A$
+
+Therefore $cA \in W$. ✓
+                    </div>
+
+                    <p><strong>Conclusion:</strong> Since all three subspace test conditions are satisfied, $W$ is a subspace of $M_{n \times n}$. ✓</p>
+
+                    <p><strong>Geometric Interpretation:</strong> Symmetric matrices have a special structure where $A_{ij} = A_{ji}$. The set of all such matrices forms a subspace of dimension $\frac{n(n+1)}{2}$ (the number of independent entries on and above the diagonal).</p>
+                </div>
+            </div>
+
+            <!-- Example 11: Intersection of subspaces -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 11: Find $\text{Col}(A) \cap \text{Nul}(A)$ for $A = \begin{bmatrix} 1 & 0 \\ 0 & 0 \end{bmatrix}$</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> For $A = \begin{bmatrix} 1 & 0 \\ 0 & 0 \end{bmatrix}$, compute both $\text{Col}(A)$ and $\text{Nul}(A)$, then find their intersection.</p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Find $\text{Col}(A)$</strong></p>
+                    <div class="solution-step">
+Columns of $A$: $\begin{bmatrix} 1 \\ 0 \end{bmatrix}$ and $\begin{bmatrix} 0 \\ 0 \end{bmatrix}$
+
+Row reduce: $\left[\begin{array}{cc} 1 & 0 \\ 0 & 0 \end{array}\right]$ is already in REF.
+
+Pivot column: Column 1
+
+Therefore: $\text{Col}(A) = \text{span}\left\{\begin{bmatrix} 1 \\ 0 \end{bmatrix}\right\} = \left\{\begin{bmatrix} t \\ 0 \end{bmatrix} : t \in \mathbb{R}\right\}$
+                    </div>
+
+                    <p><strong>Step 2: Find $\text{Nul}(A)$</strong></p>
+                    <div class="solution-step">
+Solve $A\mathbf{x} = \mathbf{0}$:
+$\begin{bmatrix} 1 & 0 \\ 0 & 0 \end{bmatrix}\begin{bmatrix} x_1 \\ x_2 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix}$
+
+From row 1: $x_1 = 0$
+From row 2: $0 = 0$ (always true, $x_2$ is free)
+
+Therefore: $\text{Nul}(A) = \text{span}\left\{\begin{bmatrix} 0 \\ 1 \end{bmatrix}\right\} = \left\{\begin{bmatrix} 0 \\ s \end{bmatrix} : s \in \mathbb{R}\right\}$
+                    </div>
+
+                    <p><strong>Step 3: Find the intersection</strong></p>
+                    <div class="solution-step">
+$\text{Col}(A) \cap \text{Nul}(A) = \left\{\begin{bmatrix} t \\ 0 \end{bmatrix}\right\} \cap \left\{\begin{bmatrix} 0 \\ s \end{bmatrix}\right\}$
+
+For a vector to be in both sets:
+$\begin{bmatrix} t \\ 0 \end{bmatrix} = \begin{bmatrix} 0 \\ s \end{bmatrix}$
+
+This requires $t = 0$ and $s = 0$, so:
+$\text{Col}(A) \cap \text{Nul}(A) = \left\{\begin{bmatrix} 0 \\ 0 \end{bmatrix}\right\} = \{\mathbf{0}\}$
+                    </div>
+
+                    <p><strong>Conclusion:</strong> The intersection is just the zero vector. This makes sense geometrically: $\text{Col}(A)$ is the $x$-axis and $\text{Nul}(A)$ is the $y$-axis in $\mathbb{R}^2$, and they meet only at the origin.</p>
+                </div>
+            </div>
+
+            <!-- Example 12: Differential equations -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 12: Show Solutions to $y'' + y = 0$ Form a Vector Space</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Let $W = \{y(t) : y''(t) + y(t) = 0\}$ be the solution set of the differential equation $y'' + y = 0$. Show that $W$ is a vector space (with pointwise operations).</p>
+
+                    <p><strong>Solution:</strong> We verify the three essential axioms.</p>
+
+                    <p><strong>Step 1: Zero function is a solution</strong></p>
+                    <div class="solution-step">
+The zero function is $\mathbf{0}(t) = 0$ for all $t$.
+
+$\mathbf{0}''(t) + \mathbf{0}(t) = 0 + 0 = 0$ ✓
+
+So $\mathbf{0} \in W$.
+                    </div>
+
+                    <p><strong>Step 2: Closure under addition</strong></p>
+                    <div class="solution-step">
+Let $y_1(t), y_2(t) \in W$. Then:
+$y_1''(t) + y_1(t) = 0$ and $y_2''(t) + y_2(t) = 0$
+
+Consider $y(t) = y_1(t) + y_2(t)$.
+
+$y''(t) + y(t) = (y_1 + y_2)''(t) + (y_1 + y_2)(t)$
+$= y_1''(t) + y_2''(t) + y_1(t) + y_2(t)$
+$= [y_1''(t) + y_1(t)] + [y_2''(t) + y_2(t)]$
+$= 0 + 0 = 0$ ✓
+
+So $y_1 + y_2 \in W$.
+                    </div>
+
+                    <p><strong>Step 3: Closure under scalar multiplication</strong></p>
+                    <div class="solution-step">
+Let $y(t) \in W$ and $c \in \mathbb{R}$. Then $y''(t) + y(t) = 0$.
+
+Consider $z(t) = cy(t)$.
+
+$z''(t) + z(t) = (cy)''(t) + (cy)(t)$
+$= cy''(t) + cy(t)$
+$= c[y''(t) + y(t)]$
+$= c \cdot 0 = 0$ ✓
+
+So $cy \in W$.
+                    </div>
+
+                    <p><strong>Conclusion:</strong> All three conditions are satisfied, so $W$ is a vector space. ✓</p>
+
+                    <p><strong>Note:</strong> The general solution is $y(t) = A\cos(t) + B\sin(t)$, which shows that $W = \text{span}\{\cos(t), \sin(t)\}$, a 2-dimensional subspace of $C^2(\mathbb{R})$ (twice-differentiable continuous functions).</p>
+                </div>
+            </div>
+
+            <!-- Example 13: Union is not subspace -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 13: Show Union of Two Subspaces is NOT a Subspace (in General)</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Let $W_1 = \text{span}\{(1, 0)\}$ and $W_2 = \text{span}\{(0, 1)\}$ be two subspaces of $\mathbb{R}^2$. Show that $W_1 \cup W_2$ is not a subspace.</p>
+
+                    <p><strong>Solution:</strong> We show failure of closure under addition.</p>
+
+                    <p><strong>Step 1: Describe the two subspaces</strong></p>
+                    <div class="solution-step">
+$W_1 = \{(x, 0) : x \in \mathbb{R}\}$ (the $x$-axis)
+
+$W_2 = \{(0, y) : y \in \mathbb{R}\}$ (the $y$-axis)
+
+$W_1 \cup W_2$ is the union of the two axes.
+                    </div>
+
+                    <p><strong>Step 2: Find vectors in the union</strong></p>
+                    <div class="solution-step">
+$(1, 0) \in W_1 \subset W_1 \cup W_2$ ✓
+
+$(0, 1) \in W_2 \subset W_1 \cup W_2$ ✓
+                    </div>
+
+                    <p><strong>Step 3: Test closure under addition</strong></p>
+                    <div class="solution-step">
+$(1, 0) + (0, 1) = (1, 1)$
+
+Is $(1, 1) \in W_1 \cup W_2$?
+
+$(1, 1) \notin W_1$ because the $y$-coordinate is not 0.
+$(1, 1) \notin W_2$ because the $x$-coordinate is not 0.
+
+Therefore $(1, 1) \notin W_1 \cup W_2$. ✗
+                    </div>
+
+                    <p><strong>Conclusion:</strong> $W_1 \cup W_2$ is not closed under addition, so it is not a subspace. ✓</p>
+
+                    <p><strong>Note:</strong> However, $W_1 + W_2 = \{(x, y) : x, y \in \mathbb{R}\} = \mathbb{R}^2$ (the sum of the two subspaces) is a subspace. The key difference is union vs. sum.</p>
+                </div>
+            </div>
+
+            <!-- Example 14: Rank-nullity -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 14: Verify Rank-Nullity for a 4×5 Matrix</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> For $A = \begin{bmatrix} 1 & 2 & 0 & 1 & 3 \\ 0 & 0 & 1 & 2 & 1 \\ 1 & 2 & 1 & 3 & 4 \\ 2 & 4 & 2 & 6 & 8 \end{bmatrix}$, find $\text{rank}(A)$, $\text{nullity}(A)$, and verify the Rank-Nullity Theorem.</p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Row reduce to REF</strong></p>
+                    <div class="solution-step">
+$\left[\begin{array}{ccccc} 1 & 2 & 0 & 1 & 3 \\ 0 & 0 & 1 & 2 & 1 \\ 1 & 2 & 1 & 3 & 4 \\ 2 & 4 & 2 & 6 & 8 \end{array}\right]$
+
+Operations: $R_3 - R_1 \to R_3$, $R_4 - 2R_1 \to R_4$:
+
+$\left[\begin{array}{ccccc} 1 & 2 & 0 & 1 & 3 \\ 0 & 0 & 1 & 2 & 1 \\ 0 & 0 & 1 & 2 & 1 \\ 0 & 0 & 2 & 4 & 2 \end{array}\right]$
+
+Operations: $R_3 - R_2 \to R_3$, $R_4 - 2R_2 \to R_4$:
+
+$\left[\begin{array}{ccccc} 1 & 2 & 0 & 1 & 3 \\ 0 & 0 & 1 & 2 & 1 \\ 0 & 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 & 0 \end{array}\right]$
+                    </div>
+
+                    <p><strong>Step 2: Identify pivots and rank</strong></p>
+                    <div class="solution-step">
+Pivot columns: 1 and 3
+
+Number of pivot columns = 2
+
+Therefore: $\text{rank}(A) = 2$
+                    </div>
+
+                    <p><strong>Step 3: Identify free variables</strong></p>
+                    <div class="solution-step">
+Free variables: $x_2, x_4, x_5$ (columns 2, 4, 5)
+
+Number of free variables = 3
+
+Therefore: $\text{nullity}(A) = 3$
+                    </div>
+
+                    <p><strong>Step 4: Apply Rank-Nullity Theorem</strong></p>
+                    <div class="solution-step">
+The Rank-Nullity Theorem states:
+$\text{rank}(A) + \text{nullity}(A) = n$
+
+where $n$ is the number of columns.
+
+$\text{rank}(A) + \text{nullity}(A) = 2 + 3 = 5 = n$ ✓
+
+The theorem is verified!
+                    </div>
+
+                    <p><strong>Interpretation:</strong> The columns of $A$ span a 2-dimensional space (the column space), and the solutions to $A\mathbf{x} = \mathbf{0}$ form a 3-dimensional space (the null space). Together, they account for all 5 dimensions of the input space $\mathbb{R}^5$.</p>
+                </div>
+            </div>
+
+            <!-- Example 15: Complex computation -->
+            <div class="example-item">
+                <div class="example-header" onclick="toggle(this)">
+                    <span>Example 15: Comprehensive Analysis — Find Both $\text{Col}(A)$ and $\text{Nul}(A)$</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> For $A = \begin{bmatrix} 1 & 2 & 1 & 0 \\ 2 & 4 & 3 & 1 \\ 3 & 6 & 5 & 2 \end{bmatrix}$, find both a basis for $\text{Col}(A)$ and a basis for $\text{Nul}(A)$. Verify that $\text{rank}(A) + \text{nullity}(A) = 4$.</p>
+
+                    <p><strong>Solution:</strong></p>
+
+                    <p><strong>Step 1: Row reduce to RREF</strong></p>
+                    <div class="solution-step">
+Starting: $\left[\begin{array}{cccc} 1 & 2 & 1 & 0 \\ 2 & 4 & 3 & 1 \\ 3 & 6 & 5 & 2 \end{array}\right]$
+
+Operations: $R_2 - 2R_1 \to R_2$, $R_3 - 3R_1 \to R_3$:
+
+$\left[\begin{array}{cccc} 1 & 2 & 1 & 0 \\ 0 & 0 & 1 & 1 \\ 0 & 0 & 2 & 2 \end{array}\right]$
+
+Operation: $R_3 - 2R_2 \to R_3$:
+
+$\left[\begin{array}{cccc} 1 & 2 & 1 & 0 \\ 0 & 0 & 1 & 1 \\ 0 & 0 & 0 & 0 \end{array}\right]$
+
+Operation: $R_1 - R_2 \to R_1$:
+
+$\left[\begin{array}{cccc} 1 & 2 & 0 & -1 \\ 0 & 0 & 1 & 1 \\ 0 & 0 & 0 & 0 \end{array}\right]$
+                    </div>
+
+                    <p><strong>Step 2: Find Column Space basis</strong></p>
+                    <div class="solution-step">
+Pivot columns in RREF: 1 and 3
+
+Corresponding pivot columns in ORIGINAL matrix:
+Column 1: $\begin{bmatrix} 1 \\ 2 \\ 3 \end{bmatrix}$
+Column 3: $\begin{bmatrix} 1 \\ 3 \\ 5 \end{bmatrix}$
+
+$\text{Col}(A) = \text{span}\left\{\begin{bmatrix} 1 \\ 2 \\ 3 \end{bmatrix}, \begin{bmatrix} 1 \\ 3 \\ 5 \end{bmatrix}\right\}$
+
+$\text{rank}(A) = 2$
+                    </div>
+
+                    <p><strong>Step 3: Find Null Space basis</strong></p>
+                    <div class="solution-step">
+Free variables: $x_2, x_4$
+
+From RREF:
+$x_1 + 2x_2 - x_4 = 0 \Rightarrow x_1 = -2x_2 + x_4$
+$x_3 + x_4 = 0 \Rightarrow x_3 = -x_4$
+
+General solution (let $x_2 = s$, $x_4 = t$):
+$\begin{bmatrix} x_1 \\ x_2 \\ x_3 \\ x_4 \end{bmatrix} = \begin{bmatrix} -2s + t \\ s \\ -t \\ t \end{bmatrix} = s\begin{bmatrix} -2 \\ 1 \\ 0 \\ 0 \end{bmatrix} + t\begin{bmatrix} 1 \\ 0 \\ -1 \\ 1 \end{bmatrix}$
+
+$\text{Nul}(A) = \text{span}\left\{\begin{bmatrix} -2 \\ 1 \\ 0 \\ 0 \end{bmatrix}, \begin{bmatrix} 1 \\ 0 \\ -1 \\ 1 \end{bmatrix}\right\}$
+
+$\text{nullity}(A) = 2$
+                    </div>
+
+                    <p><strong>Step 4: Verify Rank-Nullity Theorem</strong></p>
+                    <div class="solution-step">
+$\text{rank}(A) + \text{nullity}(A) = 2 + 2 = 4 = $ (number of columns) ✓
+                    </div>
+
+                    <p><strong>Summary:</strong> The matrix $A$ is a $3 \times 4$ matrix with rank 2. Its column space is 2-dimensional (a plane in $\mathbb{R}^3$), and its null space is 2-dimensional (a plane through the origin in $\mathbb{R}^4$).</p>
+                </div>
+            </div>
+
+            <!-- Quiz Section -->
+            <h2>Knowledge Check Quiz</h2>
+            <p>Test your understanding of vector spaces and subspaces. Select an answer and click to check.</p>
+
+            <!-- Question 1 -->
+            <div class="quiz-question">
+                <div class="question-text">Q1: Which of the following is NOT one of the 10 vector space axioms?</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, 'q1', false)">A) Closure under addition</button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q1', false)">B) Every vector has an additive inverse</button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q1', true)">C) Every vector has a multiplicative inverse</button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q1', false)">D) There exists a zero vector</button>
+                </div>
+                <div id="feedback-q1" class="quiz-feedback"></div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="quiz-question">
+                <div class="question-text">Q2: To verify that a non-empty subset $W$ is a subspace of a vector space $V$, which of the following is sufficient?</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, 'q2', true)">A) $\mathbf{0} \in W$, $W$ is closed under addition, and $W$ is closed under scalar multiplication</button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q2', false)">B) Only that $W$ is closed under addition</button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q2', false)">C) Only that there is a zero vector in $W$</button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q2', false)">D) All 10 vector space axioms for $V$ must hold in $W$ explicitly</button>
+                </div>
+                <div id="feedback-q2" class="quiz-feedback"></div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="quiz-question">
+                <div class="question-text">Q3: The null space $\text{Nul}(A)$ of a matrix $A$ is defined as:</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, 'q3', true)">A) The set of all $\mathbf{x}$ such that $A\mathbf{x} = \mathbf{0}$</button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q3', false)">B) The set of all $\mathbf{b}$ such that $A\mathbf{x} = \mathbf{b}$ has a solution</button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q3', false)">C) The set of all columns of $A$</button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q3', false)">D) The set of all rows of $A$</button>
+                </div>
+                <div id="feedback-q3" class="quiz-feedback"></div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="quiz-question">
+                <div class="question-text">Q4: If $A$ is a $3 \times 5$ matrix with 2 pivot columns, what is $\text{dim}(\text{Nul}(A))$ (the nullity)?</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, 'q4', false)">A) 2</button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q4', true)">B) 3</button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q4', false)">C) 5</button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q4', false)">D) 1</button>
+                </div>
+                <div id="feedback-q4" class="quiz-feedback"></div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="quiz-question">
+                <div class="question-text">Q5: Which of the following is a subspace of $\mathbb{R}^3$?</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, 'q5', true)">A) $\{(x,y,z) : 2x - y + z = 0\}$</button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q5', false)">B) $\{(x,y,z) : 2x - y + z = 1\}$</button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q5', false)">C) $\{(x,y,z) : x, y, z \geq 0\}$</button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q5', false)">D) $\{(x,y,z) : x^2 + y^2 + z^2 = 1\}$</button>
+                </div>
+                <div id="feedback-q5" class="quiz-feedback"></div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="quiz-question">
+                <div class="question-text">Q6: For a matrix $A$ with $m$ rows and $n$ columns, $\text{Col}(A)$ is a subspace of which vector space?</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, 'q6', true)">A) $\mathbb{R}^m$</button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q6', false)">B) $\mathbb{R}^n$</button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q6', false)">C) $M_{m \times n}$</button>
+                    <button class="choice-btn" onclick="checkChoice(this, 'q6', false)">D) The set of all linear combinations of rows</button>
+                </div>
+                <div id="feedback-q6" class="quiz-feedback"></div>
+            </div>
+
+            <!-- Key Takeaways -->
+            <div class="key-takeaways">
+                <h3>Key Takeaways</h3>
+                <ol>
+                    <li><strong>Vector Spaces</strong> are abstract algebraic structures satisfying 10 axioms. Rather than verifying all 10, we often use the subspace test to check if a subset is a subspace.</li>
+                    <li><strong>Subspace Test:</strong> A non-empty subset $W$ of a vector space $V$ is a subspace if it contains the zero vector and is closed under addition and scalar multiplication.</li>
+                    <li><strong>Column Space $\text{Col}(A)$</strong> is the span of the columns of $A$. To find a basis, row reduce and identify pivot columns from the original matrix.</li>
+                    <li><strong>Null Space $\text{Nul}(A)$</strong> is the solution set of $A\mathbf{x} = \mathbf{0}$. It is always a subspace. Find a basis by row reducing and expressing solutions in parametric form using free variables.</li>
+                    <li><strong>Rank-Nullity Theorem:</strong> For any $m \times n$ matrix, $\text{rank}(A) + \text{nullity}(A) = n$. This fundamental relationship connects the dimensions of the column space and null space.</li>
+                </ol>
+            </div>
+
+            <!-- Navigation Footer -->
+            <div class="nav-footer">
+                <a href="ch1-determinants.html">← 1.4 Determinants</a>
+                <span>Chapter 2: Vector Spaces</span>
+                <a href="ch2-independence.html">2.2 Linear Independence →</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 Dr. Mohamed Mabrok — Qatar University</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // KaTeX initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    { left: '$$', right: '$$', display: true },
+                    { left: '$', right: '$', display: false },
+                    { left: '\\(', right: '\\)', display: false },
+                    { left: '\\[', right: '\\]', display: true }
+                ]
+            });
+
+            // Initialize visualizations
+            drawSubspaceVisualization('plane');
+        });
+
+        // Toggle collapsible examples
+        function toggle(element) {
+            const item = element.closest('.example-item');
+            item.classList.toggle('active');
+        }
+
+        // Quiz functionality
+        function checkChoice(btn, qId, isCorrect) {
+            const choices = btn.parentElement.querySelectorAll('.choice-btn');
+            choices.forEach(c => c.disabled = true);
+            const feedback = document.getElementById('feedback-' + qId);
+            feedback.classList.add('show');
+            if (isCorrect) {
+                btn.classList.add('correct');
+                feedback.classList.add('correct');
+                feedback.innerHTML = '<strong>✓ Correct!</strong> Well done.';
+            } else {
+                btn.classList.add('incorrect');
+                feedback.classList.add('incorrect');
+                feedback.innerHTML = '<strong>✗ Not quite.</strong> Review the material and try again.';
+            }
+        }
+
+        // Visualization 1: Subspace Visualizer
+        let currentSubspaceType = 'plane';
+
+        function setSubspaceType(type) {
+            currentSubspaceType = type;
+            drawSubspaceVisualization(type);
+        }
+
+        function drawSubspaceVisualization(type) {
+            const canvas = document.getElementById('subspaceCanvas');
+            const ctx = canvas.getContext('2d');
+            const infoDiv = document.getElementById('subspaceInfo');
+
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const scale = 40;
+
+            // Draw axes
+            ctx.strokeStyle = '#4b5563';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(canvas.width, centerY);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, canvas.height);
+            ctx.stroke();
+
+            // Draw grid
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 0.5;
+            for (let i = -250; i <= 250; i += scale) {
+                ctx.beginPath();
+                ctx.moveTo(centerX + i, 0);
+                ctx.lineTo(centerX + i, canvas.height);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(0, centerY + i);
+                ctx.lineTo(canvas.width, centerY + i);
+                ctx.stroke();
+            }
+
+            // Draw based on subspace type
+            if (type === 'plane') {
+                // z = 0 plane (the xy-plane in perspective)
+                ctx.fillStyle = 'rgba(13, 148, 136, 0.3)';
+                ctx.strokeStyle = '#0d9488';
+                ctx.lineWidth = 2;
+
+                // Draw parallelogram to represent the plane
+                ctx.beginPath();
+                ctx.moveTo(centerX - 120, centerY - 60);
+                ctx.lineTo(centerX + 120, centerY - 60);
+                ctx.lineTo(centerX + 150, centerY + 80);
+                ctx.lineTo(centerX - 90, centerY + 80);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+
+                infoDiv.innerHTML = '<strong>Plane through origin:</strong> $z = 0$ (xy-plane)<br>This IS a subspace. ✓';
+            } else if (type === 'line') {
+                // A line through origin
+                ctx.strokeStyle = '#7c3aed';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(centerX - 150, centerY - 150);
+                ctx.lineTo(centerX + 150, centerY + 150);
+                ctx.stroke();
+
+                infoDiv.innerHTML = '<strong>Line through origin:</strong> Parametric: $t(1, 1)$<br>This IS a subspace. ✓';
+            } else if (type === 'origin') {
+                // Just the origin point
+                ctx.fillStyle = '#10b981';
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, 6, 0, 2 * Math.PI);
+                ctx.fill();
+
+                infoDiv.innerHTML = '<strong>Only the origin:</strong> $\\{\\mathbf{0}\\}$<br>This IS a (trivial) subspace. ✓';
+            } else if (type === 'shifted') {
+                // Shifted plane (not through origin)
+                ctx.fillStyle = 'rgba(220, 38, 38, 0.3)';
+                ctx.strokeStyle = '#dc2626';
+                ctx.lineWidth = 2;
+
+                ctx.beginPath();
+                ctx.moveTo(centerX - 120, centerY - 60 + 60);
+                ctx.lineTo(centerX + 120, centerY - 60 + 60);
+                ctx.lineTo(centerX + 150, centerY + 80 + 60);
+                ctx.lineTo(centerX - 90, centerY + 80 + 60);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+
+                // Mark the origin
+                ctx.fillStyle = '#10b981';
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, 5, 0, 2 * Math.PI);
+                ctx.fill();
+
+                infoDiv.innerHTML = '<strong>Shifted plane (NOT through origin):</strong> $z = 1$<br>This is NOT a subspace. ✗ (fails closure, no zero vector)';
+            }
+        }
+
+        // Visualization 2: Column Space & Null Space Explorer
+        function exploreColSpace() {
+            const entries = [];
+            for (let i = 0; i < 9; i++) {
+                entries.push(parseFloat(document.getElementById('m' + Math.floor(i/3) + (i%3)).value) || 0);
+            }
+
+            // Simple 3x3 case
+            const A = [
+                [entries[0], entries[1], entries[2]],
+                [entries[3], entries[4], entries[5]],
+                [entries[6], entries[7], entries[8]]
+            ];
+
+            // Row reduce to identify pivot columns
+            const result = rowReduceSimple(A);
+            const pivotCols = result.pivots;
+
+            // Get original columns
+            const col1 = pivotCols.includes(0) ? `$\\begin{bmatrix} ${A[0][0]} \\\\ ${A[1][0]} \\\\ ${A[2][0]} \\end{bmatrix}$` : '';
+            const col2 = pivotCols.includes(1) ? `$\\begin{bmatrix} ${A[0][1]} \\\\ ${A[1][1]} \\\\ ${A[2][1]} \\end{bmatrix}$` : '';
+            const col3 = pivotCols.includes(2) ? `$\\begin{bmatrix} ${A[0][2]} \\\\ ${A[1][2]} \\\\ ${A[2][2]} \\end{bmatrix}$` : '';
+
+            const cols = [col1, col2, col3].filter(c => c);
+            const resultDiv = document.getElementById('explorationResult');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `<strong>Column Space Basis:</strong>\n\nPivot columns (from original matrix): ${pivotCols.join(', ')}\n\n${cols.join('\n\n')}\n\nDimension of Col(A) = ${pivotCols.length}`;
+
+            renderMathInElement(resultDiv);
+        }
+
+        function exploreNulSpace() {
+            const entries = [];
+            for (let i = 0; i < 9; i++) {
+                entries.push(parseFloat(document.getElementById('m' + Math.floor(i/3) + (i%3)).value) || 0);
+            }
+
+            const A = [
+                [entries[0], entries[1], entries[2]],
+                [entries[3], entries[4], entries[5]],
+                [entries[6], entries[7], entries[8]]
+            ];
+
+            const result = rowReduceSimple(A);
+            const freeVars = result.free;
+
+            const resultDiv = document.getElementById('explorationResult');
+            resultDiv.style.display = 'block';
+
+            if (freeVars.length === 0) {
+                resultDiv.innerHTML = `<strong>Null Space:</strong>\n\nNo free variables.\n\nNul(A) = {0}\n\nDimension = 0`;
+            } else {
+                resultDiv.innerHTML = `<strong>Null Space:</strong>\n\nFree variables: ${freeVars.join(', ')}\n\nDimension of Nul(A) = ${freeVars.length}\n\n(Full computation requires complete row reduction to RREF)`;
+            }
+        }
+
+        function rowReduceSimple(A) {
+            // Very simple row reduction for demonstration
+            let pivots = [];
+            let free = [];
+
+            // Identify nonzero columns
+            for (let j = 0; j < 3; j++) {
+                let hasNonzero = false;
+                for (let i = 0; i < 3; i++) {
+                    if (Math.abs(A[i][j]) > 0.0001) {
+                        hasNonzero = true;
+                        break;
+                    }
+                }
+                if (hasNonzero) {
+                    pivots.push(j);
+                } else {
+                    free.push(j);
+                }
+            }
+
+            return { pivots, free };
+        }
+    </script>
+</body>
+</html>

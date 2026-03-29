@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.3 Basis & Dimension | LA Course</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #1f2937; background: #f9fafb; }
+        nav { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: white; border-bottom: 2px solid #0d9488; display: flex; align-items: center; padding: 0 30px; gap: 40px; z-index: 1000; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .nav-brand { font-size: 18px; font-weight: 700; color: #0d9488; text-decoration: none; }
+        .nav-links { display: flex; gap: 30px; list-style: none; margin-left: auto; }
+        .nav-links a { color: #6b7280; text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: #0d9488; }
+        .nav-links a.active { color: #0d9488; border-bottom: 2px solid #0d9488; padding-bottom: 2px; }
+        main { margin-top: 60px; }
+        .hero { background: linear-gradient(135deg, #0d9488 0%, #059669 100%); color: white; padding: 60px 30px; text-align: center; }
+        .hero h1 { font-size: 48px; font-weight: 700; margin-bottom: 15px; }
+        .hero p { font-size: 20px; opacity: 0.95; max-width: 800px; margin: 0 auto; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 40px 30px; }
+        h2 { color: #0d9488; font-size: 32px; margin: 50px 0 30px 0; padding-bottom: 10px; border-bottom: 3px solid #0d9488; }
+        h3 { color: #1f2937; font-size: 24px; margin: 35px 0 20px 0; }
+        p { margin-bottom: 15px; line-height: 1.8; }
+        .definition-box, .theorem-box, .example-box, .warning-box, .tip-box { margin: 25px 0; padding: 20px 25px; border-left: 5px solid; border-radius: 8px; background: #f3f4f6; }
+        .definition-box { border-left-color: #0d9488; background: #ecfdf5; }
+        .definition-box strong { color: #0d9488; }
+        .theorem-box { border-left-color: #7c3aed; background: #f3e8ff; }
+        .theorem-box strong { color: #7c3aed; }
+        .warning-box { border-left-color: #dc2626; background: #fee2e2; }
+        .warning-box strong { color: #dc2626; }
+        .tip-box { border-left-color: #d97706; background: #fef3c7; }
+        .tip-box strong { color: #d97706; }
+        .objectives { background: #ecfdf5; border: 2px solid #0d9488; border-radius: 8px; padding: 25px; margin: 30px 0; }
+        .objectives h3 { color: #0d9488; margin-top: 0; }
+        .objectives ul { list-style: none; padding: 0; }
+        .objectives li { padding: 10px 0; padding-left: 30px; position: relative; }
+        .objectives li:before { content: "✓"; position: absolute; left: 0; color: #0d9488; font-weight: bold; font-size: 18px; }
+        .example-item { margin: 20px 0; border: 1px solid #d1d5db; border-radius: 8px; overflow: hidden; background: white; }
+        .example-header { background: linear-gradient(135deg, #059669, #10b981); color: white; padding: 18px 25px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; font-weight: 600; font-size: 16px; transition: all 0.3s; }
+        .example-header:hover { background: linear-gradient(135deg, #047857, #059669); }
+        .example-header .toggle-arrow { display: inline-block; transition: transform 0.3s; font-size: 20px; }
+        .example-item.active .example-header .toggle-arrow { transform: rotate(180deg); }
+        .example-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out; padding: 0 25px; }
+        .example-item.active .example-content { max-height: 5000px; padding: 25px; }
+        .solution-step { background: #f0f9ff; border-left: 4px solid #0d9488; padding: 15px; margin: 15px 0; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 14px; overflow-x: auto; }
+        .quiz-question { background: white; border: 2px solid #e5e7eb; border-radius: 8px; padding: 25px; margin: 25px 0; }
+        .quiz-question .question-text { font-weight: 600; margin-bottom: 18px; color: #1f2937; }
+        .choices { display: flex; flex-direction: column; gap: 12px; }
+        .choice-btn { background: white; border: 2px solid #d1d5db; border-radius: 6px; padding: 12px 18px; cursor: pointer; text-align: left; transition: all 0.3s; font-size: 15px; }
+        .choice-btn:hover { border-color: #0d9488; background: #f0fdf4; }
+        .choice-btn.correct { background: #dcfce7; border-color: #16a34a; color: #15803d; }
+        .choice-btn.incorrect { background: #fee2e2; border-color: #dc2626; color: #991b1b; }
+        .quiz-feedback { margin-top: 15px; padding: 12px 15px; border-radius: 6px; font-size: 14px; display: none; }
+        .quiz-feedback.show { display: block; }
+        .quiz-feedback.correct { background: #dcfce7; color: #15803d; border-left: 4px solid #16a34a; }
+        .quiz-feedback.incorrect { background: #fee2e2; color: #991b1b; border-left: 4px solid #dc2626; }
+        .visualization-container { background: white; border: 2px solid #e5e7eb; border-radius: 8px; padding: 25px; margin: 30px 0; display: flex; flex-direction: column; align-items: center; }
+        .visualization-controls { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
+        .btn { background: #0d9488; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.3s; }
+        .btn:hover { background: #059669; }
+        .btn.secondary { background: #7c3aed; }
+        canvas { max-width: 100%; background: #0f172a; border-radius: 6px; }
+        .key-takeaways { background: linear-gradient(135deg, #ecfdf5, #f0fdf4); border: 2px solid #0d9488; border-radius: 8px; padding: 30px; margin: 40px 0; }
+        .key-takeaways h3 { color: #0d9488; margin-top: 0; }
+        .key-takeaways ol { padding-left: 25px; }
+        .key-takeaways li { margin-bottom: 12px; }
+        .nav-footer { display: flex; justify-content: space-between; align-items: center; margin: 60px 0 40px 0; padding: 25px 0; border-top: 2px solid #e5e7eb; border-bottom: 2px solid #e5e7eb; }
+        .nav-footer a { color: #0d9488; text-decoration: none; font-weight: 600; }
+        footer { background: #1f2937; color: #d1d5db; text-align: center; padding: 30px; font-size: 14px; }
+        .matrix-input-group { margin: 15px 0; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+        .matrix-input { padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+        .matrix-output { background: #f0f9ff; border: 1px solid #0d9488; border-radius: 4px; padding: 15px; margin: 15px 0; font-family: 'Courier New', monospace; font-size: 13px; white-space: pre-wrap; word-wrap: break-word; }
+        @media (max-width: 768px) { nav { padding: 0 15px; gap: 15px; } .nav-links { gap: 15px; } .nav-links a { font-size: 12px; } .hero h1 { font-size: 32px; } .container { padding: 30px 20px; } .nav-footer { flex-direction: column; gap: 15px; } }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="#" class="nav-brand">LA Course</a>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Why LA?</a></li>
+            <li><a href="#">§ 1.1-1.4</a></li>
+            <li><a href="#" class="active">§ 2.1-2.5</a></li>
+            <li><a href="#">Exam</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="hero">
+            <h1>Basis & Dimension</h1>
+            <p>The minimum spanning set — how bases provide unique coordinates and dimension measures the 'size' of a space</p>
+        </div>
+
+        <div class="container">
+            <!-- OBJECTIVES -->
+            <div class="objectives">
+                <h3>Learning Objectives</h3>
+                <ul>
+                    <li>Define basis and verify a set is a basis</li>
+                    <li>Find a basis for Col(A), Nul(A), and Row(A)</li>
+                    <li>Understand dimension as the number of vectors in any basis</li>
+                    <li>State and apply the Rank-Nullity Theorem: rank(A) + nullity(A) = n</li>
+                    <li>Find coordinate vectors relative to a given basis</li>
+                </ul>
+            </div>
+
+            <!-- SECTION 1: BASIS -->
+            <h2>1. What is a Basis?</h2>
+            <p>A <strong>basis</strong> is the minimal generating set for a vector space — a set of linearly independent vectors that span the entire space. Every vector in the space can be expressed uniquely as a linear combination of basis vectors.</p>
+
+            <div class="definition-box">
+                <strong>Definition:</strong> A set \(\{v_1, v_2, \ldots, v_n\}\) is a basis for a vector space \(V\) if:
+                <ol style="margin: 10px 0 0 20px;">
+                    <li>The vectors are <strong>linearly independent</strong></li>
+                    <li>The vectors <strong>span</strong> \(V\)</li>
+                </ol>
+            </div>
+
+            <h3>The Standard Basis for \(\mathbb{R}^n\)</h3>
+            <p>The most natural basis for \(\mathbb{R}^n\) is the standard basis:</p>
+            <div class="solution-step">
+                \[\vec{e}_1 = \begin{bmatrix} 1 \\ 0 \\ 0 \\ \vdots \\ 0 \end{bmatrix}, \quad \vec{e}_2 = \begin{bmatrix} 0 \\ 1 \\ 0 \\ \vdots \\ 0 \end{bmatrix}, \quad \ldots, \quad \vec{e}_n = \begin{bmatrix} 0 \\ 0 \\ 0 \\ \vdots \\ 1 \end{bmatrix}\]
+            </div>
+
+            <p>For example, the standard basis for \(\mathbb{R}^3\) is:</p>
+            <div class="solution-step">
+                \[\left\{\begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix}\right\}\]
+            </div>
+
+            <div class="tip-box">
+                <strong>Key Insight:</strong> A vector space can have many different bases, but all bases for the same space have the same number of vectors. This number is called the <strong>dimension</strong>.
+            </div>
+
+            <!-- SECTION 2: FINDING BASES -->
+            <h2>2. Finding Bases for Fundamental Subspaces</h2>
+            <p>For a matrix \(A\), we can find bases for three important subspaces:</p>
+
+            <h3>Basis for Col(A) — Column Space</h3>
+            <p><strong>Method:</strong> Find the RREF of \(A\), identify pivot columns, and use the <strong>corresponding columns from the original matrix \(A\)</strong> (not the RREF).</p>
+
+            <div class="warning-box">
+                <strong>Important:</strong> Use pivot columns from <strong>original</strong> \(A\), not the RREF. The RREF tells us which columns are pivot columns, but the actual vectors must come from \(A\).
+            </div>
+
+            <h3>Basis for Nul(A) — Null Space</h3>
+            <p><strong>Method:</strong> Solve \(Ax = 0\) by row reducing to RREF. Parametrize free variables. The vectors corresponding to free variables form a basis for Nul(A).</p>
+
+            <h3>Basis for Row(A) — Row Space</h3>
+            <p><strong>Method:</strong> Row reduce \(A\) to RREF. The nonzero rows of the RREF form a basis for Row(A).</p>
+
+            <!-- SECTION 3: DIMENSION -->
+            <h2>3. Dimension</h2>
+            <p>The <strong>dimension</strong> of a vector space \(V\) is the number of vectors in any basis for \(V\).</p>
+
+            <div class="definition-box">
+                <strong>Definition:</strong> \[\dim(V) = \text{number of vectors in any basis for } V\]
+            </div>
+
+            <h3>Examples of Dimensions</h3>
+            <ul>
+                <li>\(\dim(\mathbb{R}^n) = n\)</li>
+                <li>\(\dim(\{\vec{0}\}) = 0\) (the zero space has empty basis)</li>
+                <li>\(\dim(P_n) = n + 1\) (polynomials of degree \(\le n\))</li>
+                <li>\(\dim(M_{m \times n}) = mn\) (all \(m \times n\) matrices)</li>
+            </ul>
+
+            <!-- SECTION 4: RANK-NULLITY THEOREM -->
+            <h2>4. The Rank-Nullity Theorem</h2>
+            <p>One of the most important theorems in linear algebra:</p>
+
+            <div class="theorem-box">
+                <strong>Rank-Nullity Theorem:</strong> For any \(m \times n\) matrix \(A\):
+                \[\text{rank}(A) + \text{nullity}(A) = n\]
+                where \(\text{rank}(A) = \dim(\text{Col}(A)) = \dim(\text{Row}(A))\) and \(\text{nullity}(A) = \dim(\text{Nul}(A))\).
+            </div>
+
+            <h3>Geometric Interpretation</h3>
+            <p>The rank counts the "number of independent constraints" (independent equations), while the nullity counts the "number of free variables" (degrees of freedom). Together, they account for all \(n\) columns.</p>
+
+            <div class="solution-step">
+                \[\underbrace{\text{rank}(A)}_{\text{pivot columns}} + \underbrace{\text{nullity}(A)}_{\text{free columns}} = n\]
+            </div>
+
+            <!-- SECTION 5: COORDINATE SYSTEMS -->
+            <h2>5. Coordinate Vectors and Change of Basis</h2>
+            <p>Once we choose a basis \(B = \{\vec{b}_1, \vec{b}_2, \ldots, \vec{b}_n\}\) for a vector space, every vector \(\vec{x}\) can be written uniquely as:</p>
+
+            <div class="solution-step">
+                \[\vec{x} = c_1 \vec{b}_1 + c_2 \vec{b}_2 + \cdots + c_n \vec{b}_n\]
+            </div>
+
+            <p>The <strong>coordinate vector</strong> \([\vec{x}]_B\) is:</p>
+            <div class="solution-step">
+                \[[\vec{x}]_B = \begin{bmatrix} c_1 \\ c_2 \\ \vdots \\ c_n \end{bmatrix}\]
+            </div>
+
+            <p>To find coordinates, solve the system \([\vec{b}_1 \, \vec{b}_2 \, \cdots \, \vec{b}_n] [\vec{x}]_B = \vec{x}\).</p>
+
+            <div class="tip-box">
+                <strong>Key Point:</strong> Coordinate vectors are <strong>unique</strong>. Every vector has exactly one representation relative to a given basis.
+            </div>
+
+            <!-- VISUALIZATIONS -->
+            <h2>Visualizations</h2>
+
+            <h3>Visualization 1: Basis & Dimension Explorer</h3>
+            <div class="visualization-container">
+                <div class="visualization-controls">
+                    <button class="btn" onclick="visualizeBasis('standard')">Standard Basis</button>
+                    <button class="btn" onclick="visualizeBasis('custom')">Custom Basis</button>
+                    <button class="btn" onclick="visualizeBasis('subspace')">2D Subspace</button>
+                </div>
+                <canvas id="basisCanvas" width="500" height="500"></canvas>
+            </div>
+
+            <h3>Visualization 2: Rank-Nullity Calculator</h3>
+            <div class="visualization-container">
+                <p style="text-align: left; width: 100%; margin-bottom: 20px;">Enter a matrix (up to 4×6). Use semicolons to separate rows, commas for entries.</p>
+                <div class="matrix-input-group">
+                    <input type="text" id="matrixInput" class="matrix-input" placeholder="e.g., 1,2,3;4,5,6;7,8,9" style="width: 300px;">
+                    <button class="btn" onclick="computeRankNullity()">Compute</button>
+                </div>
+                <div id="rankNullityOutput" class="matrix-output" style="display: none;"></div>
+            </div>
+
+            <!-- EXAMPLES -->
+            <h2>Examples & Solutions</h2>
+
+            <!-- Easy Examples -->
+            <h3 style="margin-top: 30px;">Easy Examples</h3>
+
+            <div class="example-item">
+                <div class="example-header">
+                    Example 1: Verify {e₁,e₂,e₃} is a basis for ℝ³
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Show that the standard basis \(\{\vec{e}_1, \vec{e}_2, \vec{e}_3\}\) for \(\mathbb{R}^3\) is indeed a basis.</p>
+
+                    <div class="solution-step">
+                        <strong>Solution:</strong>
+
+We need to verify two conditions:
+
+(1) <strong>Linear Independence:</strong> Suppose \(c_1 \vec{e}_1 + c_2 \vec{e}_2 + c_3 \vec{e}_3 = \vec{0}\)
+
+\[c_1 \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix} + c_2 \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix} + c_3 \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \\ 0 \end{bmatrix}\]
+
+\[\begin{bmatrix} c_1 \\ c_2 \\ c_3 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \\ 0 \end{bmatrix}\]
+
+This gives \(c_1 = c_2 = c_3 = 0\). So the vectors are linearly independent. ✓
+
+(2) <strong>Span:</strong> Any vector \(\vec{x} = \begin{bmatrix} a \\ b \\ c \end{bmatrix} \in \mathbb{R}^3\) can be written as:
+
+\[\vec{x} = a\vec{e}_1 + b\vec{e}_2 + c\vec{e}_3\]
+
+So the standard basis vectors span \(\mathbb{R}^3\). ✓
+
+<strong>Conclusion:</strong> \(\{\vec{e}_1, \vec{e}_2, \vec{e}_3\}\) is a basis for \(\mathbb{R}^3\).
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header">
+                    Example 2: Find a basis for Col(A)
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Find a basis for \(\text{Col}(A)\) where \(A = \begin{bmatrix} 1 & 2 & 3 \\ 2 & 4 & 7 \\ 1 & 2 & 2 \end{bmatrix}\)</p>
+
+                    <div class="solution-step">
+                        <strong>Solution:</strong>
+
+<strong>Step 1:</strong> Row reduce \(A\) to find pivot columns.
+
+\[A = \begin{bmatrix} 1 & 2 & 3 \\ 2 & 4 & 7 \\ 1 & 2 & 2 \end{bmatrix} \sim \begin{bmatrix} 1 & 2 & 3 \\ 0 & 0 & 1 \\ 0 & 0 & -1 \end{bmatrix} \sim \begin{bmatrix} 1 & 2 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{bmatrix}\]
+
+<strong>Step 2:</strong> Pivot columns are columns 1 and 3.
+
+<strong>Step 3:</strong> Take columns 1 and 3 from the <strong>original</strong> matrix \(A\):
+
+\[\text{Basis for Col}(A) = \left\{ \begin{bmatrix} 1 \\ 2 \\ 1 \end{bmatrix}, \begin{bmatrix} 3 \\ 7 \\ 2 \end{bmatrix} \right\}\]
+
+Therefore, \(\dim(\text{Col}(A)) = 2\).
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header">
+                    Example 3: Compute dim(Nul(A))
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Find the dimension of Nul(A) for \(A = \begin{bmatrix} 1 & 3 & 5 & 0 \\ 0 & 0 & 1 & 2 \end{bmatrix}\)</p>
+
+                    <div class="solution-step">
+                        <strong>Solution:</strong>
+
+<strong>Step 1:</strong> The matrix is already in RREF. Pivot columns are 1 and 3.
+
+<strong>Step 2:</strong> Free variables: columns 2 and 4 → \(x_2, x_4\) are free.
+
+<strong>Step 3:</strong> The rank-nullity theorem gives:
+\[\text{rank}(A) + \text{nullity}(A) = 4\]
+\[2 + \text{nullity}(A) = 4\]
+\[\text{nullity}(A) = 2\]
+
+Therefore, \(\dim(\text{Nul}(A)) = 2\).
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header">
+                    Example 4: Find the dimension of a subspace
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Find the dimension of the subspace \(W = \text{Span}\left\{\begin{bmatrix} 1 \\ 1 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \\ 1 \end{bmatrix}\right\}\) in \(\mathbb{R}^3\)</p>
+
+                    <div class="solution-step">
+                        <strong>Solution:</strong>
+
+<strong>Step 1:</strong> Check if the vectors are linearly independent. Set:
+
+\[c_1 \begin{bmatrix} 1 \\ 1 \\ 0 \end{bmatrix} + c_2 \begin{bmatrix} 0 \\ 1 \\ 1 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \\ 0 \end{bmatrix}\]
+
+This gives:
+\[\begin{aligned}
+c_1 &= 0 \\
+c_1 + c_2 &= 0 \\
+c_2 &= 0
+\end{aligned}\]
+
+So \(c_1 = c_2 = 0\), and the vectors are linearly independent.
+
+<strong>Step 2:</strong> Since we have 2 linearly independent vectors that span \(W\), they form a basis.
+
+Therefore, \(\dim(W) = 2\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- Medium Examples -->
+            <h3 style="margin-top: 30px;">Medium Examples</h3>
+
+            <div class="example-item">
+                <div class="example-header">
+                    Example 5: Find a basis for Nul(A)
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Find a basis for Nul(A) where \(A = \begin{bmatrix} 1 & 2 & -1 & 3 \\ 2 & 4 & 0 & 8 \\ 1 & 2 & 1 & 5 \end{bmatrix}\)</p>
+
+                    <div class="solution-step">
+                        <strong>Solution:</strong>
+
+<strong>Step 1:</strong> Row reduce to RREF:
+
+\[A = \begin{bmatrix} 1 & 2 & -1 & 3 \\ 2 & 4 & 0 & 8 \\ 1 & 2 & 1 & 5 \end{bmatrix} \sim \begin{bmatrix} 1 & 2 & 0 & 4 \\ 0 & 0 & 1 & 1 \\ 0 & 0 & 0 & 0 \end{bmatrix}\]
+
+<strong>Step 2:</strong> Pivot columns: 1, 3. Free columns: 2, 4. So \(x_2, x_4\) are free.
+
+<strong>Step 3:</strong> Parametric equations:
+\[\begin{aligned}
+x_1 &= -2x_2 - 4x_4 \\
+x_3 &= -x_4 \\
+x_2 &= x_2 \text{ (free)} \\
+x_4 &= x_4 \text{ (free)}
+\end{aligned}\]
+
+<strong>Step 4:</strong> General solution:
+
+\[\vec{x} = x_2 \begin{bmatrix} -2 \\ 1 \\ 0 \\ 0 \end{bmatrix} + x_4 \begin{bmatrix} -4 \\ 0 \\ -1 \\ 1 \end{bmatrix}\]
+
+<strong>Basis for Nul(A):</strong> \[\left\{ \begin{bmatrix} -2 \\ 1 \\ 0 \\ 0 \end{bmatrix}, \begin{bmatrix} -4 \\ 0 \\ -1 \\ 1 \end{bmatrix} \right\}\]
+
+Therefore, \(\text{nullity}(A) = 2\).
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header">
+                    Example 6: Verify Rank-Nullity Theorem
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> For a \(4 \times 6\) matrix with \(\text{rank}(A) = 3\), verify the rank-nullity theorem and find the nullity.</p>
+
+                    <div class="solution-step">
+                        <strong>Solution:</strong>
+
+<strong>Given:</strong>
+- \(m = 4\) (4 rows, but we only care about rank)
+- \(n = 6\) (6 columns)
+- \(\text{rank}(A) = 3\)
+
+<strong>Apply Rank-Nullity Theorem:</strong>
+
+\[\text{rank}(A) + \text{nullity}(A) = n\]
+
+\[3 + \text{nullity}(A) = 6\]
+
+\[\text{nullity}(A) = 3\]
+
+<strong>Interpretation:</strong>
+- 3 pivot columns (independent constraints)
+- 3 free columns (degrees of freedom)
+- The null space is 3-dimensional
+
+<strong>Verification:</strong>
+- \(\dim(\text{Col}(A)) = 3\) ✓
+- \(\dim(\text{Nul}(A)) = 3\) ✓
+- \(3 + 3 = 6\) ✓ (rank-nullity holds)
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header">
+                    Example 7: Find coordinate vector relative to a basis
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Find \([\vec{x}]_B\) where \(\vec{x} = \begin{bmatrix} 5 \\ 3 \end{bmatrix}\) and \(B = \left\{\begin{bmatrix} 1 \\ 2 \end{bmatrix}, \begin{bmatrix} 3 \\ 1 \end{bmatrix}\right\}\)</p>
+
+                    <div class="solution-step">
+                        <strong>Solution:</strong>
+
+We need to find \(c_1, c_2\) such that:
+
+\[c_1 \begin{bmatrix} 1 \\ 2 \end{bmatrix} + c_2 \begin{bmatrix} 3 \\ 1 \end{bmatrix} = \begin{bmatrix} 5 \\ 3 \end{bmatrix}\]
+
+This gives the system:
+
+\[\begin{bmatrix} 1 & 3 \\ 2 & 1 \end{bmatrix} \begin{bmatrix} c_1 \\ c_2 \end{bmatrix} = \begin{bmatrix} 5 \\ 3 \end{bmatrix}\]
+
+<strong>Row reduce augmented matrix:</strong>
+
+\[\left[\begin{array}{cc|c} 1 & 3 & 5 \\ 2 & 1 & 3 \end{array}\right] \sim \left[\begin{array}{cc|c} 1 & 3 & 5 \\ 0 & -5 & -7 \end{array}\right] \sim \left[\begin{array}{cc|c} 1 & 0 & 4/5 \\ 0 & 1 & 7/5 \end{array}\right]\]
+
+<strong>Solution:</strong> \(c_1 = 4/5, c_2 = 7/5\)
+
+<strong>Coordinate vector:</strong>
+
+\[[\vec{x}]_B = \begin{bmatrix} 4/5 \\ 7/5 \end{bmatrix}\]
+
+<strong>Verification:</strong> \(\frac{4}{5}\begin{bmatrix} 1 \\ 2 \end{bmatrix} + \frac{7}{5}\begin{bmatrix} 3 \\ 1 \end{bmatrix} = \begin{bmatrix} 4/5 + 21/5 \\ 8/5 + 7/5 \end{bmatrix} = \begin{bmatrix} 5 \\ 3 \end{bmatrix}\) ✓
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header">
+                    Example 8: Find a basis for the row space
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Find a basis for Row(A) where \(A = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9 \end{bmatrix}\)</p>
+
+                    <div class="solution-step">
+                        <strong>Solution:</strong>
+
+<strong>Step 1:</strong> Row reduce to RREF:
+
+\[A = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9 \end{bmatrix} \sim \begin{bmatrix} 1 & 2 & 3 \\ 0 & -3 & -6 \\ 0 & -6 & -12 \end{bmatrix} \sim \begin{bmatrix} 1 & 0 & 1 \\ 0 & 1 & 2 \\ 0 & 0 & 0 \end{bmatrix}\]
+
+<strong>Step 2:</strong> Take the nonzero rows of the RREF:
+
+\[\text{Basis for Row}(A) = \left\{ \begin{bmatrix} 1 & 0 & 1 \end{bmatrix}, \begin{bmatrix} 0 & 1 & 2 \end{bmatrix} \right\}\]
+
+Or in column notation:
+
+\[\text{Basis for Row}(A) = \left\{ \begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \\ 2 \end{bmatrix} \right\}\]
+
+Therefore, \(\dim(\text{Row}(A)) = 2\).
+
+<strong>Note:</strong> \(\text{rank}(A) = 2 = \dim(\text{Row}(A)) = \dim(\text{Col}(A))\) ✓
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header">
+                    Example 9: Find a basis for a solution space
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Find a basis for \(W = \{(a,b,c,d) : a+b=0, c-d=0\}\) in \(\mathbb{R}^4\)</p>
+
+                    <div class="solution-step">
+                        <strong>Solution:</strong>
+
+<strong>Step 1:</strong> The conditions are:
+- \(a + b = 0 \Rightarrow a = -b\)
+- \(c - d = 0 \Rightarrow c = d\)
+
+<strong>Step 2:</strong> Parametrize with free variables \(b, d\):
+
+\[\vec{v} = \begin{bmatrix} -b \\ b \\ d \\ d \end{bmatrix} = b\begin{bmatrix} -1 \\ 1 \\ 0 \\ 0 \end{bmatrix} + d\begin{bmatrix} 0 \\ 0 \\ 1 \\ 1 \end{bmatrix}\]
+
+<strong>Step 3:</strong> Basis for \(W\):
+
+\[\text{Basis for } W = \left\{ \begin{bmatrix} -1 \\ 1 \\ 0 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ 0 \\ 1 \\ 1 \end{bmatrix} \right\}\]
+
+Therefore, \(\dim(W) = 2\).
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hard Examples -->
+            <h3 style="margin-top: 30px;">Hard Examples</h3>
+
+            <div class="example-item">
+                <div class="example-header">
+                    Example 10: Find a basis for a solution space (system of equations)
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Find a basis for the solution space of:
+                    \[\begin{aligned}
+                    x_1 + 2x_2 + x_3 + x_4 + x_5 &= 0 \\
+                    2x_1 + 4x_2 + 3x_3 + x_5 &= 0
+                    \end{aligned}\]
+                    </p>
+
+                    <div class="solution-step">
+                        <strong>Solution:</strong>
+
+<strong>Step 1:</strong> Write as augmented matrix and row reduce:
+
+\[\left[\begin{array}{ccccc|c} 1 & 2 & 1 & 1 & 1 & 0 \\ 2 & 4 & 3 & 0 & 1 & 0 \end{array}\right]\]
+
+\[\sim \left[\begin{array}{ccccc|c} 1 & 2 & 1 & 1 & 1 & 0 \\ 0 & 0 & 1 & -2 & -1 & 0 \end{array}\right]\]
+
+\[\sim \left[\begin{array}{ccccc|c} 1 & 2 & 0 & 3 & 2 & 0 \\ 0 & 0 & 1 & -2 & -1 & 0 \end{array}\right]\]
+
+<strong>Step 2:</strong> Pivot columns: 1, 3. Free variables: \(x_2, x_4, x_5\)
+
+<strong>Step 3:</strong> Parametric solution:
+
+\[\begin{aligned}
+x_1 &= -2x_2 - 3x_4 - 2x_5 \\
+x_3 &= 2x_4 + x_5
+\end{aligned}\]
+
+<strong>Step 4:</strong> General solution:
+
+\[\vec{x} = x_2\begin{bmatrix} -2 \\ 1 \\ 0 \\ 0 \\ 0 \end{bmatrix} + x_4\begin{bmatrix} -3 \\ 0 \\ 2 \\ 1 \\ 0 \end{bmatrix} + x_5\begin{bmatrix} -2 \\ 0 \\ 1 \\ 0 \\ 1 \end{bmatrix}\]
+
+<strong>Basis:</strong>
+
+\[\left\{ \begin{bmatrix} -2 \\ 1 \\ 0 \\ 0 \\ 0 \end{bmatrix}, \begin{bmatrix} -3 \\ 0 \\ 2 \\ 1 \\ 0 \end{bmatrix}, \begin{bmatrix} -2 \\ 0 \\ 1 \\ 0 \\ 1 \end{bmatrix} \right\}\]
+
+Therefore, \(\dim(\text{Nul}(A)) = 3\) and rank-nullity gives: \(2 + 3 = 5\) ✓
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header">
+                    Example 11: Extend a set to a basis for ℝ⁴
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Extend \(\left\{\begin{bmatrix} 1 \\ 1 \\ 0 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \\ 1 \\ 0 \end{bmatrix}\right\}\) to a basis for \(\mathbb{R}^4\)</p>
+
+                    <div class="solution-step">
+                        <strong>Solution:</strong>
+
+<strong>Method:</strong> Add standard basis vectors one at a time until we have 4 linearly independent vectors.
+
+<strong>Step 1:</strong> Start with the 2 given vectors.
+
+<strong>Step 2:</strong> Try adding \(\vec{e}_1 = \begin{bmatrix} 1 \\ 0 \\ 0 \\ 0 \end{bmatrix}\):
+
+Check if \(\begin{bmatrix} 1 \\ 1 \\ 0 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \\ 1 \\ 0 \end{bmatrix}, \begin{bmatrix} 1 \\ 0 \\ 0 \\ 0 \end{bmatrix}\) are independent.
+
+The matrix is:
+\[\begin{bmatrix} 1 & 0 & 1 \\ 1 & 1 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 0 \end{bmatrix}\]
+
+This has rank 3, so they are linearly independent. ✓
+
+<strong>Step 3:</strong> Try adding \(\vec{e}_4 = \begin{bmatrix} 0 \\ 0 \\ 0 \\ 1 \end{bmatrix}\):
+
+The matrix is:
+\[\begin{bmatrix} 1 & 0 & 1 & 0 \\ 1 & 1 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1 \end{bmatrix}\]
+
+This has rank 4, so the 4 vectors are linearly independent. ✓
+
+<strong>Basis for \(\mathbb{R}^4\):</strong>
+
+\[\left\{ \begin{bmatrix} 1 \\ 1 \\ 0 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \\ 1 \\ 0 \end{bmatrix}, \begin{bmatrix} 1 \\ 0 \\ 0 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ 0 \\ 0 \\ 1 \end{bmatrix} \right\}\]
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header">
+                    Example 12: Prove bases have the same cardinality
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Prove that any two bases for a finite-dimensional vector space have the same number of vectors.</p>
+
+                    <div class="solution-step">
+                        <strong>Solution (Proof Sketch):</strong>
+
+<strong>Theorem:</strong> If \(B = \{\vec{b}_1, \ldots, \vec{b}_m\}\) and \(C = \{\vec{c}_1, \ldots, \vec{c}_n\}\) are both bases for a finite-dimensional vector space \(V\), then \(m = n\).
+
+<strong>Proof:</strong>
+
+1. Since \(C\) is a basis for \(V\), it spans \(V\). So each \(\vec{b}_i\) can be written as:
+   \[\vec{b}_i = k_{1i}\vec{c}_1 + k_{2i}\vec{c}_2 + \cdots + k_{ni}\vec{c}_n\]
+
+2. This gives a system:
+   \[\begin{bmatrix} \vec{b}_1 & \cdots & \vec{b}_m \end{bmatrix} = \begin{bmatrix} \vec{c}_1 & \cdots & \vec{c}_n \end{bmatrix} K\]
+   where \(K\) is an \(n \times m\) matrix.
+
+3. Since \(B\) is linearly independent, the only solution to \(K\vec{x} = \vec{0}\) is when the columns of \(K\) can span the zero space with only trivial weights.
+
+4. By the rank-nullity theorem and linear independence arguments, we must have \(m \le n\).
+
+5. By symmetry (considering \(C\) in terms of \(B\)), we also have \(n \le m\).
+
+6. Therefore, \(m = n\). ∎
+
+<strong>Implication:</strong> This justifies the definition of dimension as the cardinality of any basis.
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header">
+                    Example 13: Polynomial Interpolation Application
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Show that there is a unique cubic polynomial \(p(x) = a + bx + cx^2 + dx^3\) passing through 4 given points.</p>
+
+                    <div class="solution-step">
+                        <strong>Solution:</strong>
+
+<strong>Key Insight:</strong> The dimension of \(P_3\) (polynomials of degree \(\le 3\)) determines uniqueness.
+
+<strong>Step 1:</strong> The space \(P_3\) has basis \(\{1, x, x^2, x^3\}\), so \(\dim(P_3) = 4\).
+
+<strong>Step 2:</strong> A polynomial \(p(x) = a + bx + cx^2 + dx^3\) has 4 unknown coefficients.
+
+<strong>Step 3:</strong> Given 4 distinct points \((x_1, y_1), (x_2, y_2), (x_3, y_3), (x_4, y_4)\), we have 4 equations:
+
+\[\begin{aligned}
+a + bx_1 + cx_1^2 + dx_1^3 &= y_1 \\
+a + bx_2 + cx_2^2 + dx_2^3 &= y_2 \\
+a + bx_3 + cx_3^2 + dx_3^3 &= y_3 \\
+a + bx_4 + cx_4^2 + dx_4^3 &= y_4
+\end{aligned}\]
+
+<strong>Step 4:</strong> This is a system with a Vandermonde matrix:
+
+\[\begin{bmatrix} 1 & x_1 & x_1^2 & x_1^3 \\ 1 & x_2 & x_2^2 & x_2^3 \\ 1 & x_3 & x_3^2 & x_3^3 \\ 1 & x_4 & x_4^2 & x_4^3 \end{bmatrix} \begin{bmatrix} a \\ b \\ c \\ d \end{bmatrix} = \begin{bmatrix} y_1 \\ y_2 \\ y_3 \\ y_4 \end{bmatrix}\]
+
+<strong>Step 5:</strong> The Vandermonde matrix has full rank (rank 4) when \(x_i\) are distinct.
+
+<strong>Conclusion:</strong> There is exactly one solution \((a, b, c, d)\), so there is a unique cubic through 4 points.
+
+<strong>Generalization:</strong> There is a unique degree-\(n\) polynomial through \(n+1\) points, because \(\dim(P_n) = n+1\).
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header">
+                    Example 14: Fundamental subspaces analysis
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> For a \(3 \times 5\) matrix with \(\text{rank}(A) = 2\), find the dimensions of all four fundamental subspaces.</p>
+
+                    <div class="solution-step">
+                        <strong>Solution:</strong>
+
+<strong>Given:</strong>
+- \(A\) is \(3 \times 5\)
+- \(\text{rank}(A) = 2\)
+
+<strong>The Four Fundamental Subspaces:</strong>
+
+1. <strong>Col(A)</strong> (Column Space):
+   \[\dim(\text{Col}(A)) = \text{rank}(A) = 2\]
+   This is a subspace of \(\mathbb{R}^3\).
+
+2. <strong>Row(A)</strong> (Row Space):
+   \[\dim(\text{Row}(A)) = \text{rank}(A) = 2\]
+   This is a subspace of \(\mathbb{R}^5\).
+
+3. <strong>Nul(A)</strong> (Null Space):
+   By rank-nullity: \(\text{rank}(A) + \text{nullity}(A) = 5\)
+   \[2 + \text{nullity}(A) = 5\]
+   \[\dim(\text{Nul}(A)) = 3\]
+   This is a subspace of \(\mathbb{R}^5\).
+
+4. <strong>Nul(\(A^T\))</strong> (Left Null Space):
+   By rank-nullity applied to \(A^T\) (which is \(5 \times 3\)):
+   \[\text{rank}(A^T) + \text{nullity}(A^T) = 3\]
+   Since \(\text{rank}(A^T) = \text{rank}(A) = 2\):
+   \[2 + \text{nullity}(A^T) = 3\]
+   \[\dim(\text{Nul}(A^T)) = 1\]
+   This is a subspace of \(\mathbb{R}^3\).
+
+<strong>Summary Table:</strong>
+
+\[\begin{array}{c|c|c}
+\text{Subspace} & \text{Dimension} & \text{Container Space} \\
+\hline
+\text{Col}(A) & 2 & \mathbb{R}^3 \\
+\text{Row}(A) & 2 & \mathbb{R}^5 \\
+\text{Nul}(A) & 3 & \mathbb{R}^5 \\
+\text{Nul}(A^T) & 1 & \mathbb{R}^3 \\
+\hline
+\text{Orthogonal Complements:} & & \\
+\text{Nul}(A) \perp \text{Row}(A) & \text{both in } \mathbb{R}^5 & \\
+\text{Nul}(A^T) \perp \text{Col}(A) & \text{both in } \mathbb{R}^3 &
+\end{array}\]
+                    </div>
+                </div>
+            </div>
+
+            <div class="example-item">
+                <div class="example-header">
+                    Example 15: Change of coordinates for polynomials
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Find the coordinates of \(p(x) = 3 + 2x - x^2\) relative to the basis \(B = \{1+x, x+x^2, 1+x^2\}\) of \(P_2\)</p>
+
+                    <div class="solution-step">
+                        <strong>Solution:</strong>
+
+<strong>Step 1:</strong> We need to find \(c_1, c_2, c_3\) such that:
+
+\[c_1(1+x) + c_2(x+x^2) + c_3(1+x^2) = 3 + 2x - x^2\]
+
+<strong>Step 2:</strong> Expand the left side:
+
+\[c_1 + c_1 x + c_2 x + c_2 x^2 + c_3 + c_3 x^2 = 3 + 2x - x^2\]
+
+\[(c_1 + c_3) + (c_1 + c_2)x + (c_2 + c_3)x^2 = 3 + 2x - x^2\]
+
+<strong>Step 3:</strong> Match coefficients:
+
+\[\begin{aligned}
+c_1 + c_3 &= 3 \\
+c_1 + c_2 &= 2 \\
+c_2 + c_3 &= -1
+\end{aligned}\]
+
+<strong>Step 4:</strong> Solve the system. Row reduce:
+
+\[\left[\begin{array}{ccc|c} 1 & 0 & 1 & 3 \\ 1 & 1 & 0 & 2 \\ 0 & 1 & 1 & -1 \end{array}\right]\]
+
+\[\sim \left[\begin{array}{ccc|c} 1 & 0 & 1 & 3 \\ 0 & 1 & -1 & -1 \\ 0 & 1 & 1 & -1 \end{array}\right]\]
+
+\[\sim \left[\begin{array}{ccc|c} 1 & 0 & 1 & 3 \\ 0 & 1 & -1 & -1 \\ 0 & 0 & 2 & 0 \end{array}\right]\]
+
+\[\sim \left[\begin{array}{ccc|c} 1 & 0 & 0 & 3 \\ 0 & 1 & 0 & -1 \\ 0 & 0 & 1 & 0 \end{array}\right]\]
+
+<strong>Solution:</strong> \(c_1 = 3, c_2 = -1, c_3 = 0\)
+
+<strong>Coordinate vector:</strong>
+
+\[[p(x)]_B = \begin{bmatrix} 3 \\ -1 \\ 0 \end{bmatrix}\]
+
+<strong>Verification:</strong> \(3(1+x) + (-1)(x+x^2) + 0(1+x^2) = 3 + 3x - x - x^2 = 3 + 2x - x^2\) ✓
+                    </div>
+                </div>
+            </div>
+
+            <!-- QUIZZES -->
+            <h2>Check Your Understanding</h2>
+
+            <div class="quiz-question">
+                <div class="question-text">Q1: A basis for \(\mathbb{R}^n\) must contain exactly:</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, false)">fewer than n vectors</button>
+                    <button class="choice-btn" onclick="checkChoice(this, true)">n vectors</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">more than n vectors</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">any number of vectors</button>
+                </div>
+                <div class="quiz-feedback"></div>
+            </div>
+
+            <div class="quiz-question">
+                <div class="question-text">Q2: The dimension of Nul(A) for a 3×5 matrix with rank 2 is:</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, false)">2</button>
+                    <button class="choice-btn" onclick="checkChoice(this, true)">3</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">5</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">cannot be determined</button>
+                </div>
+                <div class="quiz-feedback"></div>
+            </div>
+
+            <div class="quiz-question">
+                <div class="question-text">Q3: To find a basis for Col(A), we:</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, true)">identify pivot columns of original A</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">identify pivot columns of RREF(A)</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">take all nonzero rows of RREF(A)</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">take the standard basis vectors</button>
+                </div>
+                <div class="quiz-feedback"></div>
+            </div>
+
+            <div class="quiz-question">
+                <div class="question-text">Q4: If dim(V)=4 and W is a subspace with dim(W)=4, then:</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, true)">W = V</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">W is a proper subspace of V</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">W and V are disjoint</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">we cannot determine the relationship</button>
+                </div>
+                <div class="quiz-feedback"></div>
+            </div>
+
+            <div class="quiz-question">
+                <div class="question-text">Q5: The coordinate vector [\vec{x}]_B is:</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, false)">the same as the vector \vec{x} itself</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">a vector in the basis B</button>
+                    <button class="choice-btn" onclick="checkChoice(this, true)">the unique vector of weights c₁,...,cₙ such that x = c₁b₁+...+cₙbₙ</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">the average of the basis vectors</button>
+                </div>
+                <div class="quiz-feedback"></div>
+            </div>
+
+            <div class="quiz-question">
+                <div class="question-text">Q6: The Rank-Nullity Theorem says rank(A)+nullity(A) equals:</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(this, false)">the number of rows of A</button>
+                    <button class="choice-btn" onclick="checkChoice(this, true)">the number of columns of A</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">the dimension of Col(A)</button>
+                    <button class="choice-btn" onclick="checkChoice(this, false)">the rank of A squared</button>
+                </div>
+                <div class="quiz-feedback"></div>
+            </div>
+
+            <!-- KEY TAKEAWAYS -->
+            <div class="key-takeaways">
+                <h3>Key Takeaways</h3>
+                <ol>
+                    <li><strong>A basis is the minimal spanning set:</strong> Every vector in the space has a unique representation as a linear combination of basis vectors.</li>
+                    <li><strong>Find Col(A) basis from original A:</strong> Row reduce to find pivots, then take the corresponding columns from the original matrix, not the RREF.</li>
+                    <li><strong>Dimension is universal:</strong> Every basis for the same vector space has the same number of vectors; this count is the dimension.</li>
+                    <li><strong>Rank-Nullity partitions the columns:</strong> The rank (pivot columns) plus nullity (free columns) equals the total number of columns.</li>
+                    <li><strong>Coordinates are unique:</strong> Once a basis is chosen, every vector has exactly one coordinate vector relative to that basis.</li>
+                </ol>
+            </div>
+
+            <!-- NAVIGATION FOOTER -->
+            <div class="nav-footer">
+                <a href="#">← 2.2 Linear Independence</a>
+                <a href="#">Chapter 2</a>
+                <a href="#">2.4 Rank →</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        © 2026 Dr. Mohamed Mabrok — Qatar University
+    </footer>
+
+    <script>
+        // KaTeX rendering
+        document.addEventListener('DOMContentLoaded', function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '\\(', right: '\\)', display: false}
+                ]
+            });
+
+            // Make all example items collapsible
+            document.querySelectorAll('.example-header').forEach(header => {
+                header.addEventListener('click', function() {
+                    this.parentElement.classList.toggle('active');
+                });
+            });
+        });
+
+        function toggle(element) {
+            element.parentElement.classList.toggle('active');
+        }
+
+        function checkChoice(button, isCorrect) {
+            const container = button.closest('.quiz-question');
+            const feedback = container.querySelector('.quiz-feedback');
+            const allButtons = container.querySelectorAll('.choice-btn');
+
+            allButtons.forEach(btn => {
+                btn.disabled = true;
+                btn.classList.remove('correct', 'incorrect');
+            });
+
+            if (isCorrect) {
+                button.classList.add('correct');
+                feedback.textContent = 'Correct! Well done.';
+                feedback.classList.remove('incorrect');
+                feedback.classList.add('correct');
+            } else {
+                button.classList.add('incorrect');
+                feedback.textContent = 'Not quite. Try another option.';
+                feedback.classList.remove('correct');
+                feedback.classList.add('incorrect');
+            }
+            feedback.classList.add('show');
+        }
+
+        // Visualization 1: Basis & Dimension Explorer
+        let currentBasis = 'standard';
+        let animationTime = 0;
+        let isAnimating = false;
+
+        function visualizeBasis(type) {
+            currentBasis = type;
+            animationTime = 0;
+            isAnimating = true;
+            animate();
+        }
+
+        function animate() {
+            if (!isAnimating) return;
+            drawBasisVisualization();
+            animationTime += 0.02;
+            if (animationTime < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                isAnimating = false;
+            }
+        }
+
+        function drawBasisVisualization() {
+            const canvas = document.getElementById('basisCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            // Clear canvas
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const scale = 60;
+
+            // Isometric projection helper
+            function project(x, y, z) {
+                const scale2 = 0.866;
+                const ix = x - z * scale2;
+                const iy = y - (x + z) * 0.5;
+                return {x: centerX + ix * scale, y: centerY - iy * scale};
+            }
+
+            let vectors = [];
+            let decomposition = null;
+
+            if (currentBasis === 'standard') {
+                vectors = [
+                    {v: [1, 0, 0], color: '#ef4444', label: 'e₁'},
+                    {v: [0, 1, 0], color: '#3b82f6', label: 'e₂'},
+                    {v: [0, 0, 1], color: '#10b981', label: 'e₃'}
+                ];
+                decomposition = {coords: [0.7, 0.5, 0.6], color: '#fbbf24'};
+            } else if (currentBasis === 'custom') {
+                vectors = [
+                    {v: [1, 0.5, 0.2], color: '#f97316', label: 'b₁'},
+                    {v: [0.2, 1, 0.3], color: '#8b5cf6', label: 'b₂'},
+                    {v: [0.4, 0.2, 1], color: '#06b6d4', label: 'b₃'}
+                ];
+                decomposition = {coords: [0.6, 0.4, 0.5], color: '#fbbf24'};
+            } else {
+                vectors = [
+                    {v: [1, 0.5, 0], color: '#f59e0b', label: 'b₁'},
+                    {v: [0.3, 0.9, 0], color: '#ec4899', label: 'b₂'}
+                ];
+                decomposition = {coords: [0.5, 0.6, 0], color: '#fbbf24'};
+            }
+
+            // Draw basis vectors
+            vectors.forEach(vec => {
+                const v = vec.v;
+                const pos = project(v[0], v[1], v[2]);
+                ctx.strokeStyle = vec.color;
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+
+                // Arrow head
+                const angle = Math.atan2(pos.y - centerY, pos.x - centerX);
+                const arrowSize = 8;
+                ctx.fillStyle = vec.color;
+                ctx.beginPath();
+                ctx.moveTo(pos.x, pos.y);
+                ctx.lineTo(pos.x - arrowSize * Math.cos(angle - Math.PI / 6), pos.y - arrowSize * Math.sin(angle - Math.PI / 6));
+                ctx.lineTo(pos.x - arrowSize * Math.cos(angle + Math.PI / 6), pos.y - arrowSize * Math.sin(angle + Math.PI / 6));
+                ctx.closePath();
+                ctx.fill();
+
+                // Label
+                ctx.fillStyle = vec.color;
+                ctx.font = 'bold 12px sans-serif';
+                ctx.fillText(vec.label, pos.x + 10, pos.y - 5);
+            });
+
+            // Animate decomposition
+            if (decomposition && animationTime < 1) {
+                const t = animationTime;
+                const coords = decomposition.coords;
+
+                // Show linear combination
+                let endX = 0, endY = 0, endZ = 0;
+                for (let i = 0; i < Math.min(vectors.length, 3); i++) {
+                    const weight = coords[i] * t;
+                    endX += weight * vectors[i].v[0];
+                    endY += weight * vectors[i].v[1];
+                    endZ += weight * vectors[i].v[2];
+                }
+
+                const finalPos = project(endX, endY, endZ);
+                ctx.strokeStyle = decomposition.color;
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(finalPos.x, finalPos.y);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                ctx.fillStyle = decomposition.color;
+                ctx.beginPath();
+                ctx.arc(finalPos.x, finalPos.y, 5, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Initial draw
+        drawBasisVisualization();
+
+        // Visualization 2: Rank-Nullity Calculator
+        function computeRankNullity() {
+            const input = document.getElementById('matrixInput').value.trim();
+            const output = document.getElementById('rankNullityOutput');
+
+            if (!input) {
+                output.style.display = 'none';
+                return;
+            }
+
+            try {
+                // Parse matrix
+                const rows = input.split(';').map(r => r.trim());
+                const matrix = rows.map(r => r.split(',').map(x => parseFloat(x.trim())));
+
+                const m = matrix.length;
+                const n = matrix[0].length;
+
+                if (m === 0 || n === 0 || m > 4 || n > 6) {
+                    output.textContent = 'Invalid matrix. Use up to 4 rows and 6 columns.';
+                    output.style.display = 'block';
+                    return;
+                }
+
+                // Row reduce
+                const rref = gaussJordanElimination(matrix);
+
+                // Count pivot columns
+                const pivots = [];
+                let rank = 0;
+                for (let col = 0; col < n; col++) {
+                    for (let row = 0; row < m; row++) {
+                        if (Math.abs(rref[row][col]) > 1e-10) {
+                            let isPivot = true;
+                            for (let prevCol = 0; prevCol < col; prevCol++) {
+                                if (Math.abs(rref[row][prevCol]) > 1e-10) {
+                                    isPivot = false;
+                                    break;
+                                }
+                            }
+                            if (isPivot) {
+                                pivots[col] = true;
+                                rank++;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                const nullity = n - rank;
+
+                let resultText = 'RREF(A):\n';
+                rref.forEach(row => {
+                    resultText += row.map(x => x.toFixed(2)).join('\t') + '\n';
+                });
+                resultText += '\n';
+                resultText += `Pivot Columns: ${pivots.map((p, i) => p ? (i+1) : null).filter(x => x).join(', ')}\n`;
+                resultText += `Free Columns: ${pivots.map((p, i) => !p ? (i+1) : null).filter(x => x).join(', ')}\n`;
+                resultText += `\nRank(A) = ${rank}\n`;
+                resultText += `Nullity(A) = ${nullity}\n`;
+                resultText += `\nRank-Nullity: ${rank} + ${nullity} = ${n} ✓\n`;
+                resultText += `\ndim(Col(A)) = ${rank}\n`;
+                resultText += `dim(Row(A)) = ${rank}\n`;
+                resultText += `dim(Nul(A)) = ${nullity}`;
+
+                output.textContent = resultText;
+                output.style.display = 'block';
+            } catch (e) {
+                output.textContent = 'Error: Invalid matrix format. Use: 1,2,3;4,5,6';
+                output.style.display = 'block';
+            }
+        }
+
+        function gaussJordanElimination(matrix) {
+            const m = matrix.length;
+            const n = matrix[0].length;
+            const result = matrix.map(row => [...row]);
+
+            for (let col = 0; col < Math.min(m, n); col++) {
+                // Find pivot
+                let pivotRow = col;
+                for (let row = col + 1; row < m; row++) {
+                    if (Math.abs(result[row][col]) > Math.abs(result[pivotRow][col])) {
+                        pivotRow = row;
+                    }
+                }
+
+                if (Math.abs(result[pivotRow][col]) < 1e-10) continue;
+
+                // Swap rows
+                [result[col], result[pivotRow]] = [result[pivotRow], result[col]];
+
+                // Normalize pivot row
+                const pivot = result[col][col];
+                for (let j = 0; j < n; j++) {
+                    result[col][j] /= pivot;
+                }
+
+                // Eliminate column
+                for (let row = 0; row < m; row++) {
+                    if (row !== col && Math.abs(result[row][col]) > 1e-10) {
+                        const factor = result[row][col];
+                        for (let j = 0; j < n; j++) {
+                            result[row][j] -= factor * result[col][j];
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+    </script>
+</body>
+</html>
