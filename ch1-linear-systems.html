@@ -27,51 +27,77 @@
         /* Navigation */
         nav {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 60px;
-            background: white;
+            top: 0; left: 0; right: 0;
+            height: 56px;
+            background: rgba(255,255,255,0.97);
+            backdrop-filter: blur(12px);
             border-bottom: 2px solid #0d9488;
             display: flex;
             align-items: center;
-            padding: 0 30px;
-            gap: 40px;
+            padding: 0 24px;
+            gap: 8px;
             z-index: 1000;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
-
         .nav-brand {
-            font-size: 18px;
-            font-weight: 700;
-            color: #0d9488;
-            text-decoration: none;
+            font-size: 17px; font-weight: 800;
+            color: #0d9488; text-decoration: none;
+            margin-right: 16px; letter-spacing: -0.02em;
         }
-
         .nav-links {
-            display: flex;
-            gap: 30px;
-            list-style: none;
+            display: flex; align-items: center;
+            gap: 4px; list-style: none;
             margin-left: auto;
         }
-
-        .nav-links a {
-            color: #6b7280;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.3s;
+        .nav-links > li { position: relative; }
+        .nav-links > li > a {
+            color: #6b7280; text-decoration: none;
+            font-size: 13.5px; font-weight: 500;
+            padding: 6px 12px; border-radius: 6px;
+            transition: all 0.2s;
+            display: flex; align-items: center; gap: 4px;
         }
-
-        .nav-links a:hover {
-            color: #0d9488;
+        .nav-links > li > a:hover { color: #0d9488; background: #f0fdfa; }
+        .nav-links > li > a.active {
+            color: #0d9488; background: #ccfbf1;
+            font-weight: 600;
         }
-
-        .nav-links a.active {
-            color: #0d9488;
-            border-bottom: 2px solid #0d9488;
-            padding-bottom: 2px;
+        /* Dropdown */
+        .nav-dropdown {
+            display: none; position: absolute;
+            top: calc(100% + 4px); left: 50%; transform: translateX(-50%);
+            background: white; border: 1px solid #e5e7eb;
+            border-radius: 10px; padding: 6px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            min-width: 200px; z-index: 1001;
         }
+        .nav-links > li:hover .nav-dropdown { display: block; }
+        .nav-dropdown a {
+            display: block; padding: 8px 14px;
+            color: #374151; text-decoration: none;
+            font-size: 13px; font-weight: 500;
+            border-radius: 6px; transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .nav-dropdown a:hover { background: #f0fdfa; color: #0d9488; }
+        .nav-dropdown a.active {
+            background: #ccfbf1; color: #0d9488; font-weight: 600;
+        }
+        .nav-dropdown .dropdown-header {
+            padding: 6px 14px 4px; font-size: 10px;
+            font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; color: #9ca3af;
+        }
+        .nav-sep {
+            height: 1px; background: #f3f4f6;
+            margin: 4px 6px;
+        }
+        .dropdown-arrow {
+            font-size: 10px; opacity: 0.5;
+            transition: transform 0.2s;
+        }
+        .nav-links > li:hover .dropdown-arrow { transform: rotate(180deg); }
 
         main {
             margin-top: 60px;
@@ -584,17 +610,34 @@
 <body>
     <!-- Navigation -->
     <nav>
-        <a href="index.html" class="nav-brand">LA Course</a>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="why-linear-algebra.html">Why LA?</a></li>
-            <li><a href="ch1-linear-systems.html" class="active">1.1 Systems</a></li>
-            <li><a href="#1.2">1.2 Matrix Alg.</a></li>
-            <li><a href="#1.3">1.3 Inverses</a></li>
-            <li><a href="#1.4">1.4 Determinants</a></li>
-            <li><a href="exam-generator.html">Exam Generator</a></li>
-        </ul>
-    </nav>
+    <a href="index.html" class="nav-brand">LA Course</a>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="why-linear-algebra.html">Why LA?</a></li>
+        <li>
+            <a href="#" class="active">Ch 1: Matrices <span class="dropdown-arrow">&#9662;</span></a>
+            <div class="nav-dropdown">
+                <div class="dropdown-header">Chapter 1 — Systems &amp; Matrices</div>
+            <a href="ch1-linear-systems.html" class="active">1.1 &nbsp;Systems of Linear Equations</a>
+            <a href="ch1-matrix-algebra.html">1.2 &nbsp;Matrix Algebra</a>
+            <a href="ch1-inverses.html">1.3 &nbsp;Matrix Inverses</a>
+            <a href="ch1-determinants.html">1.4 &nbsp;Determinants</a>
+            </div>
+        </li>
+        <li>
+            <a href="#">Ch 2: Vector Spaces <span class="dropdown-arrow">&#9662;</span></a>
+            <div class="nav-dropdown">
+                <div class="dropdown-header">Chapter 2 — Vector Spaces</div>
+            <a href="ch2-vector-spaces.html">2.1 &nbsp;Vector Spaces &amp; Subspaces</a>
+            <a href="ch2-independence.html">2.2 &nbsp;Span &amp; Linear Independence</a>
+            <a href="ch2-basis-dimension.html">2.3 &nbsp;Basis &amp; Dimension</a>
+            <a href="ch2-rank.html">2.4 &nbsp;Rank &amp; Fundamental Theorem</a>
+            <a href="ch2-change-of-basis.html">2.5 &nbsp;Change of Basis</a>
+            </div>
+        </li>
+        <li><a href="exam-generator.html">Exam</a></li>
+    </ul>
+</nav>
 
     <!-- Hero Section -->
     <main>
