@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3.2 Diagonalization | Linear Algebra</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background: #fff;
+            border-bottom: 3px solid #17a2b8;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav-brand {
+            font-weight: bold;
+            font-size: 18px;
+            color: #17a2b8;
+            text-decoration: none;
+            margin-right: 30px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: #f0f0f0;
+            color: #17a2b8;
+        }
+
+        .nav-links a.active {
+            color: #17a2b8;
+            font-weight: bold;
+        }
+
+        .dropdown-arrow {
+            font-size: 10px;
+            margin-left: 4px;
+        }
+
+        .nav-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-width: 220px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            margin-top: 5px;
+        }
+
+        .nav-links li:hover .nav-dropdown {
+            display: block;
+        }
+
+        .dropdown-header {
+            padding: 10px 15px;
+            font-weight: bold;
+            color: #17a2b8;
+            border-bottom: 1px solid #ddd;
+            font-size: 12px;
+        }
+
+        .nav-dropdown a {
+            display: block;
+            padding: 8px 15px;
+            color: #333;
+            text-decoration: none;
+            border: none;
+            border-radius: 0;
+            font-size: 13px;
+        }
+
+        .nav-dropdown a:hover {
+            background: #f0f0f0;
+        }
+
+        .nav-dropdown a.active {
+            background: #e8f4f8;
+            color: #17a2b8;
+            font-weight: bold;
+        }
+
+        main {
+            margin-top: 56px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 20px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #17a2b8 0%, #28a745 100%);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            opacity: 0.95;
+        }
+
+        .learning-objectives {
+            background: #f9f9f9;
+            border-left: 4px solid #17a2b8;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .learning-objectives h2 {
+            color: #17a2b8;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .learning-objectives ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        .learning-objectives li {
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .learning-objectives li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .section {
+            margin: 40px 0;
+            padding: 30px;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .section h2 {
+            color: #17a2b8;
+            font-size: 26px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #17a2b8;
+            padding-bottom: 10px;
+        }
+
+        .section h3 {
+            color: #333;
+            font-size: 18px;
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+
+        .definition-box, .theorem-box, .warning-box, .tip-box {
+            margin: 20px 0;
+            padding: 20px;
+            border-left: 4px solid;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+
+        .definition-box {
+            border-left-color: #17a2b8;
+            background: #e8f4f8;
+        }
+
+        .definition-box .box-title {
+            color: #17a2b8;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .theorem-box {
+            border-left-color: #6f42c1;
+            background: #f3f0ff;
+        }
+
+        .theorem-box .box-title {
+            color: #6f42c1;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .warning-box {
+            border-left-color: #dc3545;
+            background: #ffe8e8;
+        }
+
+        .warning-box .box-title {
+            color: #dc3545;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .tip-box {
+            border-left-color: #ffc107;
+            background: #fffacd;
+        }
+
+        .tip-box .box-title {
+            color: #ff9800;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .example-item {
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .example-header {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 15px 20px;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .example-header:hover {
+            background: linear-gradient(135deg, #27a043 0%, #1fb88e 100%);
+        }
+
+        .example-toggle {
+            font-size: 18px;
+            transition: transform 0.3s;
+        }
+
+        .example-item.open .example-toggle {
+            transform: rotate(180deg);
+        }
+
+        .example-content {
+            display: none;
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #ddd;
+        }
+
+        .example-item.open .example-content {
+            display: block;
+        }
+
+        .solution-steps {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+            border-left: 3px solid #17a2b8;
+        }
+
+        .solution-steps p {
+            margin: 8px 0;
+        }
+
+        .solution-steps strong {
+            color: #17a2b8;
+        }
+
+        canvas {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+
+        .visualization-container {
+            background: white;
+            padding: 20px;
+            border-radius: 4px;
+            margin: 30px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .viz-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #17a2b8;
+            margin-bottom: 15px;
+        }
+
+        .input-group {
+            margin: 15px 0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .input-group label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .input-group input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        button {
+            background: #17a2b8;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #138496;
+        }
+
+        .calculator-output {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-left: 3px solid #17a2b8;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            min-height: 40px;
+        }
+
+        .quiz-section {
+            background: white;
+            padding: 30px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin: 40px 0;
+        }
+
+        .quiz-section h2 {
+            color: #17a2b8;
+            font-size: 26px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #17a2b8;
+            padding-bottom: 10px;
+        }
+
+        .question {
+            margin: 25px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 4px;
+        }
+
+        .question-number {
+            color: #17a2b8;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .choices {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .choice-btn {
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .choice-btn:hover {
+            border-color: #17a2b8;
+            background: #f0f8ff;
+        }
+
+        .choice-btn.selected {
+            background: #d4f4f9;
+            border-color: #17a2b8;
+        }
+
+        .choice-btn.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .choice-btn.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .feedback {
+            margin-top: 10px;
+            padding: 10px 15px;
+            border-radius: 4px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct-feedback {
+            background: #d4edda;
+            color: #155724;
+            border-left: 3px solid #28a745;
+        }
+
+        .feedback.incorrect-feedback {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 3px solid #dc3545;
+        }
+
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 50px 0 30px 0;
+            padding: 30px;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .nav-footer a {
+            color: #17a2b8;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .nav-footer a:hover {
+            color: #138496;
+        }
+
+        .nav-footer-center {
+            text-align: center;
+        }
+
+        .katex-display {
+            overflow-x: auto;
+        }
+
+        p {
+            margin: 12px 0;
+        }
+
+        .matrix-example {
+            background: #f0f8ff;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+            border-left: 3px solid #17a2b8;
+        }
+
+        .dark-canvas-container {
+            background: #0f172a;
+            padding: 20px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .dark-canvas-container canvas {
+            background: #0f172a;
+            border: 1px solid #555;
+        }
+
+        .dark-canvas-label {
+            color: #aaa;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+    <a href="index.html" class="nav-brand">LA Course</a>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="why-linear-algebra.html">Why LA?</a></li>
+        <li>
+            <a href="#">Ch 1: Matrices <span class="dropdown-arrow">&#9662;</span></a>
+            <div class="nav-dropdown">
+                <div class="dropdown-header">Chapter 1 — Systems &amp; Matrices</div>
+                <a href="ch1-linear-systems.html">1.1 &nbsp;Systems of Linear Equations</a>
+                <a href="ch1-matrix-algebra.html">1.2 &nbsp;Matrix Algebra</a>
+                <a href="ch1-inverses.html">1.3 &nbsp;Matrix Inverses</a>
+                <a href="ch1-determinants.html">1.4 &nbsp;Determinants</a>
+            </div>
+        </li>
+        <li>
+            <a href="#">Ch 2: Vector Spaces <span class="dropdown-arrow">&#9662;</span></a>
+            <div class="nav-dropdown">
+                <div class="dropdown-header">Chapter 2 — Vector Spaces</div>
+                <a href="ch2-vector-spaces.html">2.1 &nbsp;Vector Spaces &amp; Subspaces</a>
+                <a href="ch2-independence.html">2.2 &nbsp;Span &amp; Linear Independence</a>
+                <a href="ch2-basis-dimension.html">2.3 &nbsp;Basis &amp; Dimension</a>
+                <a href="ch2-rank.html">2.4 &nbsp;Rank &amp; Fundamental Theorem</a>
+                <a href="ch2-change-of-basis.html">2.5 &nbsp;Change of Basis</a>
+            </div>
+        </li>
+        <li>
+            <a href="#" class="active">Ch 3: Eigenvalues <span class="dropdown-arrow">&#9662;</span></a>
+            <div class="nav-dropdown">
+                <div class="dropdown-header">Chapter 3 — Eigenvalues &amp; Diag.</div>
+                <a href="ch3-eigenvalues.html">3.1 &nbsp;Eigenvalues &amp; Eigenvectors</a>
+                <a href="ch3-diagonalization.html" class="active">3.2 &nbsp;Diagonalization</a>
+                <a href="ch3-markov.html">3.3 &nbsp;Markov Chains</a>
+                <a href="ch3-dynamical.html">3.4 &nbsp;Dynamical Systems</a>
+                <a href="ch3-complex-eigen.html">3.5 &nbsp;Complex Eigenvalues</a>
+            </div>
+        </li>
+        <li><a href="exam-generator.html">Exam</a></li>
+    </ul>
+</nav>
+
+    <main>
+        <div class="hero">
+            <h1>Diagonalization</h1>
+            <p>Decomposing a matrix as A = PDP⁻¹ — the key to computing matrix powers and understanding linear transformations</p>
+        </div>
+
+        <div class="learning-objectives">
+            <h2>Learning Objectives</h2>
+            <ul>
+                <li>Understand what it means to diagonalize a matrix</li>
+                <li>Determine if a matrix is diagonalizable</li>
+                <li>Construct P and D such that A = PDP⁻¹</li>
+                <li>Compute matrix powers A^k using diagonalization</li>
+                <li>Apply the Diagonalization Theorem</li>
+                <li>Understand algebraic and geometric multiplicity conditions</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>1. What is Diagonalization?</h2>
+            <p>Diagonalization is the process of decomposing a matrix \(A\) into the form:</p>
+            <div class="katex-display">
+                \[A = PDP^{-1}\]
+            </div>
+            <p>where:</p>
+            <ul style="margin-left: 20px; margin-top: 12px;">
+                <li>\(P\) is the <strong>eigenvector matrix</strong> — columns are eigenvectors of \(A\)</li>
+                <li>\(D\) is the <strong>diagonal matrix</strong> — diagonal entries are the corresponding eigenvalues</li>
+                <li>\(P^{-1}\) is the inverse of \(P\)</li>
+            </ul>
+
+            <div class="definition-box">
+                <div class="box-title">Definition: Diagonalizable Matrix</div>
+                <p>A square matrix \(A\) is <strong>diagonalizable</strong> if there exist a matrix \(P\) with linearly independent columns and a diagonal matrix \(D\) such that \(A = PDP^{-1}\).</p>
+            </div>
+
+            <h3>Why Diagonalization Matters</h3>
+            <ul style="margin-left: 20px; margin-top: 12px;">
+                <li><strong>Computing powers:</strong> \(A^k = PD^kP^{-1}\) and \(D^k\) is trivial to compute (just take diagonal entries to the \(k\)-th power)</li>
+                <li><strong>Understanding behavior:</strong> The eigenvalues tell us about growth/decay rates</li>
+                <li><strong>Simplification:</strong> A diagonal matrix is the simplest form — all operations become easy</li>
+                <li><strong>Physical insight:</strong> The eigenvectors form a natural "basis" where \(A\) acts simply</li>
+            </ul>
+
+            <div class="matrix-example">
+                <strong>Quick Example:</strong> If \(A = \begin{bmatrix} 2 & 1 \\ 0 & 3 \end{bmatrix}\), \(P = \begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix}\), and \(D = \begin{bmatrix} 2 & 0 \\ 0 & 3 \end{bmatrix}\), then \(A = PDP^{-1}\).
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>2. The Diagonalization Theorem</h2>
+
+            <div class="theorem-box">
+                <div class="box-title">The Diagonalization Theorem</div>
+                <p>An \(n \times n\) matrix \(A\) is diagonalizable if and only if:</p>
+                <p><strong>For each eigenvalue \(\lambda\) of \(A\), the geometric multiplicity equals the algebraic multiplicity.</strong></p>
+                <p style="margin-top: 12px;"><em>Equivalently:</em> \(A\) is diagonalizable if and only if the eigenspaces of \(A\) have linearly independent columns that span \(\mathbb{R}^n\).</p>
+            </div>
+
+            <h3>Key Definitions</h3>
+            <p><strong>Algebraic multiplicity:</strong> The number of times \(\lambda\) appears as a root of the characteristic polynomial \(\det(A - \lambda I)\).</p>
+            <p><strong>Geometric multiplicity:</strong> The dimension of the eigenspace \(E_\lambda = \text{null}(A - \lambda I)\), i.e., the number of linearly independent eigenvectors for \(\lambda\).</p>
+
+            <div class="warning-box">
+                <div class="box-title">Important Fact</div>
+                <p>Geometric multiplicity \(\leq\) Algebraic multiplicity always. Equality is needed for diagonalizability.</p>
+            </div>
+
+            <h3>Special Case: Distinct Eigenvalues</h3>
+            <div class="tip-box">
+                <div class="box-title">Corollary</div>
+                <p>If \(A\) is an \(n \times n\) matrix with \(n\) distinct eigenvalues, then \(A\) is diagonalizable.</p>
+            </div>
+            <p>This is because when eigenvalues are distinct, each eigenspace has geometric multiplicity 1, which equals the algebraic multiplicity.</p>
+        </div>
+
+        <div class="section">
+            <h2>3. The Diagonalization Process</h2>
+
+            <h3>Step-by-Step Algorithm</h3>
+            <ol style="margin-left: 20px; margin-top: 12px;">
+                <li><strong>Find the characteristic polynomial:</strong> Compute \(\det(A - \lambda I)\)</li>
+                <li><strong>Find eigenvalues:</strong> Solve \(\det(A - \lambda I) = 0\)</li>
+                <li><strong>For each eigenvalue \(\lambda\):</strong>
+                    <ul style="margin-left: 20px; margin-top: 8px;">
+                        <li>Find the eigenspace \(E_\lambda = \text{null}(A - \lambda I)\)</li>
+                        <li>Check: dimension of \(E_\lambda\) = algebraic multiplicity?</li>
+                        <li>If NO for any \(\lambda\), then \(A\) is NOT diagonalizable</li>
+                    </ul>
+                </li>
+                <li><strong>Construct \(P\):</strong> Concatenate all eigenvectors (one per column) for all eigenvalues</li>
+                <li><strong>Construct \(D\):</strong> Place eigenvalues on the diagonal in the same order as eigenvectors in \(P\)</li>
+                <li><strong>Verify:</strong> Check that \(A = PDP^{-1}\) (optional but recommended)</li>
+            </ol>
+
+            <div class="tip-box">
+                <div class="box-title">Column Order Matters</div>
+                <p>The \(j\)-th eigenvalue on the diagonal of \(D\) must correspond to the eigenvector in the \(j\)-th column of \(P\).</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>4. Computing Matrix Powers</h2>
+
+            <p>One of the most powerful applications of diagonalization is computing \(A^k\) efficiently:</p>
+            <div class="katex-display">
+                \[A^k = PD^kP^{-1}\]
+            </div>
+
+            <p>Since \(D\) is diagonal, computing \(D^k\) is trivial:</p>
+            <div class="katex-display">
+                \[D = \begin{bmatrix} \lambda_1 & 0 & \cdots & 0 \\ 0 & \lambda_2 & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & \lambda_n \end{bmatrix} \implies D^k = \begin{bmatrix} \lambda_1^k & 0 & \cdots & 0 \\ 0 & \lambda_2^k & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & \lambda_n^k \end{bmatrix}\]
+            </div>
+
+            <h3>Example: Computing \(A^{10}\)</h3>
+            <p>If we manually computed \(A^{10}\), we would need 9 matrix multiplications — very expensive! But with diagonalization, we only compute eigenvalues and eigenvectors once, then raise each eigenvalue to the 10th power.</p>
+
+            <div class="warning-box">
+                <div class="box-title">Numerical Stability</div>
+                <p>For large \(k\), eigenvalues much larger than 1 will dominate. This can lead to overflow. For large \(k\), consider using logarithms or other numerical techniques.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>5. When Diagonalization Fails</h2>
+
+            <h3>Deficient Eigenspaces</h3>
+            <p>A matrix is NOT diagonalizable if any eigenspace is "too small" — i.e., if the geometric multiplicity of any eigenvalue is less than its algebraic multiplicity.</p>
+
+            <div class="definition-box">
+                <div class="box-title">Defective Eigenvalue</div>
+                <p>An eigenvalue \(\lambda\) is <strong>defective</strong> if the geometric multiplicity of \(\lambda\) is strictly less than its algebraic multiplicity. A matrix with a defective eigenvalue is not diagonalizable.</p>
+            </div>
+
+            <h3>What to Do When \(A\) Is Not Diagonalizable</h3>
+            <ul style="margin-left: 20px; margin-top: 12px;">
+                <li><strong>Jordan Normal Form:</strong> A generalization of diagonalization that works for all matrices</li>
+                <li><strong>Schur Decomposition:</strong> Every matrix can be factored as \(A = QTQ^*\) where \(T\) is upper triangular</li>
+                <li><strong>SVD:</strong> Use singular value decomposition for rectangular matrices</li>
+            </ul>
+
+            <div class="tip-box">
+                <div class="box-title">Quick Check</div>
+                <p>If all eigenvalues are distinct, the matrix is automatically diagonalizable — no need to check multiplicities!</p>
+            </div>
+        </div>
+
+        <!-- WORKED EXAMPLES -->
+        <div class="section">
+            <h2>Worked Examples (15 Problems)</h2>
+
+            <!-- Example 1 -->
+            <div class="example-item">
+                <div class="example-header">
+                    <span>Example 1 (Easy): Diagonalize a 2×2 matrix with distinct eigenvalues</span>
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Diagonalize \(A = \begin{bmatrix} 4 & 1 \\ 0 & 3 \end{bmatrix}\).</p>
+                    <div class="solution-steps">
+                        <p><strong>Step 1: Find eigenvalues</strong></p>
+                        <p>\(\det(A - \lambda I) = \det\begin{bmatrix} 4-\lambda & 1 \\ 0 & 3-\lambda \end{bmatrix} = (4-\lambda)(3-\lambda) = 0\)</p>
+                        <p>Eigenvalues: \(\lambda_1 = 4\), \(\lambda_2 = 3\)</p>
+                    </div>
+                    <div class="solution-steps">
+                        <p><strong>Step 2: Find eigenvectors</strong></p>
+                        <p>For \(\lambda_1 = 4\): \((A - 4I)\mathbf{v} = 0\) gives \(\begin{bmatrix} 0 & 1 \\ 0 & -1 \end{bmatrix}\mathbf{v} = 0\), so \(\mathbf{v}_1 = \begin{bmatrix} 1 \\ 0 \end{bmatrix}\)</p>
+                        <p>For \(\lambda_2 = 3\): \((A - 3I)\mathbf{v} = 0\) gives \(\begin{bmatrix} 1 & 1 \\ 0 & 0 \end{bmatrix}\mathbf{v} = 0\), so \(\mathbf{v}_2 = \begin{bmatrix} -1 \\ 1 \end{bmatrix}\)</p>
+                    </div>
+                    <div class="solution-steps">
+                        <p><strong>Step 3: Construct P and D</strong></p>
+                        <p>\(P = \begin{bmatrix} 1 & -1 \\ 0 & 1 \end{bmatrix}\), \quad D = \begin{bmatrix} 4 & 0 \\ 0 & 3 \end{bmatrix}\)</p>
+                        <p><strong>Answer:</strong> \(A = PDP^{-1}\) where \(P = \begin{bmatrix} 1 & -1 \\ 0 & 1 \end{bmatrix}\) and \(D = \begin{bmatrix} 4 & 0 \\ 0 & 3 \end{bmatrix}\)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 2 -->
+            <div class="example-item">
+                <div class="example-header">
+                    <span>Example 2 (Easy): Verify A = PDP⁻¹</span>
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Verify that \(A = \begin{bmatrix} 2 & 1 \\ 0 & 2 \end{bmatrix} = \begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix}\begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix}\begin{bmatrix} 1 & -1 \\ 0 & 1 \end{bmatrix}\).</p>
+                    <div class="solution-steps">
+                        <p><strong>Compute PD:</strong></p>
+                        <p>\(PD = \begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix}\begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix} = \begin{bmatrix} 2 & 2 \\ 0 & 2 \end{bmatrix}\)</p>
+                    </div>
+                    <div class="solution-steps">
+                        <p><strong>Compute PDP⁻¹:</strong></p>
+                        <p>\(PDP^{-1} = \begin{bmatrix} 2 & 2 \\ 0 & 2 \end{bmatrix}\begin{bmatrix} 1 & -1 \\ 0 & 1 \end{bmatrix} = \begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix}\)</p>
+                        <p><strong>Result:</strong> \(PDP^{-1} = \begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix} \neq A\). (This shows the given factorization does NOT work — illustrates importance of verification!)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 3 -->
+            <div class="example-item">
+                <div class="example-header">
+                    <span>Example 3 (Easy): Use diagonalization to compute A²</span>
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Use \(A = \begin{bmatrix} 3 & 0 \\ 0 & 2 \end{bmatrix}\) to compute \(A^2\). (Note: \(A\) is already diagonal!)</p>
+                    <div class="solution-steps">
+                        <p><strong>Solution:</strong> Since \(A\) is already diagonal, \(A^2 = \begin{bmatrix} 3^2 & 0 \\ 0 & 2^2 \end{bmatrix} = \begin{bmatrix} 9 & 0 \\ 0 & 4 \end{bmatrix}\)</p>
+                        <p>In general, for a diagonal matrix, \(D^k\) is computed by raising each diagonal entry to the \(k\)-th power.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 4 -->
+            <div class="example-item">
+                <div class="example-header">
+                    <span>Example 4 (Medium): Diagonalize a 3×3 matrix</span>
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Diagonalize \(A = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 2 & 1 \\ 0 & 1 & 2 \end{bmatrix}\).</p>
+                    <div class="solution-steps">
+                        <p><strong>Step 1: Find eigenvalues</strong></p>
+                        <p>\(\det(A - \lambda I) = \det\begin{bmatrix} 1-\lambda & 0 & 0 \\ 0 & 2-\lambda & 1 \\ 0 & 1 & 2-\lambda \end{bmatrix} = (1-\lambda)[(2-\lambda)^2 - 1]\)</p>
+                        <p>\(= (1-\lambda)[\lambda^2 - 4\lambda + 3] = (1-\lambda)(\lambda - 1)(\lambda - 3) = -(\lambda - 1)^2(\lambda - 3)\)</p>
+                        <p>Eigenvalues: \(\lambda_1 = 1\) (alg. mult. 2), \(\lambda_2 = 3\) (alg. mult. 1)</p>
+                    </div>
+                    <div class="solution-steps">
+                        <p><strong>Step 2: Find eigenvectors for \(\lambda = 1\)</strong></p>
+                        <p>\((A - I)\mathbf{v} = 0 \Rightarrow \begin{bmatrix} 0 & 0 & 0 \\ 0 & 1 & 1 \\ 0 & 1 & 1 \end{bmatrix}\mathbf{v} = 0\)</p>
+                        <p>Row 2 gives \(v_2 + v_3 = 0\), so \(v_3 = -v_2\). Free variables: \(v_1, v_2\).</p>
+                        <p>Eigenspace: \(\text{span}\{\begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \\ -1 \end{bmatrix}\}\) — dimension 2 = algebraic multiplicity ✓</p>
+                    </div>
+                    <div class="solution-steps">
+                        <p><strong>Step 3: Find eigenvectors for \(\lambda = 3\)</strong></p>
+                        <p>\((A - 3I)\mathbf{v} = 0 \Rightarrow \begin{bmatrix} -2 & 0 & 0 \\ 0 & -1 & 1 \\ 0 & 1 & -1 \end{bmatrix}\mathbf{v} = 0\)</p>
+                        <p>From row 1: \(v_1 = 0\). From row 2: \(v_2 = v_3\).</p>
+                        <p>Eigenvector: \(\begin{bmatrix} 0 \\ 1 \\ 1 \end{bmatrix}\) — dimension 1 = algebraic multiplicity ✓</p>
+                    </div>
+                    <div class="solution-steps">
+                        <p><strong>Step 4: Construct P and D</strong></p>
+                        <p>\(P = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 1 \\ 0 & -1 & 1 \end{bmatrix}\), \quad D = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 3 \end{bmatrix}\)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 5 -->
+            <div class="example-item">
+                <div class="example-header">
+                    <span>Example 5 (Medium): Compute A^10 using diagonalization</span>
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Let \(A = \begin{bmatrix} 2 & 0 \\ 0 & 3 \end{bmatrix}\). Compute \(A^{10}\).</p>
+                    <div class="solution-steps">
+                        <p><strong>Solution:</strong> \(A\) is already diagonal with \(D = \begin{bmatrix} 2 & 0 \\ 0 & 3 \end{bmatrix}\).</p>
+                        <p>\(A^{10} = \begin{bmatrix} 2^{10} & 0 \\ 0 & 3^{10} \end{bmatrix} = \begin{bmatrix} 1024 & 0 \\ 0 & 59049 \end{bmatrix}\)</p>
+                        <p>Without diagonalization, computing \(A^{10}\) would require 9 matrix multiplications!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 6 -->
+            <div class="example-item">
+                <div class="example-header">
+                    <span>Example 6 (Medium): Determine if a matrix is diagonalizable</span>
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Is \(A = \begin{bmatrix} 2 & 1 \\ 0 & 2 \end{bmatrix}\) diagonalizable?</p>
+                    <div class="solution-steps">
+                        <p><strong>Step 1: Find eigenvalues</strong></p>
+                        <p>\(\det(A - \lambda I) = (2 - \lambda)^2 = 0 \Rightarrow \lambda = 2\) (algebraic multiplicity 2)</p>
+                    </div>
+                    <div class="solution-steps">
+                        <p><strong>Step 2: Find eigenspace for \(\lambda = 2\)</strong></p>
+                        <p>\((A - 2I)\mathbf{v} = 0 \Rightarrow \begin{bmatrix} 0 & 1 \\ 0 & 0 \end{bmatrix}\mathbf{v} = 0\)</p>
+                        <p>This gives \(v_2 = 0\), so \(\mathbf{v} = \begin{bmatrix} 1 \\ 0 \end{bmatrix}\) — only 1 linearly independent eigenvector.</p>
+                        <p>Geometric multiplicity = 1, but algebraic multiplicity = 2.</p>
+                    </div>
+                    <div class="solution-steps">
+                        <p><strong>Conclusion:</strong> \(A\) is NOT diagonalizable (defective eigenvalue).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 7 -->
+            <div class="example-item">
+                <div class="example-header">
+                    <span>Example 7 (Medium): Diagonalize a symmetric matrix</span>
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Diagonalize the symmetric matrix \(A = \begin{bmatrix} 3 & 1 \\ 1 & 3 \end{bmatrix}\).</p>
+                    <div class="solution-steps">
+                        <p><strong>Step 1: Find eigenvalues</strong></p>
+                        <p>\(\det(A - \lambda I) = (3-\lambda)^2 - 1 = \lambda^2 - 6\lambda + 8 = (\lambda - 2)(\lambda - 4) = 0\)</p>
+                        <p>Eigenvalues: \(\lambda_1 = 2\), \(\lambda_2 = 4\)</p>
+                    </div>
+                    <div class="solution-steps">
+                        <p><strong>Step 2: Find eigenvectors</strong></p>
+                        <p>For \(\lambda = 2\): \((A - 2I)\mathbf{v} = 0 \Rightarrow \begin{bmatrix} 1 & 1 \\ 1 & 1 \end{bmatrix}\mathbf{v} = 0\) gives \(\mathbf{v}_1 = \begin{bmatrix} 1 \\ -1 \end{bmatrix}\)</p>
+                        <p>For \(\lambda = 4\): \((A - 4I)\mathbf{v} = 0 \Rightarrow \begin{bmatrix} -1 & 1 \\ 1 & -1 \end{bmatrix}\mathbf{v} = 0\) gives \(\mathbf{v}_2 = \begin{bmatrix} 1 \\ 1 \end{bmatrix}\)</p>
+                    </div>
+                    <div class="solution-steps">
+                        <p><strong>Step 3: Normalize (optional for symmetric matrices)</strong></p>
+                        <p>For orthogonal diagonalization, normalize: \(\mathbf{u}_1 = \frac{1}{\sqrt{2}}\begin{bmatrix} 1 \\ -1 \end{bmatrix}\), \(\mathbf{u}_2 = \frac{1}{\sqrt{2}}\begin{bmatrix} 1 \\ 1 \end{bmatrix}\)</p>
+                        <p>\(Q = \frac{1}{\sqrt{2}}\begin{bmatrix} 1 & 1 \\ -1 & 1 \end{bmatrix}\) (orthogonal matrix), \(D = \begin{bmatrix} 2 & 0 \\ 0 & 4 \end{bmatrix}\)</p>
+                        <p>Then \(A = QDQ^T\) (orthogonal diagonalization)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 8 -->
+            <div class="example-item">
+                <div class="example-header">
+                    <span>Example 8 (Medium): Find P and D for a 2D eigenspace</span>
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Diagonalize \(A = \begin{bmatrix} 2 & 0 & 0 \\ 0 & 3 & 0 \\ 0 & 0 & 3 \end{bmatrix}\).</p>
+                    <div class="solution-steps">
+                        <p><strong>Step 1: Identify eigenvalues by inspection</strong></p>
+                        <p>The matrix is already nearly diagonal. Eigenvalues: \(\lambda_1 = 2, \lambda_2 = 3, \lambda_3 = 3\)</p>
+                    </div>
+                    <div class="solution-steps">
+                        <p><strong>Step 2: Check multiplicities</strong></p>
+                        <p>\(\lambda = 2\) has algebraic multiplicity 1. \(\lambda = 3\) has algebraic multiplicity 2.</p>
+                        <p>Eigenspace for \(\lambda = 3\): All vectors orthogonal to \((1,0,0)\) — dimension 2 = algebraic multiplicity ✓</p>
+                    </div>
+                    <div class="solution-steps">
+                        <p><strong>Step 3: Construct P and D</strong></p>
+                        <p>Eigenvectors: \(\mathbf{v}_1 = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}, \mathbf{v}_2 = \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix}, \mathbf{v}_3 = \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix}\)</p>
+                        <p>\(P = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix}\), \(D = \begin{bmatrix} 2 & 0 & 0 \\ 0 & 3 & 0 \\ 0 & 0 & 3 \end{bmatrix}\) (already diagonal!)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 9 -->
+            <div class="example-item">
+                <div class="example-header">
+                    <span>Example 9 (Medium): Fibonacci recurrence using diagonalization</span>
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> The Fibonacci sequence satisfies \(F_{n+2} = F_{n+1} + F_n\). Find \(F_{100}\) using diagonalization.</p>
+                    <div class="solution-steps">
+                        <p><strong>Step 1: Matrix form</strong></p>
+                        <p>\(\begin{bmatrix} F_{n+2} \\ F_{n+1} \end{bmatrix} = \begin{bmatrix} 1 & 1 \\ 1 & 0 \end{bmatrix}\begin{bmatrix} F_{n+1} \\ F_n \end{bmatrix} = A\begin{bmatrix} F_{n+1} \\ F_n \end{bmatrix}\)</p>
+                        <p>So \(\begin{bmatrix} F_{n+1} \\ F_n \end{bmatrix} = A^n\begin{bmatrix} F_1 \\ F_0 \end{bmatrix} = A^n\begin{bmatrix} 1 \\ 0 \end{bmatrix}\)</p>
+                    </div>
+                    <div class="solution-steps">
+                        <p><strong>Step 2: Diagonalize A</strong></p>
+                        <p>\(\det(A - \lambda I) = \lambda^2 - \lambda - 1 = 0 \Rightarrow \lambda = \frac{1 \pm \sqrt{5}}{2}\)</p>
+                        <p>Let \(\phi = \frac{1+\sqrt{5}}{2}\) (golden ratio), \(\hat{\phi} = \frac{1-\sqrt{5}}{2}\)</p>
+                        <p>After diagonalization: \(A = PDP^{-1}\)</p>
+                    </div>
+                    <div class="solution-steps">
+                        <p><strong>Step 3: Compute \(A^{100}\)</strong></p>
+                        <p>\(A^{100} = PD^{100}P^{-1}\) where \(D^{100} = \begin{bmatrix} \phi^{100} & 0 \\ 0 & \hat{\phi}^{100} \end{bmatrix}\)</p>
+                        <p>Then \(F_{100}\) is extracted from the result. (Exact formula involves Binet's formula.)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 10 -->
+            <div class="example-item">
+                <div class="example-header">
+                    <span>Example 10 (Hard): Show a matrix is NOT diagonalizable</span>
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Show that \(A = \begin{bmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{bmatrix}\) is NOT diagonalizable.</p>
+                    <div class="solution-steps">
+                        <p><strong>Step 1: Find eigenvalues</strong></p>
+                        <p>\(\det(A - \lambda I) = -\lambda^3 = 0 \Rightarrow \lambda = 0\) (algebraic multiplicity 3)</p>
+                    </div>
+                    <div class="solution-steps">
+                        <p><strong>Step 2: Find eigenspace for \(\lambda = 0\)</strong></p>
+                        <p>\(A\mathbf{v} = 0 \Rightarrow \begin{bmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{bmatrix}\mathbf{v} = 0\)</p>
+                        <p>This gives \(v_2 = 0\) and \(v_3 = 0\), so \(\mathbf{v} = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}\) — only 1 eigenvector.</p>
+                        <p>Geometric multiplicity = 1, algebraic multiplicity = 3</p>
+                    </div>
+                    <div class="solution-steps">
+                        <p><strong>Conclusion:</strong> Since geometric multiplicity \(<\) algebraic multiplicity, \(A\) is NOT diagonalizable. (This is a nilpotent matrix — it can be put in Jordan normal form but not diagonalized.)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 11 -->
+            <div class="example-item">
+                <div class="example-header">
+                    <span>Example 11 (Hard): A^k for 3×3 matrix, limit as k→∞</span>
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Let \(A = \begin{bmatrix} 0.5 & 0 & 0 \\ 0 & 0.3 & 0 \\ 0 & 0 & 2 \end{bmatrix}\). What is \(\lim_{k \to \infty} A^k\)?</p>
+                    <div class="solution-steps">
+                        <p><strong>Solution:</strong> \(A\) is diagonal with eigenvalues \(0.5, 0.3, 2\).</p>
+                        <p>\(A^k = \begin{bmatrix} 0.5^k & 0 & 0 \\ 0 & 0.3^k & 0 \\ 0 & 0 & 2^k \end{bmatrix}\)</p>
+                        <p>As \(k \to \infty\): \(0.5^k \to 0\), \(0.3^k \to 0\), but \(2^k \to \infty\)</p>
+                        <p>So \(\lim_{k \to \infty} A^k = \infty\) (the limit does not exist in the usual sense — the matrix diverges).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 12 -->
+            <div class="example-item">
+                <div class="example-header">
+                    <span>Example 12 (Hard): System of differential equations x' = Ax</span>
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Solve the system \(\mathbf{x}' = A\mathbf{x}\) where \(A = \begin{bmatrix} 1 & 0 \\ 0 & 2 \end{bmatrix}\) with initial condition \(\mathbf{x}(0) = \begin{bmatrix} 1 \\ 1 \end{bmatrix}\).</p>
+                    <div class="solution-steps">
+                        <p><strong>Step 1: Diagonalize A</strong></p>
+                        <p>\(A\) is already diagonal with eigenvalues \(1, 2\).</p>
+                    </div>
+                    <div class="solution-steps">
+                        <p><strong>Step 2: Solution form</strong></p>
+                        <p>For a diagonal system, \(\mathbf{x}(t) = e^{At}\mathbf{x}(0)\)</p>
+                        <p>\(e^{At} = \begin{bmatrix} e^t & 0 \\ 0 & e^{2t} \end{bmatrix}\)</p>
+                    </div>
+                    <div class="solution-steps">
+                        <p><strong>Step 3: Apply initial condition</strong></p>
+                        <p>\(\mathbf{x}(t) = \begin{bmatrix} e^t & 0 \\ 0 & e^{2t} \end{bmatrix}\begin{bmatrix} 1 \\ 1 \end{bmatrix} = \begin{bmatrix} e^t \\ e^{2t} \end{bmatrix}\)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 13 -->
+            <div class="example-item">
+                <div class="example-header">
+                    <span>Example 13 (Hard): Diagonalize a matrix with eigenvalue 0</span>
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Diagonalize \(A = \begin{bmatrix} 1 & 2 \\ 2 & 4 \end{bmatrix}\).</p>
+                    <div class="solution-steps">
+                        <p><strong>Step 1: Find eigenvalues</strong></p>
+                        <p>\(\det(A - \lambda I) = (1-\lambda)(4-\lambda) - 4 = \lambda^2 - 5\lambda = \lambda(\lambda - 5) = 0\)</p>
+                        <p>Eigenvalues: \(\lambda_1 = 0\), \(\lambda_2 = 5\)</p>
+                    </div>
+                    <div class="solution-steps">
+                        <p><strong>Step 2: Find eigenvectors</strong></p>
+                        <p>For \(\lambda = 0\): \(A\mathbf{v} = 0 \Rightarrow \begin{bmatrix} 1 & 2 \\ 2 & 4 \end{bmatrix}\mathbf{v} = 0\) gives \(\mathbf{v}_1 = \begin{bmatrix} -2 \\ 1 \end{bmatrix}\)</p>
+                        <p>For \(\lambda = 5\): \((A - 5I)\mathbf{v} = 0 \Rightarrow \begin{bmatrix} -4 & 2 \\ 2 & -1 \end{bmatrix}\mathbf{v} = 0\) gives \(\mathbf{v}_2 = \begin{bmatrix} 1 \\ 2 \end{bmatrix}\)</p>
+                    </div>
+                    <div class="solution-steps">
+                        <p><strong>Step 3: Construct P and D</strong></p>
+                        <p>\(P = \begin{bmatrix} -2 & 1 \\ 1 & 2 \end{bmatrix}\), \(D = \begin{bmatrix} 0 & 0 \\ 0 & 5 \end{bmatrix}\)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 14 -->
+            <div class="example-item">
+                <div class="example-header">
+                    <span>Example 14 (Hard): Matrix exponential e^(At) via diagonalization</span>
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Compute \(e^{At}\) where \(A = \begin{bmatrix} 1 & 0 \\ 0 & 2 \end{bmatrix}\).</p>
+                    <div class="solution-steps">
+                        <p><strong>Solution:</strong> If \(A = PDP^{-1}\), then \(e^{At} = Pe^{Dt}P^{-1}\).</p>
+                        <p>For a diagonal matrix \(D = \begin{bmatrix} \lambda_1 & 0 \\ 0 & \lambda_2 \end{bmatrix}\):</p>
+                        <p>\(e^{Dt} = \begin{bmatrix} e^{\lambda_1 t} & 0 \\ 0 & e^{\lambda_2 t} \end{bmatrix}\)</p>
+                        <p>Here, \(A\) is already diagonal with \(P = I\):</p>
+                        <p>\(e^{At} = \begin{bmatrix} e^t & 0 \\ 0 & e^{2t} \end{bmatrix}\)</p>
+                        <p>This is crucial for solving systems of ODEs: \(\mathbf{x}'(t) = A\mathbf{x}(t) \implies \mathbf{x}(t) = e^{At}\mathbf{x}(0)\)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Example 15 -->
+            <div class="example-item">
+                <div class="example-header">
+                    <span>Example 15 (Hard): Decoupling a vibrating system</span>
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> A system of two coupled springs has equation \(\mathbf{x}'' = A\mathbf{x}\) where \(A = \begin{bmatrix} -2 & 1 \\ 1 & -2 \end{bmatrix}\). Find the normal modes (eigenvectors) and decouple the system.</p>
+                    <div class="solution-steps">
+                        <p><strong>Step 1: Find eigenvalues (natural frequencies)</strong></p>
+                        <p>\(\det(A - \lambda I) = (-2-\lambda)^2 - 1 = \lambda^2 + 4\lambda + 3 = (\lambda + 1)(\lambda + 3) = 0\)</p>
+                        <p>Eigenvalues: \(\lambda_1 = -1\), \(\lambda_2 = -3\) (negative, indicating oscillation)</p>
+                        <p>Angular frequencies: \(\omega_1 = \sqrt{1} = 1\), \(\omega_2 = \sqrt{3}\)</p>
+                    </div>
+                    <div class="solution-steps">
+                        <p><strong>Step 2: Find normal modes (eigenvectors)</strong></p>
+                        <p>For \(\lambda = -1\): \((A + I)\mathbf{v} = 0 \Rightarrow \begin{bmatrix} -1 & 1 \\ 1 & -1 \end{bmatrix}\mathbf{v} = 0\) gives \(\mathbf{v}_1 = \begin{bmatrix} 1 \\ 1 \end{bmatrix}\) (in-phase oscillation)</p>
+                        <p>For \(\lambda = -3\): \((A + 3I)\mathbf{v} = 0 \Rightarrow \begin{bmatrix} 1 & 1 \\ 1 & 1 \end{bmatrix}\mathbf{v} = 0\) gives \(\mathbf{v}_2 = \begin{bmatrix} 1 \\ -1 \end{bmatrix}\) (out-of-phase oscillation)</p>
+                    </div>
+                    <div class="solution-steps">
+                        <p><strong>Step 3: Decouple in modal coordinates</strong></p>
+                        <p>Let \(\mathbf{y} = P^{-1}\mathbf{x}\) where \(P = \begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix}\).</p>
+                        <p>Then \(\mathbf{y}'' = D\mathbf{y}\) where \(D = \begin{bmatrix} -1 & 0 \\ 0 & -3 \end{bmatrix}\) — each component oscillates independently!</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- VISUALIZATIONS -->
+        <div class="section">
+            <h2>Interactive Visualizations</h2>
+
+            <!-- Diagonalization Calculator -->
+            <div class="visualization-container">
+                <div class="viz-title">Diagonalization Calculator</div>
+                <p>Enter a 2×2 or 3×3 matrix and compute its diagonalization.</p>
+
+                <div class="input-group">
+                    <label>Matrix Size:</label>
+                    <select id="matrixSize" onchange="updateMatrixInputs()">
+                        <option value="2">2×2</option>
+                        <option value="3">3×3</option>
+                    </select>
+                </div>
+
+                <div id="matrixInputs">
+                    <!-- Dynamically filled -->
+                </div>
+
+                <button onclick="calculateDiagonalization()">Diagonalize</button>
+
+                <div id="calcOutput" class="calculator-output"></div>
+            </div>
+
+            <!-- Matrix Power Visualizer -->
+            <div class="visualization-container">
+                <div class="viz-title">Matrix Power Visualizer</div>
+                <p>See how the unit circle transforms under \(A^k\). Watch as the transformation stretches and contracts along eigenvector directions.</p>
+
+                <div class="input-group">
+                    <label>Power k:</label>
+                    <input type="number" id="powerK" value="1" min="0" max="10" style="width: 80px;">
+                    <button onclick="updateMatrixPowerViz()">Update</button>
+                </div>
+
+                <div class="dark-canvas-container">
+                    <canvas id="powerCanvas" width="800" height="500"></canvas>
+                    <div class="dark-canvas-label">Unit circle (blue) → A^k transformed (red) | Yellow = eigenvectors</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUIZ -->
+        <div class="quiz-section">
+            <h2>Quick Check Quiz</h2>
+
+            <!-- Q1 -->
+            <div class="question">
+                <div class="question-number">Question 1</div>
+                <div class="question-text">A matrix A is diagonalizable if and only if:</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(event, 'Q1', false)">All eigenvalues are positive</button>
+                    <button class="choice-btn" onclick="checkChoice(event, 'Q1', false)">A is symmetric</button>
+                    <button class="choice-btn" onclick="checkChoice(event, 'Q1', true)">For each eigenvalue, geometric multiplicity equals algebraic multiplicity</button>
+                    <button class="choice-btn" onclick="checkChoice(event, 'Q1', false)">A has full rank</button>
+                </div>
+                <div id="Q1-feedback" class="feedback"></div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="question">
+                <div class="question-number">Question 2</div>
+                <div class="question-text">If \(A = \begin{bmatrix} 1 & 0 \\ 0 & 2 \end{bmatrix}\), what is \(A^3\)?</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(event, 'Q2', false)">Cannot be computed without more information</button>
+                    <button class="choice-btn" onclick="checkChoice(event, 'Q2', true)">\\begin{bmatrix} 1 & 0 \\\\ 0 & 8 \\end{bmatrix}</button>
+                    <button class="choice-btn" onclick="checkChoice(event, 'Q2', false)">\\begin{bmatrix} 3 & 0 \\\\ 0 & 6 \\end{bmatrix}</button>
+                    <button class="choice-btn" onclick="checkChoice(event, 'Q2', false)">\\begin{bmatrix} 1 & 0 \\\\ 0 & 2 \\end{bmatrix}</button>
+                </div>
+                <div id="Q2-feedback" class="feedback"></div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="question">
+                <div class="question-number">Question 3</div>
+                <div class="question-text">The columns of P in the diagonalization \(A = PDP^{-1}\) should be:</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(event, 'Q3', false)">The rows of A</button>
+                    <button class="choice-btn" onclick="checkChoice(event, 'Q3', true)">Eigenvectors of A</button>
+                    <button class="choice-btn" onclick="checkChoice(event, 'Q3', false)">The eigenvalues of A</button>
+                    <button class="choice-btn" onclick="checkChoice(event, 'Q3', false)">The rows of the characteristic polynomial</button>
+                </div>
+                <div id="Q3-feedback" class="feedback"></div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="question">
+                <div class="question-number">Question 4</div>
+                <div class="question-text">The matrix \(A = \begin{bmatrix} 2 & 1 \\ 0 & 2 \end{bmatrix}\) is:</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(event, 'Q4', true)">Not diagonalizable (defective eigenvalue)</button>
+                    <button class="choice-btn" onclick="checkChoice(event, 'Q4', false)">Diagonalizable with eigenvalues 2 and 2</button>
+                    <button class="choice-btn" onclick="checkChoice(event, 'Q4', false)">Diagonalizable only over the complex numbers</button>
+                    <button class="choice-btn" onclick="checkChoice(event, 'Q4', false)">Orthogonally diagonalizable</button>
+                </div>
+                <div id="Q4-feedback" class="feedback"></div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="question">
+                <div class="question-number">Question 5</div>
+                <div class="question-text">If A has n distinct eigenvalues, what can you conclude?</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(event, 'Q5', true)">A is definitely diagonalizable</button>
+                    <button class="choice-btn" onclick="checkChoice(event, 'Q5', false)">A is symmetric</button>
+                    <button class="choice-btn" onclick="checkChoice(event, 'Q5', false)">A has rank n</button>
+                    <button class="choice-btn" onclick="checkChoice(event, 'Q5', false)">A² = A</button>
+                </div>
+                <div id="Q5-feedback" class="feedback"></div>
+            </div>
+
+            <!-- Q6 -->
+            <div class="question">
+                <div class="question-number">Question 6</div>
+                <div class="question-text">Computing \(A^{100}\) using \(A = PDP^{-1}\) requires computing:</div>
+                <div class="choices">
+                    <button class="choice-btn" onclick="checkChoice(event, 'Q6', false)">100 matrix multiplications of A</button>
+                    <button class="choice-btn" onclick="checkChoice(event, 'Q6', true)">P, D^100, and P⁻¹ once each, then combine</button>
+                    <button class="choice-btn" onclick="checkChoice(event, 'Q6', false)">The inverse of A 100 times</button>
+                    <button class="choice-btn" onclick="checkChoice(event, 'Q6', false)">It cannot be done</button>
+                </div>
+                <div id="Q6-feedback" class="feedback"></div>
+            </div>
+        </div>
+
+        <!-- NAV FOOTER -->
+        <div class="nav-footer">
+            <div>
+                <a href="ch3-eigenvalues.html">← 3.1 Eigenvalues &amp; Eigenvectors</a>
+            </div>
+            <div class="nav-footer-center">
+                <a href="index.html">Course Home</a>
+            </div>
+            <div>
+                <a href="ch3-markov.html">3.3 Markov Chains →</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"></script>
+
+    <script>
+        // Toggle examples
+        document.querySelectorAll('.example-header').forEach(header => {
+            header.addEventListener('click', function() {
+                this.parentElement.classList.toggle('open');
+            });
+        });
+
+        // KaTeX rendering
+        document.addEventListener('DOMContentLoaded', function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '\\(', right: '\\)', display: false}
+                ],
+                throwOnError: false
+            });
+        });
+
+        // Quiz functionality
+        function checkChoice(event, questionId, isCorrect) {
+            const button = event.target;
+            const question = button.closest('.question');
+            const feedbackDiv = question.querySelector(`#${questionId}-feedback`);
+            const allButtons = question.querySelectorAll('.choice-btn');
+
+            allButtons.forEach(btn => {
+                btn.classList.remove('selected', 'correct', 'incorrect');
+            });
+
+            if (isCorrect) {
+                button.classList.add('correct');
+                feedbackDiv.className = 'feedback show correct-feedback';
+                feedbackDiv.textContent = '✓ Correct! Great job.';
+            } else {
+                button.classList.add('incorrect');
+                feedbackDiv.className = 'feedback show incorrect-feedback';
+                feedbackDiv.textContent = '✗ Not quite. Try again or review the material.';
+            }
+        }
+
+        // Matrix Calculator
+        function updateMatrixInputs() {
+            const size = document.getElementById('matrixSize').value;
+            const container = document.getElementById('matrixInputs');
+            container.innerHTML = '';
+
+            let html = '<div style="display: grid; grid-template-columns: repeat(' + size + ', 1fr); gap: 8px; margin: 15px 0;">';
+            for (let i = 0; i < size; i++) {
+                for (let j = 0; j < size; j++) {
+                    html += `<input type="number" id="a${i}${j}" placeholder="A[${i}][${j}]" value="0" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">`;
+                }
+            }
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function calculateDiagonalization() {
+            const size = parseInt(document.getElementById('matrixSize').value);
+            const output = document.getElementById('calcOutput');
+            output.textContent = 'Computing eigenvalues and eigenvectors...\n';
+
+            // Collect matrix values
+            let A = [];
+            for (let i = 0; i < size; i++) {
+                A[i] = [];
+                for (let j = 0; j < size; j++) {
+                    A[i][j] = parseFloat(document.getElementById(`a${i}${j}`).value) || 0;
+                }
+            }
+
+            // Simple 2x2 calculation
+            if (size === 2) {
+                const [[a, b], [c, d]] = A;
+                const trace = a + d;
+                const det = a * d - b * c;
+                const discriminant = trace * trace - 4 * det;
+
+                if (discriminant < 0) {
+                    output.textContent = 'Complex eigenvalues detected. This calculator handles real eigenvalues only.';
+                    return;
+                }
+
+                const λ1 = (trace + Math.sqrt(discriminant)) / 2;
+                const λ2 = (trace - Math.sqrt(discriminant)) / 2;
+
+                output.textContent = `EIGENVALUES:\nλ₁ = ${λ1.toFixed(4)}\nλ₂ = ${λ2.toFixed(4)}\n\n`;
+                output.textContent += `EIGENVECTORS:\nFor λ₁: solve (A - λ₁I)v = 0\nFor λ₂: solve (A - λ₂I)v = 0\n\n`;
+                output.textContent += `DIAGONALIZATION:\nA = PDP⁻¹\nwhere P = [v₁ v₂] and D = [[λ₁, 0], [0, λ₂]]\n\n`;
+                output.textContent += `STATUS: Matrix is diagonalizable (distinct eigenvalues)`;
+            } else {
+                output.textContent = 'For 3×3 matrices, use numerical linear algebra software (MATLAB, Python/NumPy, etc.)';
+            }
+        }
+
+        // Initialize inputs
+        updateMatrixInputs();
+
+        // Matrix Power Visualizer
+        function updateMatrixPowerViz() {
+            const k = parseInt(document.getElementById('powerK').value) || 1;
+            const canvas = document.getElementById('powerCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // Simple example: A = [[2, 0], [0, 0.5]]
+            const A = [[2, 0], [0, 0.5]];
+
+            // Draw background
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw grid
+            ctx.strokeStyle = '#1a2f4a';
+            ctx.lineWidth = 1;
+            for (let i = -3; i <= 3; i++) {
+                const x = canvas.width / 2 + i * 80;
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+
+                const y = canvas.height / 2 - i * 80;
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+
+            const scale = 80;
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+
+            // Draw original unit circle
+            ctx.strokeStyle = '#0099ff';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            for (let theta = 0; theta <= 2 * Math.PI; theta += 0.01) {
+                const x = cx + scale * Math.cos(theta);
+                const y = cy - scale * Math.sin(theta);
+                if (theta === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+            ctx.stroke();
+
+            // Draw transformed circle
+            const λ1_k = Math.pow(A[0][0], k);
+            const λ2_k = Math.pow(A[1][1], k);
+
+            ctx.strokeStyle = '#ff3333';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            for (let theta = 0; theta <= 2 * Math.PI; theta += 0.01) {
+                const x = cx + scale * λ1_k * Math.cos(theta);
+                const y = cy - scale * λ2_k * Math.sin(theta);
+                if (theta === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+            ctx.stroke();
+
+            // Draw eigenvectors
+            ctx.strokeStyle = '#ffdd00';
+            ctx.lineWidth = 3;
+
+            // First eigenvector (1, 0)
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(cx + scale * λ1_k, cy);
+            ctx.stroke();
+
+            // Second eigenvector (0, 1)
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(cx, cy - scale * λ2_k);
+            ctx.stroke();
+
+            // Labels
+            ctx.fillStyle = '#aaa';
+            ctx.font = '12px Arial';
+            ctx.fillText(`A^${k} applied (k=${k})`, 10, 20);
+            ctx.fillText(`λ₁^k = ${λ1_k.toFixed(3)}, λ₂^k = ${λ2_k.toFixed(3)}`, 10, 40);
+        }
+
+        // Initialize visualizer
+        updateMatrixPowerViz();
+    </script>
+</body>
+</html>

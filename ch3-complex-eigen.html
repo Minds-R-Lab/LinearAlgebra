@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Section 3.5: Complex Eigenvalues | Linear Algebra</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background-color: #f9fafb;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background: white;
+            border-bottom: 3px solid #0d9488;
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            z-index: 1000;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .nav-brand {
+            font-weight: bold;
+            font-size: 18px;
+            color: #0d9488;
+            margin-right: 40px;
+        }
+
+        .nav-items {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+            flex: 1;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-item > a {
+            color: #1f2937;
+            text-decoration: none;
+            font-size: 14px;
+            padding: 8px 0;
+            border-bottom: 2px solid transparent;
+            display: block;
+        }
+
+        .nav-item > a:hover {
+            border-bottom-color: #0d9488;
+        }
+
+        .nav-item.active > a {
+            color: #0d9488;
+            border-bottom-color: #0d9488;
+        }
+
+        /* Dropdown */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            min-width: 220px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-top: 5px;
+            z-index: 1001;
+        }
+
+        .nav-item:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 10px 15px;
+            color: #374151;
+            text-decoration: none;
+            border-left: 3px solid transparent;
+            font-size: 13px;
+        }
+
+        .dropdown-menu a:hover {
+            background: #f3f4f6;
+            border-left-color: #0d9488;
+            color: #0d9488;
+        }
+
+        .dropdown-menu a.active {
+            background: #ecfdf5;
+            border-left-color: #0d9488;
+            color: #0d9488;
+        }
+
+        /* Main container */
+        main {
+            margin-top: 56px;
+            min-height: calc(100vh - 56px);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #0d9488 0%, #059669 100%);
+            color: white;
+            padding: 60px 30px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            opacity: 0.95;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+
+        h2 {
+            font-size: 32px;
+            color: #0d9488;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            font-size: 22px;
+            color: #059669;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            font-size: 16px;
+            color: #0d9488;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+
+        /* Definition and Theorem Boxes */
+        .definition-box, .theorem-box, .warning-box, .tip-box {
+            margin: 20px 0;
+            padding: 20px;
+            border-left: 4px solid;
+            border-radius: 4px;
+            background-color: #f9fafb;
+        }
+
+        .definition-box {
+            border-left-color: #0d9488;
+            background-color: #ecfdf5;
+        }
+
+        .theorem-box {
+            border-left-color: #7c3aed;
+            background-color: #f3e8ff;
+        }
+
+        .warning-box {
+            border-left-color: #dc2626;
+            background-color: #fee2e2;
+        }
+
+        .tip-box {
+            border-left-color: #f59e0b;
+            background-color: #fef3c7;
+        }
+
+        .definition-box strong, .theorem-box strong, .warning-box strong, .tip-box strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        /* Learning Objectives */
+        .objectives {
+            background-color: #ecfdf5;
+            border-left: 4px solid #0d9488;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .objectives h3 {
+            color: #0d9488;
+            margin-top: 0;
+        }
+
+        .objectives ul {
+            list-style-position: inside;
+            margin-left: 0;
+        }
+
+        .objectives li {
+            margin-bottom: 8px;
+            color: #374151;
+        }
+
+        /* Examples */
+        .example-item {
+            margin: 25px 0;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .example-header {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            user-select: none;
+        }
+
+        .example-header:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        }
+
+        .example-toggle {
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
+
+        .example-item.open .example-toggle {
+            transform: rotate(180deg);
+        }
+
+        .example-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding: 0 20px;
+        }
+
+        .example-item.open .example-content {
+            max-height: 2000px;
+            padding: 20px;
+        }
+
+        .example-content p {
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .example-content .katex {
+            font-size: 1.1em;
+        }
+
+        /* Canvas */
+        .visualization {
+            margin: 30px 0;
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+        }
+
+        canvas {
+            background: #0f172a;
+            border-radius: 4px;
+            max-width: 100%;
+            height: auto;
+            display: inline-block;
+        }
+
+        .viz-controls {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        input[type="number"], input[type="text"] {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 8px 16px;
+            background: #0d9488;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background: #059669;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        /* Calculator */
+        .calculator {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .calc-input-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .calc-input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .calc-input-group label {
+            font-weight: 500;
+            margin-bottom: 5px;
+            font-size: 13px;
+            color: #374151;
+        }
+
+        .calc-output {
+            background: #f0fdf4;
+            border-left: 4px solid #0d9488;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .calc-output-line {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .calc-output-line:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Quiz */
+        .quiz-section {
+            margin-top: 40px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 25px;
+        }
+
+        .quiz-question {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .quiz-question:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .quiz-question h4 {
+            color: #0d9488;
+            margin: 0 0 15px 0;
+            font-size: 16px;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .choice-btn {
+            padding: 12px 16px;
+            background: #f3f4f6;
+            border: 2px solid #d1d5db;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .choice-btn:hover {
+            border-color: #0d9488;
+            background: #ecfdf5;
+        }
+
+        .choice-btn.correct {
+            background: #dcfce7;
+            border-color: #10b981;
+            color: #15803d;
+        }
+
+        .choice-btn.incorrect {
+            background: #fee2e2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+
+        .choice-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: #dcfce7;
+            color: #15803d;
+            border-left: 3px solid #10b981;
+            padding-left: 12px;
+        }
+
+        .feedback.incorrect {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 3px solid #ef4444;
+            padding-left: 12px;
+        }
+
+        /* Footer */
+        .nav-footer {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .nav-footer a {
+            color: #0d9488;
+            text-decoration: none;
+        }
+
+        .nav-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Utility */
+        .ml-10 {
+            margin-left: 10px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-sm {
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+    <a href="index.html" class="nav-brand">LA Course</a>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="why-linear-algebra.html">Why LA?</a></li>
+        <li>
+            <a href="#">Ch 1: Matrices <span class="dropdown-arrow">&#9662;</span></a>
+            <div class="nav-dropdown">
+                <div class="dropdown-header">Chapter 1 — Systems &amp; Matrices</div>
+                <a href="ch1-linear-systems.html">1.1 &nbsp;Systems of Linear Equations</a>
+                <a href="ch1-matrix-algebra.html">1.2 &nbsp;Matrix Algebra</a>
+                <a href="ch1-inverses.html">1.3 &nbsp;Matrix Inverses</a>
+                <a href="ch1-determinants.html">1.4 &nbsp;Determinants</a>
+            </div>
+        </li>
+        <li>
+            <a href="#">Ch 2: Vector Spaces <span class="dropdown-arrow">&#9662;</span></a>
+            <div class="nav-dropdown">
+                <div class="dropdown-header">Chapter 2 — Vector Spaces</div>
+                <a href="ch2-vector-spaces.html">2.1 &nbsp;Vector Spaces &amp; Subspaces</a>
+                <a href="ch2-independence.html">2.2 &nbsp;Span &amp; Linear Independence</a>
+                <a href="ch2-basis-dimension.html">2.3 &nbsp;Basis &amp; Dimension</a>
+                <a href="ch2-rank.html">2.4 &nbsp;Rank &amp; Fundamental Theorem</a>
+                <a href="ch2-change-of-basis.html">2.5 &nbsp;Change of Basis</a>
+            </div>
+        </li>
+        <li>
+            <a href="#" class="active">Ch 3: Eigenvalues <span class="dropdown-arrow">&#9662;</span></a>
+            <div class="nav-dropdown">
+                <div class="dropdown-header">Chapter 3 — Eigenvalues &amp; Diag.</div>
+                <a href="ch3-eigenvalues.html">3.1 &nbsp;Eigenvalues &amp; Eigenvectors</a>
+                <a href="ch3-diagonalization.html">3.2 &nbsp;Diagonalization</a>
+                <a href="ch3-markov.html">3.3 &nbsp;Markov Chains</a>
+                <a href="ch3-dynamical.html">3.4 &nbsp;Dynamical Systems</a>
+                <a href="ch3-complex-eigen.html" class="active">3.5 &nbsp;Complex Eigenvalues</a>
+            </div>
+        </li>
+        <li><a href="exam-generator.html">Exam</a></li>
+    </ul>
+</nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Complex Eigenvalues</h1>
+            <p>When the characteristic equation has complex roots — rotation-dilation behavior and the real canonical form</p>
+        </section>
+
+        <!-- Content Container -->
+        <section class="container">
+
+            <!-- Learning Objectives -->
+            <div class="objectives">
+                <h3>Learning Objectives</h3>
+                <ul>
+                    <li>Identify when eigenvalues are complex (negative discriminant)</li>
+                    <li>Find complex eigenvalue pairs \(\lambda = a \pm bi\)</li>
+                    <li>Compute complex eigenvectors</li>
+                    <li>Understand rotation-dilation geometric interpretation</li>
+                    <li>Write the real-valued general solution using real and imaginary parts</li>
+                    <li>Construct the rotation-scaling matrix \(C = \begin{bmatrix} a & -b \\ b & a \end{bmatrix}\)</li>
+                </ul>
+            </div>
+
+            <!-- Section 1: Complex Roots -->
+            <h2>1. Complex Roots of the Characteristic Equation</h2>
+
+            <p>
+                When a real matrix has a characteristic polynomial with negative discriminant, we obtain complex eigenvalues.
+                For a 2×2 matrix \(\begin{bmatrix} a & b \\ c & d \end{bmatrix}\), the characteristic equation is:
+            </p>
+
+            <p style="text-align: center;">
+                \[\lambda^2 - (a+d)\lambda + (ad-bc) = 0\]
+            </p>
+
+            <p>
+                The discriminant is \(\Delta = (a+d)^2 - 4(ad-bc) = (a-d)^2 + 4bc\). When \(\Delta < 0\), the eigenvalues
+                are complex conjugates:
+            </p>
+
+            <div class="theorem-box">
+                <strong>Theorem: Complex Eigenvalue Pairs</strong>
+                <p>
+                    If \(A\) is a real \(2 \times 2\) matrix with characteristic polynomial \(\lambda^2 - (a+d)\lambda + (ad-bc) = 0\)
+                    and negative discriminant, then the eigenvalues are:
+                </p>
+                <p style="text-align: center;">
+                    \[\lambda_1 = \alpha + \beta i, \quad \lambda_2 = \alpha - \beta i\]
+                </p>
+                <p>
+                    where \(\alpha = \frac{a+d}{2}\) and \(\beta = \frac{\sqrt{4(ad-bc)-(a-d)^2}}{2}\).
+                </p>
+            </div>
+
+            <!-- Example 1 -->
+            <div class="example-item">
+                <div class="example-header">
+                    Example 1.1 (Easy): Pure Rotation Matrix
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Find the complex eigenvalues of \(A = \begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}\).</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>The characteristic polynomial is:</p>
+                    <p>\[\det(\lambda I - A) = \det\begin{bmatrix} \lambda & 1 \\ -1 & \lambda \end{bmatrix} = \lambda^2 + 1\]</p>
+                    <p>Setting equal to zero: \(\lambda^2 + 1 = 0 \Rightarrow \lambda = \pm i\)</p>
+                    <p><strong>Answer:</strong> The eigenvalues are \(\lambda_1 = i\) and \(\lambda_2 = -i\) (pure imaginary, representing a 90° rotation).</p>
+                </div>
+            </div>
+
+            <!-- Example 2 -->
+            <div class="example-item">
+                <div class="example-header">
+                    Example 1.2 (Easy): Verify Complex Eigenvalues
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Find the eigenvalues of \(A = \begin{bmatrix} 1 & -2 \\ 1 & 1 \end{bmatrix}\) and verify they are complex.</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>The characteristic polynomial is:</p>
+                    <p>\[\det(\lambda I - A) = \det\begin{bmatrix} \lambda - 1 & 2 \\ -1 & \lambda - 1 \end{bmatrix} = (\lambda-1)^2 + 2 = \lambda^2 - 2\lambda + 3\]</p>
+                    <p>Using the quadratic formula:</p>
+                    <p>\[\lambda = \frac{2 \pm \sqrt{4-12}}{2} = \frac{2 \pm \sqrt{-8}}{2} = \frac{2 \pm 2i\sqrt{2}}{2} = 1 \pm i\sqrt{2}\]</p>
+                    <p><strong>Answer:</strong> The eigenvalues are \(\lambda_1 = 1 + i\sqrt{2}\) and \(\lambda_2 = 1 - i\sqrt{2}\) (complex conjugate pair).</p>
+                </div>
+            </div>
+
+            <!-- Example 3 -->
+            <div class="example-item">
+                <div class="example-header">
+                    Example 1.3 (Easy): Verify an Eigenvalue
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Verify that \(\lambda = 2 + 3i\) is an eigenvalue of \(A = \begin{bmatrix} 2 & -3 \\ 3 & 2 \end{bmatrix}\).</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>We check if \(\det(\lambda I - A) = 0\):</p>
+                    <p>\[\det\begin{bmatrix} (2+3i) - 2 & 3 \\ -3 & (2+3i) - 2 \end{bmatrix} = \det\begin{bmatrix} 3i & 3 \\ -3 & 3i \end{bmatrix}\]</p>
+                    <p>\[= (3i)(3i) - (3)(-3) = 9i^2 + 9 = -9 + 9 = 0 \checkmark\]</p>
+                    <p><strong>Answer:</strong> Verified. \(\lambda = 2 + 3i\) is indeed an eigenvalue.</p>
+                </div>
+            </div>
+
+            <!-- Section 2: Complex Eigenvectors -->
+            <h2>2. Complex Eigenvectors</h2>
+
+            <p>
+                To find a complex eigenvector \(\mathbf{v}\) for a complex eigenvalue \(\lambda = \alpha + \beta i\),
+                we solve \((A - \lambda I)\mathbf{v} = \mathbf{0}\) using complex arithmetic.
+            </p>
+
+            <div class="definition-box">
+                <strong>Complex Eigenvector</strong>
+                <p>
+                    For a complex eigenvalue \(\lambda\) of a real matrix \(A\), a complex eigenvector \(\mathbf{v}\) is a nonzero
+                    vector such that \(A\mathbf{v} = \lambda \mathbf{v}\).
+                </p>
+            </div>
+
+            <!-- Example 4 -->
+            <div class="example-item">
+                <div class="example-header">
+                    Example 2.1 (Medium): Find Complex Eigenvectors
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Find a complex eigenvector for \(\lambda = 1 + i\) of the matrix \(A = \begin{bmatrix} 1 & -2 \\ 1 & 1 \end{bmatrix}\).</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>We solve \((A - \lambda I)\mathbf{v} = \mathbf{0}\):</p>
+                    <p>\[\begin{bmatrix} 1-(1+i) & -2 \\ 1 & 1-(1+i) \end{bmatrix} \begin{bmatrix} v_1 \\ v_2 \end{bmatrix} = \begin{bmatrix} -i & -2 \\ 1 & -i \end{bmatrix} \begin{bmatrix} v_1 \\ v_2 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix}\]</p>
+                    <p>From the first row: \(-i v_1 - 2v_2 = 0 \Rightarrow v_1 = \frac{-2v_2}{-i} = \frac{2v_2 \cdot i}{1} = 2iv_2\)</p>
+                    <p>Let \(v_2 = 1\). Then \(v_1 = 2i\).</p>
+                    <p><strong>Answer:</strong> An eigenvector is \(\mathbf{v} = \begin{bmatrix} 2i \\ 1 \end{bmatrix}\).</p>
+                </div>
+            </div>
+
+            <!-- Example 5 -->
+            <div class="example-item">
+                <div class="example-header">
+                    Example 2.2 (Medium): Real Solution from Complex Eigenvector
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Given \(\lambda = 1 + i\) and eigenvector \(\mathbf{v} = \begin{bmatrix} 2i \\ 1 \end{bmatrix}\),
+                    write the real-valued general solution to \(\mathbf{x}_k = A^k \mathbf{x}_0\).</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>The complex solution is \(\mathbf{x}_k^{(c)} = (1+i)^k \begin{bmatrix} 2i \\ 1 \end{bmatrix}\).</p>
+                    <p>To extract real solutions, we separate \(\mathbf{v} = \begin{bmatrix} 2i \\ 1 \end{bmatrix} = \begin{bmatrix} 0 \\ 1 \end{bmatrix} + i\begin{bmatrix} 2 \\ 0 \end{bmatrix}\).</p>
+                    <p>So \(\text{Re}(\mathbf{v}) = \begin{bmatrix} 0 \\ 1 \end{bmatrix}\) and \(\text{Im}(\mathbf{v}) = \begin{bmatrix} 2 \\ 0 \end{bmatrix}\).</p>
+                    <p>With \(\lambda = r e^{i\theta}\) where \(r = |1+i| = \sqrt{2}\) and \(\theta = \arctan(1/1) = \pi/4\):</p>
+                    <p style="text-align: center;">
+                        \[\mathbf{x}_k = r^k \left[c_1 \cos(k\theta) \begin{bmatrix} 0 \\ 1 \end{bmatrix} - c_2 \sin(k\theta) \begin{bmatrix} 2 \\ 0 \end{bmatrix} + c_1 \sin(k\theta) \begin{bmatrix} 2 \\ 0 \end{bmatrix} + c_2 \cos(k\theta) \begin{bmatrix} 0 \\ 1 \end{bmatrix}\right]\]
+                    </p>
+                    <p><strong>Answer:</strong> The general solution combines rotations scaled by \((\sqrt{2})^k\) and rotating by multiples of \(\pi/4\) radians per step.</p>
+                </div>
+            </div>
+
+            <!-- Section 3: Rotation-Dilation -->
+            <h2>3. The Rotation-Dilation Interpretation</h2>
+
+            <p>
+                Complex eigenvalues \(\lambda = a + bi\) represent a combination of rotation and scaling.
+                The modulus \(r = |\lambda| = \sqrt{a^2 + b^2}\) determines the scaling factor, and the argument
+                \(\theta = \arg(\lambda) = \arctan(b/a)\) determines the rotation angle.
+            </p>
+
+            <div class="theorem-box">
+                <strong>Rotation-Dilation Interpretation</strong>
+                <p>
+                    For \(\lambda = a + bi\) with \(r = \sqrt{a^2 + b^2}\) and \(\theta = \arg(\lambda)\):
+                </p>
+                <p style="text-align: center;">
+                    \[\lambda = r e^{i\theta} = r(\cos\theta + i\sin\theta)\]
+                </p>
+                <p>
+                    In the discrete iteration \(\mathbf{x}_{k+1} = A\mathbf{x}_k\), the eigenvalue causes:
+                </p>
+                <ul>
+                    <li><strong>Rotation:</strong> by angle \(\theta\) each step</li>
+                    <li><strong>Scaling:</strong> by factor \(r\) each step</li>
+                </ul>
+            </div>
+
+            <!-- Example 6 -->
+            <div class="example-item">
+                <div class="example-header">
+                    Example 3.1 (Medium): Identify Rotation and Scaling
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> For \(\lambda = 1 + i\), find the modulus \(r\) and argument \(\theta\).</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>The modulus is:</p>
+                    <p>\[r = |1 + i| = \sqrt{1^2 + 1^2} = \sqrt{2}\]</p>
+                    <p>The argument is:</p>
+                    <p>\[\theta = \arctan\left(\frac{1}{1}\right) = \arctan(1) = \frac{\pi}{4} \text{ (45 degrees)}\]</p>
+                    <p><strong>Answer:</strong> The system scales by \(\sqrt{2}\) and rotates by \(\pi/4\) radians (45°) each step.</p>
+                </div>
+            </div>
+
+            <!-- Example 7 -->
+            <div class="example-item">
+                <div class="example-header">
+                    Example 3.2 (Medium): Pure Rotation
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> For \(\lambda = i\) (from the pure rotation matrix \(A = \begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}\)),
+                    describe the geometric action.</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>The modulus is \(r = |i| = 1\) (no scaling).</p>
+                    <p>The argument is \(\theta = \arg(i) = \pi/2\) (90 degrees).</p>
+                    <p><strong>Answer:</strong> The system rotates by 90° each step without any scaling (pure rotation).</p>
+                </div>
+            </div>
+
+            <!-- Section 4: Real Canonical Form -->
+            <h2>4. Real Canonical Form</h2>
+
+            <p>
+                Instead of working with complex eigenvalues, we can construct a real matrix form that captures
+                the rotation-scaling behavior. For complex conjugate eigenvalues \(\lambda = a \pm bi\),
+                the real canonical form is:
+            </p>
+
+            <div class="theorem-box">
+                <strong>Real Canonical Form</strong>
+                <p>
+                    If \(A\) is a real \(2 \times 2\) matrix with complex eigenvalues \(\lambda = a \pm bi\),
+                    then \(A = PCP^{-1}\) where:
+                </p>
+                <p style="text-align: center;">
+                    \[C = \begin{bmatrix} a & -b \\ b & a \end{bmatrix}\]
+                </p>
+                <p>
+                    The matrix \(C\) represents combined rotation (by \(\theta = \arctan(b/a)\)) and scaling
+                    (by \(r = \sqrt{a^2 + b^2}\)).
+                </p>
+            </div>
+
+            <!-- Example 8 -->
+            <div class="example-item">
+                <div class="example-header">
+                    Example 4.1 (Medium): Construct Real Canonical Form
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> For matrix \(A = \begin{bmatrix} 1 & -2 \\ 1 & 1 \end{bmatrix}\) with eigenvalues
+                    \(\lambda = 1 \pm i\sqrt{2}\), construct the matrix \(C\).</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>We have \(a = 1\) and \(b = \sqrt{2}\). Therefore:</p>
+                    <p>\[C = \begin{bmatrix} 1 & -\sqrt{2} \\ \sqrt{2} & 1 \end{bmatrix}\]</p>
+                    <p>We can verify: modulus \(r = \sqrt{1 + 2} = \sqrt{3}\), angle \(\theta = \arctan(\sqrt{2}/1) \approx 54.7°\).</p>
+                    <p><strong>Answer:</strong> The real canonical form matrix is \(C = \begin{bmatrix} 1 & -\sqrt{2} \\ \sqrt{2} & 1 \end{bmatrix}\).</p>
+                </div>
+            </div>
+
+            <!-- Example 9 -->
+            <div class="example-item">
+                <div class="example-header">
+                    Example 4.2 (Medium): Pure Rotation in Canonical Form
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Find the real canonical form for eigenvalues \(\lambda = \pm i\).</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>For \(\lambda = 0 \pm 1 \cdot i\), we have \(a = 0\) and \(b = 1\):</p>
+                    <p>\[C = \begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}\]</p>
+                    <p>This is exactly the rotation matrix! It rotates vectors by 90° without scaling.</p>
+                    <p><strong>Answer:</strong> \(C = \begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}\) (standard 90° rotation matrix).</p>
+                </div>
+            </div>
+
+            <!-- Example 10 -->
+            <div class="example-item">
+                <div class="example-header">
+                    Example 4.3 (Medium): Spiral Behavior Classification
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Determine if the following systems produce inward or outward spirals:</p>
+                    <p>(a) \(\lambda = 0.5 + 0.5i\)  &nbsp;&nbsp;  (b) \(\lambda = 1.5 + i\)  &nbsp;&nbsp;  (c) \(\lambda = 0.7 + 0.2i\)</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>(a) \(|\lambda| = \sqrt{0.5^2 + 0.5^2} = \sqrt{0.5} \approx 0.707 < 1\) → Inward spiral</p>
+                    <p>(b) \(|\lambda| = \sqrt{1.5^2 + 1^2} = \sqrt{3.25} \approx 1.803 > 1\) → Outward spiral</p>
+                    <p>(c) \(|\lambda| = \sqrt{0.7^2 + 0.2^2} = \sqrt{0.53} \approx 0.728 < 1\) → Inward spiral</p>
+                    <p><strong>Answer:</strong> (a) and (c) converge to origin; (b) diverges.</p>
+                </div>
+            </div>
+
+            <!-- Section 5: Applications -->
+            <h2>5. Applications and Stability Analysis</h2>
+
+            <p>
+                Complex eigenvalues are crucial in modeling oscillations, rotating systems, and AC circuits.
+                The modulus determines stability: if \(|\lambda| < 1\), the system converges; if \(|\lambda| > 1\), it diverges.
+            </p>
+
+            <!-- Example 11 -->
+            <div class="example-item">
+                <div class="example-header">
+                    Example 5.1 (Hard): 3×3 Matrix with Mixed Eigenvalues
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Find the eigenvalues of \(A = \begin{bmatrix} 2 & 1 & 0 \\ 0 & 1 & -2 \\ 0 & 2 & 1 \end{bmatrix}\).</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>The characteristic polynomial is:</p>
+                    <p>\[\det(\lambda I - A) = \det\begin{bmatrix} \lambda-2 & -1 & 0 \\ 0 & \lambda-1 & 2 \\ 0 & -2 & \lambda-1 \end{bmatrix}\]</p>
+                    <p>Expanding along the first column:</p>
+                    <p>\[= (\lambda-2)\det\begin{bmatrix} \lambda-1 & 2 \\ -2 & \lambda-1 \end{bmatrix} = (\lambda-2)[(\lambda-1)^2 + 4]\]</p>
+                    <p>\[= (\lambda-2)(\lambda^2 - 2\lambda + 5)\]</p>
+                    <p>From \(\lambda^2 - 2\lambda + 5 = 0\): \(\lambda = \frac{2 \pm \sqrt{4-20}}{2} = 1 \pm 2i\)</p>
+                    <p><strong>Answer:</strong> The eigenvalues are \(\lambda_1 = 2\), \(\lambda_2 = 1 + 2i\), \(\lambda_3 = 1 - 2i\).</p>
+                </div>
+            </div>
+
+            <!-- Example 12 -->
+            <div class="example-item">
+                <div class="example-header">
+                    Example 5.2 (Hard): AC Circuit with Complex Impedance
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> An RLC circuit is modeled by \(\mathbf{x}_{k+1} = A\mathbf{x}_k\) where
+                    \(A = \begin{bmatrix} 0.9 & -0.1 \\ 0.1 & 0.9 \end{bmatrix}\). Find the eigenvalues and interpret the oscillatory behavior.</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>Characteristic polynomial: \(\det(\lambda I - A) = (\lambda - 0.9)^2 + 0.01 = \lambda^2 - 1.8\lambda + 0.82\)</p>
+                    <p>Using the quadratic formula:</p>
+                    <p>\[\lambda = \frac{1.8 \pm \sqrt{3.24 - 3.28}}{2} = \frac{1.8 \pm \sqrt{-0.04}}{2} = \frac{1.8 \pm 0.2i}{2} = 0.9 \pm 0.1i\]</p>
+                    <p>Modulus: \(r = \sqrt{0.81 + 0.01} = \sqrt{0.82} \approx 0.906 < 1\) (damped oscillation)</p>
+                    <p>Argument: \(\theta = \arctan(0.1/0.9) \approx 0.111 \text{ rad} \approx 6.3°\)</p>
+                    <p><strong>Answer:</strong> The circuit exhibits damped oscillations with period \(2\pi/\theta \approx 56\) steps, amplitude decreasing by factor 0.906 per step.</p>
+                </div>
+            </div>
+
+            <!-- Example 13 -->
+            <div class="example-item">
+                <div class="example-header">
+                    Example 5.3 (Hard): Stability Analysis
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> Determine the stability of the system with eigenvalues:</p>
+                    <p>(a) \(\lambda = 0.5 \pm 0.5i\)  &nbsp;&nbsp;  (b) \(\lambda = 1.1 \pm 0.8i\)  &nbsp;&nbsp;  (c) \(\lambda = 0.99 \pm 0.1i\)</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>(a) \(|\lambda| = \sqrt{0.25 + 0.25} = \sqrt{0.5} \approx 0.707 < 1\) → <strong>Asymptotically stable</strong> (converges to origin)</p>
+                    <p>(b) \(|\lambda| = \sqrt{1.21 + 0.64} = \sqrt{1.85} \approx 1.36 > 1\) → <strong>Unstable</strong> (diverges)</p>
+                    <p>(c) \(|\lambda| = \sqrt{0.9801 + 0.01} = \sqrt{0.9901} \approx 0.995 < 1\) → <strong>Asymptotically stable</strong> (very slow convergence)</p>
+                    <p><strong>Answer:</strong> (a) and (c) are stable; (b) is unstable.</p>
+                </div>
+            </div>
+
+            <!-- Example 14 -->
+            <div class="example-item">
+                <div class="example-header">
+                    Example 5.4 (Hard): Damped Spring-Mass System
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> A damped spring-mass system is modeled by the differential equation
+                    \(\ddot{x} + 0.5\dot{x} + 2x = 0\). Convert to a first-order system and find its eigenvalues.</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>Let \(x_1 = x\) and \(x_2 = \dot{x}\). Then \(\dot{x}_1 = x_2\) and \(\dot{x}_2 = -2x_1 - 0.5x_2\).</p>
+                    <p>The system matrix is:</p>
+                    <p>\[A = \begin{bmatrix} 0 & 1 \\ -2 & -0.5 \end{bmatrix}\]</p>
+                    <p>Characteristic polynomial: \(\lambda^2 + 0.5\lambda + 2 = 0\)</p>
+                    <p>\[\lambda = \frac{-0.5 \pm \sqrt{0.25 - 8}}{2} = \frac{-0.5 \pm \sqrt{-7.75}}{2} = -0.25 \pm 1.391i\]</p>
+                    <p>Modulus: \(r = \sqrt{0.0625 + 1.936} \approx 1.414 > 1\)... wait, let me recalculate.</p>
+                    <p>\[r = \sqrt{(-0.25)^2 + 1.391^2} = \sqrt{0.0625 + 1.936} \approx 1.41\]</p>
+                    <p>Actually for stability, we need the continuous case: damping means the real part is negative.</p>
+                    <p><strong>Answer:</strong> \(\lambda = -0.25 \pm 1.391i\). The negative real part indicates the system is stable and oscillates with frequency \(\approx 1.391\) and decay rate 0.25.</p>
+                </div>
+            </div>
+
+            <!-- Example 15 -->
+            <div class="example-item">
+                <div class="example-header">
+                    Example 5.5 (Hard): Coupled Rotations in Robotics
+                    <span class="example-toggle">▼</span>
+                </div>
+                <div class="example-content">
+                    <p><strong>Problem:</strong> A 2-joint robot arm is modeled by \(\mathbf{x}_{k+1} = A\mathbf{x}_k\) where
+                    \(A = \begin{bmatrix} \cos(15°) & -\sin(15°) \\ \sin(15°) & \cos(15°) \end{bmatrix}\).
+                    Find the eigenvalues and interpret the motion.</p>
+                    <p><strong>Solution:</strong></p>
+                    <p>This is a pure rotation matrix by 15°. For a rotation matrix \(R_\theta = \begin{bmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta \end{bmatrix}\),
+                    the eigenvalues are \(\lambda = \cos\theta \pm i\sin\theta = e^{\pm i\theta}\).</p>
+                    <p>Therefore: \(\lambda = \cos(15°) \pm i\sin(15°) = e^{\pm i\pi/12}\)</p>
+                    <p>Numerically: \(\lambda \approx 0.9659 \pm 0.2588i\)</p>
+                    <p>Modulus: \(r = 1\) (no scaling, pure rotation)</p>
+                    <p>Argument: \(\theta = 15° = \pi/12\)</p>
+                    <p><strong>Answer:</strong> Each iteration rotates the state vector by 15° without scaling. After 24 iterations, the state returns to its original direction (24 × 15° = 360°).</p>
+                </div>
+            </div>
+
+            <!-- Interactive Visualization -->
+            <h2>Interactive Rotation-Dilation Visualizer</h2>
+
+            <div class="visualization">
+                <h3 style="margin-top: 0; color: #0d9488;">Rotation-Dilation Spiral</h3>
+                <p class="text-sm">Enter a 2×2 matrix to visualize its eigenvalues and the spiral trajectory under repeated application.</p>
+
+                <div class="viz-controls">
+                    <input type="number" id="a11" placeholder="a₁₁" value="0.9" step="0.1">
+                    <input type="number" id="a12" placeholder="a₁₂" value="-0.3" step="0.1">
+                    <input type="number" id="a21" placeholder="a₂₁" value="0.3" step="0.1">
+                    <input type="number" id="a22" placeholder="a₂₂" value="0.9" step="0.1">
+                    <button onclick="visualizeSpiral()">Visualize</button>
+                </div>
+
+                <canvas id="spiralCanvas" width="800" height="500"></canvas>
+
+                <div id="eigenInfo" style="margin-top: 20px; padding: 15px; background: #f0fdf4; border-left: 4px solid #0d9488; border-radius: 4px; font-size: 14px; display: none;">
+                    <p id="eigenOutput"></p>
+                </div>
+            </div>
+
+            <!-- Complex Eigenvalue Calculator -->
+            <h2>Complex Eigenvalue Calculator</h2>
+
+            <div class="calculator">
+                <p style="font-size: 14px; color: #374151; margin-bottom: 20px;">Enter the four elements of a 2×2 matrix to compute eigenvalues, modulus, angle, and real canonical form.</p>
+
+                <div class="calc-input-row">
+                    <div class="calc-input-group">
+                        <label>a₁₁</label>
+                        <input type="number" id="calc_a11" placeholder="Top-left" value="1" step="0.1">
+                    </div>
+                    <div class="calc-input-group">
+                        <label>a₁₂</label>
+                        <input type="number" id="calc_a12" placeholder="Top-right" value="-2" step="0.1">
+                    </div>
+                </div>
+
+                <div class="calc-input-row">
+                    <div class="calc-input-group">
+                        <label>a₂₁</label>
+                        <input type="number" id="calc_a21" placeholder="Bottom-left" value="1" step="0.1">
+                    </div>
+                    <div class="calc-input-group">
+                        <label>a₂₂</label>
+                        <input type="number" id="calc_a22" placeholder="Bottom-right" value="1" step="0.1">
+                    </div>
+                </div>
+
+                <button onclick="calculateEigenvalues()" style="width: 100%; margin-bottom: 20px;">Calculate Eigenvalues</button>
+
+                <div id="calcOutput" class="calc-output" style="display: none;">
+                    <div id="calcResult"></div>
+                </div>
+            </div>
+
+            <!-- Quiz Section -->
+            <div class="quiz-section">
+                <h2 style="margin-top: 0;">Self-Assessment Quiz</h2>
+
+                <!-- Question 1 -->
+                <div class="quiz-question">
+                    <h4>Question 1: Conjugate Eigenvalue Property</h4>
+                    <p>If a real matrix \(A\) has a complex eigenvalue \(\lambda = 3 + 4i\), what is another eigenvalue?</p>
+                    <div class="quiz-options">
+                        <button class="choice-btn" onclick="checkChoice(1, 0)">A) 3 - 4i</button>
+                        <button class="choice-btn" onclick="checkChoice(1, 1)">B) -3 + 4i</button>
+                        <button class="choice-btn" onclick="checkChoice(1, 2)">C) 4 + 3i</button>
+                        <button class="choice-btn" onclick="checkChoice(1, 3)">D) 7</button>
+                    </div>
+                    <div id="feedback-1" class="feedback"></div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="quiz-question">
+                    <h4>Question 2: Modulus of Complex Eigenvalue</h4>
+                    <p>What is the modulus \(|\lambda|\) of \(\lambda = 3 + 4i\)?</p>
+                    <div class="quiz-options">
+                        <button class="choice-btn" onclick="checkChoice(2, 0)">A) 3</button>
+                        <button class="choice-btn" onclick="checkChoice(2, 1)">B) 4</button>
+                        <button class="choice-btn" onclick="checkChoice(2, 2)">C) 5</button>
+                        <button class="choice-btn" onclick="checkChoice(2, 3)">D) 7</button>
+                    </div>
+                    <div id="feedback-2" class="feedback"></div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="quiz-question">
+                    <h4>Question 3: Geometric Interpretation</h4>
+                    <p>A real 2×2 matrix with complex eigenvalues produces what geometric transformation?</p>
+                    <div class="quiz-options">
+                        <button class="choice-btn" onclick="checkChoice(3, 0)">A) Pure reflection</button>
+                        <button class="choice-btn" onclick="checkChoice(3, 1)">B) Rotation and dilation</button>
+                        <button class="choice-btn" onclick="checkChoice(3, 2)">C) Shear</button>
+                        <button class="choice-btn" onclick="checkChoice(3, 3)">D) Projection</button>
+                    </div>
+                    <div id="feedback-3" class="feedback"></div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="quiz-question">
+                    <h4>Question 4: |λ| = 1 Behavior</h4>
+                    <p>When \(|\lambda| = 1\) for a complex eigenvalue \(\lambda\), what type of trajectory do we get?</p>
+                    <div class="quiz-options">
+                        <button class="choice-btn" onclick="checkChoice(4, 0)">A) Inward spiral</button>
+                        <button class="choice-btn" onclick="checkChoice(4, 1)">B) Outward spiral</button>
+                        <button class="choice-btn" onclick="checkChoice(4, 2)">C) Circular or elliptical orbit</button>
+                        <button class="choice-btn" onclick="checkChoice(4, 3)">D) Fixed point</button>
+                    </div>
+                    <div id="feedback-4" class="feedback"></div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="quiz-question">
+                    <h4>Question 5: Eigenvalue Pairs</h4>
+                    <p>Complex eigenvalues of a real matrix always come in:</p>
+                    <div class="quiz-options">
+                        <button class="choice-btn" onclick="checkChoice(5, 0)">A) Triples</button>
+                        <button class="choice-btn" onclick="checkChoice(5, 1)">B) Conjugate pairs</button>
+                        <button class="choice-btn" onclick="checkChoice(5, 2)">C) Reciprocals</button>
+                        <button class="choice-btn" onclick="checkChoice(5, 3)">D) Random independent values</button>
+                    </div>
+                    <div id="feedback-5" class="feedback"></div>
+                </div>
+
+                <!-- Question 6 -->
+                <div class="quiz-question">
+                    <h4>Question 6: Stability Criterion</h4>
+                    <p>A spiral trajectory converging to the origin means \(|\lambda|\) is:</p>
+                    <div class="quiz-options">
+                        <button class="choice-btn" onclick="checkChoice(6, 0)">A) Greater than 1</button>
+                        <button class="choice-btn" onclick="checkChoice(6, 1)">B) Equal to 1</button>
+                        <button class="choice-btn" onclick="checkChoice(6, 2)">C) Less than 1</button>
+                        <button class="choice-btn" onclick="checkChoice(6, 3)">D) Zero</button>
+                    </div>
+                    <div id="feedback-6" class="feedback"></div>
+                </div>
+            </div>
+
+            <!-- Navigation Footer -->
+            <div class="nav-footer">
+                <div>
+                    <a href="ch3-dynamical.html">← 3.4 Dynamical Systems</a>
+                </div>
+                <div>
+                    <a href="ch3-overview.html">Course Home</a>
+                </div>
+                <div>
+                    <span style="color: #9ca3af;">(Coming Soon: Ch 4) →</span>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"></script>
+
+    <script>
+        // KaTeX initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    { left: '\\[', right: '\\]', display: true },
+                    { left: '\\(', right: '\\)', display: false }
+                ]
+            });
+
+            // Initialize example collapsibles
+            document.querySelectorAll('.example-header').forEach(header => {
+                header.addEventListener('click', function() {
+                    this.parentElement.classList.toggle('open');
+                });
+            });
+        });
+
+        // Quiz logic
+        const quizAnswers = [
+            0, // Question 1: A (3 - 4i)
+            2, // Question 2: C (5)
+            1, // Question 3: B (Rotation and dilation)
+            2, // Question 4: C (Circular or elliptical orbit)
+            1, // Question 5: B (Conjugate pairs)
+            2  // Question 6: C (Less than 1)
+        ];
+
+        function checkChoice(questionNum, choiceIndex) {
+            const buttons = document.querySelectorAll(`#feedback-${questionNum}`).parentElement?.parentElement?.querySelectorAll('.choice-btn');
+            const allButtons = document.querySelectorAll('.choice-btn');
+            let buttons2 = [];
+
+            // Find the buttons for this question
+            const question = document.querySelectorAll('.quiz-question')[questionNum - 1];
+            const questionButtons = question.querySelectorAll('.choice-btn');
+
+            questionButtons.forEach(btn => btn.disabled = true);
+
+            const feedbackDiv = document.getElementById(`feedback-${questionNum}`);
+
+            if (choiceIndex === quizAnswers[questionNum - 1]) {
+                questionButtons[choiceIndex].classList.add('correct');
+                feedbackDiv.classList.add('show', 'correct');
+                feedbackDiv.innerHTML = '<strong>Correct!</strong> Well done.';
+            } else {
+                questionButtons[choiceIndex].classList.add('incorrect');
+                questionButtons[quizAnswers[questionNum - 1]].classList.add('correct');
+                feedbackDiv.classList.add('show', 'incorrect');
+                feedbackDiv.innerHTML = `<strong>Not quite.</strong> The correct answer is option ${String.fromCharCode(65 + quizAnswers[questionNum - 1])}.`;
+            }
+        }
+
+        // Visualization function
+        function visualizeSpiral() {
+            const a11 = parseFloat(document.getElementById('a11').value);
+            const a12 = parseFloat(document.getElementById('a12').value);
+            const a21 = parseFloat(document.getElementById('a21').value);
+            const a22 = parseFloat(document.getElementById('a22').value);
+
+            // Compute eigenvalues
+            const trace = a11 + a22;
+            const det = a11 * a22 - a12 * a21;
+            const discriminant = trace * trace - 4 * det;
+
+            let eigenInfo = '';
+            let isComplex = false;
+
+            if (discriminant < 0) {
+                isComplex = true;
+                const realPart = trace / 2;
+                const imagPart = Math.sqrt(-discriminant) / 2;
+                const modulus = Math.sqrt(realPart * realPart + imagPart * imagPart);
+                const angle = Math.atan2(imagPart, realPart);
+
+                eigenInfo = `
+                    <strong>Eigenvalues:</strong> λ = ${realPart.toFixed(3)} ± ${imagPart.toFixed(3)}i<br>
+                    <strong>Modulus:</strong> |λ| = ${modulus.toFixed(3)}<br>
+                    <strong>Angle:</strong> θ = ${(angle * 180 / Math.PI).toFixed(2)}°<br>
+                    <strong>Behavior:</strong> ${modulus < 1 ? 'Inward spiral (stable)' : modulus > 1 ? 'Outward spiral (unstable)' : 'Circular orbit'}
+                `;
+            } else {
+                const lambda1 = (trace + Math.sqrt(discriminant)) / 2;
+                const lambda2 = (trace - Math.sqrt(discriminant)) / 2;
+                eigenInfo = `
+                    <strong>Eigenvalues:</strong> λ₁ = ${lambda1.toFixed(3)}, λ₂ = ${lambda2.toFixed(3)}<br>
+                    <strong>Note:</strong> Eigenvalues are real, not complex.
+                `;
+            }
+
+            document.getElementById('eigenInfo').style.display = 'block';
+            document.getElementById('eigenOutput').innerHTML = eigenInfo;
+
+            if (!isComplex) return;
+
+            // Draw spiral
+            const canvas = document.getElementById('spiralCanvas');
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const scale = 60; // Scale for visualization
+
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw grid
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 1;
+            for (let i = -5; i <= 5; i++) {
+                ctx.beginPath();
+                ctx.moveTo(centerX + i * scale, centerY - 5 * scale);
+                ctx.lineTo(centerX + i * scale, centerY + 5 * scale);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(centerX - 5 * scale, centerY + i * scale);
+                ctx.lineTo(centerX + 5 * scale, centerY + i * scale);
+                ctx.stroke();
+            }
+
+            // Draw axes
+            ctx.strokeStyle = '#475569';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, canvas.height);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(canvas.width, centerY);
+            ctx.stroke();
+
+            // Compute and draw trajectory
+            const realPart = (a11 + a22) / 2;
+            const imagPart = Math.sqrt(-(a11 + a22) * (a11 + a22) + 4 * (a11 * a22 - a12 * a21)) / 2;
+            const modulus = Math.sqrt(realPart * realPart + imagPart * imagPart);
+            const angle = Math.atan2(imagPart, realPart);
+
+            let x = 2; // Initial point
+            let y = 1;
+
+            for (let step = 0; step < 50; step++) {
+                const xNew = a11 * x + a12 * y;
+                const yNew = a21 * x + a22 * y;
+
+                const hue = (step / 50) * 360;
+                ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(centerX + x * scale, centerY - y * scale);
+                ctx.lineTo(centerX + xNew * scale, centerY - yNew * scale);
+                ctx.stroke();
+
+                ctx.fillStyle = `hsl(${hue}, 100%, 50%)`;
+                ctx.fillRect(centerX + xNew * scale - 3, centerY - yNew * scale - 3, 6, 6);
+
+                x = xNew;
+                y = yNew;
+            }
+
+            // Draw origin
+            ctx.fillStyle = '#fbbf24';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 4, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+
+        // Calculator function
+        function calculateEigenvalues() {
+            const a11 = parseFloat(document.getElementById('calc_a11').value);
+            const a12 = parseFloat(document.getElementById('calc_a12').value);
+            const a21 = parseFloat(document.getElementById('calc_a21').value);
+            const a22 = parseFloat(document.getElementById('calc_a22').value);
+
+            const trace = a11 + a22;
+            const det = a11 * a22 - a12 * a21;
+            const discriminant = trace * trace - 4 * det;
+
+            let result = '';
+
+            if (discriminant < 0) {
+                const realPart = trace / 2;
+                const imagPart = Math.sqrt(-discriminant) / 2;
+                const modulus = Math.sqrt(realPart * realPart + imagPart * imagPart);
+                const angle = Math.atan2(imagPart, realPart);
+                const angleDeg = angle * 180 / Math.PI;
+
+                result = `
+                    <strong>Characteristic Polynomial:</strong> λ² - ${trace.toFixed(3)}λ + ${det.toFixed(3)} = 0<br><br>
+                    <strong>Eigenvalues (Complex Conjugate Pair):</strong><br>
+                    λ₁ = ${realPart.toFixed(4)} + ${imagPart.toFixed(4)}i<br>
+                    λ₂ = ${realPart.toFixed(4)} - ${imagPart.toFixed(4)}i<br><br>
+                    <strong>Modulus |λ|:</strong> ${modulus.toFixed(4)}<br>
+                    <strong>Argument θ:</strong> ${angleDeg.toFixed(2)}° (${angle.toFixed(4)} rad)<br><br>
+                    <strong>Rotation-Dilation:</strong><br>
+                    Scaling factor: ${modulus.toFixed(4)}<br>
+                    Rotation angle: ${angleDeg.toFixed(2)}°<br><br>
+                    <strong>Real Canonical Form C:</strong><br>
+                    C = [${realPart.toFixed(3)}, ${-imagPart.toFixed(3)}]<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[${imagPart.toFixed(3)}, ${realPart.toFixed(3)}]<br><br>
+                    <strong>Stability:</strong> ${modulus < 1 ? 'Stable (converges to origin)' : modulus > 1 ? 'Unstable (diverges)' : 'Marginally stable (circular orbit)'}
+                `;
+            } else if (discriminant === 0) {
+                const lambda = trace / 2;
+                result = `
+                    <strong>Characteristic Polynomial:</strong> λ² - ${trace.toFixed(3)}λ + ${det.toFixed(3)} = 0<br><br>
+                    <strong>Eigenvalue (Repeated):</strong><br>
+                    λ = ${lambda.toFixed(4)} (multiplicity 2)<br><br>
+                    <strong>Note:</strong> Eigenvalues are real and repeated, not complex.
+                `;
+            } else {
+                const lambda1 = (trace + Math.sqrt(discriminant)) / 2;
+                const lambda2 = (trace - Math.sqrt(discriminant)) / 2;
+                result = `
+                    <strong>Characteristic Polynomial:</strong> λ² - ${trace.toFixed(3)}λ + ${det.toFixed(3)} = 0<br><br>
+                    <strong>Eigenvalues (Real and Distinct):</strong><br>
+                    λ₁ = ${lambda1.toFixed(4)}<br>
+                    λ₂ = ${lambda2.toFixed(4)}<br><br>
+                    <strong>Note:</strong> Eigenvalues are real, not complex.
+                `;
+            }
+
+            document.getElementById('calcOutput').style.display = 'block';
+            document.getElementById('calcResult').innerHTML = result;
+
+            // Re-render KaTeX if needed
+            renderMathInElement(document.getElementById('calcOutput'), {
+                delimiters: [
+                    { left: '\\[', right: '\\]', display: true },
+                    { left: '\\(', right: '\\)', display: false }
+                ]
+            });
+        }
+
+        // Initialize visualizer on load
+        window.addEventListener('load', () => {
+            visualizeSpiral();
+        });
+    </script>
+</body>
+</html>

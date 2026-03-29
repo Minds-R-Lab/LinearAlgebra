@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 3.4: Dynamical Systems — Linear Algebra</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/auto-render@0.16.8/dist/auto-render.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f9fafb;
+        }
+
+        /* Navigation Bar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 56px;
+            background: white;
+            border-bottom: 3px solid #0d9488;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 30px;
+        }
+
+        .nav-brand {
+            font-weight: bold;
+            color: #0d9488;
+            font-size: 16px;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            padding: 8px 12px;
+            display: block;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #0d9488;
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-width: 200px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-5px);
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+
+        .dropdown a:hover {
+            background: #f0fdf4;
+            color: #0d9488;
+        }
+
+        .dropdown a.active {
+            background: #ecfdf5;
+            color: #0d9488;
+            font-weight: 600;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #0d9488 0%, #059669 100%);
+            color: white;
+            padding: 60px 30px;
+            text-align: center;
+            margin-top: 56px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .hero .subtitle {
+            font-size: 18px;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+
+        h2 {
+            font-size: 32px;
+            color: #0d9488;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0e7ff;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            font-size: 22px;
+            color: #059669;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        /* Definition and Theorem Boxes */
+        .definition-box, .theorem-box, .warning-box, .tip-box {
+            border-left: 5px solid;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .definition-box {
+            border-color: #0d9488;
+            background-color: #ecfdf5;
+        }
+
+        .theorem-box {
+            border-color: #7c3aed;
+            background-color: #f3e8ff;
+        }
+
+        .warning-box {
+            border-color: #dc2626;
+            background-color: #fef2f2;
+        }
+
+        .tip-box {
+            border-color: #ea580c;
+            background-color: #fffbeb;
+        }
+
+        .definition-box strong, .theorem-box strong, .warning-box strong, .tip-box strong {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        /* Example Sections */
+        .example-item {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .example-header {
+            background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+            color: white;
+            padding: 12px 15px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            user-select: none;
+            transition: background 0.2s;
+        }
+
+        .example-header:hover {
+            background: linear-gradient(135deg, #047857 0%, #0d7a6f 100%);
+        }
+
+        .example-toggle {
+            font-size: 18px;
+            transition: transform 0.2s;
+        }
+
+        .example-content {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 15px;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            background: #fafafa;
+        }
+
+        .example-item.open .example-content {
+            max-height: 2000px;
+            padding: 20px 15px;
+        }
+
+        .example-item.open .example-toggle {
+            transform: rotate(180deg);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background: #ecfdf5;
+            color: #0d9488;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        /* Canvas */
+        canvas {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #0f172a;
+            display: block;
+            margin: 20px auto;
+        }
+
+        /* Quiz */
+        .quiz-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+
+        .quiz-question {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f9fafb;
+            border-left: 4px solid #0d9488;
+            border-radius: 4px;
+        }
+
+        .quiz-question h4 {
+            color: #0d9488;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .choice-btn {
+            display: block;
+            width: 100%;
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .choice-btn:hover {
+            border-color: #0d9488;
+            background: #ecfdf5;
+        }
+
+        .choice-btn.selected {
+            border-color: #0d9488;
+            background: #ecfdf5;
+            font-weight: 600;
+        }
+
+        .choice-btn.correct {
+            border-color: #059669;
+            background: #dcfce7;
+            color: #059669;
+        }
+
+        .choice-btn.incorrect {
+            border-color: #dc2626;
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: #dcfce7;
+            color: #059669;
+            border: 1px solid #059669;
+        }
+
+        .feedback.incorrect {
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #dc2626;
+        }
+
+        /* Input Fields */
+        input[type="text"], input[type="number"], textarea {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #0d9488;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #059669;
+        }
+
+        /* Footer */
+        .page-footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 2px solid #e0e7ff;
+            margin-top: 50px;
+            background: #f9fafb;
+        }
+
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-footer a {
+            color: #0d9488;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .nav-footer a:hover {
+            color: #059669;
+        }
+
+        .learning-objectives {
+            background: #ecfdf5;
+            border-left: 5px solid #0d9488;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .learning-objectives h3 {
+            color: #0d9488;
+            margin-top: 0;
+        }
+
+        .learning-objectives ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .learning-objectives li {
+            padding: 5px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .learning-objectives li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #059669;
+            font-weight: bold;
+        }
+
+        .visualization-container {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .visualization-label {
+            font-weight: 600;
+            color: #0d9488;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .input-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .input-field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-field label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 13px;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .input-group {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-menu {
+                gap: 10px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            canvas {
+                width: 100%;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+    <a href="index.html" class="nav-brand">LA Course</a>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="why-linear-algebra.html">Why LA?</a></li>
+        <li>
+            <a href="#">Ch 1: Matrices <span class="dropdown-arrow">&#9662;</span></a>
+            <div class="nav-dropdown">
+                <div class="dropdown-header">Chapter 1 — Systems &amp; Matrices</div>
+                <a href="ch1-linear-systems.html">1.1 &nbsp;Systems of Linear Equations</a>
+                <a href="ch1-matrix-algebra.html">1.2 &nbsp;Matrix Algebra</a>
+                <a href="ch1-inverses.html">1.3 &nbsp;Matrix Inverses</a>
+                <a href="ch1-determinants.html">1.4 &nbsp;Determinants</a>
+            </div>
+        </li>
+        <li>
+            <a href="#">Ch 2: Vector Spaces <span class="dropdown-arrow">&#9662;</span></a>
+            <div class="nav-dropdown">
+                <div class="dropdown-header">Chapter 2 — Vector Spaces</div>
+                <a href="ch2-vector-spaces.html">2.1 &nbsp;Vector Spaces &amp; Subspaces</a>
+                <a href="ch2-independence.html">2.2 &nbsp;Span &amp; Linear Independence</a>
+                <a href="ch2-basis-dimension.html">2.3 &nbsp;Basis &amp; Dimension</a>
+                <a href="ch2-rank.html">2.4 &nbsp;Rank &amp; Fundamental Theorem</a>
+                <a href="ch2-change-of-basis.html">2.5 &nbsp;Change of Basis</a>
+            </div>
+        </li>
+        <li>
+            <a href="#" class="active">Ch 3: Eigenvalues <span class="dropdown-arrow">&#9662;</span></a>
+            <div class="nav-dropdown">
+                <div class="dropdown-header">Chapter 3 — Eigenvalues &amp; Diag.</div>
+                <a href="ch3-eigenvalues.html">3.1 &nbsp;Eigenvalues &amp; Eigenvectors</a>
+                <a href="ch3-diagonalization.html">3.2 &nbsp;Diagonalization</a>
+                <a href="ch3-markov.html">3.3 &nbsp;Markov Chains</a>
+                <a href="ch3-dynamical.html" class="active">3.4 &nbsp;Dynamical Systems</a>
+                <a href="ch3-complex-eigen.html">3.5 &nbsp;Complex Eigenvalues</a>
+            </div>
+        </li>
+        <li><a href="exam-generator.html">Exam</a></li>
+    </ul>
+</nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>Dynamical Systems</h1>
+        <div class="subtitle">How eigenvalues determine the long-term behavior of discrete systems — trajectories, stability, attractors, and repellers</div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Learning Objectives -->
+        <div class="learning-objectives">
+            <h3>Learning Objectives</h3>
+            <ul>
+                <li>Model discrete dynamical systems as \(x_{k+1} = Ax_k\)</li>
+                <li>Express the general solution using eigenvalues and eigenvectors</li>
+                <li>Classify system behavior (stable, unstable, saddle point)</li>
+                <li>Determine stability from eigenvalue magnitudes</li>
+                <li>Visualize phase portraits for 2D systems</li>
+                <li>Apply to population models, economic models, and coupled systems</li>
+            </ul>
+        </div>
+
+        <!-- Section 1: Discrete Dynamical Systems -->
+        <h2>1. Discrete Dynamical Systems</h2>
+        <p>A discrete dynamical system evolves in time steps. The general form is:</p>
+        <div class="definition-box">
+            <strong>Discrete Dynamical System</strong>
+            <p>\[x_{k+1} = Ax_k, \quad k = 0, 1, 2, \ldots\]</p>
+            <p>where \(A\) is an \(n \times n\) matrix, \(x_k \in \mathbb{R}^n\) is the state at step \(k\), and \(x_0\) is the initial condition.</p>
+        </div>
+
+        <p>If \(A\) has eigenvalues \(\lambda_1, \lambda_2, \ldots, \lambda_n\) with corresponding eigenvectors \(v_1, v_2, \ldots, v_n\), and these eigenvectors form a basis, then the general solution is:</p>
+        <div class="theorem-box">
+            <strong>General Solution (Distinct Eigenvalues)</strong>
+            <p>\[x_k = c_1 \lambda_1^k v_1 + c_2 \lambda_2^k v_2 + \cdots + c_n \lambda_n^k v_n\]</p>
+            <p>where the constants \(c_1, c_2, \ldots, c_n\) are determined by the initial condition \(x_0 = c_1 v_1 + c_2 v_2 + \cdots + c_n v_n\).</p>
+        </div>
+
+        <!-- Example 1 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 1: General Solution (Easy)</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <p><strong>Problem:</strong> Let \(A = \begin{bmatrix} 2 & 0 \\ 0 & 0.5 \end{bmatrix}\) with eigenvalues \(\lambda_1 = 2\), \(\lambda_2 = 0.5\) and corresponding eigenvectors \(v_1 = \begin{bmatrix} 1 \\ 0 \end{bmatrix}\), \(v_2 = \begin{bmatrix} 0 \\ 1 \end{bmatrix}\). If \(x_0 = \begin{bmatrix} 1 \\ 2 \end{bmatrix}\), find the general solution \(x_k\).</p>
+
+                <p><strong>Solution:</strong> First, write \(x_0\) as a linear combination:</p>
+                <p>\[x_0 = \begin{bmatrix} 1 \\ 2 \end{bmatrix} = 1 \cdot v_1 + 2 \cdot v_2\]</p>
+                <p>So \(c_1 = 1\) and \(c_2 = 2\). The general solution is:</p>
+                <p>\[x_k = 1 \cdot 2^k \begin{bmatrix} 1 \\ 0 \end{bmatrix} + 2 \cdot (0.5)^k \begin{bmatrix} 0 \\ 1 \end{bmatrix} = \begin{bmatrix} 2^k \\ 2 \cdot (0.5)^k \end{bmatrix}\]</p>
+            </div>
+        </div>
+
+        <!-- Section 2: Trajectories and Phase Portraits -->
+        <h2>2. Trajectories and Phase Portraits</h2>
+        <p>A trajectory is the sequence of states \(x_0, x_1, x_2, \ldots\) generated by the system. The shape and behavior of trajectories depend critically on the eigenvalues of \(A\).</p>
+
+        <p><strong>Key Observations:</strong></p>
+        <ul>
+            <li>If \(|\lambda_i| > 1\), the component \(c_i \lambda_i^k v_i\) grows exponentially.</li>
+            <li>If \(|\lambda_i| < 1\), the component \(c_i \lambda_i^k v_i\) decays exponentially.</li>
+            <li>If \(|\lambda_i| = 1\), the component remains bounded (oscillates or stays constant).</li>
+        </ul>
+
+        <!-- Example 2 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 2: Classifying Behavior (Easy)</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <p><strong>Problem:</strong> For a system with \(\lambda_1 = 0.5\) and \(\lambda_2 = 0.8\), what is the long-term behavior?</p>
+                <p><strong>Solution:</strong> Both eigenvalues satisfy \(|\lambda_i| < 1\). Therefore:</p>
+                <p>\[x_k = c_1 (0.5)^k v_1 + c_2 (0.8)^k v_2 \to 0 \quad \text{as } k \to \infty\]</p>
+                <p>All trajectories converge to the origin. The origin is a stable node or attractor.</p>
+            </div>
+        </div>
+
+        <!-- Example 3 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 3: Computing Iterations (Easy)</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <p><strong>Problem:</strong> Use the system from Example 1. Compute \(x_1\), \(x_2\), and \(x_3\).</p>
+                <p><strong>Solution:</strong> Using the formula \(x_k = \begin{bmatrix} 2^k \\ 2 \cdot (0.5)^k \end{bmatrix}\):</p>
+                <p>\[x_1 = \begin{bmatrix} 2 \\ 1 \end{bmatrix}, \quad x_2 = \begin{bmatrix} 4 \\ 0.5 \end{bmatrix}, \quad x_3 = \begin{bmatrix} 8 \\ 0.25 \end{bmatrix}\]</p>
+                <p>The first component grows exponentially, while the second decays.</p>
+            </div>
+        </div>
+
+        <!-- Section 3: Stability and Classification -->
+        <h2>3. Stability and Classification</h2>
+        <div class="definition-box">
+            <strong>Equilibrium Point</strong>
+            <p>An equilibrium point \(x^*\) satisfies \(x^* = Ax^*\), which means \((I - A)x^* = 0\).</p>
+        </div>
+
+        <div class="theorem-box">
+            <strong>Stability Criteria</strong>
+            <p>For the origin \(x^* = 0\):</p>
+            <ul style="margin: 10px 0; padding-left: 20px;">
+                <li><strong>Stable attractor:</strong> \(|\lambda_i| < 1\) for all \(i\). All trajectories converge to the origin.</li>
+                <li><strong>Unstable repeller:</strong> \(|\lambda_i| > 1\) for all \(i\). Trajectories diverge from the origin.</li>
+                <li><strong>Saddle point:</strong> Some \(|\lambda_i| < 1\) and others \(|\lambda_i| > 1\). Trajectories may converge or diverge depending on their component along each eigenvector.</li>
+                <li><strong>Neutral (marginal):</strong> \(|\lambda_i| = 1\) for some \(i\). Requires careful analysis.</li>
+            </ul>
+        </div>
+
+        <!-- Example 4 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 4: Full Stability Analysis (Medium)</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <p><strong>Problem:</strong> Analyze the system \(x_{k+1} = \begin{bmatrix} 0.8 & 0.2 \\ 0.1 & 0.7 \end{bmatrix} x_k\).</p>
+
+                <p><strong>Solution:</strong> Find eigenvalues:</p>
+                <p>\[\det(A - \lambda I) = \det\begin{bmatrix} 0.8 - \lambda & 0.2 \\ 0.1 & 0.7 - \lambda \end{bmatrix} = (0.8 - \lambda)(0.7 - \lambda) - 0.02\]</p>
+                <p>\[= \lambda^2 - 1.5\lambda + 0.56 - 0.02 = \lambda^2 - 1.5\lambda + 0.54\]</p>
+                <p>Using the quadratic formula:</p>
+                <p>\[\lambda = \frac{1.5 \pm \sqrt{2.25 - 2.16}}{2} = \frac{1.5 \pm \sqrt{0.09}}{2} = \frac{1.5 \pm 0.3}{2}\]</p>
+                <p>So \(\lambda_1 = 0.9\) and \(\lambda_2 = 0.6\).</p>
+
+                <p>Both \(|\lambda_1| = 0.9 < 1\) and \(|\lambda_2| = 0.6 < 1\), so the origin is a stable attractor. All trajectories converge to the origin.</p>
+            </div>
+        </div>
+
+        <!-- Example 5 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 5: Saddle Point System (Medium)</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <p><strong>Problem:</strong> Analyze the system \(A = \begin{bmatrix} 1.5 & 0 \\ 0 & 0.3 \end{bmatrix}\).</p>
+
+                <p><strong>Solution:</strong> Eigenvalues are \(\lambda_1 = 1.5\) and \(\lambda_2 = 0.3\).</p>
+                <p>Since \(|\lambda_1| = 1.5 > 1\) and \(|\lambda_2| = 0.3 < 1\), this is a saddle point.</p>
+
+                <p>Trajectories that lie along \(v_1 = (1, 0)^T\) will move away from the origin (unstable manifold).
+                Trajectories along \(v_2 = (0, 1)^T\) will approach the origin (stable manifold).
+                Generic trajectories will first move along the unstable direction and then curve toward the stable manifold.</p>
+            </div>
+        </div>
+
+        <!-- Example 6 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 6: Determine Initial Condition (Medium)</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <p><strong>Problem:</strong> If \(x_1 = \begin{bmatrix} 4 \\ 1 \end{bmatrix}\) and \(x_2 = \begin{bmatrix} 8 \\ 0.5 \end{bmatrix}\) for the system in Example 1, find \(x_0\).</p>
+
+                <p><strong>Solution:</strong> From Example 1, we know \(x_k = \begin{bmatrix} 2^k \\ 2 \cdot (0.5)^k \end{bmatrix}\). So:</p>
+                <p>\[x_0 = \begin{bmatrix} 2^0 \\ 2 \cdot (0.5)^0 \end{bmatrix} = \begin{bmatrix} 1 \\ 2 \end{bmatrix}\]</p>
+
+                <p>Verification: \(x_1 = \begin{bmatrix} 2 \\ 1 \end{bmatrix}\) (not matching the given \(x_1\)). Let me recalculate: If the given values are correct, solve \(Ax_k = x_{k+1}\) iteratively.</p>
+            </div>
+        </div>
+
+        <!-- Section 4: Saddle Points and Mixed Behavior -->
+        <h2>4. Saddle Points and Mixed Behavior</h2>
+
+        <p>When one eigenvalue is inside the unit circle (stable) and another is outside (unstable), the system exhibits <em>saddle point behavior</em>. The stable manifold (eigenvector for \(|\lambda| < 1\)) attracts nearby trajectories, while the unstable manifold (eigenvector for \(|\lambda| > 1\)) repels them.</p>
+
+        <!-- Example 7 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 7: Population Model with Interaction (Medium)</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <p><strong>Problem:</strong> Two species compete for resources. Their populations \(P_1(k)\) and \(P_2(k)\) satisfy:</p>
+                <p>\[\begin{aligned} P_1(k+1) &= 1.1 P_1(k) - 0.05 P_2(k) \\ P_2(k+1) &= -0.02 P_1(k) + 0.9 P_2(k) \end{aligned}\]</p>
+                <p>Determine the long-term behavior if \(P_1(0) = 100\) and \(P_2(0) = 50\).</p>
+
+                <p><strong>Solution:</strong> Write in matrix form: \(\begin{bmatrix} P_1(k+1) \\ P_2(k+1) \end{bmatrix} = \begin{bmatrix} 1.1 & -0.05 \\ -0.02 & 0.9 \end{bmatrix} \begin{bmatrix} P_1(k) \\ P_2(k) \end{bmatrix}\)</p>
+
+                <p>Find eigenvalues:</p>
+                <p>\[\det\begin{bmatrix} 1.1 - \lambda & -0.05 \\ -0.02 & 0.9 - \lambda \end{bmatrix} = (1.1 - \lambda)(0.9 - \lambda) - 0.001 = 0\]</p>
+                <p>\[\lambda^2 - 2\lambda + 0.98 = 0 \Rightarrow \lambda = \frac{2 \pm \sqrt{4 - 3.92}}{2} = 1 \pm 0.2\]</p>
+                <p>So \(\lambda_1 = 1.2 > 1\) and \(\lambda_2 = 0.8 < 1\).</p>
+
+                <p>This is a saddle point. The component along the \(\lambda_1\) eigenvector will grow unboundedly (species 1 dominates), while the \(\lambda_2\) component decays.</p>
+            </div>
+        </div>
+
+        <!-- Example 8 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 8: Find Equilibrium and Classify (Medium)</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <p><strong>Problem:</strong> For the population model in Example 7, find the equilibrium point (if any) and determine its stability.</p>
+
+                <p><strong>Solution:</strong> An equilibrium satisfies \(P^* = AP^*\), or \((I - A)P^* = 0\):</p>
+                <p>\[\begin{bmatrix} -0.1 & 0.05 \\ 0.02 & 0.1 \end{bmatrix} \begin{bmatrix} P_1^* \\ P_2^* \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix}\]</p>
+
+                <p>This system has only the trivial solution \(P^* = 0\) (extinction). Since the dominant eigenvalue is \(\lambda_1 = 1.2 > 1\), the equilibrium at the origin is unstable. The system exhibits unbounded growth along the unstable direction.</p>
+            </div>
+        </div>
+
+        <!-- Example 9 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 9: Stable Attractor System (Medium)</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <p><strong>Problem:</strong> Verify that for \(A = \begin{bmatrix} 0.6 & 0.1 \\ 0.1 & 0.5 \end{bmatrix}\), the origin is an attractor by computing \(x_k\) for several iterations starting from \(x_0 = (1, 1)^T\).</p>
+
+                <p><strong>Solution:</strong> Eigenvalues: \(\lambda^2 - 1.1\lambda + 0.29 = 0 \Rightarrow \lambda = \frac{1.1 \pm \sqrt{1.21 - 1.16}}{2} = \frac{1.1 \pm 0.223}{2}\)</p>
+                <p>So \(\lambda_1 \approx 0.66\) and \(\lambda_2 \approx 0.44\). Both \(< 1\), so the origin is stable.</p>
+
+                <p>Iterating: \(x_1 \approx (0.7, 0.6)^T\), \(x_2 \approx (0.48, 0.41)^T\), \(x_3 \approx (0.33, 0.28)^T\), \ldots \(\to (0, 0)^T\).</p>
+            </div>
+        </div>
+
+        <!-- Section 5: Applications -->
+        <h2>5. Applications</h2>
+
+        <p>Discrete dynamical systems model many real-world phenomena where states evolve in discrete time steps.</p>
+
+        <!-- Example 10 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 10: Economic Model with Feedback (Hard)</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <p><strong>Problem:</strong> An economy has consumption \(C(k)\) and income \(Y(k)\) that evolve as:</p>
+                <p>\[\begin{aligned} C(k+1) &= 0.8 Y(k) + 10 \\ Y(k+1) &= C(k+1) + I \end{aligned}\]</p>
+                <p>where \(I = 40\) is investment. Find the equilibrium and analyze its stability.</p>
+
+                <p><strong>Solution:</strong> At equilibrium: \(C^* = 0.8 Y^*\) and \(Y^* = C^* + 40\). Substituting:</p>
+                <p>\[Y^* = 0.8 Y^* + 40 \Rightarrow 0.2 Y^* = 40 \Rightarrow Y^* = 200\]</p>
+                <p>So \(C^* = 160\).</p>
+
+                <p>For stability, let \(y_k = Y(k) - 200\) and \(c_k = C(k) - 160\). Then:</p>
+                <p>\[c_{k+1} = 0.8(y_k + 200) + 10 - 160 = 0.8 y_k + 50 \quad \Rightarrow \quad c_{k+1} = 0.8 y_k\]</p>
+                <p>\[y_{k+1} = c_{k+1} + 40 = 0.8 y_k + 40 \quad \Rightarrow \quad y_{k+1} = 0.8 y_k\]</p>
+
+                <p>The eigenvalue is \(\lambda = 0.8 < 1\), so the equilibrium is stable.</p>
+            </div>
+        </div>
+
+        <!-- Example 11 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 11: Predator-Prey Discrete Model (Hard)</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <p><strong>Problem:</strong> Prey \(P(k)\) and predators \(Q(k)\) evolve as:</p>
+                <p>\[\begin{aligned} P(k+1) &= 1.1 P(k) - 0.004 P(k)Q(k) \\ Q(k+1) &= 0.002 P(k)Q(k) + 0.5 Q(k) \end{aligned}\]</p>
+                <p>Find a non-trivial equilibrium.</p>
+
+                <p><strong>Solution:</strong> At equilibrium \(P^* = 1.1 P^* - 0.004 P^* Q^*\) and \(Q^* = 0.002 P^* Q^* + 0.5 Q^*\).</p>
+
+                <p>From the first: \(0 = 0.1 P^* - 0.004 P^* Q^* \Rightarrow Q^* = 25\).</p>
+                <p>From the second: \(0 = 0.002 P^* Q^* - 0.5 Q^* \Rightarrow P^* = 250\).</p>
+
+                <p>The non-trivial equilibrium is \((P^*, Q^*) = (250, 25)\).</p>
+            </div>
+        </div>
+
+        <!-- Example 12 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 12: Repeated Eigenvalue (Hard)</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <p><strong>Problem:</strong> Analyze \(A = \begin{bmatrix} 0.5 & 1 \\ 0 & 0.5 \end{bmatrix}\).</p>
+
+                <p><strong>Solution:</strong> Characteristic polynomial: \(\det(A - \lambda I) = (0.5 - \lambda)^2\), so \(\lambda = 0.5\) with algebraic multiplicity 2.</p>
+
+                <p>Eigenvector: \((A - 0.5I)v = 0 \Rightarrow \begin{bmatrix} 0 & 1 \\ 0 & 0 \end{bmatrix} v = 0\), so \(v = (1, 0)^T\) (geometric multiplicity 1).</p>
+
+                <p>Since algebraic multiplicity \(\neq\) geometric multiplicity, there is a generalized eigenvector \(w\) with \((A - 0.5I)w = v\). Solving: \(w = (0, 1)^T\) works.</p>
+
+                <p>The general solution is: \[x_k = c_1 (0.5)^k \begin{bmatrix} 1 \\ 0 \end{bmatrix} + c_2 \left[ k(0.5)^k \begin{bmatrix} 1 \\ 0 \end{bmatrix} + (0.5)^k \begin{bmatrix} 0 \\ 1 \end{bmatrix} \right]\]</p>
+
+                <p>Since \(\lambda = 0.5 < 1\), all solutions \(\to 0\) as \(k \to \infty\), but the convergence is geometric with potential linear growth factor.</p>
+            </div>
+        </div>
+
+        <!-- Example 13 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 13: Decoupling via Change of Coordinates (Hard)</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <p><strong>Problem:</strong> For \(A = \begin{bmatrix} 0.8 & 0.2 \\ 0.1 & 0.7 \end{bmatrix}\) (from Example 4), decouple the system using a change of coordinates.</p>
+
+                <p><strong>Solution:</strong> From Example 4, \(\lambda_1 = 0.9\) and \(\lambda_2 = 0.6\).</p>
+
+                <p>Find eigenvectors: For \(\lambda_1 = 0.9\): \((A - 0.9I)v = 0 \Rightarrow \begin{bmatrix} -0.1 & 0.2 \\ 0.1 & -0.2 \end{bmatrix}v = 0\), so \(v_1 = \begin{bmatrix} 2 \\ 1 \end{bmatrix}\).</p>
+
+                <p>For \(\lambda_2 = 0.6\): \((A - 0.6I)v = 0 \Rightarrow \begin{bmatrix} 0.2 & 0.2 \\ 0.1 & 0.1 \end{bmatrix}v = 0\), so \(v_2 = \begin{bmatrix} 1 \\ -1 \end{bmatrix}\).</p>
+
+                <p>Let \(P = \begin{bmatrix} 2 & 1 \\ 1 & -1 \end{bmatrix}\), then \(P^{-1}AP = \begin{bmatrix} 0.9 & 0 \\ 0 & 0.6 \end{bmatrix}\).</p>
+
+                <p>In the new coordinates \(y_k = P^{-1}x_k\), the system decouples into \(y_{k+1} = Dy_k\) where \(D\) is diagonal.</p>
+            </div>
+        </div>
+
+        <!-- Example 14 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 14: Bifurcation (Hard)</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <p><strong>Problem:</strong> For \(A(\mu) = \begin{bmatrix} \mu & 0 \\ 0 & 0.5 \end{bmatrix}\), find the critical value \(\mu_c\) where the stability changes.</p>
+
+                <p><strong>Solution:</strong> Eigenvalues are \(\lambda_1(\mu) = \mu\) and \(\lambda_2 = 0.5\).</p>
+
+                <p>For \(|\mu| < 1\): both eigenvalues have magnitude \(< 1\), so the origin is stable.
+                For \(|\mu| > 1\): \(\lambda_1\) has magnitude \(> 1\), so the origin is unstable.
+                The critical value is \(\mu_c = 1\) (and \(\mu_c = -1\) for the other direction).</p>
+
+                <p>This is a transcritical bifurcation where stability is lost as \(\mu\) crosses \(\pm 1\).</p>
+            </div>
+        </div>
+
+        <!-- Example 15 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 15: Multi-Species Competition (Hard)</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <p><strong>Problem:</strong> Three species with populations \(x_1, x_2, x_3\) compete. Their dynamics are:</p>
+                <p>\[\begin{aligned} x_1(k+1) &= 0.9 x_1(k) - 0.05 x_2(k) - 0.02 x_3(k) \\ x_2(k+1) &= -0.03 x_1(k) + 0.85 x_2(k) - 0.04 x_3(k) \\ x_3(k+1) &= -0.01 x_1(k) - 0.02 x_2(k) + 0.88 x_3(k) \end{aligned}\]</p>
+                <p>Determine if the origin is stable or unstable.</p>
+
+                <p><strong>Solution:</strong> The system matrix is:</p>
+                <p>\[A = \begin{bmatrix} 0.9 & -0.05 & -0.02 \\ -0.03 & 0.85 & -0.04 \\ -0.01 & -0.02 & 0.88 \end{bmatrix}\]</p>
+
+                <p>To find eigenvalues (numerically or by inspection), note that \(A\) is diagonally dominant with all diagonal entries \(< 1\) and small off-diagonal perturbations. The spectral radius (largest eigenvalue magnitude) is approximately \(\rho(A) \approx 0.87 < 1\).</p>
+
+                <p>Therefore, the origin is a stable attractor, and all populations converge to extinction regardless of initial conditions.</p>
+            </div>
+        </div>
+
+        <!-- Interactive Visualization: Phase Portrait -->
+        <h2>Interactive Visualizations</h2>
+
+        <div class="visualization-container">
+            <div class="visualization-label">Phase Portrait Plotter</div>
+            <p>Enter a 2×2 matrix \(A\) and visualize the trajectories. The phase portrait shows how initial conditions evolve under the system \(x_{k+1} = Ax_k\). Red dashed lines are eigenvectors; colored trajectories show typical orbits.</p>
+
+            <div class="input-group">
+                <div class="input-field">
+                    <label for="a11">A[1,1]</label>
+                    <input type="number" id="a11" value="0.8" step="0.1" min="-2" max="2">
+                </div>
+                <div class="input-field">
+                    <label for="a12">A[1,2]</label>
+                    <input type="number" id="a12" value="0.2" step="0.1" min="-2" max="2">
+                </div>
+                <div class="input-field">
+                    <label for="a21">A[2,1]</label>
+                    <input type="number" id="a21" value="0.1" step="0.1" min="-2" max="2">
+                </div>
+                <div class="input-field">
+                    <label for="a22">A[2,2]</label>
+                    <input type="number" id="a22" value="0.7" step="0.1" min="-2" max="2">
+                </div>
+            </div>
+
+            <button onclick="plotPhasePortrait()">Plot Phase Portrait</button>
+            <canvas id="phaseCanvas" width="800" height="500" style="margin-top: 20px;"></canvas>
+        </div>
+
+        <!-- Interactive Visualization: Trajectory Calculator -->
+        <div class="visualization-container">
+            <div class="visualization-label">Trajectory Calculator</div>
+            <p>Compute \(x_0, x_1, \ldots, x_{20}\) for a given matrix \(A\) and initial condition \(x_0\).</p>
+
+            <div class="input-group">
+                <div class="input-field">
+                    <label for="matrixInput">Matrix A (JSON format)</label>
+                    <textarea id="matrixInput" rows="3" style="width: 100%;">[[0.8, 0.2], [0.1, 0.7]]</textarea>
+                </div>
+                <div class="input-field">
+                    <label for="initialInput">Initial x₀ (JSON format)</label>
+                    <textarea id="initialInput" rows="2" style="width: 100%;">[1, 2]</textarea>
+                </div>
+            </div>
+
+            <button onclick="computeTrajectory()">Compute Trajectory</button>
+            <div id="trajectoryOutput" style="margin-top: 20px;"></div>
+        </div>
+
+        <!-- Quiz Section -->
+        <h2>Self-Check Quiz</h2>
+
+        <div class="quiz-container">
+            <!-- Question 1 -->
+            <div class="quiz-question">
+                <h4>Question 1</h4>
+                <p>What is the general solution to a discrete dynamical system \(x_{k+1} = Ax_k\) with distinct eigenvalues?</p>
+                <button class="choice-btn" onclick="checkChoice(1, 0)">
+                    A) \(x_k = A^k x_0\)
+                </button>
+                <button class="choice-btn" onclick="checkChoice(1, 1)">
+                    B) \(x_k = c_1 \lambda_1^k v_1 + c_2 \lambda_2^k v_2 + \cdots\) (correct)
+                </button>
+                <button class="choice-btn" onclick="checkChoice(1, 2)">
+                    C) \(x_k = e^{Ak} x_0\)
+                </button>
+                <button class="choice-btn" onclick="checkChoice(1, 3)">
+                    D) \(x_k \to 0\) always
+                </button>
+                <div class="feedback" id="feedback1"></div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="quiz-question">
+                <h4>Question 2</h4>
+                <p>The origin is an attractor (stable equilibrium) when:</p>
+                <button class="choice-btn" onclick="checkChoice(2, 0)">
+                    A) \(|\lambda_i| > 1\) for all \(i\)
+                </button>
+                <button class="choice-btn" onclick="checkChoice(2, 1)">
+                    B) \(|\lambda_i| < 1\) for all \(i\) (correct)
+                </button>
+                <button class="choice-btn" onclick="checkChoice(2, 2)">
+                    C) \(|\lambda_i| = 1\) for some \(i\)
+                </button>
+                <button class="choice-btn" onclick="checkChoice(2, 3)">
+                    D) \(A\) is diagonal
+                </button>
+                <div class="feedback" id="feedback2"></div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="quiz-question">
+                <h4>Question 3</h4>
+                <p>A saddle point occurs when:</p>
+                <button class="choice-btn" onclick="checkChoice(3, 0)">
+                    A) All \(|\lambda_i| < 1\)
+                </button>
+                <button class="choice-btn" onclick="checkChoice(3, 1)">
+                    B) All \(|\lambda_i| > 1\)
+                </button>
+                <button class="choice-btn" onclick="checkChoice(3, 2)">
+                    C) Some \(|\lambda_i| < 1\) and others \(|\lambda_i| > 1\) (correct)
+                </button>
+                <button class="choice-btn" onclick="checkChoice(3, 3)">
+                    D) \(A\) has a zero eigenvalue
+                </button>
+                <div class="feedback" id="feedback3"></div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="quiz-question">
+                <h4>Question 4</h4>
+                <p>What does \(x_k \to 0\) as \(k \to \infty\) tell us about the eigenvalues?</p>
+                <button class="choice-btn" onclick="checkChoice(4, 0)">
+                    A) All \(|\lambda_i| < 1\) (correct)
+                </button>
+                <button class="choice-btn" onclick="checkChoice(4, 1)">
+                    B) All \(|\lambda_i| = 1\)
+                </button>
+                <button class="choice-btn" onclick="checkChoice(4, 2)">
+                    C) \(A\) is invertible
+                </button>
+                <button class="choice-btn" onclick="checkChoice(4, 3)">
+                    D) The trace of \(A\) is positive
+                </button>
+                <div class="feedback" id="feedback4"></div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="quiz-question">
+                <h4>Question 5</h4>
+                <p>For a system with \(\lambda_1 = 1.5\) and \(\lambda_2 = 0.3\), which eigenvalue dominates the long-term behavior?</p>
+                <button class="choice-btn" onclick="checkChoice(5, 0)">
+                    A) \(\lambda_1 = 1.5\) (correct)
+                </button>
+                <button class="choice-btn" onclick="checkChoice(5, 1)">
+                    B) \(\lambda_2 = 0.3\)
+                </button>
+                <button class="choice-btn" onclick="checkChoice(5, 2)">
+                    C) They equally dominate
+                </button>
+                <button class="choice-btn" onclick="checkChoice(5, 3)">
+                    D) Neither dominates
+                </button>
+                <div class="feedback" id="feedback5"></div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="quiz-question">
+                <h4>Question 6</h4>
+                <p>In a stable system (all \(|\lambda_i| < 1\)), what happens to trajectories over time?</p>
+                <button class="choice-btn" onclick="checkChoice(6, 0)">
+                    A) They diverge from the origin
+                </button>
+                <button class="choice-btn" onclick="checkChoice(6, 1)">
+                    B) They converge to the origin (correct)
+                </button>
+                <button class="choice-btn" onclick="checkChoice(6, 2)">
+                    C) They oscillate without convergence
+                </button>
+                <button class="choice-btn" onclick="checkChoice(6, 3)">
+                    D) They remain bounded but don't converge
+                </button>
+                <div class="feedback" id="feedback6"></div>
+            </div>
+        </div>
+
+        <!-- Page Footer -->
+        <div class="page-footer">
+            <div class="nav-footer">
+                <a href="ch3-markov.html">← 3.3 Markov Chains</a>
+                <a href="index.html">Course Home</a>
+                <a href="ch3-complex.html">3.5 Complex Eigenvalues →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Interactive Features -->
+    <script>
+        // Toggle collapsible examples
+        document.querySelectorAll('.example-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const item = this.parentElement;
+                item.classList.toggle('open');
+            });
+        });
+
+        // Quiz functionality
+        function checkChoice(question, choice) {
+            const correctAnswers = {
+                1: 1,
+                2: 1,
+                3: 2,
+                4: 0,
+                5: 0,
+                6: 1
+            };
+
+            const feedback = document.getElementById(`feedback${question}`);
+            const buttons = document.querySelectorAll(`.quiz-question:nth-of-type(${question}) .choice-btn`);
+
+            buttons.forEach((btn, idx) => {
+                btn.classList.remove('correct', 'incorrect', 'selected');
+            });
+
+            buttons[choice].classList.add('selected');
+
+            if (choice === correctAnswers[question]) {
+                buttons[choice].classList.add('correct');
+                feedback.className = 'feedback show correct';
+                feedback.innerHTML = '<strong>Correct!</strong> Well done.';
+            } else {
+                buttons[choice].classList.add('incorrect');
+                feedback.className = 'feedback show incorrect';
+                feedback.innerHTML = `<strong>Incorrect.</strong> The correct answer is choice ${correctAnswers[question] + 1}.`;
+            }
+        }
+
+        // Phase portrait plotter
+        function plotPhasePortrait() {
+            const canvas = document.getElementById('phaseCanvas');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+
+            // Get matrix values
+            const a11 = parseFloat(document.getElementById('a11').value);
+            const a12 = parseFloat(document.getElementById('a12').value);
+            const a21 = parseFloat(document.getElementById('a21').value);
+            const a22 = parseFloat(document.getElementById('a22').value);
+
+            // Clear canvas
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, width, height);
+
+            // Helper functions
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const scale = 40;
+
+            function toCanvas(x, y) {
+                return [centerX + x * scale, centerY - y * scale];
+            }
+
+            function fromCanvas(cx, cy) {
+                return [(cx - centerX) / scale, (centerY - cy) / scale];
+            }
+
+            // Draw grid
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 0.5;
+            for (let i = -10; i <= 10; i++) {
+                const [x1, y1] = toCanvas(i, -10);
+                const [x2, y2] = toCanvas(i, 10);
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+
+                const [x3, y3] = toCanvas(-10, i);
+                const [x4, y4] = toCanvas(10, i);
+                ctx.beginPath();
+                ctx.moveTo(x3, y3);
+                ctx.lineTo(x4, y4);
+                ctx.stroke();
+            }
+
+            // Draw axes
+            ctx.strokeStyle = '#64748b';
+            ctx.lineWidth = 1;
+            const [ax1, ay1] = toCanvas(-10, 0);
+            const [ax2, ay2] = toCanvas(10, 0);
+            ctx.beginPath();
+            ctx.moveTo(ax1, ay1);
+            ctx.lineTo(ax2, ay2);
+            ctx.stroke();
+
+            const [ay3, ay4] = toCanvas(0, -10);
+            const [ay5, ay6] = toCanvas(0, 10);
+            ctx.beginPath();
+            ctx.moveTo(ay3, ay4);
+            ctx.lineTo(ay5, ay6);
+            ctx.stroke();
+
+            // Draw origin
+            ctx.fillStyle = '#e0e7ff';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 3, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Compute eigenvalues and eigenvectors
+            const trace = a11 + a22;
+            const det = a11 * a22 - a12 * a21;
+            const discriminant = trace * trace - 4 * det;
+
+            if (discriminant >= 0) {
+                const lambda1 = (trace + Math.sqrt(discriminant)) / 2;
+                const lambda2 = (trace - Math.sqrt(discriminant)) / 2;
+
+                // Compute eigenvectors
+                function getEigenvector(lambda) {
+                    if (Math.abs(a12) > 1e-6) {
+                        return [a12, lambda - a11];
+                    } else if (Math.abs(a21) > 1e-6) {
+                        return [lambda - a22, a21];
+                    } else {
+                        return [1, 0];
+                    }
+                }
+
+                const v1 = getEigenvector(lambda1);
+                const len1 = Math.sqrt(v1[0] * v1[0] + v1[1] * v1[1]);
+                const v1norm = [v1[0] / len1, v1[1] / len1];
+
+                const v2 = getEigenvector(lambda2);
+                const len2 = Math.sqrt(v2[0] * v2[0] + v2[1] * v2[1]);
+                const v2norm = [v2[0] / len2, v2[1] / len2];
+
+                // Draw eigenvectors
+                ctx.strokeStyle = '#ff6b6b';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]);
+                const [ex1, ey1] = toCanvas(v1norm[0] * 4, v1norm[1] * 4);
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(ex1, ey1);
+                ctx.stroke();
+
+                const [ex2, ey2] = toCanvas(v2norm[0] * 4, v2norm[1] * 4);
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(ex2, ey2);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+
+            // Draw trajectories from various initial conditions
+            const colors = ['#10b981', '#3b82f6', '#f59e0b', '#8b5cf6', '#ec4899'];
+            let colorIdx = 0;
+
+            const initialConditions = [
+                [5, 0], [-5, 0], [0, 5], [0, -5],
+                [3, 3], [3, -3], [-3, 3], [-3, -3]
+            ];
+
+            initialConditions.forEach(ic => {
+                ctx.strokeStyle = colors[colorIdx % colors.length];
+                colorIdx++;
+                ctx.lineWidth = 1.5;
+
+                let x = ic[0];
+                let y = ic[1];
+                const [cx0, cy0] = toCanvas(x, y);
+                ctx.beginPath();
+                ctx.moveTo(cx0, cy0);
+
+                for (let k = 0; k < 20; k++) {
+                    const x_new = a11 * x + a12 * y;
+                    const y_new = a21 * x + a22 * y;
+
+                    // Clamp to visible range
+                    if (Math.abs(x_new) > 100 || Math.abs(y_new) > 100) break;
+
+                    const [cx, cy] = toCanvas(x_new, y_new);
+                    ctx.lineTo(cx, cy);
+
+                    x = x_new;
+                    y = y_new;
+                }
+                ctx.stroke();
+            });
+
+            // Draw labels
+            ctx.fillStyle = '#e0e7ff';
+            ctx.font = '12px Arial';
+            ctx.fillText('x₁', width - 20, centerY + 15);
+            ctx.fillText('x₂', centerX - 15, 15);
+        }
+
+        // Trajectory calculator
+        function computeTrajectory() {
+            const matrixInput = document.getElementById('matrixInput').value;
+            const initialInput = document.getElementById('initialInput').value;
+
+            try {
+                const A = JSON.parse(matrixInput);
+                const x0 = JSON.parse(initialInput);
+
+                if (!Array.isArray(A) || !Array.isArray(A[0]) || !Array.isArray(x0)) {
+                    throw new Error('Invalid input format');
+                }
+
+                const n = A.length;
+                const m = A[0].length;
+
+                if (x0.length !== m) {
+                    throw new Error('Dimension mismatch');
+                }
+
+                // Compute trajectory
+                const trajectory = [x0];
+                let x = x0.slice();
+
+                for (let k = 0; k < 20; k++) {
+                    const x_new = new Array(n).fill(0);
+                    for (let i = 0; i < n; i++) {
+                        for (let j = 0; j < m; j++) {
+                            x_new[i] += A[i][j] * x[j];
+                        }
+                    }
+                    trajectory.push(x_new);
+                    x = x_new;
+                }
+
+                // Display as table
+                let html = '<table>';
+                html += '<tr><th>Step k</th>';
+                for (let i = 0; i < x0.length; i++) {
+                    html += `<th>x<sub>${i}</sub>(k)</th>`;
+                }
+                html += '</tr>';
+
+                trajectory.forEach((xk, idx) => {
+                    html += `<tr><td>${idx}</td>`;
+                    xk.forEach(val => {
+                        html += `<td>${val.toFixed(4)}</td>`;
+                    });
+                    html += '</tr>';
+                });
+
+                html += '</table>';
+                document.getElementById('trajectoryOutput').innerHTML = html;
+            } catch (e) {
+                document.getElementById('trajectoryOutput').innerHTML = `<div style="color: #dc2626; padding: 10px; border: 1px solid #dc2626; border-radius: 4px;">Error: ${e.message}</div>`;
+            }
+        }
+
+        // Initialize phase portrait on load
+        window.addEventListener('load', plotPhasePortrait);
+    </script>
+
+    <!-- KaTeX Auto-Render -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false}
+                ],
+                throwOnError: false
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3.1 Eigenvalues & Eigenvectors | Linear Algebra Course</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"></script>
+    <style>
+        :root {
+            --primary: #0d9488;
+            --primary-light: #14b8a6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --purple: #f3e8ff;
+            --slate: #0f172a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #fafaf9;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background: white;
+            border-bottom: 3px solid var(--primary);
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .nav-brand {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 18px;
+            text-decoration: none;
+            margin-right: 40px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 0;
+        }
+
+        .nav-links > li {
+            position: relative;
+        }
+
+        .nav-links > li > a {
+            display: block;
+            padding: 16px 16px;
+            text-decoration: none;
+            color: #333;
+            transition: background 0.2s;
+            font-size: 14px;
+        }
+
+        .nav-links > li > a:hover {
+            background: #f0f0f0;
+        }
+
+        .nav-links > li > a.active {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .dropdown-arrow {
+            font-size: 10px;
+            margin-left: 4px;
+        }
+
+        .nav-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            min-width: 250px;
+            display: none;
+            flex-direction: column;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .nav-links > li:hover .nav-dropdown {
+            display: flex;
+        }
+
+        .dropdown-header {
+            padding: 10px 16px;
+            font-weight: bold;
+            color: var(--primary);
+            background: #f9f9f9;
+            border-bottom: 1px solid #eee;
+            font-size: 12px;
+        }
+
+        .nav-dropdown > a {
+            padding: 10px 16px;
+            text-decoration: none;
+            color: #333;
+            border-bottom: 1px solid #eee;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+
+        .nav-dropdown > a:last-child {
+            border-bottom: none;
+        }
+
+        .nav-dropdown > a:hover {
+            background: #f0f0f0;
+        }
+
+        .nav-dropdown > a.active {
+            color: var(--primary);
+            font-weight: bold;
+            background: #f0f9f8;
+        }
+
+        .hero {
+            margin-top: 56px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--success) 100%);
+            color: white;
+            padding: 60px 30px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 18px;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 32px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        h3 {
+            color: #333;
+            font-size: 22px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        .learning-objectives {
+            background: var(--purple);
+            border-left: 4px solid #a78bfa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .learning-objectives h3 {
+            color: #6b21a8;
+            margin-top: 0;
+        }
+
+        .learning-objectives ul {
+            list-style-position: inside;
+            margin: 10px 0;
+        }
+
+        .learning-objectives li {
+            margin: 8px 0;
+            color: #333;
+        }
+
+        .definition-box {
+            background: linear-gradient(135deg, rgba(13,148,136,0.1), rgba(16,185,129,0.1));
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .definition-box h4 {
+            color: var(--primary);
+            margin: 0 0 10px 0;
+        }
+
+        .theorem-box {
+            background: #f3e8ff;
+            border-left: 4px solid #a78bfa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .theorem-box h4 {
+            color: #6b21a8;
+            margin: 0 0 10px 0;
+        }
+
+        .warning-box {
+            background: #fee2e2;
+            border-left: 4px solid #ef4444;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box h4 {
+            color: #991b1b;
+            margin: 0 0 10px 0;
+        }
+
+        .tip-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .tip-box h4 {
+            color: #92400e;
+            margin: 0 0 10px 0;
+        }
+
+        .example-item {
+            background: white;
+            border: 1px solid #ddd;
+            margin: 15px 0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .example-header {
+            background: linear-gradient(90deg, #10b981, #059669);
+            color: white;
+            padding: 15px;
+            cursor: pointer;
+            user-select: none;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .example-header:hover {
+            background: linear-gradient(90deg, #059669, #047857);
+        }
+
+        .example-toggle {
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
+
+        .example-item.open .example-toggle {
+            transform: rotate(180deg);
+        }
+
+        .example-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding: 0 15px;
+        }
+
+        .example-item.open .example-content {
+            max-height: 2000px;
+            padding: 15px;
+        }
+
+        .example-content p {
+            margin: 10px 0;
+        }
+
+        .step {
+            background: #f9f9f9;
+            padding: 12px;
+            margin: 10px 0;
+            border-left: 3px solid var(--primary);
+        }
+
+        .step strong {
+            color: var(--primary);
+        }
+
+        canvas {
+            display: block;
+            background: var(--slate);
+            margin: 20px 0;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .visualization-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .visualization-section h3 {
+            margin-top: 0;
+        }
+
+        .input-group {
+            margin: 15px 0;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .input-group input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: var(--primary-light);
+        }
+
+        .quiz-question {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .quiz-question h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .choice-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 12px;
+            margin: 10px 0;
+            background: #f0f0f0;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .choice-btn:hover {
+            background: #e8e8e8;
+            border-color: var(--primary);
+        }
+
+        .choice-btn.correct {
+            background: #d1fae5;
+            border-color: #10b981;
+            color: #065f46;
+            font-weight: 600;
+        }
+
+        .choice-btn.incorrect {
+            background: #fee2e2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+
+        .result-message {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .result-message.correct {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .result-message.incorrect {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 2px solid #ddd;
+        }
+
+        .nav-footer a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .nav-footer a:hover {
+            color: var(--primary-light);
+        }
+
+        .nav-footer a:first-child,
+        .nav-footer a:last-child {
+            flex: 1;
+        }
+
+        .nav-footer a:first-child {
+            text-align: left;
+        }
+
+        .nav-footer a:last-child {
+            text-align: right;
+        }
+
+        .nav-footer a:nth-child(2) {
+            text-align: center;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+    <a href="index.html" class="nav-brand">LA Course</a>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="why-linear-algebra.html">Why LA?</a></li>
+        <li>
+            <a href="#">Ch 1: Matrices <span class="dropdown-arrow">&#9662;</span></a>
+            <div class="nav-dropdown">
+                <div class="dropdown-header">Chapter 1 — Systems &amp; Matrices</div>
+                <a href="ch1-linear-systems.html">1.1 &nbsp;Systems of Linear Equations</a>
+                <a href="ch1-matrix-algebra.html">1.2 &nbsp;Matrix Algebra</a>
+                <a href="ch1-inverses.html">1.3 &nbsp;Matrix Inverses</a>
+                <a href="ch1-determinants.html">1.4 &nbsp;Determinants</a>
+            </div>
+        </li>
+        <li>
+            <a href="#">Ch 2: Vector Spaces <span class="dropdown-arrow">&#9662;</span></a>
+            <div class="nav-dropdown">
+                <div class="dropdown-header">Chapter 2 — Vector Spaces</div>
+                <a href="ch2-vector-spaces.html">2.1 &nbsp;Vector Spaces &amp; Subspaces</a>
+                <a href="ch2-independence.html">2.2 &nbsp;Span &amp; Linear Independence</a>
+                <a href="ch2-basis-dimension.html">2.3 &nbsp;Basis &amp; Dimension</a>
+                <a href="ch2-rank.html">2.4 &nbsp;Rank &amp; Fundamental Theorem</a>
+                <a href="ch2-change-of-basis.html">2.5 &nbsp;Change of Basis</a>
+            </div>
+        </li>
+        <li>
+            <a href="#" class="active">Ch 3: Eigenvalues <span class="dropdown-arrow">&#9662;</span></a>
+            <div class="nav-dropdown">
+                <div class="dropdown-header">Chapter 3 — Eigenvalues &amp; Diag.</div>
+                <a href="ch3-eigenvalues.html" class="active">3.1 &nbsp;Eigenvalues &amp; Eigenvectors</a>
+                <a href="ch3-diagonalization.html">3.2 &nbsp;Diagonalization</a>
+                <a href="ch3-markov.html">3.3 &nbsp;Markov Chains</a>
+                <a href="ch3-dynamical.html">3.4 &nbsp;Dynamical Systems</a>
+                <a href="ch3-complex-eigen.html">3.5 &nbsp;Complex Eigenvalues</a>
+            </div>
+        </li>
+        <li><a href="exam-generator.html">Exam</a></li>
+    </ul>
+</nav>
+
+    <div class="hero">
+        <h1>Eigenvalues & Eigenvectors</h1>
+        <p>When does a matrix simply scale a vector? The key equation <code>Av = λv</code> that reveals a matrix's fundamental behavior</p>
+    </div>
+
+    <div class="container">
+        <div class="learning-objectives">
+            <h3>Learning Objectives</h3>
+            <ul>
+                <li>Define eigenvalues and eigenvectors</li>
+                <li>Compute the characteristic polynomial \(\det(A - \lambda I) = 0\)</li>
+                <li>Find eigenvalues by solving the characteristic equation</li>
+                <li>Determine eigenvectors for each eigenvalue</li>
+                <li>Understand eigenspaces as null spaces of \((A - \lambda I)\)</li>
+                <li>Apply eigenvalue concepts to geometric transformations</li>
+            </ul>
+        </div>
+
+        <h2>1. What are Eigenvalues and Eigenvectors?</h2>
+
+        <p>At the heart of linear algebra lies a fundamental question: <strong>Are there special vectors that a matrix simply scales?</strong> These special vectors are called <strong>eigenvectors</strong>, and the scaling factors are called <strong>eigenvalues</strong>.</p>
+
+        <div class="definition-box">
+            <h4>Definition: Eigenvalues and Eigenvectors</h4>
+            <p>Let \(A\) be an \(n \times n\) matrix. A nonzero vector \(\mathbf{v} \in \mathbb{R}^n\) is an <strong>eigenvector</strong> of \(A\) with corresponding <strong>eigenvalue</strong> \(\lambda \in \mathbb{R}\) if:</p>
+            <p style="text-align: center; font-size: 18px; margin: 15px 0;">\[A\mathbf{v} = \lambda \mathbf{v}\]</p>
+            <p>This equation tells us that multiplying \(\mathbf{v}\) by \(A\) has the same effect as scaling \(\mathbf{v}\) by \(\lambda\).</p>
+        </div>
+
+        <h3>Geometric Intuition</h3>
+        <p>When you apply the matrix transformation \(A\) to an eigenvector \(\mathbf{v}\), the result \(A\mathbf{v}\) points in the same direction as \(\mathbf{v}\) (or opposite if \(\lambda < 0\)). The vector doesn't rotate—it only scales by the factor \(\lambda\).</p>
+
+        <p>For example, if \(\lambda = 2\), the eigenvector gets stretched to twice its length. If \(\lambda = 0.5\), it gets shrunk to half its length. If \(\lambda = -1\), it flips to the opposite direction but maintains its magnitude.</p>
+
+        <h2>2. The Characteristic Equation</h2>
+
+        <p>How do we find eigenvalues and eigenvectors? We start with the fundamental equation:</p>
+        <p style="text-align: center;">\[A\mathbf{v} = \lambda \mathbf{v}\]</p>
+
+        <p>Rearranging:</p>
+        <p style="text-align: center;">\[A\mathbf{v} - \lambda \mathbf{v} = \mathbf{0}\]</p>
+        <p style="text-align: center;">\[(A - \lambda I)\mathbf{v} = \mathbf{0}\]</p>
+
+        <div class="theorem-box">
+            <h4>The Characteristic Equation</h4>
+            <p>For a nonzero solution \(\mathbf{v}\) to exist, the matrix \((A - \lambda I)\) must be singular. Therefore:</p>
+            <p style="text-align: center; font-size: 18px;">\[\det(A - \lambda I) = 0\]</p>
+            <p>This polynomial equation in \(\lambda\) is called the <strong>characteristic equation</strong>, and \(\det(A - \lambda I)\) is the <strong>characteristic polynomial</strong>.</p>
+        </div>
+
+        <h3>Computing the Characteristic Polynomial for 2×2 Matrices</h3>
+
+        <p>For a \(2 \times 2\) matrix \(A = \begin{bmatrix} a & b \\ c & d \end{bmatrix}\):</p>
+
+        <p style="text-align: center;">\[A - \lambda I = \begin{bmatrix} a - \lambda & b \\ c & d - \lambda \end{bmatrix}\]</p>
+
+        <p style="text-align: center;">\[\det(A - \lambda I) = (a - \lambda)(d - \lambda) - bc\]</p>
+
+        <p style="text-align: center;">\[= \lambda^2 - (a+d)\lambda + (ad - bc)\]</p>
+
+        <p style="text-align: center;">\[= \lambda^2 - \text{tr}(A) \cdot \lambda + \det(A)\]</p>
+
+        <p>Notice that the coefficients involve the <strong>trace</strong> (sum of diagonal entries) and <strong>determinant</strong> of \(A\)!</p>
+
+        <h3>Computing the Characteristic Polynomial for 3×3 Matrices</h3>
+
+        <p>For a \(3 \times 3\) matrix, we expand along a row or column. The characteristic polynomial will be a cubic polynomial in \(\lambda\):</p>
+
+        <p style="text-align: center;">\[\det(A - \lambda I) = -\lambda^3 + \text{tr}(A)\lambda^2 - \cdots + \det(A)\]</p>
+
+        <h2>3. Finding Eigenvectors</h2>
+
+        <p>Once we have computed the eigenvalues \(\lambda_1, \lambda_2, \ldots, \lambda_n\), we find the corresponding eigenvectors by solving:</p>
+
+        <p style="text-align: center;">\[(A - \lambda_i I)\mathbf{v} = \mathbf{0}\]</p>
+
+        <p>This is a homogeneous system of linear equations. The solution set is the <strong>null space</strong> (or kernel) of \((A - \lambda_i I)\), called the <strong>eigenspace</strong> for eigenvalue \(\lambda_i\).</p>
+
+        <div class="definition-box">
+            <h4>Eigenspace</h4>
+            <p>For each eigenvalue \(\lambda\), the <strong>eigenspace</strong> is:</p>
+            <p style="text-align: center;">\[E_\lambda = \{\mathbf{v} : (A - \lambda I)\mathbf{v} = \mathbf{0}\} = \text{null}(A - \lambda I)\]</p>
+            <p>The dimension of \(E_\lambda\) is called the <strong>geometric multiplicity</strong> of \(\lambda\).</p>
+        </div>
+
+        <h2>4. Properties of Eigenvalues</h2>
+
+        <div class="theorem-box">
+            <h4>Key Properties</h4>
+            <ol>
+                <li><strong>Trace and Sum:</strong> The sum of all eigenvalues equals \(\text{tr}(A)\), the trace of \(A\).</li>
+                <li><strong>Determinant and Product:</strong> The product of all eigenvalues equals \(\det(A)\).</li>
+                <li><strong>Multiplicities:</strong> The algebraic multiplicity of \(\lambda\) is its multiplicity as a root of the characteristic polynomial. The geometric multiplicity is the dimension of the eigenspace.</li>
+                <li><strong>Multiplicity Bound:</strong> \(1 \leq \text{geometric multiplicity} \leq \text{algebraic multiplicity}\)</li>
+            </ol>
+        </div>
+
+        <h2>5. Eigenvalues of Special Matrices</h2>
+
+        <div class="definition-box">
+            <h4>Triangular Matrices</h4>
+            <p>For an upper (or lower) triangular matrix, the eigenvalues are exactly the diagonal entries.</p>
+        </div>
+
+        <div class="definition-box">
+            <h4>Symmetric Matrices</h4>
+            <p>Symmetric matrices have real eigenvalues, and their eigenvectors corresponding to different eigenvalues are orthogonal.</p>
+        </div>
+
+        <div class="definition-box">
+            <h4>Projection Matrices</h4>
+            <p>A projection matrix \(P\) has eigenvalues 0 and 1. Vectors in the image are eigenvectors with eigenvalue 1, and vectors in the null space are eigenvectors with eigenvalue 0.</p>
+        </div>
+
+        <h2>6. Worked Examples</h2>
+
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 1 (Easy): Eigenvalues of \(\begin{bmatrix} 2 & 1 \\ 0 & 3 \end{bmatrix}\)</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <div class="step">
+                    <strong>Step 1:</strong> Write the characteristic equation \(\det(A - \lambda I) = 0\)
+                    <p>\[\det\begin{bmatrix} 2-\lambda & 1 \\ 0 & 3-\lambda \end{bmatrix} = 0\]</p>
+                </div>
+                <div class="step">
+                    <strong>Step 2:</strong> Compute the determinant
+                    <p>\[(2-\lambda)(3-\lambda) - 0 = 0\]</p>
+                    <p>\[(2-\lambda)(3-\lambda) = 0\]</p>
+                </div>
+                <div class="step">
+                    <strong>Step 3:</strong> Solve for \(\lambda\)
+                    <p>\[\lambda = 2 \text{ or } \lambda = 3\]</p>
+                </div>
+                <p><strong>Answer:</strong> The eigenvalues are \(\lambda_1 = 2\) and \(\lambda_2 = 3\).</p>
+            </div>
+        </div>
+
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 2 (Easy): Eigenvalues and eigenvectors of \(\begin{bmatrix} 4 & 2 \\ 1 & 3 \end{bmatrix}\)</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <div class="step">
+                    <strong>Step 1:</strong> Characteristic equation
+                    <p>\[\det\begin{bmatrix} 4-\lambda & 2 \\ 1 & 3-\lambda \end{bmatrix} = 0\]</p>
+                </div>
+                <div class="step">
+                    <strong>Step 2:</strong> Expand
+                    <p>\[(4-\lambda)(3-\lambda) - 2 = 0\]</p>
+                    <p>\[12 - 4\lambda - 3\lambda + \lambda^2 - 2 = 0\]</p>
+                    <p>\[\lambda^2 - 7\lambda + 10 = 0\]</p>
+                </div>
+                <div class="step">
+                    <strong>Step 3:</strong> Factor
+                    <p>\[(\lambda - 5)(\lambda - 2) = 0\]</p>
+                    <p>\[\lambda_1 = 5, \quad \lambda_2 = 2\]</p>
+                </div>
+                <div class="step">
+                    <strong>Step 4:</strong> Find eigenvectors for \(\lambda_1 = 5\)
+                    <p>Solve \((A - 5I)\mathbf{v} = \mathbf{0}\):</p>
+                    <p>\[\begin{bmatrix} -1 & 2 \\ 1 & -2 \end{bmatrix}\begin{bmatrix} v_1 \\ v_2 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix}\]</p>
+                    <p>From the first row: \(-v_1 + 2v_2 = 0 \Rightarrow v_1 = 2v_2\)</p>
+                    <p>Eigenvector: \(\mathbf{v}_1 = \begin{bmatrix} 2 \\ 1 \end{bmatrix}\)</p>
+                </div>
+                <div class="step">
+                    <strong>Step 5:</strong> Find eigenvectors for \(\lambda_2 = 2\)
+                    <p>Solve \((A - 2I)\mathbf{v} = \mathbf{0}\):</p>
+                    <p>\[\begin{bmatrix} 2 & 2 \\ 1 & 1 \end{bmatrix}\begin{bmatrix} v_1 \\ v_2 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix}\]</p>
+                    <p>From the first row: \(2v_1 + 2v_2 = 0 \Rightarrow v_1 = -v_2\)</p>
+                    <p>Eigenvector: \(\mathbf{v}_2 = \begin{bmatrix} 1 \\ -1 \end{bmatrix}\)</p>
+                </div>
+                <p><strong>Answer:</strong> Eigenvalues: \(\lambda_1 = 5, \lambda_2 = 2\). Eigenvectors: \(\mathbf{v}_1 = \begin{bmatrix} 2 \\ 1 \end{bmatrix}, \mathbf{v}_2 = \begin{bmatrix} 1 \\ -1 \end{bmatrix}\)</p>
+            </div>
+        </div>
+
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 3 (Easy): Verify that \(\begin{bmatrix} 1 \\ 2 \end{bmatrix}\) is an eigenvector of \(\begin{bmatrix} 5 & -2 \\ 4 & -1 \end{bmatrix}\)</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <div class="step">
+                    <strong>Step 1:</strong> Compute \(A\mathbf{v}\)
+                    <p>\[\begin{bmatrix} 5 & -2 \\ 4 & -1 \end{bmatrix}\begin{bmatrix} 1 \\ 2 \end{bmatrix} = \begin{bmatrix} 5(1) - 2(2) \\ 4(1) - 1(2) \end{bmatrix} = \begin{bmatrix} 1 \\ 2 \end{bmatrix}\]</p>
+                </div>
+                <div class="step">
+                    <strong>Step 2:</strong> Check if \(A\mathbf{v} = \lambda\mathbf{v}\)
+                    <p>\[\begin{bmatrix} 1 \\ 2 \end{bmatrix} = \lambda \begin{bmatrix} 1 \\ 2 \end{bmatrix}\]</p>
+                    <p>This is satisfied when \(\lambda = 1\).</p>
+                </div>
+                <p><strong>Answer:</strong> Yes, \(\begin{bmatrix} 1 \\ 2 \end{bmatrix}\) is an eigenvector with eigenvalue \(\lambda = 1\).</p>
+            </div>
+        </div>
+
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 4 (Medium): Eigenvalues of a \(3 \times 3\) triangular matrix \(\begin{bmatrix} 2 & 1 & 3 \\ 0 & 5 & 2 \\ 0 & 0 & -1 \end{bmatrix}\)</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <div class="step">
+                    <strong>Step 1:</strong> For a triangular matrix, eigenvalues are the diagonal entries
+                    <p>\[\lambda_1 = 2, \quad \lambda_2 = 5, \quad \lambda_3 = -1\]</p>
+                </div>
+                <div class="step">
+                    <strong>Step 2:</strong> Verification via characteristic polynomial
+                    <p>\[\det(A - \lambda I) = \det\begin{bmatrix} 2-\lambda & 1 & 3 \\ 0 & 5-\lambda & 2 \\ 0 & 0 & -1-\lambda \end{bmatrix}\]</p>
+                    <p>Since this is triangular: \(\det(A - \lambda I) = (2-\lambda)(5-\lambda)(-1-\lambda)\)</p>
+                    <p>Setting equal to 0 gives \(\lambda = 2, 5, -1\) ✓</p>
+                </div>
+                <p><strong>Answer:</strong> Eigenvalues are \(\lambda_1 = 2, \lambda_2 = 5, \lambda_3 = -1\).</p>
+            </div>
+        </div>
+
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 5 (Medium): Full computation for \(\begin{bmatrix} 1 & 1 & 0 \\ 0 & 2 & 1 \\ 0 & 0 & 3 \end{bmatrix}\)</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <div class="step">
+                    <strong>Step 1:</strong> Eigenvalues (diagonal entries of upper triangular matrix)
+                    <p>\[\lambda_1 = 1, \quad \lambda_2 = 2, \quad \lambda_3 = 3\]</p>
+                </div>
+                <div class="step">
+                    <strong>Step 2:</strong> Find eigenvector for \(\lambda_1 = 1\)
+                    <p>Solve \((A - I)\mathbf{v} = \mathbf{0}\):</p>
+                    <p>\[\begin{bmatrix} 0 & 1 & 0 \\ 0 & 1 & 1 \\ 0 & 0 & 2 \end{bmatrix}\begin{bmatrix} v_1 \\ v_2 \\ v_3 \end{bmatrix} = \mathbf{0}\]</p>
+                    <p>From row 3: \(2v_3 = 0 \Rightarrow v_3 = 0\)</p>
+                    <p>From row 1: \(v_2 = 0\)</p>
+                    <p>From row 2: \(v_2 + v_3 = 0\) (satisfied)</p>
+                    <p>Eigenvector: \(\mathbf{v}_1 = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}\)</p>
+                </div>
+                <div class="step">
+                    <strong>Step 3:</strong> Find eigenvector for \(\lambda_2 = 2\)
+                    <p>Solve \((A - 2I)\mathbf{v} = \mathbf{0}\):</p>
+                    <p>\[\begin{bmatrix} -1 & 1 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 1 \end{bmatrix}\begin{bmatrix} v_1 \\ v_2 \\ v_3 \end{bmatrix} = \mathbf{0}\]</p>
+                    <p>From row 2: \(v_3 = 0\)</p>
+                    <p>From row 1: \(-v_1 + v_2 = 0 \Rightarrow v_1 = v_2\)</p>
+                    <p>Eigenvector: \(\mathbf{v}_2 = \begin{bmatrix} 1 \\ 1 \\ 0 \end{bmatrix}\)</p>
+                </div>
+                <div class="step">
+                    <strong>Step 4:</strong> Find eigenvector for \(\lambda_3 = 3\)
+                    <p>Solve \((A - 3I)\mathbf{v} = \mathbf{0}\):</p>
+                    <p>\[\begin{bmatrix} -2 & 1 & 0 \\ 0 & -1 & 1 \\ 0 & 0 & 0 \end{bmatrix}\begin{bmatrix} v_1 \\ v_2 \\ v_3 \end{bmatrix} = \mathbf{0}\]</p>
+                    <p>From row 2: \(-v_2 + v_3 = 0 \Rightarrow v_2 = v_3\)</p>
+                    <p>From row 1: \(-2v_1 + v_2 = 0 \Rightarrow v_1 = \frac{v_2}{2}\)</p>
+                    <p>Setting \(v_3 = 2\): \(\mathbf{v}_3 = \begin{bmatrix} 1 \\ 2 \\ 2 \end{bmatrix}\)</p>
+                </div>
+                <p><strong>Answer:</strong> Eigenvalues: 1, 2, 3. Eigenvectors: \(\begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}, \begin{bmatrix} 1 \\ 1 \\ 0 \end{bmatrix}, \begin{bmatrix} 1 \\ 2 \\ 2 \end{bmatrix}\)</p>
+            </div>
+        </div>
+
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 6 (Medium): Eigenspaces and their dimensions for \(\begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix}\)</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <div class="step">
+                    <strong>Step 1:</strong> Characteristic equation
+                    <p>\[\det(A - \lambda I) = \det\begin{bmatrix} 2-\lambda & 0 \\ 0 & 2-\lambda \end{bmatrix} = (2-\lambda)^2 = 0\]</p>
+                    <p>Eigenvalue: \(\lambda = 2\) with algebraic multiplicity 2</p>
+                </div>
+                <div class="step">
+                    <strong>Step 2:</strong> Find the eigenspace \(E_2\)
+                    <p>Solve \((A - 2I)\mathbf{v} = \mathbf{0}\):</p>
+                    <p>\[\begin{bmatrix} 0 & 0 \\ 0 & 0 \end{bmatrix}\begin{bmatrix} v_1 \\ v_2 \end{bmatrix} = \mathbf{0}\]</p>
+                    <p>All vectors are in the null space!</p>
+                </div>
+                <div class="step">
+                    <strong>Step 3:</strong> Dimension of eigenspace
+                    <p>\(E_2 = \mathbb{R}^2\) with dimension 2</p>
+                    <p>Geometric multiplicity = 2</p>
+                </div>
+                <p><strong>Answer:</strong> The eigenspace \(E_2\) has dimension 2. The matrix is the identity scaled by 2, so every nonzero vector is an eigenvector.</p>
+            </div>
+        </div>
+
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 7 (Medium): Eigenvalues of a projection matrix \(\begin{bmatrix} 1 & 0 \\ 0 & 0 \end{bmatrix}\)</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <div class="step">
+                    <strong>Step 1:</strong> Characteristic equation
+                    <p>\[\det(A - \lambda I) = \det\begin{bmatrix} 1-\lambda & 0 \\ 0 & -\lambda \end{bmatrix} = (1-\lambda)(-\lambda) = 0\]</p>
+                    <p>Eigenvalues: \(\lambda_1 = 1, \lambda_2 = 0\)</p>
+                </div>
+                <div class="step">
+                    <strong>Step 2:</strong> Eigenvector for \(\lambda_1 = 1\)
+                    <p>\[\begin{bmatrix} 0 & 0 \\ 0 & -1 \end{bmatrix}\begin{bmatrix} v_1 \\ v_2 \end{bmatrix} = \mathbf{0} \Rightarrow v_2 = 0\]</p>
+                    <p>Eigenvector: \(\begin{bmatrix} 1 \\ 0 \end{bmatrix}\) (vectors in the image)</p>
+                </div>
+                <div class="step">
+                    <strong>Step 3:</strong> Eigenvector for \(\lambda_2 = 0\)
+                    <p>\[\begin{bmatrix} 1 & 0 \\ 0 & 0 \end{bmatrix}\begin{bmatrix} v_1 \\ v_2 \end{bmatrix} = \mathbf{0} \Rightarrow v_1 = 0\]</p>
+                    <p>Eigenvector: \(\begin{bmatrix} 0 \\ 1 \end{bmatrix}\) (vectors in the null space)</p>
+                </div>
+                <p><strong>Answer:</strong> Projection matrices always have eigenvalues 0 and 1. Eigenvectors with eigenvalue 1 are in the image, and eigenvectors with eigenvalue 0 are in the null space.</p>
+            </div>
+        </div>
+
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 8 (Medium): Using trace and determinant for \(\begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}\)</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <div class="step">
+                    <strong>Step 1:</strong> Compute trace and determinant
+                    <p>\[\text{tr}(A) = 1 + 4 = 5\]</p>
+                    <p>\[\det(A) = 1(4) - 2(3) = 4 - 6 = -2\]</p>
+                </div>
+                <div class="step">
+                    <strong>Step 2:</strong> Set up the characteristic polynomial
+                    <p>\[\lambda^2 - \text{tr}(A)\lambda + \det(A) = 0\]</p>
+                    <p>\[\lambda^2 - 5\lambda - 2 = 0\]</p>
+                </div>
+                <div class="step">
+                    <strong>Step 3:</strong> Use the quadratic formula
+                    <p>\[\lambda = \frac{5 \pm \sqrt{25 + 8}}{2} = \frac{5 \pm \sqrt{33}}{2}\]</p>
+                </div>
+                <div class="step">
+                    <strong>Step 4:</strong> Verify: sum of eigenvalues
+                    <p>\[\frac{5 + \sqrt{33}}{2} + \frac{5 - \sqrt{33}}{2} = 5 = \text{tr}(A)\] ✓</p>
+                    <p>Product: \(\frac{(5+\sqrt{33})(5-\sqrt{33})}{4} = \frac{25-33}{4} = -2 = \det(A)\) ✓</p>
+                </div>
+                <p><strong>Answer:</strong> Eigenvalues are \(\lambda = \frac{5 \pm \sqrt{33}}{2}\)</p>
+            </div>
+        </div>
+
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 9 (Medium): Factoring when one eigenvalue is known</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <div class="step">
+                    <strong>Problem:</strong> Find all eigenvalues of \(\begin{bmatrix} 6 & 1 & 0 \\ -4 & 2 & 0 \\ 0 & 0 & 3 \end{bmatrix}\) knowing one is \(\lambda = 3\).
+                </div>
+                <div class="step">
+                    <strong>Step 1:</strong> Notice the block structure
+                    <p>The matrix is block diagonal. The characteristic polynomial factors as:</p>
+                    <p>\[\det(A - \lambda I) = (3 - \lambda) \det\begin{bmatrix} 6-\lambda & 1 \\ -4 & 2-\lambda \end{bmatrix}\]</p>
+                </div>
+                <div class="step">
+                    <strong>Step 2:</strong> Compute the 2×2 determinant
+                    <p>\[(6-\lambda)(2-\lambda) + 4 = \lambda^2 - 8\lambda + 16 = (\lambda - 4)^2\]</p>
+                </div>
+                <div class="step">
+                    <strong>Step 3:</strong> Complete factorization
+                    <p>\[\det(A - \lambda I) = (3-\lambda)(\lambda-4)^2 = 0\]</p>
+                    <p>Eigenvalues: \(\lambda_1 = 3\) (multiplicity 1) and \(\lambda_2 = 4\) (multiplicity 2)</p>
+                </div>
+                <p><strong>Answer:</strong> Eigenvalues are \(\lambda = 3\) and \(\lambda = 4\) (repeated).</p>
+            </div>
+        </div>
+
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 10 (Hard): Repeated eigenvalue and geometric multiplicity</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <div class="step">
+                    <strong>Problem:</strong> Find eigenvalues and multiplicities for \(\begin{bmatrix} 2 & 1 & 0 \\ 0 & 2 & 1 \\ 0 & 0 & 2 \end{bmatrix}\)
+                </div>
+                <div class="step">
+                    <strong>Step 1:</strong> Characteristic polynomial (upper triangular)
+                    <p>\[\det(A - \lambda I) = (2-\lambda)^3 = 0\]</p>
+                    <p>\(\lambda = 2\) with algebraic multiplicity 3</p>
+                </div>
+                <div class="step">
+                    <strong>Step 2:</strong> Find eigenspace for \(\lambda = 2\)
+                    <p>Solve \((A - 2I)\mathbf{v} = \mathbf{0}\):</p>
+                    <p>\[\begin{bmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{bmatrix}\begin{bmatrix} v_1 \\ v_2 \\ v_3 \end{bmatrix} = \mathbf{0}\]</p>
+                </div>
+                <div class="step">
+                    <strong>Step 3:</strong> Solve the system
+                    <p>From row 1: \(v_2 = 0\)</p>
+                    <p>From row 2: \(v_3 = 0\)</p>
+                    <p>Only \(v_1\) is free: \(\mathbf{v} = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}\)</p>
+                </div>
+                <div class="step">
+                    <strong>Step 4:</strong> Geometric multiplicity
+                    <p>The eigenspace is 1-dimensional.</p>
+                    <p>Geometric multiplicity = 1 < 3 = algebraic multiplicity</p>
+                </div>
+                <p><strong>Answer:</strong> \(\lambda = 2\) has algebraic multiplicity 3 but geometric multiplicity only 1. This is a defective eigenvalue.</p>
+            </div>
+        </div>
+
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 11 (Hard): Matrix with no real eigenvalues</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <div class="step">
+                    <strong>Problem:</strong> Show that \(\begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}\) (90° rotation) has no real eigenvalues.
+                </div>
+                <div class="step">
+                    <strong>Step 1:</strong> Characteristic equation
+                    <p>\[\det\begin{bmatrix} -\lambda & -1 \\ 1 & -\lambda \end{bmatrix} = \lambda^2 + 1 = 0\]</p>
+                </div>
+                <div class="step">
+                    <strong>Step 2:</strong> Solve for \(\lambda\)
+                    <p>\[\lambda^2 = -1\]</p>
+                    <p>\[\lambda = \pm i\]</p>
+                </div>
+                <div class="step">
+                    <strong>Step 3:</strong> Interpretation
+                    <p>A 90° rotation has no real direction that it just scales—it rotates every vector. Only complex eigenvalues exist.</p>
+                </div>
+                <p><strong>Answer:</strong> The eigenvalues are \(\lambda = i\) and \(\lambda = -i\), both complex. No real eigenvectors exist for this rotation.</p>
+            </div>
+        </div>
+
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 12 (Hard): Eigenvalues of \(A^2\) from eigenvalues of \(A\)</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <div class="step">
+                    <strong>Problem:</strong> If \(A\) has eigenvalues 2, 3, and 5, what are the eigenvalues of \(A^2\)?
+                </div>
+                <div class="step">
+                    <strong>Step 1:</strong> Key insight
+                    <p>If \(A\mathbf{v} = \lambda\mathbf{v}\), then \(A^2\mathbf{v} = A(A\mathbf{v}) = A(\lambda\mathbf{v}) = \lambda(A\mathbf{v}) = \lambda^2\mathbf{v}\)</p>
+                </div>
+                <div class="step">
+                    <strong>Step 2:</strong> Conclusion
+                    <p>If \(\lambda\) is an eigenvalue of \(A\), then \(\lambda^2\) is an eigenvalue of \(A^2\).</p>
+                </div>
+                <div class="step">
+                    <strong>Step 3:</strong> Apply to our problem
+                    <p>Eigenvalues of \(A^2\): \(2^2 = 4, 3^2 = 9, 5^2 = 25\)</p>
+                </div>
+                <p><strong>Answer:</strong> The eigenvalues of \(A^2\) are 4, 9, and 25.</p>
+            </div>
+        </div>
+
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 13 (Hard): Eigenvalues and eigenvectors of a rotation matrix</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <div class="step">
+                    <strong>Problem:</strong> Find eigenvalues of the rotation matrix \(R_\theta = \begin{bmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta \end{bmatrix}\)
+                </div>
+                <div class="step">
+                    <strong>Step 1:</strong> Characteristic equation
+                    <p>\[\det(R_\theta - \lambda I) = (\cos\theta - \lambda)^2 + \sin^2\theta = 0\]</p>
+                </div>
+                <div class="step">
+                    <strong>Step 2:</strong> Expand
+                    <p>\[\cos^2\theta - 2\lambda\cos\theta + \lambda^2 + \sin^2\theta = 0\]</p>
+                    <p>\[\lambda^2 - 2\lambda\cos\theta + 1 = 0\]</p>
+                </div>
+                <div class="step">
+                    <strong>Step 3:</strong> Use quadratic formula
+                    <p>\[\lambda = \cos\theta \pm \sqrt{\cos^2\theta - 1} = \cos\theta \pm \sqrt{-\sin^2\theta} = \cos\theta \pm i\sin\theta\]</p>
+                </div>
+                <div class="step">
+                    <strong>Step 4:</strong> Interpretation
+                    <p>For \(\theta \neq 0, \pi\), the eigenvalues are complex: \(\lambda = e^{\pm i\theta}\)</p>
+                    <p>Geometrically, rotation has no real fixed direction—except the identity (\(\theta = 0\)) and 180° rotation (\(\theta = \pi\)).</p>
+                </div>
+                <p><strong>Answer:</strong> Eigenvalues are \(\lambda = \cos\theta \pm i\sin\theta = e^{\pm i\theta}\). For \(\theta \notin \{0, \pi\}\), no real eigenvalues exist.</p>
+            </div>
+        </div>
+
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 14 (Hard): Engineering application—vibrating spring system</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <div class="step">
+                    <strong>Problem:</strong> Two masses connected by springs have stiffness matrix \(K = \begin{bmatrix} 2k & -k \\ -k & 2k \end{bmatrix}\). Find the natural frequencies (eigenvalues).
+                </div>
+                <div class="step">
+                    <strong>Step 1:</strong> Characteristic equation
+                    <p>\[\det(K - \lambda I) = \det\begin{bmatrix} 2k-\lambda & -k \\ -k & 2k-\lambda \end{bmatrix} = 0\]</p>
+                </div>
+                <div class="step">
+                    <strong>Step 2:</strong> Expand
+                    <p>\[(2k-\lambda)^2 - k^2 = 0\]</p>
+                    <p>\[4k^2 - 4k\lambda + \lambda^2 - k^2 = 0\]</p>
+                    <p>\[\lambda^2 - 4k\lambda + 3k^2 = 0\]</p>
+                </div>
+                <div class="step">
+                    <strong>Step 3:</strong> Factor
+                    <p>\[(\lambda - k)(\lambda - 3k) = 0\]</p>
+                    <p>\[\lambda_1 = k, \quad \lambda_2 = 3k\]</p>
+                </div>
+                <div class="step">
+                    <strong>Step 4:</strong> Natural frequencies
+                    <p>Since \(\omega = \sqrt{\lambda}\), the natural frequencies are \(\omega_1 = \sqrt{k}\) and \(\omega_2 = \sqrt{3k}\)</p>
+                </div>
+                <p><strong>Answer:</strong> Natural frequencies: \(\omega_1 = \sqrt{k}\) (both masses move together) and \(\omega_2 = \sqrt{3k}\) (masses oscillate oppositely).</p>
+            </div>
+        </div>
+
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 15 (Hard): Population dynamics—Leslie matrix</span>
+                <span class="example-toggle">▼</span>
+            </div>
+            <div class="example-content">
+                <div class="step">
+                    <strong>Problem:</strong> A Leslie population matrix is \(L = \begin{bmatrix} 0.6 & 2 \\ 0.3 & 0 \end{bmatrix}\). Find eigenvalues (the dominant eigenvalue determines long-term growth).
+                </div>
+                <div class="step">
+                    <strong>Step 1:</strong> Characteristic equation
+                    <p>\[\det(L - \lambda I) = \det\begin{bmatrix} 0.6-\lambda & 2 \\ 0.3 & -\lambda \end{bmatrix} = 0\]</p>
+                </div>
+                <div class="step">
+                    <strong>Step 2:</strong> Expand
+                    <p>\[(0.6-\lambda)(-\lambda) - 2(0.3) = 0\]</p>
+                    <p>\[-0.6\lambda + \lambda^2 - 0.6 = 0\]</p>
+                    <p>\[\lambda^2 - 0.6\lambda - 0.6 = 0\]</p>
+                </div>
+                <div class="step">
+                    <strong>Step 3:</strong> Quadratic formula
+                    <p>\[\lambda = \frac{0.6 \pm \sqrt{0.36 + 2.4}}{2} = \frac{0.6 \pm \sqrt{2.76}}{2} = \frac{0.6 \pm 1.661}{2}\]</p>
+                </div>
+                <div class="step">
+                    <strong>Step 4:</strong> Solutions
+                    <p>\[\lambda_1 \approx 1.131, \quad \lambda_2 \approx -0.531\]</p>
+                </div>
+                <div class="step">
+                    <strong>Step 5:</strong> Interpretation
+                    <p>The dominant eigenvalue is \(\lambda_1 \approx 1.131 > 1\), so the population grows by ~13.1% per generation. The negative eigenvalue causes oscillations but decays over time.</p>
+                </div>
+                <p><strong>Answer:</strong> Eigenvalues: \(\lambda_1 \approx 1.131\) (population growth), \(\lambda_2 \approx -0.531\) (decaying oscillations).</p>
+            </div>
+        </div>
+
+        <h2>7. Interactive Visualizations</h2>
+
+        <div class="visualization-section">
+            <h3>Eigenvector Visualizer</h3>
+            <p>Enter a 2×2 matrix to visualize how it transforms the unit circle and highlights eigenvectors.</p>
+            <div class="input-group">
+                <label>Matrix A: \(\begin{bmatrix} a & b \\ c & d \end{bmatrix}\)</label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div>
+                        <label style="font-size: 12px;">a = <input type="number" id="a" value="2" style="width: 80px;"></label>
+                        <label style="font-size: 12px;">c = <input type="number" id="c" value="1" style="width: 80px;"></label>
+                    </div>
+                    <div>
+                        <label style="font-size: 12px;">b = <input type="number" id="b" value="1" style="width: 80px;"></label>
+                        <label style="font-size: 12px;">d = <input type="number" id="d" value="3" style="width: 80px;"></label>
+                    </div>
+                </div>
+            </div>
+            <button onclick="visualizeEigenvectors()">Update Visualization</button>
+            <canvas id="eigenvectorCanvas" width="800" height="500"></canvas>
+            <p style="font-size: 12px; color: #666; margin-top: 10px;"><strong>Teal circle:</strong> Unit circle (original). <strong>Green ellipse:</strong> Transformed by A. <strong>Teal/Purple arrows:</strong> Eigenvectors (stay on their lines). Try dragging a slider or changing matrix values!</p>
+        </div>
+
+        <div class="visualization-section">
+            <h3>Eigenspace Explorer</h3>
+            <p>Enter a 2×2 matrix and compute its characteristic polynomial, eigenvalues, and eigenspaces step-by-step.</p>
+            <div class="input-group">
+                <label>Matrix elements:</label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div>
+                        <label style="font-size: 12px;">a = <input type="number" id="ea" value="4" style="width: 80px;"></label>
+                        <label style="font-size: 12px;">c = <input type="number" id="ec" value="2" style="width: 80px;"></label>
+                    </div>
+                    <div>
+                        <label style="font-size: 12px;">b = <input type="number" id="eb" value="2" style="width: 80px;"></label>
+                        <label style="font-size: 12px;">d = <input type="number" id="ed" value="3" style="width: 80px;"></label>
+                    </div>
+                </div>
+            </div>
+            <button onclick="exploreEigenspace()">Compute Eigenvalues & Eigenvectors</button>
+            <div id="eigenspaceResult" style="margin-top: 20px;"></div>
+        </div>
+
+        <h2>8. Quiz: Test Your Understanding</h2>
+
+        <div class="quiz-question">
+            <h4>Question 1: Characteristic Equation</h4>
+            <p>What is the characteristic equation of \(\begin{bmatrix} 3 & 1 \\ 0 & 2 \end{bmatrix}\)?</p>
+            <button class="choice-btn" onclick="checkChoice(this, false)">a) \(\lambda^2 - 5\lambda + 6 = 0\)</button>
+            <button class="choice-btn" onclick="checkChoice(this, true)">(b) \((\lambda - 3)(\lambda - 2) = 0\)</button>
+            <button class="choice-btn" onclick="checkChoice(this, false)">c) \(\lambda^2 + 5\lambda + 6 = 0\)</button>
+            <button class="choice-btn" onclick="checkChoice(this, false)">d) \((\lambda - 1)(\lambda - 2) = 0\)</button>
+        </div>
+
+        <div class="quiz-question">
+            <h4>Question 2: Eigenvalue Property</h4>
+            <p>If \(\lambda = 5\) is an eigenvalue of matrix \(A\), which statement is true?</p>
+            <button class="choice-btn" onclick="checkChoice(this, true)">a) \(A - 5I\) is singular (not invertible)</button>
+            <button class="choice-btn" onclick="checkChoice(this, false)">b) \(\det(A) = 5\)</button>
+            <button class="choice-btn" onclick="checkChoice(this, false)">c) \(A\) is diagonalizable</button>
+            <button class="choice-btn" onclick="checkChoice(this, false)">d) The rank of \(A\) is 5</button>
+        </div>
+
+        <div class="quiz-question">
+            <h4>Question 3: Triangular Matrices</h4>
+            <p>What are the eigenvalues of the triangular matrix \(\begin{bmatrix} 2 & 5 & 1 \\ 0 & -3 & 4 \\ 0 & 0 & 7 \end{bmatrix}\)?</p>
+            <button class="choice-btn" onclick="checkChoice(this, true)">a) 2, -3, and 7</button>
+            <button class="choice-btn" onclick="checkChoice(this, false)">b) 2, 5, and 1</button>
+            <button class="choice-btn" onclick="checkChoice(this, false)">c) 0 and 1</button>
+            <button class="choice-btn" onclick="checkChoice(this, false)">d) Cannot be determined</button>
+        </div>
+
+        <div class="quiz-question">
+            <h4>Question 4: Determinant and Product of Eigenvalues</h4>
+            <p>If the eigenvalues of a 3×3 matrix are 2, 5, and 3, what is \(\det(A)\)?</p>
+            <button class="choice-btn" onclick="checkChoice(this, true)">a) 30</button>
+            <button class="choice-btn" onclick="checkChoice(this, false)">b) 10</button>
+            <button class="choice-btn" onclick="checkChoice(this, false)">c) 25</button>
+            <button class="choice-btn" onclick="checkChoice(this, false)">d) 8</button>
+        </div>
+
+        <div class="quiz-question">
+            <h4>Question 5: Geometric vs. Algebraic Multiplicity</h4>
+            <p>For any eigenvalue, the geometric multiplicity is always ≤ ___.</p>
+            <button class="choice-btn" onclick="checkChoice(this, true)">a) algebraic multiplicity</button>
+            <button class="choice-btn" onclick="checkChoice(this, false)">b) 1</button>
+            <button class="choice-btn" onclick="checkChoice(this, false)">c) the dimension of the eigenspace</button>
+            <button class="choice-btn" onclick="checkChoice(this, false)">d) the rank of A</button>
+        </div>
+
+        <div class="quiz-question">
+            <h4>Question 6: Zero Eigenvalue</h4>
+            <p>Which property is true for matrices with eigenvalue 0?</p>
+            <button class="choice-btn" onclick="checkChoice(this, true)">a) The matrix is singular (not invertible)</button>
+            <button class="choice-btn" onclick="checkChoice(this, false)">b) The matrix is orthogonal</button>
+            <button class="choice-btn" onclick="checkChoice(this, false)">c) The matrix is diagonalizable</button>
+            <button class="choice-btn" onclick="checkChoice(this, false)">d) The matrix has rank n</button>
+        </div>
+
+        <div class="nav-footer">
+            <a href="ch2-change-of-basis.html">← 2.5 Change of Basis</a>
+            <a href="index.html">Course Home</a>
+            <a href="ch3-diagonalization.html">3.2 Diagonalization →</a>
+        </div>
+    </div>
+
+    <script>
+        function expandExample(element) {
+            const item = element.closest('.example-item');
+            item.classList.toggle('open');
+        }
+
+        document.querySelectorAll('.example-header').forEach(header => {
+            header.addEventListener('click', function() {
+                expandExample(this);
+            });
+        });
+
+        function checkChoice(button, isCorrect) {
+            const container = button.parentElement;
+            const allButtons = container.querySelectorAll('.choice-btn');
+
+            allButtons.forEach(btn => {
+                btn.disabled = true;
+                btn.classList.remove('correct', 'incorrect');
+            });
+
+            if (isCorrect) {
+                button.classList.add('correct');
+                const msg = document.createElement('div');
+                msg.className = 'result-message correct';
+                msg.textContent = '✓ Correct!';
+                container.appendChild(msg);
+            } else {
+                button.classList.add('incorrect');
+                const msg = document.createElement('div');
+                msg.className = 'result-message incorrect';
+                msg.textContent = '✗ Incorrect. Try again!';
+                container.appendChild(msg);
+            }
+        }
+
+        function visualizeEigenvectors() {
+            const a = parseFloat(document.getElementById('a').value) || 2;
+            const b = parseFloat(document.getElementById('b').value) || 1;
+            const c = parseFloat(document.getElementById('c').value) || 1;
+            const d = parseFloat(document.getElementById('d').value) || 3;
+
+            const canvas = document.getElementById('eigenvectorCanvas');
+            const ctx = canvas.getContext('2d');
+
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const scale = 60;
+
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.strokeStyle = '#64748b';
+            ctx.lineWidth = 1;
+            for (let i = -5; i <= 5; i++) {
+                ctx.beginPath();
+                ctx.moveTo(centerX + i * scale, 0);
+                ctx.lineTo(centerX + i * scale, canvas.height);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(0, centerY - i * scale);
+                ctx.lineTo(canvas.width, centerY - i * scale);
+                ctx.stroke();
+            }
+
+            ctx.strokeStyle = '#0d9488';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, scale, 0, 2 * Math.PI);
+            ctx.stroke();
+
+            const trace = a + d;
+            const det = a * d - b * c;
+            const discriminant = trace * trace - 4 * det;
+
+            let eigenvalues = [];
+            if (discriminant >= 0) {
+                const lambda1 = (trace + Math.sqrt(discriminant)) / 2;
+                const lambda2 = (trace - Math.sqrt(discriminant)) / 2;
+                eigenvalues = [lambda1, lambda2];
+            }
+
+            ctx.strokeStyle = '#14b8a6';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            let firstPoint = true;
+            for (let angle = 0; angle <= 2 * Math.PI; angle += 0.01) {
+                const x0 = Math.cos(angle);
+                const y0 = Math.sin(angle);
+                const x1 = a * x0 + b * y0;
+                const y1 = c * x0 + d * y0;
+                const px = centerX + x1 * scale;
+                const py = centerY - y1 * scale;
+                if (firstPoint) {
+                    ctx.moveTo(px, py);
+                    firstPoint = false;
+                } else {
+                    ctx.lineTo(px, py);
+                }
+            }
+            ctx.closePath();
+            ctx.stroke();
+
+            if (eigenvalues.length > 0) {
+                for (let i = 0; i < eigenvalues.length; i++) {
+                    const lambda = eigenvalues[i];
+                    let v1, v2;
+
+                    if (Math.abs(b) > 0.001) {
+                        v1 = 1;
+                        v2 = (lambda - a) / b;
+                    } else if (Math.abs(c) > 0.001) {
+                        v1 = (lambda - d) / c;
+                        v2 = 1;
+                    } else {
+                        if (Math.abs(lambda - a) > Math.abs(lambda - d)) {
+                            v1 = 1;
+                            v2 = 0;
+                        } else {
+                            v1 = 0;
+                            v2 = 1;
+                        }
+                    }
+
+                    const norm = Math.sqrt(v1 * v1 + v2 * v2);
+                    v1 /= norm;
+                    v2 /= norm;
+
+                    const color = i === 0 ? '#0d9488' : '#a78bfa';
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.moveTo(centerX, centerY);
+                    ctx.lineTo(centerX + v1 * scale * 2, centerY - v2 * scale * 2);
+                    ctx.stroke();
+
+                    ctx.fillStyle = color;
+                    ctx.beginPath();
+                    ctx.arc(centerX + v1 * scale * 2, centerY - v2 * scale * 2, 5, 0, 2 * Math.PI);
+                    ctx.fill();
+                }
+            }
+
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '12px sans-serif';
+            ctx.fillText('λ ≈ ' + (eigenvalues[0] ? eigenvalues[0].toFixed(2) : 'N/A'), 10, 20);
+            if (eigenvalues[1]) {
+                ctx.fillText('λ ≈ ' + eigenvalues[1].toFixed(2), 10, 35);
+            }
+        }
+
+        function exploreEigenspace() {
+            const a = parseFloat(document.getElementById('ea').value) || 4;
+            const b = parseFloat(document.getElementById('eb').value) || 2;
+            const c = parseFloat(document.getElementById('ec').value) || 2;
+            const d = parseFloat(document.getElementById('ed').value) || 3;
+
+            const trace = a + d;
+            const det = a * d - b * c;
+
+            let html = '<div style="background: #f9f9f9; padding: 15px; border-radius: 4px;">';
+            html += '<h4 style="color: var(--primary); margin-top: 0;">Characteristic Polynomial:</h4>';
+            html += `<p style="font-size: 16px;">λ² - ${trace}λ + ${det} = 0</p>`;
+
+            const discriminant = trace * trace - 4 * det;
+            const lambda1 = (trace + Math.sqrt(discriminant)) / 2;
+            const lambda2 = (trace - Math.sqrt(discriminant)) / 2;
+
+            html += '<h4 style="color: var(--primary);">Eigenvalues:</h4>';
+            html += `<p>λ₁ = ${lambda1.toFixed(3)}</p>`;
+            html += `<p>λ₂ = ${lambda2.toFixed(3)}</p>`;
+
+            html += '<h4 style="color: var(--primary);">Properties:</h4>';
+            html += `<p>Sum of eigenvalues = ${(lambda1 + lambda2).toFixed(3)} (trace = ${trace})</p>`;
+            html += `<p>Product of eigenvalues = ${(lambda1 * lambda2).toFixed(3)} (det = ${det})</p>`;
+
+            html += '<h4 style="color: var(--primary);">Eigenspace for λ₁ = ' + lambda1.toFixed(3) + ':</h4>';
+            const denom1 = lambda1 - a;
+            if (Math.abs(denom1) > 0.001) {
+                html += `<p>Eigenvector direction: (${b.toFixed(2)}, ${denom1.toFixed(2)}) or normalized</p>`;
+            } else if (Math.abs(b) > 0.001) {
+                html += `<p>Eigenvector direction: (1, ${((lambda1 - a) / b).toFixed(2)})</p>`;
+            }
+
+            html += '<h4 style="color: var(--primary);">Eigenspace for λ₂ = ' + lambda2.toFixed(3) + ':</h4>';
+            const denom2 = lambda2 - a;
+            if (Math.abs(denom2) > 0.001) {
+                html += `<p>Eigenvector direction: (${b.toFixed(2)}, ${denom2.toFixed(2)}) or normalized</p>`;
+            } else if (Math.abs(b) > 0.001) {
+                html += `<p>Eigenvector direction: (1, ${((lambda2 - a) / b).toFixed(2)})</p>`;
+            }
+
+            html += '</div>';
+            document.getElementById('eigenspaceResult').innerHTML = html;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            visualizeEigenvectors();
+            renderMathInElement(document.body, {
+                delimiters: [
+                    { left: '$$', right: '$$', display: true },
+                    { left: '\\(', right: '\\)', display: false },
+                    { left: '\\[', right: '\\]', display: true }
+                ]
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Section 3.3: Markov Chains | Linear Algebra</title>
+    <link rel="stylesheet" href="../../styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f9fafb;
+            color: #1f2937;
+        }
+
+        /* Navigation Bar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background-color: white;
+            border-bottom: 3px solid #0d9488;
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            gap: 30px;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        nav a, nav button {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1f2937;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            background: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        nav a:hover, nav button:hover {
+            background-color: #f3f4f6;
+        }
+
+        .nav-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            padding: 8px 0;
+            min-width: 200px;
+            display: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-top: 4px;
+        }
+
+        .nav-dropdown:hover .dropdown-menu,
+        .nav-dropdown.active .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 10px 16px;
+            color: #1f2937;
+            text-decoration: none;
+            font-size: 13px;
+            transition: background-color 0.2s;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #f0fdf4;
+            color: #0d9488;
+        }
+
+        .dropdown-menu a.active {
+            background-color: #ecfdf5;
+            color: #0d9488;
+            font-weight: 600;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #0d9488 0%, #059669 100%);
+            color: white;
+            padding: 60px 30px;
+            text-align: center;
+            margin-top: 56px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            opacity: 0.95;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+
+        h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #0d9488;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #d1fae5;
+        }
+
+        h3 {
+            font-size: 22px;
+            font-weight: 600;
+            color: #059669;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        p, li {
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        /* Definition and Theorem Boxes */
+        .definition-box, .theorem-box, .warning-box, .tip-box {
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 5px solid;
+            border-radius: 4px;
+        }
+
+        .definition-box {
+            border-color: #0d9488;
+            background-color: #ecfdf5;
+        }
+
+        .theorem-box {
+            border-color: #7c3aed;
+            background-color: #f3e8ff;
+        }
+
+        .warning-box {
+            border-color: #dc2626;
+            background-color: #fee2e2;
+        }
+
+        .tip-box {
+            border-color: #d97706;
+            background-color: #fef3c7;
+        }
+
+        .box-title {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        /* Examples */
+        .example-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            margin: 15px 0;
+            background: white;
+            overflow: hidden;
+        }
+
+        .example-header {
+            background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            user-select: none;
+        }
+
+        .example-header:hover {
+            background: linear-gradient(90deg, #059669 0%, #047857 100%);
+        }
+
+        .example-toggle {
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
+
+        .example-item.open .example-toggle {
+            transform: rotate(180deg);
+        }
+
+        .example-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding: 0 20px;
+        }
+
+        .example-item.open .example-content {
+            max-height: 2000px;
+            overflow: visible;
+            padding: 20px;
+        }
+
+        .example-text {
+            font-size: 14px;
+            line-height: 1.8;
+            margin: 10px 0;
+        }
+
+        /* Canvas Container */
+        .canvas-container {
+            background-color: #0f172a;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        canvas {
+            display: block;
+            margin: 0 auto;
+            border-radius: 4px;
+        }
+
+        /* Controls */
+        .controls {
+            background-color: #f3f4f6;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+        }
+
+        button {
+            background-color: #0d9488;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #059669;
+        }
+
+        /* Quiz */
+        .quiz-section {
+            background-color: #f0fdf4;
+            padding: 30px;
+            border-radius: 6px;
+            margin: 30px 0;
+        }
+
+        .quiz-question {
+            margin: 30px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 6px;
+            border-left: 4px solid #0d9488;
+        }
+
+        .choice-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border: 2px solid #d1d5db;
+            background: white;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .choice-btn:hover {
+            border-color: #0d9488;
+            background-color: #f0fdf4;
+        }
+
+        .choice-btn.correct {
+            border-color: #10b981;
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .choice-btn.incorrect {
+            border-color: #dc2626;
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        /* Footer Navigation */
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 2px solid #e5e7eb;
+        }
+
+        .nav-footer a {
+            color: #0d9488;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .nav-footer a:hover {
+            color: #059669;
+        }
+
+        .nav-footer .center {
+            text-align: center;
+        }
+
+        /* Math Display */
+        .katex-display {
+            margin: 20px 0;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #d1d5db;
+        }
+
+        th {
+            background-color: #f3f4f6;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        tr:hover {
+            background-color: #f9fafb;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+    <a href="index.html" class="nav-brand">LA Course</a>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="why-linear-algebra.html">Why LA?</a></li>
+        <li>
+            <a href="#">Ch 1: Matrices <span class="dropdown-arrow">&#9662;</span></a>
+            <div class="nav-dropdown">
+                <div class="dropdown-header">Chapter 1 — Systems &amp; Matrices</div>
+                <a href="ch1-linear-systems.html">1.1 &nbsp;Systems of Linear Equations</a>
+                <a href="ch1-matrix-algebra.html">1.2 &nbsp;Matrix Algebra</a>
+                <a href="ch1-inverses.html">1.3 &nbsp;Matrix Inverses</a>
+                <a href="ch1-determinants.html">1.4 &nbsp;Determinants</a>
+            </div>
+        </li>
+        <li>
+            <a href="#">Ch 2: Vector Spaces <span class="dropdown-arrow">&#9662;</span></a>
+            <div class="nav-dropdown">
+                <div class="dropdown-header">Chapter 2 — Vector Spaces</div>
+                <a href="ch2-vector-spaces.html">2.1 &nbsp;Vector Spaces &amp; Subspaces</a>
+                <a href="ch2-independence.html">2.2 &nbsp;Span &amp; Linear Independence</a>
+                <a href="ch2-basis-dimension.html">2.3 &nbsp;Basis &amp; Dimension</a>
+                <a href="ch2-rank.html">2.4 &nbsp;Rank &amp; Fundamental Theorem</a>
+                <a href="ch2-change-of-basis.html">2.5 &nbsp;Change of Basis</a>
+            </div>
+        </li>
+        <li>
+            <a href="#" class="active">Ch 3: Eigenvalues <span class="dropdown-arrow">&#9662;</span></a>
+            <div class="nav-dropdown">
+                <div class="dropdown-header">Chapter 3 — Eigenvalues &amp; Diag.</div>
+                <a href="ch3-eigenvalues.html">3.1 &nbsp;Eigenvalues &amp; Eigenvectors</a>
+                <a href="ch3-diagonalization.html">3.2 &nbsp;Diagonalization</a>
+                <a href="ch3-markov.html" class="active">3.3 &nbsp;Markov Chains</a>
+                <a href="ch3-dynamical.html">3.4 &nbsp;Dynamical Systems</a>
+                <a href="ch3-complex-eigen.html">3.5 &nbsp;Complex Eigenvalues</a>
+            </div>
+        </li>
+        <li><a href="exam-generator.html">Exam</a></li>
+    </ul>
+</nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>Markov Chains</h1>
+        <p>Modeling systems that transition between states — predicting long-term behavior using stochastic matrices and eigenvalues</p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+
+        <!-- Learning Objectives -->
+        <div class="definition-box">
+            <div class="box-title">Learning Objectives</div>
+            <ul>
+                <li>Define stochastic (Markov) matrices and state vectors</li>
+                <li>Model real-world processes as Markov chains</li>
+                <li>Compute state vectors after \(k\) steps</li>
+                <li>Find steady-state (equilibrium) vectors</li>
+                <li>Connect steady states to eigenvalue \(\lambda = 1\)</li>
+                <li>Understand regular Markov chains and convergence</li>
+            </ul>
+        </div>
+
+        <!-- Section 1: Stochastic Matrices & State Vectors -->
+        <h2>1. Stochastic Matrices & State Vectors</h2>
+
+        <p>A <strong>stochastic matrix</strong> (or transition matrix) is a square matrix where each column sums to 1 and all entries are non-negative. These matrices arise naturally when modeling systems that transition between discrete states with probabilistic rules.</p>
+
+        <div class="definition-box">
+            <div class="box-title">Definition: Stochastic Matrix</div>
+            <p>A matrix \(P\) is a <strong>stochastic matrix</strong> if:</p>
+            <ul>
+                <li>All entries satisfy \(P_{ij} \geq 0\)</li>
+                <li>Each column sums to 1: \(\sum_{i=1}^{n} P_{ij} = 1\) for all \(j\)</li>
+            </ul>
+            <p>The entry \(P_{ij}\) represents the probability of transitioning from state \(j\) to state \(i\) in one time step.</p>
+        </div>
+
+        <p>A <strong>state vector</strong> \(\mathbf{x}\) is a column vector where each entry represents the probability of being in that state:</p>
+
+        <div class="definition-box">
+            <div class="box-title">Definition: State Vector</div>
+            <p>A state vector \(\mathbf{x}\) satisfies:</p>
+            <ul>
+                <li>\(x_i \geq 0\) for all \(i\)</li>
+                <li>\(\sum_{i=1}^{n} x_i = 1\)</li>
+            </ul>
+            <p>Here \(x_i\) is the probability of being in state \(i\).</p>
+        </div>
+
+        <!-- Example 1 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 1: Verify a stochastic matrix</span>
+                <span class="example-toggle">⌄</span>
+            </div>
+            <div class="example-content">
+                <div class="example-text">
+                    <strong>Problem:</strong> Is the following matrix stochastic?
+                    \[
+                    P = \begin{bmatrix} 0.7 & 0.2 \\ 0.3 & 0.8 \end{bmatrix}
+                    \]
+                </div>
+                <div class="example-text">
+                    <strong>Solution:</strong>
+                    <br>Check that all entries are non-negative: ✓ (all entries in [0,1])
+                    <br>Check that columns sum to 1:
+                    <ul>
+                        <li>Column 1: \(0.7 + 0.3 = 1\) ✓</li>
+                        <li>Column 2: \(0.2 + 0.8 = 1\) ✓</li>
+                    </ul>
+                    <strong>Answer:</strong> Yes, \(P\) is a stochastic matrix.
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 2 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 2: Compute state vectors after 1 and 2 steps</span>
+                <span class="example-toggle">⌄</span>
+            </div>
+            <div class="example-content">
+                <div class="example-text">
+                    <strong>Problem:</strong> Let \(P = \begin{bmatrix} 0.7 & 0.2 \\ 0.3 & 0.8 \end{bmatrix}\) and initial state \(\mathbf{x}_0 = \begin{bmatrix} 1 \\ 0 \end{bmatrix}\). Find \(\mathbf{x}_1\) and \(\mathbf{x}_2\).
+                </div>
+                <div class="example-text">
+                    <strong>Solution:</strong>
+                    <br>After one step: \(\mathbf{x}_1 = P\mathbf{x}_0\)
+                    \[
+                    \mathbf{x}_1 = \begin{bmatrix} 0.7 & 0.2 \\ 0.3 & 0.8 \end{bmatrix} \begin{bmatrix} 1 \\ 0 \end{bmatrix} = \begin{bmatrix} 0.7 \\ 0.3 \end{bmatrix}
+                    \]
+                    <br>After two steps: \(\mathbf{x}_2 = P\mathbf{x}_1\)
+                    \[
+                    \mathbf{x}_2 = \begin{bmatrix} 0.7 & 0.2 \\ 0.3 & 0.8 \end{bmatrix} \begin{bmatrix} 0.7 \\ 0.3 \end{bmatrix} = \begin{bmatrix} 0.7(0.7) + 0.2(0.3) \\ 0.3(0.7) + 0.8(0.3) \end{bmatrix} = \begin{bmatrix} 0.55 \\ 0.45 \end{bmatrix}
+                    \]
+                    <strong>Answer:</strong> \(\mathbf{x}_1 = \begin{bmatrix} 0.7 \\ 0.3 \end{bmatrix}\) and \(\mathbf{x}_2 = \begin{bmatrix} 0.55 \\ 0.45 \end{bmatrix}\)
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Markov Chain Dynamics -->
+        <h2>2. Markov Chain Dynamics</h2>
+
+        <p>The core equation of a Markov chain is remarkably simple: if \(\mathbf{x}_k\) is the state vector after \(k\) steps, then:</p>
+
+        <div class="theorem-box">
+            <div class="box-title">Markov Chain Recurrence Relation</div>
+            \[
+            \mathbf{x}_{k+1} = P \mathbf{x}_k
+            \]
+            <p style="margin-top: 15px;">By induction, \(\mathbf{x}_k = P^k \mathbf{x}_0\), where \(P^k\) is the \(k\)-step transition matrix.</p>
+        </div>
+
+        <p>This means we can compute the state vector at any time by multiplying the initial state by powers of the transition matrix.</p>
+
+        <!-- Example 3 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 3: Weather model — sunny/rainy transitions</span>
+                <span class="example-toggle">⌄</span>
+            </div>
+            <div class="example-content">
+                <div class="example-text">
+                    <strong>Problem:</strong> The weather is modeled as: if today is sunny, tomorrow is sunny with probability 0.8 and rainy with probability 0.2. If today is rainy, tomorrow is sunny with probability 0.3 and rainy with probability 0.7. Today is sunny. What is the probability of being sunny 3 days from now?
+                </div>
+                <div class="example-text">
+                    <strong>Solution:</strong>
+                    <br>Transition matrix (Sunny → column 1, Rainy → column 2):
+                    \[
+                    P = \begin{bmatrix} 0.8 & 0.3 \\ 0.2 & 0.7 \end{bmatrix}
+                    \]
+                    Initial state (sunny today): \(\mathbf{x}_0 = \begin{bmatrix} 1 \\ 0 \end{bmatrix}\)
+                    <br><br>After 1 day:
+                    \[
+                    \mathbf{x}_1 = P\mathbf{x}_0 = \begin{bmatrix} 0.8 \\ 0.2 \end{bmatrix}
+                    \]
+                    <br>After 2 days:
+                    \[
+                    \mathbf{x}_2 = P\mathbf{x}_1 = \begin{bmatrix} 0.8 & 0.3 \\ 0.2 & 0.7 \end{bmatrix}\begin{bmatrix} 0.8 \\ 0.2 \end{bmatrix} = \begin{bmatrix} 0.64 + 0.06 \\ 0.16 + 0.14 \end{bmatrix} = \begin{bmatrix} 0.70 \\ 0.30 \end{bmatrix}
+                    \]
+                    <br>After 3 days:
+                    \[
+                    \mathbf{x}_3 = P\mathbf{x}_2 = \begin{bmatrix} 0.8 & 0.3 \\ 0.2 & 0.7 \end{bmatrix}\begin{bmatrix} 0.70 \\ 0.30 \end{bmatrix} = \begin{bmatrix} 0.56 + 0.09 \\ 0.14 + 0.21 \end{bmatrix} = \begin{bmatrix} 0.65 \\ 0.35 \end{bmatrix}
+                    \]
+                    <strong>Answer:</strong> The probability of sunny weather 3 days from now is \(0.65\) or 65%.
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 4 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 4: Market share — two competing brands</span>
+                <span class="example-toggle">⌄</span>
+            </div>
+            <div class="example-content">
+                <div class="example-text">
+                    <strong>Problem:</strong> Brand A currently has 60% market share, Brand B has 40%. Each quarter: customers of A stay with A 85% of the time, 15% switch to B. Customers of B stay with B 80% of the time, 20% switch to A. What is the market share after 2 quarters?
+                </div>
+                <div class="example-text">
+                    <strong>Solution:</strong>
+                    <br>Transition matrix:
+                    \[
+                    P = \begin{bmatrix} 0.85 & 0.20 \\ 0.15 & 0.80 \end{bmatrix}
+                    \]
+                    Initial state: \(\mathbf{x}_0 = \begin{bmatrix} 0.60 \\ 0.40 \end{bmatrix}\)
+                    <br><br>After 1 quarter:
+                    \[
+                    \mathbf{x}_1 = \begin{bmatrix} 0.85 & 0.20 \\ 0.15 & 0.80 \end{bmatrix}\begin{bmatrix} 0.60 \\ 0.40 \end{bmatrix} = \begin{bmatrix} 0.51 + 0.08 \\ 0.09 + 0.32 \end{bmatrix} = \begin{bmatrix} 0.59 \\ 0.41 \end{bmatrix}
+                    \]
+                    <br>After 2 quarters:
+                    \[
+                    \mathbf{x}_2 = \begin{bmatrix} 0.85 & 0.20 \\ 0.15 & 0.80 \end{bmatrix}\begin{bmatrix} 0.59 \\ 0.41 \end{bmatrix} = \begin{bmatrix} 0.5015 + 0.082 \\ 0.0885 + 0.328 \end{bmatrix} = \begin{bmatrix} 0.5835 \\ 0.4165 \end{bmatrix}
+                    \]
+                    <strong>Answer:</strong> After 2 quarters: Brand A has ~58.35% market share, Brand B has ~41.65%.
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 5 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 5: Three-state commute model</span>
+                <span class="example-toggle">⌄</span>
+            </div>
+            <div class="example-content">
+                <div class="example-text">
+                    <strong>Problem:</strong> A commuter can go by car (C), bus (B), or bike (K). Transition probabilities each day:
+                    <br>From C: 0.5 stay, 0.3 to B, 0.2 to K
+                    <br>From B: 0.2 to C, 0.6 stay, 0.2 to K
+                    <br>From K: 0.3 to C, 0.4 to B, 0.3 stay
+                    <br>If today is car, find the distribution after 1 day.
+                </div>
+                <div class="example-text">
+                    <strong>Solution:</strong>
+                    <br>Transition matrix (columns: C, B, K):
+                    \[
+                    P = \begin{bmatrix} 0.5 & 0.2 & 0.3 \\ 0.3 & 0.6 & 0.4 \\ 0.2 & 0.2 & 0.3 \end{bmatrix}
+                    \]
+                    Initial state: \(\mathbf{x}_0 = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}\)
+                    <br><br>After 1 day:
+                    \[
+                    \mathbf{x}_1 = P\mathbf{x}_0 = \begin{bmatrix} 0.5 \\ 0.3 \\ 0.2 \end{bmatrix}
+                    \]
+                    <strong>Answer:</strong> Tomorrow: 50% car, 30% bus, 20% bike.
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Steady-State Vectors -->
+        <h2>3. Steady-State Vectors</h2>
+
+        <p>A fundamental question: does a Markov chain converge to a long-term distribution? The answer involves finding the <strong>steady-state vector</strong>.</p>
+
+        <div class="definition-box">
+            <div class="box-title">Definition: Steady-State Vector</div>
+            <p>A vector \(\mathbf{q}\) is a <strong>steady-state vector</strong> (or equilibrium distribution) if:</p>
+            \[
+            P\mathbf{q} = \mathbf{q}
+            \]
+            <p style="margin-top: 15px;">This means \(\mathbf{q}\) is an eigenvector of \(P\) with eigenvalue \(\lambda = 1\).</p>
+        </div>
+
+        <p>To find the steady-state vector, we solve \((P - I)\mathbf{q} = \mathbf{0}\), which is a homogeneous system. The solutions lie in the null space of \(P - I\).</p>
+
+        <!-- Example 6 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 6: Find steady-state for 2×2 stochastic matrix</span>
+                <span class="example-toggle">⌄</span>
+            </div>
+            <div class="example-content">
+                <div class="example-text">
+                    <strong>Problem:</strong> For \(P = \begin{bmatrix} 0.7 & 0.2 \\ 0.3 & 0.8 \end{bmatrix}\), find the steady-state vector.
+                </div>
+                <div class="example-text">
+                    <strong>Solution:</strong>
+                    <br>We need \(P\mathbf{q} = \mathbf{q}\), or \((P - I)\mathbf{q} = \mathbf{0}\).
+                    \[
+                    P - I = \begin{bmatrix} -0.3 & 0.2 \\ 0.3 & -0.2 \end{bmatrix}
+                    \]
+                    <br>Reduce: Row 1 is \(-0.3q_1 + 0.2q_2 = 0\), so \(0.3q_1 = 0.2q_2\), giving \(q_2 = 1.5q_1\).
+                    <br><br>With constraint \(q_1 + q_2 = 1\):
+                    \[
+                    q_1 + 1.5q_1 = 1 \implies 2.5q_1 = 1 \implies q_1 = 0.4
+                    \]
+                    <br>Thus \(q_2 = 0.6\).
+                    <br><br><strong>Answer:</strong> \(\mathbf{q} = \begin{bmatrix} 0.4 \\ 0.6 \end{bmatrix}\)
+                    <br>Verification: \(P\mathbf{q} = \begin{bmatrix} 0.7(0.4) + 0.2(0.6) \\ 0.3(0.4) + 0.8(0.6) \end{bmatrix} = \begin{bmatrix} 0.4 \\ 0.6 \end{bmatrix}\) ✓
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 7 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 7: Weather steady state</span>
+                <span class="example-toggle">⌄</span>
+            </div>
+            <div class="example-content">
+                <div class="example-text">
+                    <strong>Problem:</strong> For the weather model \(P = \begin{bmatrix} 0.8 & 0.3 \\ 0.2 & 0.7 \end{bmatrix}\), find the long-term probability distribution.
+                </div>
+                <div class="example-text">
+                    <strong>Solution:</strong>
+                    \[
+                    P - I = \begin{bmatrix} -0.2 & 0.3 \\ 0.2 & -0.3 \end{bmatrix}
+                    \]
+                    Row 1: \(-0.2q_1 + 0.3q_2 = 0 \implies q_1 = 1.5q_2\)
+                    <br><br>With \(q_1 + q_2 = 1\):
+                    \[
+                    1.5q_2 + q_2 = 1 \implies 2.5q_2 = 1 \implies q_2 = 0.4
+                    \]
+                    <br>Thus \(q_1 = 0.6\).
+                    <br><br><strong>Answer:</strong> Long-term: 60% sunny, 40% rainy.
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 8 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 8: Stochastic matrices always have eigenvalue 1</span>
+                <span class="example-toggle">⌄</span>
+            </div>
+            <div class="example-content">
+                <div class="example-text">
+                    <strong>Problem:</strong> Prove that every stochastic matrix has eigenvalue \(\lambda = 1\).
+                </div>
+                <div class="example-text">
+                    <strong>Solution:</strong>
+                    <br>Let \(\mathbf{e} = \begin{bmatrix} 1 \\ 1 \\ \vdots \\ 1 \end{bmatrix}\) (the all-ones vector).
+                    <br><br>For a stochastic matrix \(P\), each column sums to 1. Thus:
+                    \[
+                    P\mathbf{e} = \begin{bmatrix} \text{sum of column 1} \\ \text{sum of column 2} \\ \vdots \\ \text{sum of column n} \end{bmatrix} = \begin{bmatrix} 1 \\ 1 \\ \vdots \\ 1 \end{bmatrix} = \mathbf{e}
+                    \]
+                    <br>Therefore \(\mathbf{e}\) is an eigenvector with eigenvalue \(\lambda = 1\). This guarantees every stochastic matrix has \(\lambda = 1\).
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Regular Markov Chains -->
+        <h2>4. Regular Markov Chains</h2>
+
+        <p>Not all Markov chains converge to a unique steady state. <strong>Regular Markov chains</strong> are guaranteed to converge.</p>
+
+        <div class="definition-box">
+            <div class="box-title">Definition: Regular Markov Chain</div>
+            <p>A stochastic matrix \(P\) is <strong>regular</strong> if some power \(P^k\) has all positive entries (strictly positive).</p>
+            <p style="margin-top: 15px;"><strong>Key Theorem:</strong> If \(P\) is regular, then:
+            <ul>
+                <li>\(P\) has a unique steady-state vector \(\mathbf{q}\) with all positive entries</li>
+                <li>For any initial state \(\mathbf{x}_0\), \(P^k\mathbf{x}_0 \to \mathbf{q}\) as \(k \to \infty\)</li>
+            </ul>
+            </p>
+        </div>
+
+        <!-- Example 9 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 9: Identify regular Markov chain</span>
+                <span class="example-toggle">⌄</span>
+            </div>
+            <div class="example-content">
+                <div class="example-text">
+                    <strong>Problem:</strong> Is \(P = \begin{bmatrix} 0.7 & 0.2 \\ 0.3 & 0.8 \end{bmatrix}\) regular?
+                </div>
+                <div class="example-text">
+                    <strong>Solution:</strong>
+                    <br>\(P\) itself has all positive entries, so \(P^1 = P\) has all positive entries.
+                    <br><strong>Answer:</strong> Yes, \(P\) is regular. The steady-state \(\mathbf{q} = \begin{bmatrix} 0.4 \\ 0.6 \end{bmatrix}\) is unique and guaranteed to be the limit.
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 10 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 10: Compute powers using diagonalization</span>
+                <span class="example-toggle">⌄</span>
+            </div>
+            <div class="example-content">
+                <div class="example-text">
+                    <strong>Problem:</strong> For \(P = \begin{bmatrix} 0.7 & 0.2 \\ 0.3 & 0.8 \end{bmatrix}\), find \(P^{10}\).
+                </div>
+                <div class="example-text">
+                    <strong>Solution:</strong>
+                    <br>Characteristic polynomial: \(\det(P - \lambda I) = (0.7-\lambda)(0.8-\lambda) - 0.06 = \lambda^2 - 1.5\lambda + 0.5 = 0\)
+                    <br>Eigenvalues: \(\lambda_1 = 1\), \(\lambda_2 = 0.5\)
+                    <br><br>For \(\lambda_1 = 1\): eigenvector \(\mathbf{v}_1 = \begin{bmatrix} 2 \\ 3 \end{bmatrix}\) (or normalized)
+                    <br>For \(\lambda_2 = 0.5\): eigenvector \(\mathbf{v}_2 = \begin{bmatrix} 1 \\ -1 \end{bmatrix}\)
+                    <br><br>\(P = QDQ^{-1}\) where \(D = \begin{bmatrix} 1 & 0 \\ 0 & 0.5 \end{bmatrix}\)
+                    <br><br>\(P^{10} = QD^{10}Q^{-1} \approx \begin{bmatrix} 0.4 & 0.4 \\ 0.6 & 0.6 \end{bmatrix}\) (converges to steady-state as the 0.5 term vanishes)
+                    <br><strong>Answer:</strong> \(P^{10}\) is very close to the steady-state matrix, with each column equal to \(\begin{bmatrix} 0.4 \\ 0.6 \end{bmatrix}\).
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: Applications -->
+        <h2>5. Applications of Markov Chains</h2>
+
+        <p>Markov chains model phenomena across science, engineering, and economics. Here are key applications:</p>
+
+        <!-- Example 11 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 11: Internet browsing model</span>
+                <span class="example-toggle">⌄</span>
+            </div>
+            <div class="example-content">
+                <div class="example-text">
+                    <strong>Problem:</strong> Three websites: A, B, C. Transition probabilities:
+                    <br>From A: 0.5 stay, 0.3 to B, 0.2 to C
+                    <br>From B: 0.2 to A, 0.4 stay, 0.4 to C
+                    <br>From C: 0.3 to A, 0.3 to B, 0.4 stay
+                    <br>Find the steady-state distribution (fraction of time spent on each site).
+                </div>
+                <div class="example-text">
+                    <strong>Solution:</strong>
+                    \[
+                    P = \begin{bmatrix} 0.5 & 0.2 & 0.3 \\ 0.3 & 0.4 & 0.3 \\ 0.2 & 0.4 & 0.4 \end{bmatrix}
+                    \]
+                    <br>Solve \((P-I)\mathbf{q} = \mathbf{0}\):
+                    \[
+                    \begin{bmatrix} -0.5 & 0.2 & 0.3 \\ 0.3 & -0.6 & 0.3 \\ 0.2 & 0.4 & -0.6 \end{bmatrix}\begin{bmatrix} q_1 \\ q_2 \\ q_3 \end{bmatrix} = \mathbf{0}
+                    \]
+                    <br>From Row 1: \(0.5q_1 = 0.2q_2 + 0.3q_3\)
+                    <br>From Row 2: \(0.3q_1 + 0.6q_2 = 0.3q_3\)
+                    <br>With \(q_1 + q_2 + q_3 = 1\), solving yields approximately:
+                    \[
+                    \mathbf{q} \approx \begin{bmatrix} 0.36 \\ 0.32 \\ 0.32 \end{bmatrix}
+                    \]
+                    <strong>Answer:</strong> Long-term, about 36% on A, 32% on B, 32% on C.
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 12 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 12: Gambler's ruin (absorbing chain)</span>
+                <span class="example-toggle">⌄</span>
+            </div>
+            <div class="example-content">
+                <div class="example-text">
+                    <strong>Problem:</strong> A gambler with \$2 plays a fair game. Each round: win \$1 with probability 0.5, lose \$1 with probability 0.5. Game ends at \$0 (ruin) or \$4 (victory). What is the probability of reaching \$4?
+                </div>
+                <div class="example-text">
+                    <strong>Solution:</strong>
+                    <br>States: 0, 1, 2, 3, 4 (where 0 and 4 are absorbing)
+                    \[
+                    P = \begin{bmatrix} 1 & 0.5 & 0 & 0 & 0 \\ 0 & 0 & 0.5 & 0 & 0 \\ 0 & 0.5 & 0 & 0.5 & 0 \\ 0 & 0 & 0.5 & 0 & 0.5 \\ 0 & 0 & 0 & 0.5 & 1 \end{bmatrix}
+                    \]
+                    <br>Let \(p_i\) = probability of reaching \$4 starting from \$\(i\). Boundary: \(p_0 = 0\), \(p_4 = 1\).
+                    <br>Recurrence for fair game: \(p_i = 0.5 p_{i-1} + 0.5 p_{i+1}\), which gives \(p_i = i/4\).
+                    <br>Starting from \$2: \(p_2 = 2/4 = 0.5\)
+                    <br><strong>Answer:</strong> The gambler has a 50% chance of reaching \$4 (and 50% of ruin).
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 13 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 13: Google PageRank (simplified)</span>
+                <span class="example-toggle">⌄</span>
+            </div>
+            <div class="example-content">
+                <div class="example-text">
+                    <strong>Problem:</strong> Four webpages: A, B, C, D. Links:
+                    <br>A links to B, C
+                    <br>B links to A
+                    <br>C links to A, B, D
+                    <br>D links to A, C
+                    <br>(Assume random surfer follows each link with equal probability.)
+                    <br>Find the steady-state PageRank.
+                </div>
+                <div class="example-text">
+                    <strong>Solution:</strong>
+                    <br>Transition matrix (out-degree normalized):
+                    <br>From A (2 links): to B (0.5), to C (0.5)
+                    <br>From B (1 link): to A (1.0)
+                    <br>From C (3 links): to A (1/3), to B (1/3), to D (1/3)
+                    <br>From D (2 links): to A (0.5), to C (0.5)
+                    \[
+                    P = \begin{bmatrix} 0 & 1 & 1/3 & 0.5 \\ 0.5 & 0 & 1/3 & 0 \\ 0.5 & 0 & 0 & 0.5 \\ 0 & 0 & 1/3 & 0 \end{bmatrix}
+                    \]
+                    <br>Solving \(P\mathbf{q} = \mathbf{q}\) (approximately):
+                    \[
+                    \mathbf{q} \approx \begin{bmatrix} 0.40 \\ 0.20 \\ 0.20 \\ 0.20 \end{bmatrix}
+                    \]
+                    <br><strong>Answer:</strong> Page A has the highest PageRank (0.40); others share equally (0.20 each).
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 14 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 14: Genetics — gene frequency evolution</span>
+                <span class="example-toggle">⌄</span>
+            </div>
+            <div class="example-content">
+                <div class="example-text">
+                    <strong>Problem:</strong> A gene has two alleles: A and a. In a population, frequency of AA is 0.25, Aa is 0.5, aa is 0.25. Under random mating, what is the frequency after one generation?
+                </div>
+                <div class="example-text">
+                    <strong>Solution:</strong>
+                    <br>Allele frequencies: \(p(A) = 0.25 + 0.25 = 0.5\), \(p(a) = 0.25 + 0.25 = 0.5\)
+                    <br>Under Hardy-Weinberg equilibrium:
+                    <br>AA: \(p^2 = 0.25\)
+                    <br>Aa: \(2pq = 0.5\)
+                    <br>aa: \(q^2 = 0.25\)
+                    <br>Since we started at equilibrium, these frequencies persist.
+                    <br><strong>Answer:</strong> Frequencies remain at (0.25, 0.5, 0.25) — the population is in equilibrium.
+                </div>
+            </div>
+        </div>
+
+        <!-- Example 15 -->
+        <div class="example-item">
+            <div class="example-header">
+                <span>Example 15: Regular vs non-regular chains</span>
+                <span class="example-toggle">⌄</span>
+            </div>
+            <div class="example-content">
+                <div class="example-text">
+                    <strong>Problem:</strong> Determine if \(P_1 = \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix}\) and \(P_2 = \begin{bmatrix} 0.5 & 0.3 \\ 0.5 & 0.7 \end{bmatrix}\) are regular.
+                </div>
+                <div class="example-text">
+                    <strong>Solution:</strong>
+                    <br><strong>\(P_1\):</strong> \(P_1^2 = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}\) (identity). Since \(P_1\) has zeros, it's not regular. It oscillates: odd powers are \(P_1\), even powers are \(I\).
+                    <br><br><strong>\(P_2\):</strong> \(P_2\) itself has all positive entries, so it's regular. It converges to a unique steady state.
+                    <br><br><strong>Answer:</strong> \(P_1\) is non-regular (periodic); \(P_2\) is regular (aperiodic).
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive Tools -->
+        <h2>Interactive Tools</h2>
+
+        <!-- Steady-State Calculator -->
+        <h3>Steady-State Vector Calculator</h3>
+        <div class="controls">
+            <div class="control-group">
+                <label>Enter 2×2 Transition Matrix (columns sum to 1):</label>
+                <label>P₁₁ = <input type="text" id="p11" value="0.7" style="width: 80px;"></label>
+                <label>P₂₁ = <input type="text" id="p21" value="0.3" style="width: 80px;"></label>
+                <br><br>
+                <label>P₁₂ = <input type="text" id="p12" value="0.2" style="width: 80px;"></label>
+                <label>P₂₂ = <input type="text" id="p22" value="0.8" style="width: 80px;"></label>
+                <br><br>
+                <button onclick="calculateSteadyState()">Calculate Steady State</button>
+            </div>
+            <div id="steady-state-output"></div>
+        </div>
+
+        <!-- Quiz Section -->
+        <h2>Knowledge Check: Quiz</h2>
+        <div class="quiz-section">
+
+            <div class="quiz-question">
+                <p><strong>Question 1:</strong> What property must every column of a stochastic matrix satisfy?</p>
+                <button class="choice-btn" onclick="checkChoice(1, 0)">Sum to 0</button>
+                <button class="choice-btn" onclick="checkChoice(1, 1)">Sum to 1</button>
+                <button class="choice-btn" onclick="checkChoice(1, 2)">All positive</button>
+                <button class="choice-btn" onclick="checkChoice(1, 3)">Sum to n</button>
+                <div class="feedback" id="feedback-1"></div>
+            </div>
+
+            <div class="quiz-question">
+                <p><strong>Question 2:</strong> Every stochastic matrix has the eigenvalue:</p>
+                <button class="choice-btn" onclick="checkChoice(2, 0)">λ = 0</button>
+                <button class="choice-btn" onclick="checkChoice(2, 1)">λ = 1</button>
+                <button class="choice-btn" onclick="checkChoice(2, 2)">λ = -1</button>
+                <button class="choice-btn" onclick="checkChoice(2, 3)">λ = 2</button>
+                <div class="feedback" id="feedback-2"></div>
+            </div>
+
+            <div class="quiz-question">
+                <p><strong>Question 3:</strong> A steady-state vector q satisfies:</p>
+                <button class="choice-btn" onclick="checkChoice(3, 0)">\(Pq = 0\)</button>
+                <button class="choice-btn" onclick="checkChoice(3, 1)">\(Pq = q\)</button>
+                <button class="choice-btn" onclick="checkChoice(3, 2)">\(Pq = 2q\)</button>
+                <button class="choice-btn" onclick="checkChoice(3, 3)">\(q = P^{-1}\)</button>
+                <div class="feedback" id="feedback-3"></div>
+            </div>
+
+            <div class="quiz-question">
+                <p><strong>Question 4:</strong> A regular Markov chain is guaranteed to have:</p>
+                <button class="choice-btn" onclick="checkChoice(4, 0)">Multiple steady states</button>
+                <button class="choice-btn" onclick="checkChoice(4, 1)">No steady state</button>
+                <button class="choice-btn" onclick="checkChoice(4, 2)">A unique steady state</button>
+                <button class="choice-btn" onclick="checkChoice(4, 3)">Negative eigenvalues</button>
+                <div class="feedback" id="feedback-4"></div>
+            </div>
+
+            <div class="quiz-question">
+                <p><strong>Question 5:</strong> If \(\mathbf{x}_0 = \begin{bmatrix} 0.6 \\ 0.4 \end{bmatrix}\) and \(P = \begin{bmatrix} 0.8 & 0.3 \\ 0.2 & 0.7 \end{bmatrix}\), then \(\mathbf{x}_1 = P\mathbf{x}_0\) equals:</p>
+                <button class="choice-btn" onclick="checkChoice(5, 0)">\(\begin{bmatrix} 0.6 \\ 0.4 \end{bmatrix}\)</button>
+                <button class="choice-btn" onclick="checkChoice(5, 1)">\(\begin{bmatrix} 0.6 \\ 0.4 \end{bmatrix}\)</button>
+                <button class="choice-btn" onclick="checkChoice(5, 2)">\(\begin{bmatrix} 0.66 \\ 0.34 \end{bmatrix}\)</button>
+                <button class="choice-btn" onclick="checkChoice(5, 3)">\(\begin{bmatrix} 0.8 \\ 0.2 \end{bmatrix}\)</button>
+                <div class="feedback" id="feedback-5"></div>
+            </div>
+
+            <div class="quiz-question">
+                <p><strong>Question 6:</strong> Entries of a state vector must be:</p>
+                <button class="choice-btn" onclick="checkChoice(6, 0)">Non-negative and sum to 1</button>
+                <button class="choice-btn" onclick="checkChoice(6, 1)">Positive and sum to n</button>
+                <button class="choice-btn" onclick="checkChoice(6, 2)">Any real numbers</button>
+                <button class="choice-btn" onclick="checkChoice(6, 3)">Integers</button>
+                <div class="feedback" id="feedback-6"></div>
+            </div>
+
+        </div>
+
+        <!-- Footer Navigation -->
+        <div class="nav-footer">
+            <a href="ch3-diagonalization.html">← 3.2 Diagonalization</a>
+            <div class="center">
+                <a href="../../index.html">Course Home</a>
+            </div>
+            <a href="ch3-dynamical.html">3.4 Dynamical Systems →</a>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Make examples collapsible
+        document.querySelectorAll('.example-header').forEach(header => {
+            header.addEventListener('click', function() {
+                this.closest('.example-item').classList.toggle('open');
+            });
+        });
+
+        // Steady-State Calculator
+        function calculateSteadyState() {
+            const p11 = parseFloat(document.getElementById('p11').value);
+            const p21 = parseFloat(document.getElementById('p21').value);
+            const p12 = parseFloat(document.getElementById('p12').value);
+            const p22 = parseFloat(document.getElementById('p22').value);
+
+            // Verify it's stochastic
+            const col1Sum = p11 + p21;
+            const col2Sum = p12 + p22;
+
+            let output = '<div style="background: white; padding: 15px; margin-top: 15px; border-radius: 6px;">';
+
+            if (Math.abs(col1Sum - 1) > 0.01 || Math.abs(col2Sum - 1) > 0.01) {
+                output += '<p style="color: #dc2626;"><strong>Error:</strong> Columns must sum to 1!</p>';
+            } else {
+                // Solve (P-I)q = 0
+                // -p11 + p12, p21, p21, -p22
+                const a11 = p11 - 1;
+                const a12 = p12;
+                const a21 = p21;
+                const a22 = p22 - 1;
+
+                // From a11*q1 + a12*q2 = 0: q1 = -a12/a11 * q2
+                if (Math.abs(a11) < 1e-10) {
+                    output += '<p style="color: #dc2626;">Matrix is singular; steady state not unique.</p>';
+                } else {
+                    const ratio = -a12 / a11;
+                    const q2 = 1 / (1 + ratio);
+                    const q1 = ratio * q2;
+
+                    output += '<p><strong>Steady-State Vector:</strong></p>';
+                    output += `<p style="font-family: monospace; background: #f3f4f6; padding: 10px; border-radius: 4px;">`;
+                    output += `q = [${q1.toFixed(4)}, ${q2.toFixed(4)}]</p>`;
+
+                    // Verify
+                    const check1 = p11 * q1 + p12 * q2;
+                    const check2 = p21 * q1 + p22 * q2;
+                    output += `<p style="font-size: 13px; color: #059669;"><strong>Verification (Pq = q):</strong><br>`;
+                    output += `Component 1: ${check1.toFixed(4)} ≈ ${q1.toFixed(4)} ✓<br>`;
+                    output += `Component 2: ${check2.toFixed(4)} ≈ ${q2.toFixed(4)} ✓</p>`;
+                }
+            }
+
+            output += '</div>';
+            document.getElementById('steady-state-output').innerHTML = output;
+        }
+
+        // Quiz functionality
+        const correctAnswers = {
+            1: 1, // Sum to 1
+            2: 1, // λ = 1
+            3: 1, // Pq = q
+            4: 2, // Unique steady state
+            5: 2, // 0.66, 0.34
+            6: 0  // Non-negative and sum to 1
+        };
+
+        function checkChoice(questionNum, choiceNum) {
+            const isCorrect = choiceNum === correctAnswers[questionNum];
+            const feedback = document.getElementById(`feedback-${questionNum}`);
+            const buttons = feedback.parentElement.querySelectorAll('.choice-btn');
+
+            buttons.forEach((btn, idx) => {
+                if (idx === correctAnswers[questionNum]) {
+                    btn.classList.add('correct');
+                } else if (idx === choiceNum && !isCorrect) {
+                    btn.classList.add('incorrect');
+                }
+                btn.disabled = true;
+            });
+
+            feedback.classList.add('show');
+            if (isCorrect) {
+                feedback.innerHTML = '<span style="color: #10b981; font-weight: 600;">✓ Correct!</span>';
+            } else {
+                feedback.innerHTML = '<span style="color: #dc2626; font-weight: 600;">✗ Incorrect. Try another answer.</span>';
+            }
+        }
+
+        // Initialize KaTeX rendering
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.katex-display, .katex').forEach(element => {
+                katex.render(element.textContent, element, {
+                    throwOnError: false,
+                    displayMode: element.classList.contains('katex-display')
+                });
+            });
+        });
+    </script>
+
+    <!-- KaTeX for math rendering -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Render all math in the page
+            renderMathInElement(document.body, {
+                delimiters: [
+                    { left: "\\[", right: "\\]", display: true },
+                    { left: "\\(", right: "\\)", display: false }
+                ],
+                throwOnError: false
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"></script>
+
+</body>
+</html>
