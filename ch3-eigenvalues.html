@@ -499,7 +499,7 @@
         <li><a href="index.html">Home</a></li>
         <li><a href="why-linear-algebra.html">Why LA?</a></li>
         <li>
-            <a href="#">Ch 1: Matrices <span class="dropdown-arrow">&#9662;</span></a>
+            <a href="javascript:void(0)">Ch 1: Matrices <span class="dropdown-arrow">&#9662;</span></a>
             <div class="nav-dropdown">
                 <div class="dropdown-header">Chapter 1 — Systems &amp; Matrices</div>
                 <a href="ch1-linear-systems.html">1.1 &nbsp;Systems of Linear Equations</a>
@@ -509,7 +509,7 @@
             </div>
         </li>
         <li>
-            <a href="#">Ch 2: Vector Spaces <span class="dropdown-arrow">&#9662;</span></a>
+            <a href="javascript:void(0)">Ch 2: Vector Spaces <span class="dropdown-arrow">&#9662;</span></a>
             <div class="nav-dropdown">
                 <div class="dropdown-header">Chapter 2 — Vector Spaces</div>
                 <a href="ch2-vector-spaces.html">2.1 &nbsp;Vector Spaces &amp; Subspaces</a>
@@ -520,7 +520,7 @@
             </div>
         </li>
         <li>
-            <a href="#" class="active">Ch 3: Eigenvalues <span class="dropdown-arrow">&#9662;</span></a>
+            <a href="javascript:void(0)" class="active">Ch 3: Eigenvalues <span class="dropdown-arrow">&#9662;</span></a>
             <div class="nav-dropdown">
                 <div class="dropdown-header">Chapter 3 — Eigenvalues &amp; Diag.</div>
                 <a href="ch3-eigenvalues.html" class="active">3.1 &nbsp;Eigenvalues &amp; Eigenvectors</a>
@@ -1392,6 +1392,42 @@
                 ]
             });
         });
+    </script>
+
+    <script>
+    // Dropdown click toggle for touch/click support
+    document.querySelectorAll('.nav-links > li').forEach(function(li) {
+        var trigger = li.querySelector('a');
+        var dropdown = li.querySelector('.nav-dropdown');
+        if (!dropdown) return;
+
+        // Prevent href="#" from scrolling
+        trigger.addEventListener('click', function(e) {
+            e.preventDefault();
+        });
+
+        // Touch support: toggle on tap
+        trigger.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            var isOpen = dropdown.style.display === 'block';
+            // Close all other dropdowns
+            document.querySelectorAll('.nav-dropdown').forEach(function(d) {
+                d.style.display = '';
+            });
+            if (!isOpen) {
+                dropdown.style.display = 'block';
+            }
+        });
+    });
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.nav-links > li')) {
+            document.querySelectorAll('.nav-dropdown').forEach(function(d) {
+                d.style.display = '';
+            });
+        }
+    });
     </script>
 </body>
 </html>
